@@ -1,0 +1,2 @@
+# MeditationJourney_may
+瞑想しながら世界旅行ができるアプリ
