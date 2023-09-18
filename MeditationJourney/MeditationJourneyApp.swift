@@ -13,7 +13,7 @@ struct MeditationJourneyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabSetView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
