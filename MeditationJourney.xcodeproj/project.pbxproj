@@ -12,6 +12,7 @@
 		180644632AB694670080EEFF /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644622AB694670080EEFF /* CalendarView.swift */; };
 		180644652AB6947A0080EEFF /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644642AB694790080EEFF /* MapView.swift */; };
 		180644672AB694D30080EEFF /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644662AB694D30080EEFF /* ExplanationView.swift */; };
+		1806446B2AB889BB0080EEFF /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1806446A2AB889BB0080EEFF /* ColorExtension.swift */; };
 		1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */; };
 		1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1E32AAD81BF00543D18 /* TabSetView.swift */; };
 		1863E1E62AAD81D800543D18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1863E1E52AAD81D800543D18 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 		180644622AB694670080EEFF /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		180644642AB694790080EEFF /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		180644662AB694D30080EEFF /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
+		1806446A2AB889BB0080EEFF /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		1863E1DE2AAD81BE00543D18 /* MeditationJourney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeditationJourney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationJourneyApp.swift; sourceTree = "<group>"; };
 		1863E1E32AAD81BF00543D18 /* TabSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSetView.swift; sourceTree = "<group>"; };
@@ -59,6 +61,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		180644692AB889960080EEFF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				1806446A2AB889BB0080EEFF /* ColorExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		1863E1D52AAD81BE00543D18 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */,
+				180644692AB889960080EEFF /* Extension */,
 				1806445D2AB693780080EEFF /* View */,
 				1863E1E52AAD81D800543D18 /* Assets.xcassets */,
 				1863E1EA2AAD81D800543D18 /* Persistence.swift */,
@@ -193,6 +204,7 @@
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				180644612AB6944B0080EEFF /* SoundSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
+				1806446B2AB889BB0080EEFF /* ColorExtension.swift in Sources */,
 				1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */,
 				1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
