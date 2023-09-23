@@ -19,6 +19,7 @@
 		1863E1E92AAD81D800543D18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */; };
 		1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1EA2AAD81D800543D18 /* Persistence.swift */; };
 		1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1EC2AAD81D800543D18 /* MeditationJourney.xcdatamodeld */; };
+		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1863E1EA2AAD81D800543D18 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		1863E1ED2AAD81D800543D18 /* MeditationJourney.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MeditationJourney.xcdatamodel; sourceTree = "<group>"; };
+		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,12 +53,9 @@
 		1806445D2AB693780080EEFF /* View */ = {
 			isa = PBXGroup;
 			children = (
-				1863E1E32AAD81BF00543D18 /* TabSetView.swift */,
-				1806445E2AB694080080EEFF /* MeditationSetView.swift */,
-				180644602AB6944B0080EEFF /* SoundSetView.swift */,
-				180644622AB694670080EEFF /* CalendarView.swift */,
-				180644642AB694790080EEFF /* MapView.swift */,
-				180644662AB694D30080EEFF /* ExplanationView.swift */,
+				18A4618F2ABEC8C60034F393 /* HomeView */,
+				18A461902ABEC9500034F393 /* SelectContinentAndMusicView */,
+				18A461912ABEC9D60034F393 /* PlayingView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -105,6 +104,34 @@
 				1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		18A4618F2ABEC8C60034F393 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				1863E1E32AAD81BF00543D18 /* TabSetView.swift */,
+				1806445E2AB694080080EEFF /* MeditationSetView.swift */,
+				180644602AB6944B0080EEFF /* SoundSetView.swift */,
+				180644622AB694670080EEFF /* CalendarView.swift */,
+				180644642AB694790080EEFF /* MapView.swift */,
+				180644662AB694D30080EEFF /* ExplanationView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		18A461902ABEC9500034F393 /* SelectContinentAndMusicView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SelectContinentAndMusicView;
+			sourceTree = "<group>";
+		};
+		18A461912ABEC9D60034F393 /* PlayingView */ = {
+			isa = PBXGroup;
+			children = (
+				18A461922ABECA3F0034F393 /* MeditatingView.swift */,
+			);
+			path = PlayingView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,6 +229,7 @@
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
+				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				180644612AB6944B0080EEFF /* SoundSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				1806446B2AB889BB0080EEFF /* ColorExtension.swift in Sources */,

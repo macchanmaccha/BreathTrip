@@ -1,0 +1,6 @@
+disabled_rules:
+- multiple_closures_with_trailing_closure
+- line_length
+# 変数名が１文字以上なら許可に変更
+identifier_name:
+ min_length: 1
