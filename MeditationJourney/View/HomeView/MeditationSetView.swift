@@ -14,12 +14,6 @@ struct MeditationSetView: View {
     @State private var selectedMinutes: Int = 1
     // 選択する時間
     let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
-    // 選択した時間の文字色を設定する変数
-    @State private var selectMinitesTextColor: Int = 0
-    // イニシャライザ
-    init() {
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.red], for: .selected)
-    } // initここまで
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // 選択した音を表示する変数
