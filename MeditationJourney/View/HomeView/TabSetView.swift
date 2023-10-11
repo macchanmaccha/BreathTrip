@@ -14,9 +14,9 @@ struct TabSetView: View {
     // イニシャライザ
     init() {
         // 背景色の設定
-        UITabBar.appearance().backgroundColor = UIColor(Color.customColor1)
+        UITabBar.appearance().backgroundColor = UIColor(Color.backgroundNavy)
         // タブ未選択時の色の設定
-        UITabBar.appearance().unselectedItemTintColor = UIColor(Color.customColor2)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(Color.accentGray)
         }
     var body: some View {
             // タブの設定
@@ -53,7 +53,7 @@ struct TabSetView: View {
                         .tag(5)
             } // TabViewここまで
         // タブ選択時の色の設定
-            .accentColor(Color.customColor)
+            .accentColor(Color.keyWhite)
     } // bodyここまで
 } // ContentViewここまで
 

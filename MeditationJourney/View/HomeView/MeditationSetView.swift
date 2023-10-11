@@ -10,10 +10,19 @@ import SwiftUI
 struct MeditationSetView: View {
     // Toggleを管理する変数
     @State private var isOn: Bool = false
+    // 音声ガイドのアイコンを管理
+    private var speakerIcon: some View {
+        isOn ? Image(systemName: "speaker.wave.3.fill") :
+        Image(systemName: "speaker.slash.fill")
+    } // speakerIconここまで
+    // 音声ガイドONOFFを管理する変数
+    private var speakerStatusText: Text {
+        Text(isOn ? "ON" : "OFF")
+    } // speakerStatusTextここまで
     // 選択する時間を管理する変数
     @State private var selectedMinutes: Int = 1
     // 選択する時間
-    let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
+    private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // 選択した音を表示する変数
@@ -27,7 +36,7 @@ struct MeditationSetView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 背景枠
                 Rectangle()
-                    .fill(Color.customColor)
+                    .fill(Color.keyWhite)
                     .cornerRadius(8)
                     .opacity(0.6)
                     .frame(width: 400, height: 400)
@@ -36,36 +45,24 @@ struct MeditationSetView: View {
                     HStack {
                         Text("音声ガイド")
                             .font(.title2)
-                            .foregroundColor(.customColor1)
+                            .foregroundColor(.backgroundNavy)
                         Spacer()
                         VStack {
                             // 音声ガイドボタン
                             Button(action: {
                                 isOn.toggle()
                             }) {
-                                if isOn {
-                                    Image(systemName: "speaker.wave.3.fill")
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(.customColor1)
-                                        .font(.title)
-                                } else {
-                                    Image(systemName: "speaker.slash.fill")
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(.customColor1)
-                                        .font(.title)
-                                } // ifここまで
+                                // 音声ガイドアイコン
+                                speakerIcon
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(.backgroundNavy)
+                                    .font(.title)
                             } // Buttonここまで
-                            if isOn {
-                                Text("ON")
-                                    .frame(width: 30, height: 5)
-                                    .font(.caption2)
-                                    .foregroundColor(.customColor1)
-                            } else {
-                                Text("OFF")
-                                    .frame(width: 30, height: 5)
-                                    .font(.caption2)
-                                    .foregroundColor(.customColor1)
-                            } // ifここまで
+                            // ON、OFFのテキスト表示
+                            speakerStatusText
+                                .frame(width: 30, height: 5)
+                                .font(.caption2)
+                                .foregroundColor(.backgroundNavy)
                         } // VStackここまで
                     } // HStackここまで
                     .frame(width: 200)
@@ -74,30 +71,30 @@ struct MeditationSetView: View {
                     HStack {
                         Text("時間")
                             .font(.title2)
-                            .foregroundColor(.customColor1)
+                            .foregroundColor(.backgroundNavy)
                         Spacer()
                         Picker("時間を選ぶ", selection: $selectedMinutes) {
                             ForEach(minutesOptions, id: \.self) { minutes in
                                 Text("\(minutes)分")
-                            } // if isShowPicker
+                            } // ForEachここまで
                         } // Pickerここまで
-                        .colorMultiply(.customColor1)
+                        .colorMultiply(.backgroundNavy)
                         .scaleEffect(CGSize(width: 1.25, height: 1.25))
                         .pickerStyle(MenuPickerStyle())
                     } // HStackここまで
-                    .foregroundColor(Color.customColor1)
+                    .foregroundColor(Color.backgroundNavy)
                     .frame(width: 200)
                     .padding()
                     // 音設定
                     HStack {
                         Text("音")
                             .font(.title2)
-                            .foregroundColor(.customColor1)
+                            .foregroundColor(.backgroundNavy)
                         Spacer()
                         NavigationLink(destination: SelectContinentView()) {
                             Text("音1＞")
                                 .font(.title2)
-                                .foregroundColor(.customColor1)
+                                .foregroundColor(.backgroundNavy)
                         } // NavigationLinkここまで
                     } // HStackここまで
                     .frame(width: 200)
@@ -106,18 +103,18 @@ struct MeditationSetView: View {
                     NavigationLink(destination: MeditatingView()) {
                         Text("はじめる")
                             .font(.title)
-                            .foregroundColor(.customColor)
+                            .foregroundColor(.keyWhite)
                             .padding(25.0)
-                            .background(Color.customColor1)
+                            .background(Color.backgroundNavy)
                             .cornerRadius(10)
                     } // NavigationLinkここまで
                     .padding()
                     Spacer()
                 } // VStackここまで
             } // ZStackここまで
-        } // NavigationStackここまで
-    }
-}
+        } // NavigationStack
+    } // bodyここまで
+} // MeditationViewここまで
 
 struct MeditationSetView_Previews: PreviewProvider {
     static var previews: some View {

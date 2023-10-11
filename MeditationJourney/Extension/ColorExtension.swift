@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    static let customColor = Color("Color1")
-    static let customColor1 = Color("Color2")
-    static let customColor2 = Color("Color3")
+    static let keyWhite = Color("Color1")
+    static let backgroundNavy = Color("Color2")
+    static let accentGray = Color("Color3")
 }
