@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct MeditationSetView: View {
+    // Sheetを管理する変数
+    @State private var isShowSheet: Bool = false
     // Toggleを管理する変数
     @State private var isOn: Bool = false
     // 選択する時間を管理する変数
     @State private var selectedMinutes: Int = 1
-    // Sheetを管理する変数
-    @State private var isShowSheet: Bool = false
     // 選択した音を表示する変数
     @State private var selectedSound: String = "音1"
+    // 選択する時間
+    private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     // 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
         isOn ? Image(systemName: "speaker.wave.3.fill") :
@@ -25,8 +27,6 @@ struct MeditationSetView: View {
     private var speakerStatusText: Text {
         Text(isOn ? "ON" : "OFF")
     } // speakerStatusTextここまで
-    // 選択する時間
-    private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
         NavigationStack {
             ZStack {
