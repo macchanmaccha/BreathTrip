@@ -91,11 +91,13 @@ struct MeditationSetView: View {
                             .font(.title2)
                             .foregroundColor(.backgroundNavy)
                         Spacer()
-                        NavigationLink(destination: SelectContinentView()) {
+                        Button(action: {
+                            isShowSheet.toggle()
+                        }) {
                             Text("音1＞")
                                 .font(.title2)
                                 .foregroundColor(.backgroundNavy)
-                        } // NavigationLinkここまで
+                        }
                     } // HStackここまで
                     .frame(width: 200)
                     .padding()
@@ -113,6 +115,9 @@ struct MeditationSetView: View {
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStack
+        .sheet(isPresented: $isShowSheet, content: {
+            SelectContinentView()
+        })
     } // bodyここまで
 } // MeditationViewここまで
 
