@@ -115,6 +115,7 @@ struct MeditationSetView: View {
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStack
+        // シート
         .sheet(isPresented: $isShowSheet, content: {
             SelectContinentView()
         })
