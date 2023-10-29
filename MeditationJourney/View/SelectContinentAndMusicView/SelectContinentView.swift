@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct SelectContinentView: View {
+    var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
         NavigationStack {
             ZStack {

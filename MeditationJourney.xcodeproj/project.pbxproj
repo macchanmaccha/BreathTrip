@@ -13,7 +13,9 @@
 		180644652AB6947A0080EEFF /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644642AB694790080EEFF /* MapView.swift */; };
 		180644672AB694D30080EEFF /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644662AB694D30080EEFF /* ExplanationView.swift */; };
 		1806446B2AB889BB0080EEFF /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1806446A2AB889BB0080EEFF /* ColorExtension.swift */; };
-		185BE0D02AEBF0030013649E /* MapSpotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BE0CF2AEBF0030013649E /* MapSpotModel.swift */; };
+		1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1834BE362AECF43300DD5E92 /* SpotListModel.swift */; };
+		1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */; };
+		185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BE0CF2AEBF0030013649E /* SpotDataModel.swift */; };
 		1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */; };
 		1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1E32AAD81BF00543D18 /* TabSetView.swift */; };
 		1863E1E62AAD81D800543D18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1863E1E52AAD81D800543D18 /* Assets.xcassets */; };
@@ -37,7 +39,9 @@
 		180644642AB694790080EEFF /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		180644662AB694D30080EEFF /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
 		1806446A2AB889BB0080EEFF /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		185BE0CF2AEBF0030013649E /* MapSpotModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSpotModel.swift; sourceTree = "<group>"; };
+		1834BE362AECF43300DD5E92 /* SpotListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListModel.swift; sourceTree = "<group>"; };
+		1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListViewModel.swift; sourceTree = "<group>"; };
+		185BE0CF2AEBF0030013649E /* SpotDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDataModel.swift; sourceTree = "<group>"; };
 		1863E1DE2AAD81BE00543D18 /* MeditationJourney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeditationJourney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationJourneyApp.swift; sourceTree = "<group>"; };
 		1863E1E32AAD81BF00543D18 /* TabSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSetView.swift; sourceTree = "<group>"; };
@@ -84,10 +88,19 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		1834BE3B2AECFB2F00DD5E92 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		185BE0CE2AEBEFC60013649E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				185BE0CF2AEBF0030013649E /* MapSpotModel.swift */,
+				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
+				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -114,6 +127,7 @@
 				1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */,
 				180644692AB889960080EEFF /* Extension */,
 				1806445D2AB693780080EEFF /* View */,
+				1834BE3B2AECFB2F00DD5E92 /* ViewModel */,
 				185BE0CE2AEBEFC60013649E /* Model */,
 				1863E1E52AAD81D800543D18 /* Assets.xcassets */,
 				1863E1EA2AAD81D800543D18 /* Persistence.swift */,
@@ -261,7 +275,7 @@
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
 				18B9A21D2AD67A3600F70700 /* OceaniaMusicView.swift in Sources */,
 				18B9A2212AD67A6200F70700 /* AfricaMusicView.swift in Sources */,
-				185BE0D02AEBF0030013649E /* MapSpotModel.swift in Sources */,
+				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
@@ -275,7 +289,9 @@
 				18B9A21F2AD67A4E00F70700 /* AsiaMusicView.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
 				18B9A2252AD67A8C00F70700 /* SouthAmericaMusicView.swift in Sources */,
+				1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */,
 				18B9A2232AD67A7C00F70700 /* NorthAmericaMusicView.swift in Sources */,
+				1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */,
 				180644672AB694D30080EEFF /* ExplanationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

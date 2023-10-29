@@ -8,10 +8,14 @@
 import Foundation
 import MapKit
 
-struct Spot: Identifiable {
+// Identifiableプロトコルを利用して、ピンのスポットの情報をまとめる構造体
+struct SpotDataModel: Identifiable {
     let id = UUID()
+    // 緯度
     let latitude: Double
+    // 経度
     let longitude: Double
+    // 緯度経度
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
