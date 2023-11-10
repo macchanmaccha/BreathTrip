@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct SelectContinentView: View {
+    @Binding var isShowSheet: Bool
+    @Binding var selectMusicName: String
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
         NavigationStack {
@@ -23,10 +25,10 @@ struct SelectContinentView: View {
                         .padding()
                     Grid(horizontalSpacing: 20, verticalSpacing: 20) {
                         GridRow {
-                            NavigationLink(destination: EuropeMusicView()) {
+                            NavigationLink(destination: EuropeMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
                                 Text("ヨーロッパ大陸")
                             }
-                            NavigationLink(destination: OceaniaMusicView()) {
+                            NavigationLink(destination: OceaniaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
                                 Text("オセアニア大陸")
                             }
                         } // GridRowここまで
@@ -35,10 +37,10 @@ struct SelectContinentView: View {
                         .foregroundColor(Color.backgroundNavy)
                         .cornerRadius(8)
                         GridRow {
-                            NavigationLink(destination: AsiaMusicView()) {
+                            NavigationLink(destination: AsiaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
                                 Text("アジア大陸")
                             }
-                            NavigationLink(destination: AfricaMusicView()) {
+                            NavigationLink(destination: AfricaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
                                 Text("アフリカ大陸")
                             }
                         } // GridRowここまで
@@ -47,10 +49,10 @@ struct SelectContinentView: View {
                         .foregroundColor(Color.backgroundNavy)
                         .cornerRadius(8)
                         GridRow {
-                            NavigationLink(destination: NorthAmericaMusicView()) {
+                            NavigationLink(destination: NorthAmericaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
                                 Text("北アメリカ大陸")
                             }
-                            NavigationLink(destination: SouthAmericaMusicView()) {
+                            NavigationLink(destination: SouthAmericaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
                                 Text("南アメリカ大陸")
                             }
                         } // GridRowここまで
@@ -68,5 +70,5 @@ struct SelectContinentView: View {
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView()
+    SelectContinentView(isShowSheet: Binding.constant(true), selectMusicName: Binding.constant("ヨーロッパ音1"))
 }

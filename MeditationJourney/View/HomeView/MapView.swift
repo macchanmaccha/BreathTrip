@@ -29,5 +29,5 @@ struct MapView: View {
     } // bodyここまで
 }
 #Preview {
-    SelectContinentView()
+    SelectContinentView(isShowSheet: Binding.constant(true), selectMusicName: Binding.constant("ヨーロッパ音1"))
 }
