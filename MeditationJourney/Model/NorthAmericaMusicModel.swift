@@ -8,11 +8,11 @@
 import Foundation
 struct NorthAmericaMusicModel {
     let northAmericaMusic = [
-        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ1"),
-        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ2"),
-        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ3"),
-        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ4"),
-        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ5"),
-        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ6")
+        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ音1"),
+        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ音2"),
+        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ音3"),
+        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ音4"),
+        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ音5"),
+        MusicDataModel(continent: "北アメリカ", sound: "北アメリカ音6")
     ]
 }

@@ -131,8 +131,6 @@
 		185BE0CE2AEBEFC60013649E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
-				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 				18C3DC122AF7CD9B00710776 /* MusicDataModel.swift */,
 				187E216C2AF91F280093A334 /* EuropeMusicModel.swift */,
 				187E216E2AF91FAD0093A334 /* OceaniaMusicModel.swift */,
@@ -140,6 +138,8 @@
 				187E21722AF9A5A40093A334 /* AfricaMusicModel.swift */,
 				187E21742AF9A5F90093A334 /* NorthAmericaMusicModel.swift */,
 				18C3DC0E2AF7C5A400710776 /* SouthAmericaMusicModel.swift */,
+				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
+				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

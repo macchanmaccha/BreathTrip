@@ -13,6 +13,8 @@ struct EuropeMusicView: View {
     @Binding var isShowSheet: Bool
     // 選択した音の名前を管理する変数
     @Binding var selectedMusicName: String
+    // 画面を閉じるプロパティラッパー
+    @Environment(\.dismiss) var dismiss
     // 音Grid
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
@@ -90,7 +92,7 @@ struct EuropeMusicView: View {
                         .foregroundColor(Color.backgroundNavy)
                         .cornerRadius(8)
                     } // Gridここまで
-                    Spacer(minLength: 80)
+                    Spacer(minLength: 165)
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStackここまで
@@ -98,6 +100,17 @@ struct EuropeMusicView: View {
         .onAppear {
             viewModel.fetchMusic()
         } // .onAppearここまで
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("＜Back")
+                        .tint(.keyWhite)
+                }
+            }
+        }
     } // bodyここまで
 }
 

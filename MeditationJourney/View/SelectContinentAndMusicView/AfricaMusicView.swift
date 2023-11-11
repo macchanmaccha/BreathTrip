@@ -13,6 +13,8 @@ struct AfricaMusicView: View {
     @Binding var isShowSheet: Bool
     // 選択した音の名前を管理する変数
     @Binding var selectedMusicName: String
+    // 画面を閉じるプロパティラッパー
+    @Environment(\.dismiss) var dismiss
     // 音Grid
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
@@ -32,11 +34,15 @@ struct AfricaMusicView: View {
                         GridRow {
                             Button(action: {
                                 isShowSheet.toggle()
+                                viewModel.getMusic("アフリカ音1")
+                                selectedMusicName = viewModel.selectedMusicName
                             }) {
                                 Text("アフリカ音1")
                             }
                             Button(action: {
                                 isShowSheet.toggle()
+                                viewModel.getMusic("アフリカ音2")
+                                selectedMusicName = viewModel.selectedMusicName
                             }) {
                                 Text("アフリカ音2")
                             }
@@ -48,11 +54,15 @@ struct AfricaMusicView: View {
                         GridRow {
                             Button(action: {
                                 isShowSheet.toggle()
+                                viewModel.getMusic("アフリカ音3")
+                                selectedMusicName = viewModel.selectedMusicName
                             }) {
                                 Text("アフリカ音3")
                             }
                             Button(action: {
                                 isShowSheet.toggle()
+                                viewModel.getMusic("アフリカ音4")
+                                selectedMusicName = viewModel.selectedMusicName
                             }) {
                                 Text("アフリカ音4")
                             }
@@ -64,11 +74,15 @@ struct AfricaMusicView: View {
                         GridRow {
                             Button(action: {
                                 isShowSheet.toggle()
+                                viewModel.getMusic("アフリカ音5")
+                                selectedMusicName = viewModel.selectedMusicName
                             }) {
                                 Text("アフリカ音5")
                             }
                             Button(action: {
                                 isShowSheet.toggle()
+                                viewModel.getMusic("アフリカ音6")
+                                selectedMusicName = viewModel.selectedMusicName
                             }) {
                                 Text("アフリカ音6")
                             }
@@ -78,13 +92,24 @@ struct AfricaMusicView: View {
                         .foregroundColor(Color.backgroundNavy)
                         .cornerRadius(8)
                     } // Gridここまで
-                    Spacer(minLength: 80)
+                    Spacer(minLength: 165)
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStackここまで
         .navigationViewStyle(.stack)
         .onAppear {
             viewModel.fetchMusic()
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("＜Back")
+                        .tint(.keyWhite)
+                }
+            }
         }
     } // bodyここまで
 }
