@@ -33,7 +33,9 @@ struct SelectContinentView: View {
                     LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
                         // 大陸の表示
                         ForEach(continentAndSoundViewModel.continents, id: \.self) { continent in
+                            // 画面遷移
                             NavigationLink(destination: SelectSoundView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
+                                // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
                                     .background(Color.keyWhite.opacity(0.6))
