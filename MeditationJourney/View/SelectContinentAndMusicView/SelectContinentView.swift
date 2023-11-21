@@ -9,7 +9,14 @@ import SwiftUI
 struct SelectContinentView: View {
     @Binding var isShowSheet: Bool
     @Binding var selectMusicName: String
-    var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
+    @StateObject var  continentAndSoundViewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
+    // 6個のパネルを管理する配列
+    @State private var moves: [String] = Array(repeating: "", count: 9)
+    // パネルの数字（0〜8）
+    @State private var panels: [Int] = Array(0...5)
+    // パネルの配列
+    @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    var continentName: String = ""
     var body: some View {
         NavigationStack {
             ZStack {
@@ -23,47 +30,24 @@ struct SelectContinentView: View {
                         .foregroundColor(.keyWhite)
                         .font(.title)
                         .padding()
-                    Grid(horizontalSpacing: 20, verticalSpacing: 20) {
-                        GridRow {
-                            NavigationLink(destination: EuropeMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("ヨーロッパ大陸")
+                    LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
+                        // 大陸の表示
+                        ForEach(continentAndSoundViewModel.continents, id: \.self) { continent in
+                            NavigationLink(destination: SelectSoundView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
+                                Text(continent.rawValue)
+                                    .frame(width: 130, height: 100)
+                                    .background(Color.keyWhite.opacity(0.6))
+                                    .foregroundColor(Color.backgroundNavy)
+                                    .cornerRadius(8)
                             }
-                            NavigationLink(destination: OceaniaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("オセアニア大陸")
-                            }
-                        } // GridRowここまで
-                        .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
-                        .cornerRadius(8)
-                        GridRow {
-                            NavigationLink(destination: AsiaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("アジア大陸")
-                            }
-                            NavigationLink(destination: AfricaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("アフリカ大陸")
-                            }
-                        } // GridRowここまで
-                        .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
-                        .cornerRadius(8)
-                        GridRow {
-                            NavigationLink(destination: NorthAmericaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("北アメリカ大陸")
-                            }
-                            NavigationLink(destination: SouthAmericaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("南アメリカ大陸")
-                            }
-                        } // GridRowここまで
-                        .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
-                        .cornerRadius(8)
-                    } // Gridここまで
+                        } // ForEacnここまで
+                    } // LazyVGridここまで
+                    .frame(maxWidth: 300, alignment: .center) // LazyVGridの幅を調整
+                    .padding(10)
                     Spacer(minLength: 80)
                 } // VStackここまで
             } // ZStackここまで
+            //            .navigationTitle("")
         } // NavigationStackここまで
         .navigationViewStyle(.stack)
     } // bodyここまで

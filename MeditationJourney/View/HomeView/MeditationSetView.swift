@@ -115,6 +115,7 @@ struct MeditationSetView: View {
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStack
+        .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
             SelectContinentView(isShowSheet: $isShowSheet, selectMusicName: $selectedMusicName)

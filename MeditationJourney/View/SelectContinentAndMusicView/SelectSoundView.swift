@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct EuropeMusicView: View {
-    @StateObject var viewModel: EuropeMusicViewModel = EuropeMusicViewModel()
+struct SelectSoundView: View {
+    @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
     // シート変数
     @Binding var isShowSheet: Bool
     // 選択した音の名前を管理する変数
@@ -18,7 +18,7 @@ struct EuropeMusicView: View {
     // 音Grid
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             ZStack {
                 Image("IMG_0569")
                     .resizable()
@@ -92,14 +92,14 @@ struct EuropeMusicView: View {
                         .foregroundColor(Color.backgroundNavy)
                         .cornerRadius(8)
                     } // Gridここまで
-                    Spacer(minLength: 165)
+                    Spacer(minLength: 80)
                 } // VStackここまで
             } // ZStackここまで
-        } // NavigationStackここまで
-        .navigationViewStyle(.stack)
-        .onAppear {
-            viewModel.fetchMusic()
-        } // .onAppearここまで
+//        } // NavigationStackここまで
+//        .navigationViewStyle(.stack)
+//        .onAppear {
+//            viewModel.fetchMusic()
+//        } // .onAppearここまで
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -115,5 +115,5 @@ struct EuropeMusicView: View {
 }
 
 #Preview {
-    EuropeMusicView(isShowSheet: Binding.constant(true), selectedMusicName: Binding.constant("ヨーロッパ音1"))
+    SelectSoundView(isShowSheet: Binding.constant(true), selectedMusicName: Binding.constant("ヨーロッパ音1"))
 }

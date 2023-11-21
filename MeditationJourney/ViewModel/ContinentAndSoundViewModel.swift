@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-class EuropeMusicViewModel: ObservableObject {
+class ContinentAndSoundViewModel: ObservableObject {
     @Published var musicData: [MusicDataModel] = []
     @Published var selectedMusicName: String = ""
-    var musicModel: EuropeMusicModel = EuropeMusicModel()
-    func fetchMusic() {
-        musicData = musicModel.europeMusic
-    }
+    @Published var continents: [ContinentAndSoundModel] = ContinentAndSoundModel.allCases
+//    func fetchMusic() {
+//        musicData = musicModel.music
+//    }
     func getMusic(_ music: String) {
         let selectMusic = musicData.first(where: { $0.sound == music })
         selectedMusicName = selectMusic?.sound ?? ""
