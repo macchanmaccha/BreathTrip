@@ -8,14 +8,6 @@
 import SwiftUI
 
 class ContinentAndSoundViewModel: ObservableObject {
-    @Published var musicData: [MusicDataModel] = []
-    @Published var selectedMusicName: String = ""
+    // 大陸の変数
     @Published var continents: [ContinentAndSoundModel] = ContinentAndSoundModel.allCases
-//    func fetchMusic() {
-//        musicData = musicModel.music
-//    }
-    func getMusic(_ music: String) {
-        let selectMusic = musicData.first(where: { $0.sound == music })
-        selectedMusicName = selectMusic?.sound ?? ""
-    }
 }

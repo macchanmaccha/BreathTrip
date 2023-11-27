@@ -7,16 +7,11 @@
 import SwiftUI
 
 struct SelectContinentView: View {
+    @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
     @Binding var isShowSheet: Bool
-    @Binding var selectMusicName: String
-    @StateObject var  continentAndSoundViewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
-    // 6個のパネルを管理する配列
-    @State private var moves: [String] = Array(repeating: "", count: 9)
-    // パネルの数字（0〜8）
-    @State private var panels: [Int] = Array(0...5)
-    // パネルの配列
+    @Binding var selectedSoundName: String
+    // 大陸の配列
     @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    var continentName: String = ""
     var body: some View {
         NavigationStack {
             ZStack {
@@ -32,16 +27,16 @@ struct SelectContinentView: View {
                         .padding()
                     LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
                         // 大陸の表示
-                        ForEach(continentAndSoundViewModel.continents, id: \.self) { continent in
+                        ForEach(viewModel.continents, id: \.self) { continent in
                             // 画面遷移
-                            NavigationLink(destination: SelectSoundView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
+                            NavigationLink(destination: SelectSoundView(isShowSheet: $isShowSheet, selectedSoundName: $selectedSoundName, selectedContinent: continent)) {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
                                     .background(Color.keyWhite.opacity(0.6))
                                     .foregroundColor(Color.backgroundNavy)
                                     .cornerRadius(8)
-                            }
+                            } // NavigationLinkここまで
                         } // ForEacnここまで
                     } // LazyVGridここまで
                     .frame(maxWidth: 300, alignment: .center) // LazyVGridの幅を調整
@@ -49,12 +44,13 @@ struct SelectContinentView: View {
                     Spacer(minLength: 80)
                 } // VStackここまで
             } // ZStackここまで
-            //            .navigationTitle("")
+            // 画面遷移後と高さ調整のためテキストをいれておく（意味はなし）
+            .navigationTitle(".")
         } // NavigationStackここまで
         .navigationViewStyle(.stack)
     } // bodyここまで
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView(isShowSheet: Binding.constant(true), selectMusicName: Binding.constant("ヨーロッパ音1"))
+    SelectContinentView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant("ヨーロッパ音1"))
 }
