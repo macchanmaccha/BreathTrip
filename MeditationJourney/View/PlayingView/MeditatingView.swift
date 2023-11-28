@@ -38,9 +38,12 @@ struct MeditatingView: View {
         .onAppear {
             // タイマーの設定
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                // 0より大きいとき
                 if preparationCountDown > 0 {
+                    // 1ずつマイナス
                     preparationCountDown -= 1
                 } else {
+                    // タイマー停止
                     timer.invalidate()
                 }
             }
