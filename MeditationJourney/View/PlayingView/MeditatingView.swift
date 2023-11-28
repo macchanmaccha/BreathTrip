@@ -9,9 +9,9 @@ import SwiftUI
 
 struct MeditatingView: View {
     // 開始前タイマー初期値5、4、3、2、1、スタート
-    @State private var timeRemaining = 5
+    @State private var preparationCountDown = 5
     // タイマー
-    @State var timerHandler: Timer?
+    @State private var timerHandler: Timer?
     // カウントの変数
     @State var count: Int = 0
     // 永続化する秒数設定
@@ -20,7 +20,7 @@ struct MeditatingView: View {
     @Environment(\.dismiss) var dismiss
     var body: some View {
             VStack {
-                Text("\(timeRemaining)")
+                Text("\(preparationCountDown)")
                     .font(.headline)
                 Text("")
                 Button(action: {
@@ -38,8 +38,8 @@ struct MeditatingView: View {
         .onAppear {
             // タイマーの設定
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if timeRemaining > 0 {
-                    timeRemaining -= 1
+                if preparationCountDown > 0 {
+                    preparationCountDown -= 1
                 } else {
                     timer.invalidate()
                 }
