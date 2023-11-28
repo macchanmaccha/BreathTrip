@@ -22,26 +22,10 @@
 		1863E1E92AAD81D800543D18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */; };
 		1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1EA2AAD81D800543D18 /* Persistence.swift */; };
 		1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1EC2AAD81D800543D18 /* MeditationJourney.xcdatamodeld */; };
-		187E216D2AF91F280093A334 /* EuropeMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* EuropeMusicModel.swift */; };
-		187E216F2AF91FAD0093A334 /* OceaniaMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216E2AF91FAD0093A334 /* OceaniaMusicModel.swift */; };
-		187E21712AF9A5380093A334 /* AsiaMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E21702AF9A5380093A334 /* AsiaMusicModel.swift */; };
-		187E21732AF9A5A40093A334 /* AfricaMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E21722AF9A5A40093A334 /* AfricaMusicModel.swift */; };
-		187E21752AF9A5F90093A334 /* NorthAmericaMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E21742AF9A5F90093A334 /* NorthAmericaMusicModel.swift */; };
-		187E21772AF9A7050093A334 /* OceaniaMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E21762AF9A7050093A334 /* OceaniaMusicViewModel.swift */; };
-		187E21792AF9A8B20093A334 /* AsiaMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E21782AF9A8B20093A334 /* AsiaMusicViewModel.swift */; };
-		187E217B2AF9A9840093A334 /* AfricaMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E217A2AF9A9840093A334 /* AfricaMusicViewModel.swift */; };
-		187E217D2AFA6BFF0093A334 /* NorthAmericaMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E217C2AFA6BFF0093A334 /* NorthAmericaMusicViewModel.swift */; };
-		187E217F2AFA6C8E0093A334 /* SouthAmericaMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E217E2AFA6C8E0093A334 /* SouthAmericaMusicViewModel.swift */; };
+		187E216D2AF91F280093A334 /* ContinentAndSoundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentAndSoundModel.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
-		18B9A21B2AD6706D00F70700 /* EuropetMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* EuropetMusicView.swift */; };
-		18B9A21D2AD67A3600F70700 /* OceaniaMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21C2AD67A3600F70700 /* OceaniaMusicView.swift */; };
-		18B9A21F2AD67A4E00F70700 /* AsiaMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21E2AD67A4E00F70700 /* AsiaMusicView.swift */; };
-		18B9A2212AD67A6200F70700 /* AfricaMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A2202AD67A6200F70700 /* AfricaMusicView.swift */; };
-		18B9A2232AD67A7C00F70700 /* NorthAmericaMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A2222AD67A7C00F70700 /* NorthAmericaMusicView.swift */; };
-		18B9A2252AD67A8C00F70700 /* SouthAmericaMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A2242AD67A8C00F70700 /* SouthAmericaMusicView.swift */; };
-		18C3DC0F2AF7C5A400710776 /* SouthAmericaMusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C3DC0E2AF7C5A400710776 /* SouthAmericaMusicModel.swift */; };
-		18C3DC112AF7C83500710776 /* EuropeMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C3DC102AF7C83500710776 /* EuropeMusicViewModel.swift */; };
-		18C3DC132AF7CD9B00710776 /* MusicDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C3DC122AF7CD9B00710776 /* MusicDataModel.swift */; };
+		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
+		18C3DC112AF7C83500710776 /* ContinentAndSoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,26 +46,10 @@
 		1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1863E1EA2AAD81D800543D18 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		1863E1ED2AAD81D800543D18 /* MeditationJourney.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MeditationJourney.xcdatamodel; sourceTree = "<group>"; };
-		187E216C2AF91F280093A334 /* EuropeMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EuropeMusicModel.swift; sourceTree = "<group>"; };
-		187E216E2AF91FAD0093A334 /* OceaniaMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceaniaMusicModel.swift; sourceTree = "<group>"; };
-		187E21702AF9A5380093A334 /* AsiaMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsiaMusicModel.swift; sourceTree = "<group>"; };
-		187E21722AF9A5A40093A334 /* AfricaMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfricaMusicModel.swift; sourceTree = "<group>"; };
-		187E21742AF9A5F90093A334 /* NorthAmericaMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorthAmericaMusicModel.swift; sourceTree = "<group>"; };
-		187E21762AF9A7050093A334 /* OceaniaMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceaniaMusicViewModel.swift; sourceTree = "<group>"; };
-		187E21782AF9A8B20093A334 /* AsiaMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsiaMusicViewModel.swift; sourceTree = "<group>"; };
-		187E217A2AF9A9840093A334 /* AfricaMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfricaMusicViewModel.swift; sourceTree = "<group>"; };
-		187E217C2AFA6BFF0093A334 /* NorthAmericaMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorthAmericaMusicViewModel.swift; sourceTree = "<group>"; };
-		187E217E2AFA6C8E0093A334 /* SouthAmericaMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SouthAmericaMusicViewModel.swift; sourceTree = "<group>"; };
+		187E216C2AF91F280093A334 /* ContinentAndSoundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentAndSoundModel.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
-		18B9A21A2AD6706D00F70700 /* EuropetMusicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EuropetMusicView.swift; sourceTree = "<group>"; };
-		18B9A21C2AD67A3600F70700 /* OceaniaMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceaniaMusicView.swift; sourceTree = "<group>"; };
-		18B9A21E2AD67A4E00F70700 /* AsiaMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsiaMusicView.swift; sourceTree = "<group>"; };
-		18B9A2202AD67A6200F70700 /* AfricaMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfricaMusicView.swift; sourceTree = "<group>"; };
-		18B9A2222AD67A7C00F70700 /* NorthAmericaMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorthAmericaMusicView.swift; sourceTree = "<group>"; };
-		18B9A2242AD67A8C00F70700 /* SouthAmericaMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SouthAmericaMusicView.swift; sourceTree = "<group>"; };
-		18C3DC0E2AF7C5A400710776 /* SouthAmericaMusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SouthAmericaMusicModel.swift; sourceTree = "<group>"; };
-		18C3DC102AF7C83500710776 /* EuropeMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EuropeMusicViewModel.swift; sourceTree = "<group>"; };
-		18C3DC122AF7CD9B00710776 /* MusicDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataModel.swift; sourceTree = "<group>"; };
+		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
+		18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentAndSoundViewModel.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,12 +85,7 @@
 		1834BE3B2AECFB2F00DD5E92 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				18C3DC102AF7C83500710776 /* EuropeMusicViewModel.swift */,
-				187E21762AF9A7050093A334 /* OceaniaMusicViewModel.swift */,
-				187E21782AF9A8B20093A334 /* AsiaMusicViewModel.swift */,
-				187E217A2AF9A9840093A334 /* AfricaMusicViewModel.swift */,
-				187E217C2AFA6BFF0093A334 /* NorthAmericaMusicViewModel.swift */,
-				187E217E2AFA6C8E0093A334 /* SouthAmericaMusicViewModel.swift */,
+				18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */,
 				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
 			);
 			path = ViewModel;
@@ -131,13 +94,7 @@
 		185BE0CE2AEBEFC60013649E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				18C3DC122AF7CD9B00710776 /* MusicDataModel.swift */,
-				187E216C2AF91F280093A334 /* EuropeMusicModel.swift */,
-				187E216E2AF91FAD0093A334 /* OceaniaMusicModel.swift */,
-				187E21702AF9A5380093A334 /* AsiaMusicModel.swift */,
-				187E21722AF9A5A40093A334 /* AfricaMusicModel.swift */,
-				187E21742AF9A5F90093A334 /* NorthAmericaMusicModel.swift */,
-				18C3DC0E2AF7C5A400710776 /* SouthAmericaMusicModel.swift */,
+				187E216C2AF91F280093A334 /* ContinentAndSoundModel.swift */,
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 			);
@@ -201,12 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */,
-				18B9A21A2AD6706D00F70700 /* EuropetMusicView.swift */,
-				18B9A21C2AD67A3600F70700 /* OceaniaMusicView.swift */,
-				18B9A21E2AD67A4E00F70700 /* AsiaMusicView.swift */,
-				18B9A2202AD67A6200F70700 /* AfricaMusicView.swift */,
-				18B9A2222AD67A7C00F70700 /* NorthAmericaMusicView.swift */,
-				18B9A2242AD67A8C00F70700 /* SouthAmericaMusicView.swift */,
+				18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */,
 			);
 			path = SelectContinentAndMusicView;
 			sourceTree = "<group>";
@@ -312,37 +264,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
-				18B9A21D2AD67A3600F70700 /* OceaniaMusicView.swift in Sources */,
-				18B9A2212AD67A6200F70700 /* AfricaMusicView.swift in Sources */,
-				187E21772AF9A7050093A334 /* OceaniaMusicViewModel.swift in Sources */,
 				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
-				187E21792AF9A8B20093A334 /* AsiaMusicViewModel.swift in Sources */,
-				18C3DC112AF7C83500710776 /* EuropeMusicViewModel.swift in Sources */,
-				18C3DC132AF7CD9B00710776 /* MusicDataModel.swift in Sources */,
-				187E217B2AF9A9840093A334 /* AfricaMusicViewModel.swift in Sources */,
-				187E216F2AF91FAD0093A334 /* OceaniaMusicModel.swift in Sources */,
-				187E217D2AFA6BFF0093A334 /* NorthAmericaMusicViewModel.swift in Sources */,
+				18C3DC112AF7C83500710776 /* ContinentAndSoundViewModel.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
-				187E21712AF9A5380093A334 /* AsiaMusicModel.swift in Sources */,
-				187E21732AF9A5A40093A334 /* AfricaMusicModel.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				180644612AB6944B0080EEFF /* SoundSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				1806446B2AB889BB0080EEFF /* ColorExtension.swift in Sources */,
-				18B9A21B2AD6706D00F70700 /* EuropetMusicView.swift in Sources */,
+				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,
 				1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */,
-				187E21752AF9A5F90093A334 /* NorthAmericaMusicModel.swift in Sources */,
 				1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */,
 				18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */,
-				187E217F2AFA6C8E0093A334 /* SouthAmericaMusicViewModel.swift in Sources */,
-				18B9A21F2AD67A4E00F70700 /* AsiaMusicView.swift in Sources */,
-				18C3DC0F2AF7C5A400710776 /* SouthAmericaMusicModel.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
-				18B9A2252AD67A8C00F70700 /* SouthAmericaMusicView.swift in Sources */,
 				1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */,
-				18B9A2232AD67A7C00F70700 /* NorthAmericaMusicView.swift in Sources */,
-				187E216D2AF91F280093A334 /* EuropeMusicModel.swift in Sources */,
+				187E216D2AF91F280093A334 /* ContinentAndSoundModel.swift in Sources */,
 				1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */,
 				180644672AB694D30080EEFF /* ExplanationView.swift in Sources */,
 			);

@@ -7,9 +7,11 @@
 import SwiftUI
 
 struct SelectContinentView: View {
+    @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
     @Binding var isShowSheet: Bool
-    @Binding var selectMusicName: String
-    var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
+    @Binding var selectedSoundName: String
+    // 大陸の配列
+    @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     var body: some View {
         NavigationStack {
             ZStack {
@@ -23,52 +25,32 @@ struct SelectContinentView: View {
                         .foregroundColor(.keyWhite)
                         .font(.title)
                         .padding()
-                    Grid(horizontalSpacing: 20, verticalSpacing: 20) {
-                        GridRow {
-                            NavigationLink(destination: EuropeMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("ヨーロッパ大陸")
-                            }
-                            NavigationLink(destination: OceaniaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("オセアニア大陸")
-                            }
-                        } // GridRowここまで
-                        .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
-                        .cornerRadius(8)
-                        GridRow {
-                            NavigationLink(destination: AsiaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("アジア大陸")
-                            }
-                            NavigationLink(destination: AfricaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("アフリカ大陸")
-                            }
-                        } // GridRowここまで
-                        .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
-                        .cornerRadius(8)
-                        GridRow {
-                            NavigationLink(destination: NorthAmericaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("北アメリカ大陸")
-                            }
-                            NavigationLink(destination: SouthAmericaMusicView(isShowSheet: $isShowSheet, selectedMusicName: $selectMusicName)) {
-                                Text("南アメリカ大陸")
-                            }
-                        } // GridRowここまで
-                        .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
-                        .cornerRadius(8)
-                    } // Gridここまで
+                    LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
+                        // 大陸の表示
+                        ForEach(viewModel.continents, id: \.self) { continent in
+                            // 画面遷移
+                            NavigationLink(destination: SelectSoundView(isShowSheet: $isShowSheet, selectedSoundName: $selectedSoundName, selectedContinent: continent)) {
+                                // 大陸を1つずつ表示
+                                Text(continent.rawValue)
+                                    .frame(width: 130, height: 100)
+                                    .background(Color.keyWhite.opacity(0.6))
+                                    .foregroundColor(Color.backgroundNavy)
+                                    .cornerRadius(8)
+                            } // NavigationLinkここまで
+                        } // ForEacnここまで
+                    } // LazyVGridここまで
+                    .frame(maxWidth: 300, alignment: .center) // LazyVGridの幅を調整
+                    .padding(10)
                     Spacer(minLength: 80)
                 } // VStackここまで
             } // ZStackここまで
+            // 画面遷移後と高さ調整のためテキストをいれておく（意味はなし）
+            .navigationTitle(".")
         } // NavigationStackここまで
         .navigationViewStyle(.stack)
     } // bodyここまで
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView(isShowSheet: Binding.constant(true), selectMusicName: Binding.constant("ヨーロッパ音1"))
+    SelectContinentView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant("ヨーロッパ音1"))
 }

@@ -10,22 +10,22 @@ import SwiftUI
 struct MeditationSetView: View {
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
-    // Toggleを管理する変数
-    @State private var isOn: Bool = false
+    // 音声ガイドToggleを管理する変数
+    @State private var isAudioGuideOn: Bool = false
     // 選択する時間を管理する変数
     @State private var selectedMinutes: Int = 1
     // 選択した音を表示する変数
-    @State private var selectedMusicName: String = "ヨーロッパ音1"
+    @State private var selectedSoundName: String = "ヨーロッパ音1"
     // 選択する時間
     private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     // 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
-        isOn ? Image(systemName: "speaker.wave.3.fill") :
+        isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
         Image(systemName: "speaker.slash.fill")
     } // speakerIconここまで
     // 音声ガイドONOFFを管理する変数
     private var speakerStatusText: Text {
-        Text(isOn ? "ON" : "OFF")
+        Text(isAudioGuideOn ? "ON" : "OFF")
     } // speakerStatusTextここまで
     var body: some View {
         NavigationStack {
@@ -50,7 +50,7 @@ struct MeditationSetView: View {
                         VStack {
                             // 音声ガイドボタン
                             Button(action: {
-                                isOn.toggle()
+                                isAudioGuideOn.toggle()
                             }) {
                                 // 音声ガイドアイコン
                                 speakerIcon
@@ -94,7 +94,7 @@ struct MeditationSetView: View {
                         Button(action: {
                             isShowSheet.toggle()
                         }) {
-                            Text("\(selectedMusicName)")
+                            Text(selectedSoundName)
                                 .font(.title2)
                                 .foregroundColor(.backgroundNavy)
                         }
@@ -115,9 +115,10 @@ struct MeditationSetView: View {
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStack
+        .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(isShowSheet: $isShowSheet, selectMusicName: $selectedMusicName)
+            SelectContinentView(isShowSheet: $isShowSheet, selectedSoundName: $selectedSoundName)
         })
     } // bodyここまで
 } // MeditationViewここまで
