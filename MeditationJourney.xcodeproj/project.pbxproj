@@ -22,7 +22,7 @@
 		1863E1E92AAD81D800543D18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */; };
 		1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1EA2AAD81D800543D18 /* Persistence.swift */; };
 		1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1EC2AAD81D800543D18 /* MeditationJourney.xcdatamodeld */; };
-		187E216D2AF91F280093A334 /* ContinentAndSoundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentAndSoundModel.swift */; };
+		187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentModel.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18C3DC112AF7C83500710776 /* ContinentAndSoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */; };
@@ -46,7 +46,7 @@
 		1863E1E82AAD81D800543D18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1863E1EA2AAD81D800543D18 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		1863E1ED2AAD81D800543D18 /* MeditationJourney.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MeditationJourney.xcdatamodel; sourceTree = "<group>"; };
-		187E216C2AF91F280093A334 /* ContinentAndSoundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentAndSoundModel.swift; sourceTree = "<group>"; };
+		187E216C2AF91F280093A334 /* ContinentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentModel.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentAndSoundViewModel.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		185BE0CE2AEBEFC60013649E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				187E216C2AF91F280093A334 /* ContinentAndSoundModel.swift */,
+				187E216C2AF91F280093A334 /* ContinentModel.swift */,
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 			);
@@ -278,7 +278,7 @@
 				18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
 				1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */,
-				187E216D2AF91F280093A334 /* ContinentAndSoundModel.swift in Sources */,
+				187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */,
 				1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */,
 				180644672AB694D30080EEFF /* ExplanationView.swift in Sources */,
 			);
