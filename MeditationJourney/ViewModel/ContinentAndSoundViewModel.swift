@@ -9,5 +9,5 @@ import SwiftUI
 
 class ContinentAndSoundViewModel: ObservableObject {
     // 大陸の変数
-    @Published var continents: [ContinentAndSoundModel] = ContinentAndSoundModel.allCases
+    @Published var continents: [ContinentModel] = ContinentModel.allCases
 }

@@ -19,7 +19,7 @@ struct SelectSoundView: View {
     // 音Grid
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     // 選択した大陸（初期値はヨーロッパ）
-    var selectedContinent: ContinentAndSoundModel = .europe
+    var selectedContinent: ContinentModel = .europe
     var body: some View {
         ZStack {
             Image("IMG_0569")
@@ -38,9 +38,9 @@ struct SelectSoundView: View {
                         Button(action: {
                             // 音を再生するなどのアクションを実行
                             isShowSheet.toggle()
-                            selectedSoundName = sound
+                            selectedSoundName = sound.rawValue
                         }) {
-                            Text(sound)
+                            Text(sound.rawValue)
                         } // Buttonここまで
                         .frame(width: 130, height: 100)
                         .background(Color.keyWhite.opacity(0.6))
@@ -69,5 +69,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant("ヨーロッパ音1"), selectedContinent: ContinentAndSoundModel.europe)
+    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant("ヨーロッパ音1"), selectedContinent: ContinentModel.europe)
 }

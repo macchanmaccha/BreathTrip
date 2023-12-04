@@ -18,22 +18,33 @@ struct MeditatingView: View {
     @AppStorage("timer_Value") var timerValue = 10
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
+    @State private var isShowAlert: Bool = false
     var body: some View {
-            VStack {
-                Text("\(preparationCountDown)")
-                    .font(.headline)
-                Text("")
-                Button(action: {
-                    dismiss()
-                }) {
-                    Text("中断する")
-                        .tint(.backgroundNavy)
-                        .font(.title)
+        VStack {
+            Text("\(preparationCountDown)")
+                .font(.headline)
+            Text("")
+            Button(action: {
+                isShowAlert.toggle()
+            }) {
+                Text("中断する")
+                    .tint(.backgroundNavy)
+                    .font(.title)
+            }
+            .padding()
+            .background(Color.keyWhite)
+            .frame(width: 150, height: 100)
+            .alert("", isPresented: $isShowAlert) {
+                Button("NO") {
                 }
-                .padding()
-                .background(Color.keyWhite)
-                .frame(width: 150, height: 100)
-            } // VStackここまで
+                Button("YES") {
+                    // 前の画面へ
+                    dismiss()
+                }
+            } message: {
+                Text("中断して前の画面に戻りますか？")
+            } // .alertここまで
+        } // VStackここまで
         .navigationBarBackButtonHidden(true)
         .onAppear {
             // タイマーの設定
