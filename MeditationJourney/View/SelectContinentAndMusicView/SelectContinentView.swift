@@ -9,7 +9,7 @@ import SwiftUI
 struct SelectContinentView: View {
     @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
     @Binding var isShowSheet: Bool
-    @Binding var selectedSoundName: String
+    @Binding var selectedSoundName: SoundModel
     // 大陸の配列
     @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     var body: some View {
@@ -52,5 +52,5 @@ struct SelectContinentView: View {
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant("ヨーロッパ音1"))
+    SelectContinentView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(SoundModel(rawValue: "ヨーロッパ音1") ?? .europe1))
 }

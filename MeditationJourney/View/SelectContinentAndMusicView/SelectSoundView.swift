@@ -13,7 +13,7 @@ struct SelectSoundView: View {
     // シート変数
     @Binding var isShowSheet: Bool
     // 選択した音の名前を管理する変数
-    @Binding var selectedSoundName: String
+    @Binding var selectedSoundName: SoundModel
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
     // 音Grid
@@ -38,7 +38,7 @@ struct SelectSoundView: View {
                         Button(action: {
                             // 音を再生するなどのアクションを実行
                             isShowSheet.toggle()
-                            selectedSoundName = sound.rawValue
+                            selectedSoundName = sound
                         }) {
                             Text(sound.rawValue)
                         } // Buttonここまで
@@ -69,5 +69,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant("ヨーロッパ音1"), selectedContinent: ContinentModel.europe)
+    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(SoundModel(rawValue: "ヨーロッパ音1") ?? .europe1), selectedContinent: ContinentModel.europe)
 }
