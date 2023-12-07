@@ -69,5 +69,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(SoundModel(rawValue: "ヨーロッパ音1") ?? .europe1), selectedContinent: ContinentModel.europe)
+    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(.europe1), selectedContinent: ContinentModel.europe)
 }
