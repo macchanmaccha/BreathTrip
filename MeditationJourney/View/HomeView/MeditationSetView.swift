@@ -15,7 +15,7 @@ struct MeditationSetView: View {
     // 選択する時間を管理する変数
     @State private var selectedMinutes: Int = 1
     // 選択した音を表示する変数
-    @State private var selectedSoundName: String = "ヨーロッパ音1"
+    @State private var selectedSoundName: SoundModel = .europe1
     // 選択する時間
     private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     // 音声ガイドのアイコンを管理
@@ -94,7 +94,7 @@ struct MeditationSetView: View {
                         Button(action: {
                             isShowSheet.toggle()
                         }) {
-                            Text(selectedSoundName)
+                            Text(selectedSoundName.rawValue)
                                 .font(.title2)
                                 .foregroundColor(.backgroundNavy)
                         }
