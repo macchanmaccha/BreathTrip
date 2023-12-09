@@ -10,6 +10,8 @@ import SwiftUI
 struct MeditatingView: View {
     // 開始前タイマー初期値5、4、3、2、1、スタート
     @State private var preparationCountDown = 5
+    var selectedMinutes: Int
+    @State var meditationCountDown: Int = 1
     // タイマー
     @State private var timerHandler: Timer?
     // カウントの変数
@@ -21,6 +23,7 @@ struct MeditatingView: View {
     @State private var isShowAlert: Bool = false
     var body: some View {
         VStack {
+            Text("\(meditationCountDown)")
             Text("\(preparationCountDown)")
                 .font(.headline)
             Text("")
@@ -47,6 +50,7 @@ struct MeditatingView: View {
         } // VStackここまで
         .navigationBarBackButtonHidden(true)
         .onAppear {
+            meditationCountDown = selectedMinutes
             // タイマーの設定
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                 // 0より大きいとき
@@ -97,6 +101,6 @@ struct MeditatingView: View {
 
 struct MeditatingView_Previews: PreviewProvider {
     static var previews: some View {
-        MeditatingView()
+        MeditatingView(selectedMinutes: 1)
     }
 }
