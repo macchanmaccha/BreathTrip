@@ -56,10 +56,43 @@ struct MeditatingView: View {
                 } else {
                     // タイマー停止
                     timer.invalidate()
+                    startTimer()
                 }
             }
         }
     } // bodyここまで
+    // カウントダウンする関数
+    func countDownTimer() {
+        // 経過時間にプラス1する
+        count += 1
+        // 残り時間が0以下のとき、タイマーを止める
+        if timerValue - count <= 0 {
+            // タイマー停止
+            timerHandler?.invalidate()
+        }
+    } // func countDownTimer
+    // カウントダウン開始の関数
+    func startTimer() {
+        // timerHandlerをアンラップしてunwraoedTimerHandlerに代入
+        if let unwrapedTimerHandler = timerHandler {
+            // もしタイマーが、実行中だったらスタートしない
+            if unwrapedTimerHandler.isValid == true {
+                // 何も処理しない
+                return
+            }
+        }
+        // 残り時間が0以下のとrき、count(経過時間)を0に初期化する
+        if timerValue - count <= 0 {
+            // count時間を0に初期化
+            count = 0
+        } // if timerValue - count
+        // タイマーをスタート
+        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            // タイマー実行時に呼び出される
+            // 1秒ごとに実行されてカウントダウンする関数を実行する
+            countDownTimer()
+        }
+    } // startTimer
 } // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {
