@@ -10,10 +10,16 @@ import SwiftUI
 struct MeditatingView: View {
     // 開始前タイマー初期値5、4、3、2、1、スタート
     @State private var preparationCountDown = 5
+    // 選択する時間を管理する変数
     var selectedMinutes: Int
+    // 瞑想時間のカウントダウンの数を管理する変数
     @State var meditationCountDown: Int = 1
+    // 分数・秒数を管理する変数
+    @State private var remainingSeconds: Int = 0
     // タイマー
     @State private var timerHandler: Timer?
+    // タイマーの表示を管理する変数
+    @State private var isTimerRunning: Bool = false
     // カウントの変数
     @State var count: Int = 0
     // 永続化する秒数設定
@@ -23,7 +29,7 @@ struct MeditatingView: View {
     @State private var isShowAlert: Bool = false
     var body: some View {
         VStack {
-            Text("\(meditationCountDown)")
+            Text(formattedTime())
             Text("\(preparationCountDown)")
                 .font(.headline)
             Text("")
@@ -60,7 +66,7 @@ struct MeditatingView: View {
                 } else {
                     // タイマー停止
                     timer.invalidate()
-                    startTimer()
+                    startTimer2()
                 }
             }
         }
@@ -97,6 +103,25 @@ struct MeditatingView: View {
             countDownTimer()
         }
     } // startTimer
+    func startTimer2() {
+            remainingSeconds = selectedMinutes * 60
+            timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                if remainingSeconds > 0 {
+                    remainingSeconds -= 1
+                } else {
+                    // タイマーを停止
+                    timerHandler?.invalidate()
+                    // タイマーを無効に
+                    timerHandler = nil
+                }
+            }
+        }
+
+        func formattedTime() -> String {
+            let minutes = remainingSeconds / 60
+            let seconds = remainingSeconds % 60
+            return String(format: "%02d:%02d", minutes, seconds)
+        }
 } // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {
