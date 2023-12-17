@@ -8,120 +8,186 @@
 import SwiftUI
 
 struct MeditatingView: View {
-    // 開始前タイマー初期値5、4、3、2、1、スタート
+    // 瞑想前タイマー初期値5、4、3、2、1、スタート
     @State private var preparationCountDown = 5
     // 選択する時間を管理する変数
     var selectedMinutes: Int
-    // 瞑想時間のカウントダウンの数を管理する変数
+    // 瞑想中タイマーのカウントダウンの数を管理する変数
     @State var meditationCountDown: Int = 1
-    // 分数・秒数を管理する変数
+    // 瞑想中タイマーの分数・秒数を管理する変数
     @State private var remainingSeconds: Int = 0
     // タイマー
     @State private var timerHandler: Timer?
-    // タイマーの表示を管理する変数
-    @State private var isTimerRunning: Bool = false
+    // 瞑想前タイマーの表示を管理する変数
+    @State private var isPreparationTimerRunning: Bool = false
+    // 瞑想中タイマーの表示を管理する変数
+    @State private var isMeditatingTimerRunning: Bool = false
     // カウントの変数
     @State var count: Int = 0
-    // 永続化する秒数設定
-    @AppStorage("timer_Value") var timerValue = 10
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
-    @State private var isShowAlert: Bool = false
+    // 瞑想中断アラートを管理する変数
+    @State private var isShowStopAlert: Bool = false
+    // 瞑想終了アラートを管理する変数
+    @State private var isShowEndAlert: Bool = false
+    // 中断中タイマーを保存する変数
+    @State private var interruptingTimer: Int = 0
     var body: some View {
-        VStack {
-            Text(formattedTime())
-            Text("\(preparationCountDown)")
-                .font(.headline)
-            Text("")
-            Button(action: {
-                isShowAlert.toggle()
-            }) {
-                Text("中断する")
-                    .tint(.backgroundNavy)
-                    .font(.title)
-            }
-            .padding()
-            .background(Color.keyWhite)
-            .frame(width: 150, height: 100)
-            .alert("", isPresented: $isShowAlert) {
+        ZStack {
+            Image("IMG_0571")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+            VStack {
+                // 瞑想前タイマーが2秒以上もしくはisPreparationTimerRunningがtrueなら
+                if preparationCountDown > 1 || isPreparationTimerRunning {
+                    // 以下テキストを表示
+                    Text("開始まで\n\(preparationCountDown)")
+                        .font(.title)
+                        .multilineTextAlignment(.center)
+                    // その他の条件なら
+                } else if preparationCountDown == 1 {
+                    // 何も表示しない
+                }
+                // isMeditatingTimerRunningがtrueなら瞑想中タイマーを表示
+                if isMeditatingTimerRunning {
+                    Text(formattedTime())
+                        .font(.title)
+                } else {
+                    // 何も表示しない
+                }
+                // 中断ボタン
+                Button(action: {
+                    // 押下するとisShowAlertをtrueにし、アラートを表示
+                    isShowStopAlert = true
+                }) {
+                    Text("中断する")
+                        .tint(.backgroundNavy)
+                        .font(.title)
+                }
+                .padding()
+                .cornerRadius(8)
+                .background(Color.keyWhite)
+                .frame(width: 150, height: 100)
+                .alert("", isPresented: $isShowStopAlert) {
+                    Button("NO") {
+                        // 残り秒数を格納する
+                        interruptingTimer = remainingSeconds
+                        // ノーを押したらisShowStopAlertをfalseにする
+                        isShowStopAlert = false
+                        restartTimer()
+                    }
+                    Button("YES") {
+                        // タイマーを無効に
+                        timerHandler = nil
+                        // 前の画面へ
+                        dismiss()
+                    }
+                } message: {
+                    Text("中断して前の画面に戻りますか？")
+                } // .alertここまで
+                
+            } // VStackここまで
+            // 戻るボタンは削除
+            .navigationBarBackButtonHidden(true)
+            .alert("", isPresented: $isShowEndAlert) {
                 Button("NO") {
                 }
                 Button("YES") {
                     // 前の画面へ
-                    dismiss()
                 }
             } message: {
                 Text("中断して前の画面に戻りますか？")
             } // .alertここまで
-        } // VStackここまで
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            meditationCountDown = selectedMinutes
-            // タイマーの設定
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                // 0より大きいとき
-                if preparationCountDown > 0 {
-                    // 1ずつマイナス
-                    preparationCountDown -= 1
-                } else {
-                    // タイマー停止
-                    timer.invalidate()
-                    startTimer2()
-                }
+            .onAppear {
+                meditationCountDown = selectedMinutes
+                startPrepationTimer()
             }
-        }
+        } // ZStack
     } // bodyここまで
-    // カウントダウンする関数
-    func countDownTimer() {
-        // 経過時間にプラス1する
-        count += 1
-        // 残り時間が0以下のとき、タイマーを止める
-        if timerValue - count <= 0 {
-            // タイマー停止
-            timerHandler?.invalidate()
-        }
-    } // func countDownTimer
-    // カウントダウン開始の関数
-    func startTimer() {
-        // timerHandlerをアンラップしてunwraoedTimerHandlerに代入
-        if let unwrapedTimerHandler = timerHandler {
-            // もしタイマーが、実行中だったらスタートしない
-            if unwrapedTimerHandler.isValid == true {
-                // 何も処理しない
-                return
+    // 瞑想前タイマー
+    func startPrepationTimer() {
+        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            // 0より大きいとき
+            if preparationCountDown > 1 {
+                // 1ずつマイナス
+                preparationCountDown -= 1
+                isPreparationTimerRunning = true
+            } else if preparationCountDown == 1 {
+                // タイマー停止
+                timerHandler?.invalidate()
+                // タイマーを無効に
+                timerHandler = nil
+                // 瞑想前タイマー非表示
+                isPreparationTimerRunning = false
+                // 瞑想中タイマー表示
+                isMeditatingTimerRunning = true
+                // 瞑想タイマー関数の呼び出し
+                startMeditationTimer()
             }
         }
-        // 残り時間が0以下のとrき、count(経過時間)を0に初期化する
-        if timerValue - count <= 0 {
-            // count時間を0に初期化
-            count = 0
-        } // if timerValue - count
-        // タイマーをスタート
+    }
+    // 瞑想中タイマー
+    func startMeditationTimer() {
+        // 分数を秒数に
+        remainingSeconds = selectedMinutes * 60
         timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            // タイマー実行時に呼び出される
-            // 1秒ごとに実行されてカウントダウンする関数を実行する
-            countDownTimer()
-        }
-    } // startTimer
-    func startTimer2() {
-            remainingSeconds = selectedMinutes * 60
-            timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            // 瞑想中断アラートがfalseなら
+            if isShowStopAlert == false {
+                // 秒数が正の数なら
                 if remainingSeconds > 0 {
+                    // マイナス1ずつしていく
                     remainingSeconds -= 1
-                } else {
+                    // 1の場合は
+                } else if remainingSeconds == 1 {
                     // タイマーを停止
                     timerHandler?.invalidate()
                     // タイマーを無効に
                     timerHandler = nil
+                    // 瞑想中タイマーを非表示
+                    isMeditatingTimerRunning = false
+                    // 終了アラート表示
+                    isShowEndAlert = true
                 }
+                // それ以外の場合（瞑想中断アラートがtrueの場合）
+            } else {
+                // タイマーを停止
+                timerHandler?.invalidate()
+                // タイマーを無効に
+                timerHandler = nil
             }
         }
-
-        func formattedTime() -> String {
-            let minutes = remainingSeconds / 60
-            let seconds = remainingSeconds % 60
-            return String(format: "%02d:%02d", minutes, seconds)
+    } // startMeditationTimer
+    // 中断後カウントダウンをリスタートする関数
+    func restartTimer() {
+        // 中断時間をremainingSecondsに格納
+        remainingSeconds = interruptingTimer
+        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            // 中断アラートがfalseなら
+            if isShowStopAlert == false {
+                // remainingSecondsが正数なら
+                if remainingSeconds > 0 {
+                    // マイナス1
+                    remainingSeconds -= 1
+                } else {
+                }
+            } else {
+                // タイマーを停止
+                timerHandler?.invalidate()
+                // タイマーを無効に
+                timerHandler = nil
+            }
         }
+    } // restartTimer
+    // 分と秒の表示
+    func formattedTime() -> String {
+        // 60で割ったものを分数表示に
+        let minutes = remainingSeconds / 60
+        // あまりは秒数に
+        let seconds = remainingSeconds % 60
+        // 〇〇:〇〇表示でリターン
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
 } // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {

@@ -13,7 +13,7 @@ struct MeditationSetView: View {
     // 音声ガイドToggleを管理する変数
     @State private var isAudioGuideOn: Bool = false
     // 選択する時間を管理する変数
-    @State private var selectedMinutes: Int = 1
+    @AppStorage("timer_Value") var selectedMinutes: Int = 1
     // 選択した音を表示する変数
     @State private var selectedSoundName: SoundModel = .europe1
     // 選択する分数
@@ -27,6 +27,8 @@ struct MeditationSetView: View {
     private var speakerStatusText: Text {
         Text(isAudioGuideOn ? "ON" : "OFF")
     } // speakerStatusTextここまで
+    // フルスクリーンを管理する変数
+    @State var isShowFullScreen: Bool = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -102,14 +104,19 @@ struct MeditationSetView: View {
                     .frame(width: 200)
                     .padding()
                     // はじめるボタン
-                    NavigationLink(destination: MeditatingView(selectedMinutes: selectedMinutes)) {
+                    Button(action: {
+                        isShowFullScreen.toggle()
+                    }) {
                         Text("はじめる")
                             .font(.title)
                             .foregroundColor(.keyWhite)
                             .padding(25.0)
                             .background(Color.backgroundNavy)
                             .cornerRadius(10)
-                    } // NavigationLinkここまで
+                    }
+                    .fullScreenCover(isPresented: $isShowFullScreen, content: {
+                        MeditatingView(selectedMinutes: selectedMinutes)
+                    })
                     .padding()
                     Spacer()
                 } // VStackここまで
