@@ -86,7 +86,6 @@ struct MeditatingView: View {
                 } message: {
                     Text("中断して前の画面に戻りますか？")
                 } // .alertここまで
-                
             } // VStackここまで
             // 戻るボタンは削除
             .navigationBarBackButtonHidden(true)

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "IMG_0571.JPG",
+      "filename" : "IMG_0571.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,6 +12,28 @@
     {
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "filename" : "IMG_0571 1.jpeg",
+      "idiom" : "iphone",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "iphone",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
+      "scale" : "3x"
+    },
+    {
+      "filename" : "IMG_0571 2.jpeg",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {
