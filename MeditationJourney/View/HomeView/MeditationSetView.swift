@@ -16,8 +16,8 @@ struct MeditationSetView: View {
     @AppStorage("timer_Value") var selectedMinutes: Int = 1
     // 選択した音を表示する変数
     @State private var selectedSoundName: SoundModel = .europe1
-    // 選択する分数
-    private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
+    // MinutesModel
+    @State var model: MinutesModel = MinutesModel()
     // 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
         isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
@@ -76,7 +76,7 @@ struct MeditationSetView: View {
                             .foregroundColor(.backgroundNavy)
                         Spacer()
                         Picker("時間を選ぶ", selection: $selectedMinutes) {
-                            ForEach(minutesOptions, id: \.self) { minutes in
+                            ForEach(model.minutesOptions, id: \.self) { minutes in
                                 Text("\(minutes)分")
                             } // ForEachここまで
                         } // Pickerここまで
