@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct MeditatingView: View {
-    @StateObject var viewModel: MeditatingViewModel = MeditatingViewModel()
-    // 選択する時間を管理する変数
-    @State var selectedMinutes: Int
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
+    // viewModel
+    @StateObject var viewModel: MeditatingViewModel
     var body: some View {
         ZStack {
             Image("IMG_0571")
@@ -24,10 +23,9 @@ struct MeditatingView: View {
                 if viewModel.preparationCountDown > 1 || viewModel.isPreparationTimerRunning {
                     // 以下テキストを表示
                     Text("開始まで\n\(viewModel.preparationCountDown)")
-                        .font(.title)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.backgroundNavy)
-                        .font(.system(size: 300))
+                        .foregroundColor(.keyWhite)
+                        .font(.system(size: 30))
                         .frame(width: 200, height: 200)
                         .bold()
                     // 0秒が表示される前に1秒になったら
@@ -37,10 +35,9 @@ struct MeditatingView: View {
                 // isMeditatingTimerRunningがtrueなら瞑想中タイマーを表示
                 if viewModel.isMeditatingTimerRunning {
                     Text(viewModel.formattedTime())
-                        .font(.title)
                         .foregroundColor(.keyWhite)
-                        .font(.system(size: 300))
-                        .frame(width: 200, height: 200)
+                        .font(.system(size: 80))
+                        .frame(width: 300, height: 200)
                         .bold()
                 } else {
                     // 何も表示しない
@@ -112,6 +109,6 @@ struct MeditatingView: View {
 
 struct MeditatingView_Previews: PreviewProvider {
     static var previews: some View {
-        MeditatingView(selectedMinutes: 1)
+        MeditatingView(viewModel: MeditatingViewModel(selectedMinutes: 1))
     }
 }
