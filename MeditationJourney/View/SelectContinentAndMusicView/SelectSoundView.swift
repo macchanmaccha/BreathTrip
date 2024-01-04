@@ -22,14 +22,14 @@ struct SelectSoundView: View {
     var selectedContinent: ContinentModel = .europe
     var body: some View {
         ZStack {
-            Image("IMG_0569")
+            Image("settingsBackgroundImage")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer(minLength: 80)
                 Text("音を選択")
-                    .foregroundColor(.keyWhite)
+                    .foregroundColor(Color(.keyWhite))
                     .font(.title)
                     .padding()
                 LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
@@ -43,8 +43,8 @@ struct SelectSoundView: View {
                             Text(sound.rawValue)
                         } // Buttonここまで
                         .frame(width: 130, height: 100)
-                        .background(Color.keyWhite.opacity(0.6))
-                        .foregroundColor(Color.backgroundNavy)
+                        .background(Color(.keyWhite).opacity(0.6))
+                        .foregroundColor(Color(.backgroundNavy))
                         .cornerRadius(8)
                     } // ForEacnここまで
                 } // LazyVGridここまで
@@ -61,7 +61,7 @@ struct SelectSoundView: View {
                     dismiss()
                 }) {
                     Text("＜Back")
-                        .tint(.keyWhite)
+                        .tint(Color(.keyWhite))
                 } // Buttonここまで
             } // ToolbarItemここまで
         } // .toolbarここまで

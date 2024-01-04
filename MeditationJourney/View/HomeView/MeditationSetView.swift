@@ -30,15 +30,14 @@ struct MeditationSetView: View {
     // フルスクリーンを管理する変数
     @State var isShowFullScreen: Bool = false
     var body: some View {
-        NavigationStack {
             ZStack {
-                Image("IMG_0569")
+                Image("settingsBackgroundImage")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                 // 背景枠
                 Rectangle()
-                    .fill(Color.keyWhite)
+                    .fill(Color(.keyWhite))
                     .cornerRadius(8)
                     .opacity(0.6)
                     .frame(width: 400, height: 400)
@@ -47,7 +46,7 @@ struct MeditationSetView: View {
                     HStack {
                         Text("音声ガイド")
                             .font(.title2)
-                            .foregroundColor(.backgroundNavy)
+                            .foregroundColor(Color(.backgroundNavy))
                         Spacer()
                         VStack {
                             // 音声ガイドボタン
@@ -57,14 +56,14 @@ struct MeditationSetView: View {
                                 // 音声ガイドアイコン
                                 speakerIcon
                                     .frame(width: 30, height: 30)
-                                    .foregroundColor(.backgroundNavy)
+                                    .foregroundColor(Color(.backgroundNavy))
                                     .font(.title)
                             } // Buttonここまで
                             // ON、OFFのテキスト表示
                             speakerStatusText
                                 .frame(width: 30, height: 5)
                                 .font(.caption2)
-                                .foregroundColor(.backgroundNavy)
+                                .foregroundColor(Color(.backgroundNavy))
                         } // VStackここまで
                     } // HStackここまで
                     .frame(width: 200)
@@ -73,32 +72,32 @@ struct MeditationSetView: View {
                     HStack {
                         Text("時間")
                             .font(.title2)
-                            .foregroundColor(.backgroundNavy)
+                            .foregroundColor(Color(.backgroundNavy))
                         Spacer()
                         Picker("時間を選ぶ", selection: $selectedMinutes) {
                             ForEach(model.minutesOptions, id: \.self) { minutes in
                                 Text("\(minutes)分")
                             } // ForEachここまで
                         } // Pickerここまで
-                        .colorMultiply(.backgroundNavy)
+                        .colorMultiply(Color(.backgroundNavy))
                         .scaleEffect(CGSize(width: 1.25, height: 1.25))
                         .pickerStyle(MenuPickerStyle())
                     } // HStackここまで
-                    .foregroundColor(Color.backgroundNavy)
+                    .foregroundColor(Color(.backgroundNavy))
                     .frame(width: 200)
                     .padding()
                     // 音設定
                     HStack {
                         Text("音")
                             .font(.title2)
-                            .foregroundColor(.backgroundNavy)
+                            .foregroundColor(Color(.backgroundNavy))
                         Spacer()
                         Button(action: {
                             isShowSheet.toggle()
                         }) {
                             Text("\(selectedSoundName.rawValue)>")
                                 .font(.title2)
-                                .foregroundColor(.backgroundNavy)
+                                .foregroundColor(Color(.backgroundNavy))
                         }
                     } // HStackここまで
                     .frame(width: 200)
@@ -109,9 +108,9 @@ struct MeditationSetView: View {
                     }) {
                         Text("はじめる")
                             .font(.title)
-                            .foregroundColor(.keyWhite)
+                            .foregroundColor(Color(.keyWhite))
                             .padding(25.0)
-                            .background(Color.backgroundNavy)
+                            .background(Color(.backgroundNavy))
                             .cornerRadius(10)
                     }
                     .fullScreenCover(isPresented: $isShowFullScreen, content: {
@@ -121,7 +120,6 @@ struct MeditationSetView: View {
                     Spacer()
                 } // VStackここまで
             } // ZStackここまで
-        } // NavigationStack
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {

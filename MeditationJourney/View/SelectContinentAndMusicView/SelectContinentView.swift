@@ -15,14 +15,14 @@ struct SelectContinentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("IMG_0569")
+                Image("settingsBackgroundImage")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     Spacer(minLength: 80)
                     Text("大陸を選択")
-                        .foregroundColor(.keyWhite)
+                        .foregroundColor(Color(.keyWhite))
                         .font(.title)
                         .padding()
                     LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
@@ -33,8 +33,8 @@ struct SelectContinentView: View {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
-                                    .background(Color.keyWhite.opacity(0.6))
-                                    .foregroundColor(Color.backgroundNavy)
+                                    .background(Color(.keyWhite).opacity(0.6))
+                                    .foregroundColor(Color(.backgroundNavy))
                                     .cornerRadius(8)
                             } // NavigationLinkここまで
                         } // ForEacnここまで

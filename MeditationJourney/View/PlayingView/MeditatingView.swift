@@ -14,7 +14,7 @@ struct MeditatingView: View {
     @StateObject var viewModel: MeditatingViewModel
     var body: some View {
         ZStack {
-            Image("IMG_0571")
+            Image("playBackgroundImage")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -24,7 +24,7 @@ struct MeditatingView: View {
                     // 以下テキストを表示
                     Text("開始まで\n\(viewModel.preparationCountDown)")
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.keyWhite)
+                        .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 30))
                         .frame(width: 200, height: 200)
                         .bold()
@@ -35,7 +35,7 @@ struct MeditatingView: View {
                 // isMeditatingTimerRunningがtrueなら瞑想中タイマーを表示
                 if viewModel.isMeditatingTimerRunning {
                     Text(viewModel.formattedTime())
-                        .foregroundColor(.keyWhite)
+                        .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
@@ -50,11 +50,11 @@ struct MeditatingView: View {
                         print(viewModel.remainingSeconds)
                     }) {
                         Text("中断する")
-                            .tint(.backgroundNavy)
+                            .tint(Color(.backgroundNavy))
                             .font(.title)
                     }
-                    .padding(25.0)
-                    .background(Color.keyWhite)
+                    .padding(25)
+                    .background(Color(.keyWhite))
                     .cornerRadius(10)
                     .alert("", isPresented: $viewModel.isShowStopAlert) {
                         // NO
@@ -86,8 +86,6 @@ struct MeditatingView: View {
                 } else {
                 }
             } // VStackここまで
-            // 戻るボタンは削除
-            .navigationBarBackButtonHidden(true)
             .onAppear {
                 // 瞑想前タイマーを表示
                 viewModel.isPreparationTimerRunning = true
