@@ -15,7 +15,7 @@ struct SelectContinentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("settingsBackgroundImage")
+                Image(.settingsBackground)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)

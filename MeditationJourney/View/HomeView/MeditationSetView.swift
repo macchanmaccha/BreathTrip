@@ -31,7 +31,7 @@ struct MeditationSetView: View {
     @State var isShowFullScreen: Bool = false
     var body: some View {
             ZStack {
-                Image("settingsBackgroundImage")
+                Image(.settingsBackground)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)

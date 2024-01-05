@@ -14,7 +14,7 @@ struct MeditatingView: View {
     @StateObject var viewModel: MeditatingViewModel
     var body: some View {
         ZStack {
-            Image("playBackgroundImage")
+            Image(.playBackground)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)

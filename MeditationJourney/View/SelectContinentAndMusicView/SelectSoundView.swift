@@ -22,7 +22,7 @@ struct SelectSoundView: View {
     var selectedContinent: ContinentModel = .europe
     var body: some View {
         ZStack {
-            Image("settingsBackgroundImage")
+            Image(.settingsBackground)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
