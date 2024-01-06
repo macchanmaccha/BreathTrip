@@ -54,7 +54,6 @@ struct SelectSoundView: View {
                 Spacer(minLength: 80)
             } // VStackここまで
         } // ZStackここまで
-        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
