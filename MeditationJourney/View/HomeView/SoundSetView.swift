@@ -78,7 +78,7 @@ struct SoundSetView: View {
                         .cornerRadius(10)
                 }
                 .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    ListeningToSoundView()
+                    ListeningToSoundView(viewModel: ListeningToSoundViewModel(selectedMinutes: selectedMinutes))
                 })
                 .padding()
                 Spacer()
