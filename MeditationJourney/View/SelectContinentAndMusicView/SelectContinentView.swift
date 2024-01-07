@@ -20,7 +20,7 @@ struct SelectContinentView: View {
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    Spacer(minLength: 80)
+//                    Spacer(minLength: 80)
                     Text("大陸を選択")
                         .foregroundColor(Color(.keyWhite))
                         .font(.title)
@@ -41,7 +41,7 @@ struct SelectContinentView: View {
                     } // LazyVGridここまで
                     .frame(maxWidth: 300, alignment: .center) // LazyVGridの幅を調整
                     .padding(10)
-                    Spacer(minLength: 80)
+//                    Spacer(minLength: 80)
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationStackここまで
