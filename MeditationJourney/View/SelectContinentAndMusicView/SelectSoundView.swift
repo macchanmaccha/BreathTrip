@@ -27,7 +27,6 @@ struct SelectSoundView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-//                Spacer(minLength: 80)
                 Text("音を選択")
                     .foregroundColor(Color(.keyWhite))
                     .font(.title)
@@ -51,9 +50,8 @@ struct SelectSoundView: View {
                 // LazyVGridの幅を調整
                 .frame(maxWidth: 300, alignment: .center)
                 .padding(10)
-//                Spacer(minLength: 80)
             } // VStackここまで
-//            .padding(.top, -80)
+            .padding(.top, -60)
         } // ZStackここまで
         .navigationBarBackButtonHidden(true)
         .toolbar {
