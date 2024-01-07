@@ -42,6 +42,17 @@ struct SelectContinentView: View {
                     .padding(10)
                 } // VStackここまで
             } // ZStackここまで
+            // シートを閉じる
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        isShowSheet = false
+                    }) {
+                        Image(systemName: "xmark")
+                            .tint(Color(.keyWhite))
+                    } // Buttonここまで
+                } // ToolbarItemここまで
+            }
         } // NavigationStackここまで
     } // bodyここまで
 } // SelectContinentViewここまで

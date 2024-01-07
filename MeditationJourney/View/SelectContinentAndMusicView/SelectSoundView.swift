@@ -51,15 +51,24 @@ struct SelectSoundView: View {
                 .frame(maxWidth: 300, alignment: .center)
                 .padding(10)
             } // VStackここまで
-            .padding(.top, -60)
         } // ZStackここまで
         .navigationBarBackButtonHidden(true)
+        // 前画面へ戻る
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     dismiss()
                 }) {
-                    Text("＜Back")
+                    Image(systemName: "chevron.backward")
+                        .tint(Color(.keyWhite))
+                } // Buttonここまで
+            } // ToolbarItemここまで
+            // シートを閉じる
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    isShowSheet = false
+                }) {
+                    Image(systemName: "xmark")
                         .tint(Color(.keyWhite))
                 } // Buttonここまで
             } // ToolbarItemここまで
