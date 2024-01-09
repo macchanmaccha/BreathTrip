@@ -44,8 +44,9 @@ struct SelectContinentView: View {
                     Spacer(minLength: 80)
                 } // VStackここまで
             } // ZStackここまで
+            // 画面遷移後と高さ調整のためテキストをいれておく（意味はなし）
+            .navigationTitle(".")
         } // NavigationStackここまで
-        .navigationViewStyle(.stack)
     } // bodyここまで
 } // SelectContinentViewここまで
 
