@@ -45,7 +45,7 @@ struct SelectSoundView: View {
                         .background(Color(.keyWhite).opacity(0.6))
                         .foregroundColor(Color(.backgroundNavy))
                         .cornerRadius(8)
-                    } // ForEacnここまで
+                    } // ForEachここまで
                 } // LazyVGridここまで
                 // LazyVGridの幅を調整
                 .frame(maxWidth: 300, alignment: .center)

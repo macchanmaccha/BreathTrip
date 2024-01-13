@@ -36,7 +36,7 @@ struct SelectContinentView: View {
                                     .foregroundColor(Color(.backgroundNavy))
                                     .cornerRadius(8)
                             } // NavigationLinkここまで
-                        } // ForEacnここまで
+                        } // ForEachここまで
                     } // LazyVGridここまで
                     .frame(maxWidth: 300, alignment: .center) // LazyVGridの幅を調整
                     .padding(10)
