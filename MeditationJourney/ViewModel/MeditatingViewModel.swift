@@ -49,10 +49,8 @@ class MeditatingViewModel: ObservableObject {
                     preparationCountDown -= 1
                     isPreparationTimerRunning = true
                 } else if preparationCountDown == 1 {
-                    // タイマー停止
-                    timerHandler?.invalidate()
-                    // タイマーを無効に
-                    timerHandler = nil
+                    // タイマー停止・無効
+                    stopTimer()
                     // 瞑想前タイマー非表示
                     isPreparationTimerRunning = false
                     // 瞑想中タイマー表示
@@ -65,10 +63,8 @@ class MeditatingViewModel: ObservableObject {
             } else if isMeditatingTimerRunning {
                 // 何もしない
             } else {
-                // タイマーを停止
-                timerHandler?.invalidate()
-                // タイマーを無効に
-                timerHandler = nil
+                // タイマー停止・無効
+                stopTimer()
             }
         }
     }
@@ -88,10 +84,8 @@ class MeditatingViewModel: ObservableObject {
                     remainingSeconds -= 1
                     // 1の場合（0秒となる前）
                 } else if remainingSeconds == 1 {
-                    // タイマーを停止
-                    timerHandler?.invalidate()
-                    // タイマーを無効に
-                    timerHandler = nil
+                    // タイマー停止・無効
+                    stopTimer()
                     // 瞑想中タイマーを非表示
                     isMeditatingTimerRunning = false
                     // 中断ボタン非表示
@@ -101,13 +95,18 @@ class MeditatingViewModel: ObservableObject {
                 }
                 // それ以外の場合（瞑想中断アラートがtrueの場合）
             } else {
-                // タイマーを停止
-                timerHandler?.invalidate()
-                // タイマーを無効に
-                timerHandler = nil
+                // タイマー停止・無効
+                stopTimer()
             }
         }
     } // startMeditationTimer
+    // タイマー停止・無効
+    func stopTimer() {
+        // タイマー停止
+        timerHandler?.invalidate()
+        // タイマー無効
+        timerHandler = nil
+    }
     // 分と秒の表示
     func formattedTime() -> String {
         // 60で割ったものを分数表示に
@@ -117,4 +116,4 @@ class MeditatingViewModel: ObservableObject {
         // 〇〇:〇〇表示でリターン
         return String(format: "%02d:%02d", minutes, seconds)
     }
-}
+} // MeditatingViewModel
