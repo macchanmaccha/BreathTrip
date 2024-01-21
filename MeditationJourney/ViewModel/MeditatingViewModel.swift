@@ -8,20 +8,20 @@
 import SwiftUI
 
 class MeditatingViewModel: ObservableObject {
-    // タイマー
-    private var timerHandler: Timer?
     // 瞑想画面での状態　初期値はend
     @Published var stateModel: MeditatingStateModel = .end
     // 瞑想前カウントダウンの変数
-    @Published var preparationCountDown = 15
+    @Published var preparationCountDown = 5
     // 瞑想中タイマーの分数・秒数を管理する変数
     @Published var remainingSeconds: Int = 0
     // 瞑想前中断中タイマーを保存する変数 初期値は5
-    @Published var interruptingPreparationTimer: Int = 15
+    @Published var interruptingPreparationTimer: Int = 5
     // 瞑想中断中タイマーを保存する変数
     @Published var interruptingMeditationTimer: Int = 0
+    // タイマー
+    private var timerHandler: Timer?
     // 選択した分数
-    @Published var selectedMinutes: Int
+    private var selectedMinutes: Int
     // イニシャライザ
     init(selectedMinutes: Int) {
         self.selectedMinutes = selectedMinutes

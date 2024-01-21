@@ -9,19 +9,19 @@ import SwiftUI
 
 struct MeditatingView: View {
     // 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     // viewModel
     @StateObject var viewModel: MeditatingViewModel
     // 瞑想前タイマーの表示を管理する変数
-    @State var isPreparationTimerRunning: Bool = false
+    @State private var isPreparationTimerRunning: Bool = false
     // 瞑想中タイマーの表示を管理する変数
-    @State var isMeditatingTimerRunning: Bool = false
+    @State private var isMeditatingTimerRunning: Bool = false
     // 瞑想中断アラートを管理する変数
-    @State var isShowStopAlert: Bool = false
+    @State private var isShowStopAlert: Bool = false
     // 瞑想終了アラートを管理する変数
-    @State var isShowEndAlert: Bool = false
+    @State private var isShowEndAlert: Bool = false
     // 中断ボタンの表示を管理する変数
-    @State var isShowStopButton: Bool = true
+    @State private var isShowStopButton: Bool = true
     var body: some View {
         ZStack {
             Image(.playBackground)
