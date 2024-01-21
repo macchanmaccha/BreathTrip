@@ -8,24 +8,16 @@
 import SwiftUI
 
 class MeditatingViewModel: ObservableObject {
-    // 瞑想前タイマーの表示を管理する変数
-    @Published var isPreparationTimerRunning: Bool = false
-    // 瞑想中タイマーの表示を管理する変数
-    @Published var isMeditatingTimerRunning: Bool = false
-    // 瞑想中断アラートを管理する変数
-    @Published var isShowStopAlert: Bool = false
-    // 瞑想終了アラートを管理する変数
-    @Published var isShowEndAlert: Bool = false
-    // 中断ボタンの表示を管理する変数
-    @Published var isShowStopButton: Bool = true
     // タイマー
-    @Published var timerHandler: Timer?
+    private var timerHandler: Timer?
+    // 瞑想画面での状態　初期値はend
+    @Published var stateModel: MeditatingStateModel = .end
     // 瞑想前カウントダウンの変数
-    @Published var preparationCountDown = 5
+    @Published var preparationCountDown = 15
     // 瞑想中タイマーの分数・秒数を管理する変数
     @Published var remainingSeconds: Int = 0
     // 瞑想前中断中タイマーを保存する変数 初期値は5
-    @Published var interruptingPreparationTimer: Int = 5
+    @Published var interruptingPreparationTimer: Int = 15
     // 瞑想中断中タイマーを保存する変数
     @Published var interruptingMeditationTimer: Int = 0
     // 選択した分数
@@ -41,28 +33,25 @@ class MeditatingViewModel: ObservableObject {
             guard let self = self else {
                 return
             }
-            // 瞑想中断アラートがfalseなら
-            if isShowStopAlert == false && isPreparationTimerRunning {
+            // preStartのとき
+            if stateModel == .preStart {
                 // 1より大きいとき
                 if preparationCountDown > 1 {
                     // 1ずつマイナス
                     preparationCountDown -= 1
-                    isPreparationTimerRunning = true
+                    // 1の場合（0秒となる前）
                 } else if preparationCountDown == 1 {
+                    // 状態をstartに
+                    stateModel = .start
                     // タイマー停止・無効
                     stopTimer()
-                    // 瞑想前タイマー非表示
-                    isPreparationTimerRunning = false
-                    // 瞑想中タイマー表示
-                    isMeditatingTimerRunning = true
                     // 瞑想タイマー関数の呼び出し
                     startMeditationTimer()
                     // タイマーが有効かチェック
                     print("\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))")
                 }
-            } else if isMeditatingTimerRunning {
-                // 何もしない
-            } else {
+                // pauseのとき
+            } else if stateModel == .prePause {
                 // タイマー停止・無効
                 stopTimer()
             }
@@ -76,25 +65,21 @@ class MeditatingViewModel: ObservableObject {
                 return
             }
             print("瞑想中タイマー\(#fileID) \(#function) \(#line)")
-            // 瞑想中断アラートがfalseなら
-            if isShowStopAlert == false && isMeditatingTimerRunning {
+            // 瞑想中なら
+            if stateModel == .start {
                 // 1秒より大きいとき
                 if remainingSeconds > 1 {
                     // マイナス1ずつしていく
                     remainingSeconds -= 1
                     // 1の場合（0秒となる前）
                 } else if remainingSeconds == 1 {
+                    // end
+                    stateModel = .end
                     // タイマー停止・無効
                     stopTimer()
-                    // 瞑想中タイマーを非表示
-                    isMeditatingTimerRunning = false
-                    // 中断ボタン非表示
-                    isShowStopButton = false
-                    // 終了アラート表示
-                    isShowEndAlert = true
                 }
-                // それ以外の場合（瞑想中断アラートがtrueの場合）
-            } else {
+                // pauseのとき
+            } else if stateModel == .pause {
                 // タイマー停止・無効
                 stopTimer()
             }
