@@ -9,7 +9,14 @@ import SwiftUI
 
 class MeditatingViewModel: ObservableObject {
     // 瞑想画面での状態　初期値はend
-    @Published var stateModel: MeditatingStateModel = .end
+    @Published var state: State = .end
+    enum State {
+        case preStart  // 瞑想前タイマーカウントダウン
+        case prePause  // 瞑想前タイマー中断
+        case start     // 瞑想タイマーカウントダウン
+        case pause     // 瞑想タイマー中断
+        case end       // 瞑想終了
+    } // enumここまで
     // 瞑想前カウントダウンの変数
     @Published var preparationCountDown = 5
     // 瞑想中タイマーの分数・秒数を管理する変数
@@ -34,7 +41,7 @@ class MeditatingViewModel: ObservableObject {
                 return
             }
             // preStartのとき
-            if stateModel == .preStart {
+            if state == .preStart {
                 // 1より大きいとき
                 if preparationCountDown > 1 {
                     // 1ずつマイナス
@@ -42,7 +49,7 @@ class MeditatingViewModel: ObservableObject {
                     // 1の場合（0秒となる前）
                 } else if preparationCountDown == 1 {
                     // 状態をstartに
-                    stateModel = .start
+                    state = .start
                     // タイマー停止・無効
                     stopTimer()
                     // 瞑想タイマー関数の呼び出し
@@ -51,7 +58,7 @@ class MeditatingViewModel: ObservableObject {
                     print("\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))")
                 }
                 // pauseのとき
-            } else if stateModel == .prePause {
+            } else if state == .prePause {
                 // タイマー停止・無効
                 stopTimer()
             }
@@ -66,7 +73,7 @@ class MeditatingViewModel: ObservableObject {
             }
             print("瞑想中タイマー\(#fileID) \(#function) \(#line)")
             // 瞑想中なら
-            if stateModel == .start {
+            if state == .start {
                 // 1秒より大きいとき
                 if remainingSeconds > 1 {
                     // マイナス1ずつしていく
@@ -74,12 +81,12 @@ class MeditatingViewModel: ObservableObject {
                     // 1の場合（0秒となる前）
                 } else if remainingSeconds == 1 {
                     // end
-                    stateModel = .end
+                    state = .end
                     // タイマー停止・無効
                     stopTimer()
                 }
                 // pauseのとき
-            } else if stateModel == .pause {
+            } else if state == .pause {
                 // タイマー停止・無効
                 stopTimer()
             }
