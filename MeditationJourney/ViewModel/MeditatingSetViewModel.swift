@@ -1,5 +1,5 @@
 //
-//  MeditatingViewModel.swift
+//  MeditatingSetViewModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2023/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class MeditatingViewModel: ObservableObject {
+class MeditatingSetViewModel: ObservableObject {
     // 瞑想画面での状態　初期値はend
     @Published var state: State = .end
     enum State {
@@ -25,14 +25,14 @@ class MeditatingViewModel: ObservableObject {
     @Published var interruptingPreparationTimer: Int = 5
     // 瞑想中断中タイマーを保存する変数
     @Published var interruptingMeditationTimer: Int = 0
+    // 選択した分数
+    @Published var selectedMinutes: Int = 1
+    // 選択した音の名前を管理する変数
+    @Published var selectedSoundName: SoundModel = .europe1
+
     // タイマー
     private var timerHandler: Timer?
-    // 選択した分数
-    private var selectedMinutes: Int
-    // イニシャライザ
-    init(selectedMinutes: Int) {
-        self.selectedMinutes = selectedMinutes
-    }
+
     // 瞑想前タイマー
     func startPreparationTimer() {
         preparationCountDown = interruptingPreparationTimer

@@ -7,9 +7,9 @@
 import SwiftUI
 
 struct SelectContinentView: View {
-    @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
+    @ObservedObject var viewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
-    @Binding var selectedSoundName: SoundModel
+
     // 大陸の配列
     @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     var body: some View {
@@ -26,9 +26,9 @@ struct SelectContinentView: View {
                         .padding()
                     LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
                         // 大陸の表示
-                        ForEach(viewModel.continents, id: \.self) { continent in
+                        ForEach(ContinentModel.allCases, id: \.self) { continent in
                             // 画面遷移
-                            NavigationLink(destination: SelectSoundView(isShowSheet: $isShowSheet, selectedSoundName: $selectedSoundName, selectedContinent: continent)) {
+                            NavigationLink(destination: SelectSoundView( viewModel: viewModel, selectedContinent: continent)) {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
@@ -58,5 +58,5 @@ struct SelectContinentView: View {
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(.europe1))
+    SelectContinentView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true))
 }

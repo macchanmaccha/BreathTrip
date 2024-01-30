@@ -11,7 +11,7 @@ struct MeditatingView: View {
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
     // viewModel
-    @StateObject var viewModel: MeditatingViewModel
+    @ObservedObject var viewModel: MeditatingSetViewModel
     // 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     // 瞑想終了アラートを管理する変数
@@ -134,6 +134,6 @@ struct MeditatingView: View {
 
 struct MeditatingView_Previews: PreviewProvider {
     static var previews: some View {
-        MeditatingView(viewModel: MeditatingViewModel(selectedMinutes: 1))
+        MeditatingView(viewModel: MeditatingSetViewModel())
     }
 }
