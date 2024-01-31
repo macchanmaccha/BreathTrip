@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class MeditatingViewModel: ObservableObject {
+class MeditatingSetViewModel: ObservableObject {
     // 瞑想画面での状態　初期値はend
     @Published var state: State = .end
     enum State {

@@ -114,7 +114,7 @@ struct MeditationSetView: View {
                             .cornerRadius(10)
                     }
                     .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                        MeditatingView(viewModel: MeditatingViewModel(selectedMinutes: selectedMinutes))
+                        MeditatingView(viewModel: MeditatingSetViewModel(selectedMinutes: selectedMinutes))
                     })
                     .padding()
                     Spacer()
