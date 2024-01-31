@@ -25,14 +25,12 @@ class MeditatingSetViewModel: ObservableObject {
     @Published var interruptingPreparationTimer: Int = 5
     // 瞑想中断中タイマーを保存する変数
     @Published var interruptingMeditationTimer: Int = 0
+    // 選択する時間を管理する変数
+    @AppStorage("timer_Value") var selectedMinutes: Int = 1
+    // 選択した音を表示する変数
+    @Published var selectedSoundName: SoundModel = .europe1
     // タイマー
     private var timerHandler: Timer?
-    // 選択した分数
-    private var selectedMinutes: Int
-    // イニシャライザ
-    init(selectedMinutes: Int) {
-        self.selectedMinutes = selectedMinutes
-    }
     // 瞑想前タイマー
     func startPreparationTimer() {
         preparationCountDown = interruptingPreparationTimer

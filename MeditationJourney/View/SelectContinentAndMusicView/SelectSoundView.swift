@@ -9,11 +9,7 @@ import SwiftUI
 
 struct SelectSoundView: View {
     // viewModel
-    @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
-    // シート変数
-    @Binding var isShowSheet: Bool
-    // 選択した音の名前を管理する変数
-    @Binding var selectedSoundName: SoundModel
+    @ObservedObject var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
     // 音Grid
@@ -36,8 +32,8 @@ struct SelectSoundView: View {
                     ForEach(selectedContinent.soundList, id: \.self) { sound in
                         Button(action: {
                             // 音を再生するなどのアクションを実行
-                            isShowSheet.toggle()
-                            selectedSoundName = sound
+                            dismiss()
+                            viewModel.selectedSoundName = sound
                         }) {
                             Text(sound.rawValue)
                         } // Buttonここまで
@@ -66,7 +62,7 @@ struct SelectSoundView: View {
             // シートを閉じる
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    isShowSheet = false
+                    dismiss()
                 }) {
                     Image(systemName: "xmark")
                         .tint(Color(.keyWhite))
@@ -77,5 +73,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(.europe1), selectedContinent: ContinentModel.europe)
+    SelectSoundView(viewModel: MeditatingSetViewModel())
 }

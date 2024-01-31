@@ -26,7 +26,6 @@
 		187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentModel.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
-		18C3DC112AF7C83500710776 /* ContinentAndSoundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,7 +50,6 @@
 		187E216C2AF91F280093A334 /* ContinentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentModel.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
-		18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentAndSoundViewModel.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +77,6 @@
 		1834BE3B2AECFB2F00DD5E92 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				18C3DC102AF7C83500710776 /* ContinentAndSoundViewModel.swift */,
 				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
 				183AEA562B393F4800B6E661 /* MeditatingSetViewModel.swift */,
 			);
@@ -260,7 +257,6 @@
 			files = (
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
 				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
-				18C3DC112AF7C83500710776 /* ContinentAndSoundViewModel.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
