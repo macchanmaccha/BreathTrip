@@ -87,7 +87,6 @@ struct MeditatingView: View {
                         }
                         // YES
                         Button("YES") {
-                            viewModel.state = .end
                             viewModel.stopTimer()
                             // 設定画面に戻る
                             dismiss()
