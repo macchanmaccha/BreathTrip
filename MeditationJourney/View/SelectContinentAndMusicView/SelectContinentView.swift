@@ -28,7 +28,7 @@ struct SelectContinentView: View {
                         // 大陸の表示
                         ForEach(ContinentModel.allCases, id: \.self) { continent in
                             // 画面遷移
-                            NavigationLink(destination: SelectSoundView(viewModel: viewModel, selectedContinent: continent)) {
+                            NavigationLink(destination: SelectSoundView(viewModel: viewModel, isShowSheet: $isShowSheet, selectedContinent: continent)) {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
