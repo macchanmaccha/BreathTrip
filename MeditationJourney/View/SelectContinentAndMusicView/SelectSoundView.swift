@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SelectSoundView: View {
     // 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.presentationMode) var presentationMode
     // viewModel
     @ObservedObject var viewModel: MeditatingSetViewModel
     // 音Grid
@@ -32,6 +33,7 @@ struct SelectSoundView: View {
                     ForEach(selectedContinent.soundList, id: \.self) { sound in
                         Button(action: {
                             // 音を再生するなどのアクションを実行
+                            dismiss()
                             dismiss()
                             viewModel.selectedSoundName = sound
                         }) {
@@ -62,6 +64,7 @@ struct SelectSoundView: View {
             // シートを閉じる
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
+                    dismiss()
                     dismiss()
                 }) {
                     Image(systemName: "xmark")
