@@ -11,7 +11,7 @@ struct SelectSoundView: View {
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
     // viewModel
-    @ObservedObject var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    @ObservedObject var viewModel: MeditatingSetViewModel
     // 音Grid
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     // 選択した大陸（初期値はヨーロッパ）
