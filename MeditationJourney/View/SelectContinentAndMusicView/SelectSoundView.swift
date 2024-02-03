@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct SelectSoundView: View {
-    // viewModel
-    @ObservedObject var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) var dismiss
+    // viewModel
+    @ObservedObject var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // 音Grid
     var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     // 選択した大陸（初期値はヨーロッパ）
-    var selectedContinent: ContinentModel = .europe
+    var selectedContinent: ContinentModel
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -73,5 +73,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: MeditatingSetViewModel())
+    SelectSoundView(viewModel: MeditatingSetViewModel(), selectedContinent: ContinentModel.europe)
 }

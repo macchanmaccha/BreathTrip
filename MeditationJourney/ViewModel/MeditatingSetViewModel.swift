@@ -1,5 +1,5 @@
 //
-//  MeditatingViewModel.swift
+//  MeditatingSetViewModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2023/12/25.

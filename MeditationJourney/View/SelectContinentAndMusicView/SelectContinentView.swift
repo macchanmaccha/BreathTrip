@@ -28,7 +28,7 @@ struct SelectContinentView: View {
                         // 大陸の表示
                         ForEach(ContinentModel.allCases, id: \.self) { continent in
                             // 画面遷移
-                            NavigationLink(destination: SelectSoundView()) {
+                            NavigationLink(destination: SelectSoundView(viewModel: viewModel, selectedContinent: continent)) {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
@@ -46,7 +46,7 @@ struct SelectContinentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        isShowSheet = false
+                        isShowSheet.toggle()
                     }) {
                         Image(systemName: "xmark")
                             .tint(Color(.keyWhite))
@@ -58,5 +58,5 @@ struct SelectContinentView: View {
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView(isShowSheet: Binding.constant(true))
+    SelectContinentView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true))
 }

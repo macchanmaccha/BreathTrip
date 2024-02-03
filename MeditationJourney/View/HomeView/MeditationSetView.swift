@@ -28,100 +28,100 @@ struct MeditationSetView: View {
     // 選択できる分数
     let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
-            ZStack {
-                Image(.settingsBackground)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .edgesIgnoringSafeArea(.all)
-                // 背景枠
-                Rectangle()
-                    .fill(Color(.keyWhite))
-                    .cornerRadius(8)
-                    .opacity(0.6)
-                    .frame(width: 400, height: 400)
-                VStack {
+        ZStack {
+            Image(.settingsBackground)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+            // 背景枠
+            Rectangle()
+                .fill(Color(.keyWhite))
+                .cornerRadius(8)
+                .opacity(0.6)
+                .frame(width: 400, height: 400)
+            VStack {
+                Spacer()
+                HStack {
+                    Text("音声ガイド")
+                        .font(.title2)
+                        .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    HStack {
-                        Text("音声ガイド")
-                            .font(.title2)
-                            .foregroundColor(Color(.backgroundNavy))
-                        Spacer()
-                        VStack {
-                            // 音声ガイドボタン
-                            Button(action: {
-                                isAudioGuideOn.toggle()
-                            }) {
-                                // 音声ガイドアイコン
-                                speakerIcon
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(Color(.backgroundNavy))
-                                    .font(.title)
-                            } // Buttonここまで
-                            // ON、OFFのテキスト表示
-                            speakerStatusText
-                                .frame(width: 30, height: 5)
-                                .font(.caption2)
-                                .foregroundColor(Color(.backgroundNavy))
-                        } // VStackここまで
-                    } // HStackここまで
-                    .frame(width: 200)
-                    .padding()
-                    // 時間設定
-                    HStack {
-                        Text("時間")
-                            .font(.title2)
-                            .foregroundColor(Color(.backgroundNavy))
-                        Spacer()
-                        Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
-                            ForEach(minutesOptions, id: \.self) { minutes in
-                                Text("\(minutes)分")
-                            } // ForEachここまで
-                        } // Pickerここまで
-                        .colorMultiply(Color(.backgroundNavy))
-                        .scaleEffect(CGSize(width: 1.25, height: 1.25))
-                        .pickerStyle(MenuPickerStyle())
-                    } // HStackここまで
-                    .foregroundColor(Color(.backgroundNavy))
-                    .frame(width: 200)
-                    .padding()
-                    // 音設定
-                    HStack {
-                        Text("音")
-                            .font(.title2)
-                            .foregroundColor(Color(.backgroundNavy))
-                        Spacer()
+                    VStack {
+                        // 音声ガイドボタン
                         Button(action: {
-                            isShowSheet.toggle()
+                            isAudioGuideOn.toggle()
                         }) {
-                            Text("\(viewModel.selectedSoundName.rawValue)>")
-                                .font(.title2)
+                            // 音声ガイドアイコン
+                            speakerIcon
+                                .frame(width: 30, height: 30)
                                 .foregroundColor(Color(.backgroundNavy))
-                        }
-                    } // HStackここまで
-                    .frame(width: 200)
-                    .padding()
-                    // はじめるボタン
-                    Button(action: {
-                        isShowFullScreen.toggle()
-                    }) {
-                        Text("はじめる")
-                            .font(.title)
-                            .foregroundColor(Color(.keyWhite))
-                            .padding(25.0)
-                            .background(Color(.backgroundNavy))
-                            .cornerRadius(10)
-                    }
-                    .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                        MeditatingView(viewModel: MeditatingSetViewModel())
-                    })
-                    .padding()
+                                .font(.title)
+                        } // Buttonここまで
+                        // ON、OFFのテキスト表示
+                        speakerStatusText
+                            .frame(width: 30, height: 5)
+                            .font(.caption2)
+                            .foregroundColor(Color(.backgroundNavy))
+                    } // VStackここまで
+                } // HStackここまで
+                .frame(width: 200)
+                .padding()
+                // 時間設定
+                HStack {
+                    Text("時間")
+                        .font(.title2)
+                        .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                } // VStackここまで
-            } // ZStackここまで
+                    Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                        ForEach(minutesOptions, id: \.self) { minutes in
+                            Text("\(minutes)分")
+                        } // ForEachここまで
+                    } // Pickerここまで
+                    .colorMultiply(Color(.backgroundNavy))
+                    .scaleEffect(CGSize(width: 1.25, height: 1.25))
+                    .pickerStyle(MenuPickerStyle())
+                } // HStackここまで
+                .foregroundColor(Color(.backgroundNavy))
+                .frame(width: 200)
+                .padding()
+                // 音設定
+                HStack {
+                    Text("音")
+                        .font(.title2)
+                        .foregroundColor(Color(.backgroundNavy))
+                    Spacer()
+                    Button(action: {
+                        isShowSheet.toggle()
+                    }) {
+                        Text("\(viewModel.selectedSoundName.rawValue)>")
+                            .font(.title2)
+                            .foregroundColor(Color(.backgroundNavy))
+                    }
+                } // HStackここまで
+                .frame(width: 200)
+                .padding()
+                // はじめるボタン
+                Button(action: {
+                    isShowFullScreen.toggle()
+                }) {
+                    Text("はじめる")
+                        .font(.title)
+                        .foregroundColor(Color(.keyWhite))
+                        .padding(25.0)
+                        .background(Color(.backgroundNavy))
+                        .cornerRadius(10)
+                }
+                .fullScreenCover(isPresented: $isShowFullScreen, content: {
+                    MeditatingView(viewModel: viewModel)
+                })
+                .padding()
+                Spacer()
+            } // VStackここまで
+        } // ZStackここまで
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(isShowSheet: $isShowSheet)
+            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
 } // MeditationViewここまで
