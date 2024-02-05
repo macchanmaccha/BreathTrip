@@ -34,7 +34,7 @@ struct SelectSoundView: View {
                         Button(action: {
                             // 音を再生するなどのアクションを実行
                             isShowSheet.toggle()
-                            viewModel.selectedSoundName = sound
+                            viewModel.setSelectedSoundName(soundName: sound)
                         }) {
                             Text(sound.rawValue)
                         } // Buttonここまで

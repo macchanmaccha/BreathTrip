@@ -9,7 +9,7 @@ import SwiftUI
 
 class MeditatingSetViewModel: ObservableObject {
     // 瞑想画面での状態　初期値はend
-    @Published var state: State = .end
+    @Published private(set) var state: State = .end
     enum State {
         case preStart  // 瞑想前タイマーカウントダウン
         case prePause  // 瞑想前タイマー中断
@@ -17,23 +17,31 @@ class MeditatingSetViewModel: ObservableObject {
         case pause     // 瞑想タイマー中断
         case end       // 瞑想終了
     } // enumここまで
-    // 瞑想前カウントダウンの変数
-    @Published var preparationCountDown = 5
     // 瞑想中タイマーの分数・秒数を管理する変数
-    @Published var remainingSeconds: Int = 0
-    // 瞑想前中断中タイマーを保存する変数 初期値は5
-    @Published var interruptingPreparationTimer: Int = 5
-    // 瞑想中断中タイマーを保存する変数
-    @Published var interruptingMeditationTimer: Int = 0
+    @Published private(set) var remainingSeconds: Int = 0
     // 選択する時間を管理する変数
-    @AppStorage("timer_Value") var selectedMinutes: Int = 1
+    @Published var selectedMinutes: Int = 1
     // 選択した音を表示する変数
-    @Published var selectedSoundName: SoundModel = .europe1
+    @Published private(set) var selectedSoundName: SoundModel = .europe1
+
     // タイマー
     private var timerHandler: Timer?
+
+    // タイマーの初期値をセット
+    func setFirstTimer() {
+        remainingSeconds = 5
+    }
+
+    // 状態の更新
+    func updateState(newState: State) {
+        state = newState
+    }
+    func setSelectedSoundName(soundName: SoundModel) {
+        selectedSoundName = soundName
+    }
+
     // 瞑想前タイマー
     func startPreparationTimer() {
-        preparationCountDown = interruptingPreparationTimer
         timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
@@ -41,30 +49,32 @@ class MeditatingSetViewModel: ObservableObject {
             // preStartのとき
             if state == .preStart {
                 // 1より大きいとき
-                if preparationCountDown > 1 {
+                if remainingSeconds > 1 {
                     // 1ずつマイナス
-                    preparationCountDown -= 1
+                    remainingSeconds -= 1
                     // 1の場合（0秒となる前）
-                } else if preparationCountDown == 1 {
+                } else if remainingSeconds == 1 {
+                    //　瞑想中タイマーの初期値をセット
+                    remainingSeconds = selectedMinutes * 60
+
                     // 状態をstartに
                     state = .start
-                    // タイマー停止・無効
-                    stopTimer()
-                    // 瞑想タイマー関数の呼び出し
-                    startMeditationTimer()
+//                    // タイマー停止・無効
+//                    stopTimer()
+//                    // 瞑想タイマー関数の呼び出し
+//                    startMeditationTimer()
                     // タイマーが有効かチェック
                     print("\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))")
                 }
                 // pauseのとき
             } else if state == .prePause {
-                // タイマー停止・無効
-                stopTimer()
+//                // タイマー停止・無効
+//                stopTimer()
             }
         }
     }
     // 瞑想中タイマー
     func startMeditationTimer() {
-        remainingSeconds = interruptingMeditationTimer > 0 ? interruptingMeditationTimer : selectedMinutes * 60
         timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
@@ -80,13 +90,13 @@ class MeditatingSetViewModel: ObservableObject {
                 } else if remainingSeconds == 1 {
                     // end
                     state = .end
-                    // タイマー停止・無効
-                    stopTimer()
+//                    // タイマー停止・無効
+//                    stopTimer()
                 }
                 // pauseのとき
             } else if state == .pause {
-                // タイマー停止・無効
-                stopTimer()
+//                // タイマー停止・無効
+//                stopTimer()
             }
         }
     } // startMeditationTimer
@@ -107,3 +117,4 @@ class MeditatingSetViewModel: ObservableObject {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 } // MeditatingViewModel
+
