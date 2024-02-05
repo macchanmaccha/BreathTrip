@@ -59,17 +59,9 @@ class MeditatingSetViewModel: ObservableObject {
 
                     // 状態をstartに
                     state = .start
-//                    // タイマー停止・無効
-//                    stopTimer()
-//                    // 瞑想タイマー関数の呼び出し
-//                    startMeditationTimer()
                     // タイマーが有効かチェック
                     print("\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))")
                 }
-                // pauseのとき
-            } else if state == .prePause {
-//                // タイマー停止・無効
-//                stopTimer()
             }
         }
     }
@@ -90,13 +82,7 @@ class MeditatingSetViewModel: ObservableObject {
                 } else if remainingSeconds == 1 {
                     // end
                     state = .end
-//                    // タイマー停止・無効
-//                    stopTimer()
                 }
-                // pauseのとき
-            } else if state == .pause {
-//                // タイマー停止・無効
-//                stopTimer()
             }
         }
     } // startMeditationTimer
