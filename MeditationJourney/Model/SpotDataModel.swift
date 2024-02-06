@@ -11,6 +11,8 @@ import MapKit
 // Identifiableプロトコルを利用して、ピンのスポットの情報をまとめる構造体
 struct SpotDataModel: Identifiable {
     let id = UUID()
+    // 場所の名前
+    let spotName: String
     // 緯度
     let latitude: Double
     // 経度
