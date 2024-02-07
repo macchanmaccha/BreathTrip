@@ -13,7 +13,7 @@ struct MeditationSetView: View {
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // 音声ガイドToggleを管理する変数
-    @State private var isAudioGuideOn: Bool = false
+    @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
     // 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
         isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
