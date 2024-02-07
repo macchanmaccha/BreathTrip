@@ -26,7 +26,7 @@ struct MeditatingView: View {
                 // preStartまたはprePauseのとき
                 if viewModel.state == .preStart || viewModel.state == .prePause {
                     // 以下テキストを表示
-                    Text("開始まで\n\(viewModel.preparationCountDown)")
+                    Text("開始まで\n\(viewModel.remainingSeconds)")
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 30))
@@ -48,11 +48,11 @@ struct MeditatingView: View {
                         // preStartだったら
                         if viewModel.state == .preStart {
                             // prePauseにする
-                            viewModel.state = .prePause
+                            viewModel.updateState(newState: .prePause)
                             // startだったら
                         } else if viewModel.state == .start {
                             // pauseにする
-                            viewModel.state = .pause
+                            viewModel.updateState(newState: .pause)
                         }
                         print("中断ボタンが押されたよ")
                         print(viewModel.remainingSeconds)
@@ -69,20 +69,12 @@ struct MeditatingView: View {
                         Button("NO") {
                             // prePauseだったら
                             if viewModel.state == .prePause {
-                                // 開始前残り秒数を格納する
-                                viewModel.interruptingPreparationTimer = viewModel.preparationCountDown
                                 // preStartにする
-                                viewModel.state = .preStart
-                                // 瞑想前タイマーを再開
-                                viewModel.startPreparationTimer()
+                                viewModel.updateState(newState: .preStart)
                                 // pauseだったら
                             } else if viewModel.state == .pause {
-                                // 瞑想中残り秒数を格納する
-                                viewModel.interruptingMeditationTimer = viewModel.remainingSeconds
                                 // startにする
-                                viewModel.state = .start
-                                // 瞑想タイマーを再開
-                                viewModel.startMeditationTimer()
+                                viewModel.updateState(newState: .start)
                             }
                         }
                         // YES
@@ -99,21 +91,35 @@ struct MeditatingView: View {
         } // ZStack
         .onAppear {
             // 画面起動時にprestart状態にする
-            viewModel.state = .preStart
-            // 瞑想前タイマーの呼出
-            viewModel.startPreparationTimer()
+            viewModel.updateState(newState: .preStart)
+            // 画面起動時に瞑想前タイマー5秒をセットする
+            viewModel.setFirstTimer()
+//            // 瞑想前タイマーの呼出
+//            viewModel.startPreparationTimer()
         }
         .onChange(of: viewModel.state) {
             switch viewModel.state {
-            case .preStart: break
+            case .preStart:
+                // タイマー停止・無効
+                viewModel.stopTimer()
+                // 瞑想前タイマーの呼出
+                viewModel.startPreparationTimer()
             case .prePause:
+                // タイマー停止・無効
+                viewModel.stopTimer()
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
-            case .start: break
+            case .start:
+                // 瞑想タイマーの呼出
+                viewModel.startMeditationTimer()
             case .pause:
+                // タイマー停止・無効
+                viewModel.stopTimer()
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
+                // タイマー停止・無効
+                viewModel.stopTimer()
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
