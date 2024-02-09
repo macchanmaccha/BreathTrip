@@ -14,9 +14,9 @@ struct SelectSoundView: View {
     @ObservedObject var viewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
     // 音Grid
-    var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
-    // 選択した大陸（初期値はヨーロッパ）
-    var selectedContinent: ContinentModel
+    private(set) var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
+    // 選択した大陸
+    private(set) var selectedContinent: ContinentModel
     var body: some View {
         ZStack {
             Image(.settingsBackground)
