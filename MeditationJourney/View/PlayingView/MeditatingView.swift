@@ -94,14 +94,10 @@ struct MeditatingView: View {
             viewModel.updateState(newState: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
-//            // 瞑想前タイマーの呼出
-//            viewModel.startPreparationTimer()
         }
         .onChange(of: viewModel.state) {
             switch viewModel.state {
             case .preStart:
-                // タイマー停止・無効
-                viewModel.stopTimer()
                 // 瞑想前タイマーの呼出
                 viewModel.startPreparationTimer()
             case .prePause:

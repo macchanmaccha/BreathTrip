@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeditationSetView: View {
     // MeditatingSetViewModelをインスタンス化
-    @StateObject var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // 音声ガイドToggleを管理する変数
@@ -24,9 +24,9 @@ struct MeditationSetView: View {
         Text(isAudioGuideOn ? "ON" : "OFF")
     } // speakerStatusTextここまで
     // フルスクリーンを管理する変数
-    @State var isShowFullScreen: Bool = false
+    @State private var isShowFullScreen: Bool = false
     // 選択できる分数
-    let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
+    private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
         ZStack {
             Image(.settingsBackground)

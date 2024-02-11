@@ -17,18 +17,12 @@ class MeditatingSetViewModel: ObservableObject {
         case pause     // 瞑想タイマー中断
         case end       // 瞑想終了
     } // enumここまで
-//    // 瞑想前カウントダウンの変数
-//    @Published var preparationCountDown = 5
     // 瞑想中タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
-//    // 瞑想前中断中タイマーを保存する変数 初期値は5
-//    @Published var interruptingPreparationTimer: Int = 5
-//    // 瞑想中断中タイマーを保存する変数
-//    @Published var interruptingMeditationTimer: Int = 0
     // 選択する時間を管理する変数
     @AppStorage("timer_Value") var selectedMinutes: Int = 1
     // 選択した音を表示する変数
-    @Published private(set) var selectedSoundName: SoundModel = .europe1
+    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
     // タイマー
     private var timerHandler: Timer?
     // タイマーの初期値(瞑想前タイマー5秒)をセット
@@ -37,6 +31,10 @@ class MeditatingSetViewModel: ObservableObject {
     }
     // 状態の更新
     func updateState(newState: State) {
+        if state == .preStart && newState == .start {
+            // 瞑想タイマーをセット
+            remainingSeconds = selectedMinutes * 60
+        }
       state = newState
     }
     // 音の設定
@@ -45,7 +43,6 @@ class MeditatingSetViewModel: ObservableObject {
     }
     // 瞑想前タイマー
     func startPreparationTimer() {
-//        preparationCountDown = interruptingPreparationTimer
         stopTimer()
         timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
@@ -59,24 +56,13 @@ class MeditatingSetViewModel: ObservableObject {
                     remainingSeconds -= 1
                     // 1の場合（0秒となる前）
                 } else if remainingSeconds == 1 {
-                    // 瞑想タイマーをセット
-                    remainingSeconds = selectedMinutes * 60
-                    // 状態をstartに
-                    state = .start
-//                    // タイマー停止・無効
-//                    stopTimer()
-//                    // 瞑想タイマー関数の呼び出し
-//                    startMeditationTimer()
+                    updateState(newState: .start)
                     // タイマーが有効かチェック
                     print("\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))")
-                }
-                // pauseのとき
-            } else if state == .prePause {
-//                // タイマー停止・無効
-//                stopTimer()
-            }
-        }
-    }
+                } // else ifここまで
+            } // if state == .preStartここまで
+        } // timerHandlerここまで
+    } // funcここまで
     // 瞑想中タイマー
     func startMeditationTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
@@ -96,15 +82,9 @@ class MeditatingSetViewModel: ObservableObject {
                 } else if remainingSeconds == 1 {
                     // end
                     state = .end
-//                    // タイマー停止・無効
-//                    stopTimer()
-                }
-                // pauseのとき
-            } else if state == .pause {
-//                // タイマー停止・無効
-//                stopTimer()
-            }
-        }
+                } // else ifここまで
+            } // if state == .startここまで
+        } // timerHandlerここまで
     } // startMeditationTimer
     // タイマー停止・無効
     func stopTimer() {
@@ -121,5 +101,5 @@ class MeditatingSetViewModel: ObservableObject {
         let seconds = remainingSeconds % 60
         // 〇〇:〇〇表示でリターン
         return String(format: "%02d:%02d", minutes, seconds)
-    }
+    } // func formattedTime()ここまで
 } // MeditatingViewModel
