@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct SelectSoundView: View {
-    // 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) private var dismiss
     // viewModel
     @ObservedObject var viewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
-    // 音Grid
-    private(set) var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     // 選択した大陸
-    private(set) var selectedContinent: ContinentModel
+    let selectedContinent: ContinentModel
+    // 画面を閉じるプロパティラッパー
+    @Environment(\.dismiss) private var dismiss
+    // 音Grid
+    private let columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
         ZStack {
             Image(.settingsBackground)

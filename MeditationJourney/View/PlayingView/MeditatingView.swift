@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct MeditatingView: View {
-    // 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) private var dismiss
     // viewModel
     @ObservedObject var viewModel: MeditatingSetViewModel
     // 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     // 瞑想終了アラートを管理する変数
     @State private var isShowEndAlert: Bool = false
+    // 画面を閉じるプロパティラッパー
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack {
             Image(.playBackground)
