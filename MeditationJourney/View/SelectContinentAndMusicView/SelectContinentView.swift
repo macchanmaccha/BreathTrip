@@ -11,7 +11,7 @@ struct SelectContinentView: View {
     @ObservedObject var viewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
     // 大陸の配列
-    @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     var body: some View {
         NavigationStack {
             ZStack {
