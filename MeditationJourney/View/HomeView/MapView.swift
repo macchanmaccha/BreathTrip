@@ -17,17 +17,21 @@ struct MapView: View {
         span: MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
     ))
     var body: some View {
-        // 地図の表示およびマーカーの表示
-        Map(position: $region) {
-            ForEach(viewModel.spotList, id: \.id) { spot in
-                Marker(spot.spotName, coordinate: spot.coordinate)
-            } // ForEach
-        } // Map
-        .ignoresSafeArea()
+        GeometryReader { geometry in
+            VStack {
+                // 地図の表示およびマーカーの表示
+                Map(position: $region) {
+                    ForEach(viewModel.spotList, id: \.id) { spot in
+                        Marker(spot.spotName, coordinate: spot.coordinate)
+                    } // ForEach
+                } // Map
+            } // VStack
+            // Safe Areaの余白を考慮する
+            .padding(.bottom, geometry.safeAreaInsets.bottom)
+        } // GeometryReader
         .onAppear {
             viewModel.fetchSpotList()
         } // .onAppearここまで
-        .accentColor(.blue)
     } // bodyここまで
 } // Mapここまで
 #Preview {
