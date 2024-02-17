@@ -10,14 +10,14 @@ import MapKit
 
 struct MapView: View {
     // マップの中心の情報、緯度経度、範囲
-    @State private var region = MKCoordinateRegion(
+    @State private var region: MapCameraPosition = .region(MKCoordinateRegion(
         center: .init(latitude: 35.682839, longitude: 139.759455),
         span: MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
-    )
+    ))
     @StateObject var viewModel: SpotListViewModel = SpotListViewModel()
     var body: some View {
         // 地図の表示
-        Map {
+        Map(position: $region) {
             ForEach(viewModel.spotList, id: \.id) { spot in
                 Marker(spot.spotName, coordinate: spot.coordinate)
             } // ForEach
