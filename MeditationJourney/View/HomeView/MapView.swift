@@ -9,28 +9,25 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    // マップ表示　緯度経度　範囲の情報
-    @State private var position: MapCameraPosition = .region(MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 35.682839, longitude: 139.759455),
+    // マップの中心の情報、緯度経度、範囲
+    @State private var region: MapCameraPosition = .region(MKCoordinateRegion(
+        center: .init(latitude: 35.682839, longitude: 139.759455),
         span: MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
     ))
     @StateObject var viewModel: SpotListViewModel = SpotListViewModel()
     var body: some View {
-        Map(position: $position) {
-                } // Mapここまで
-    // 地図の表示
-    //        Map(coordinateRegion: $region,
-    //            annotationItems: spotListViewModel.spotList,
-    //            annotationContent: { spot in
-    //            MapMarker(coordinate: spot.coordinate, tint: .red)
-    //        })
+        // 地図の表示
+        Map {
+            ForEach(viewModel.spotList, id: \.id) { spot in
+                Marker(spot.spotName, coordinate: spot.coordinate)
+            } // ForEach
+        } // Map
         .ignoresSafeArea()
         .onAppear {
             viewModel.fetchSpotList()
         } // .onAppearここまで
-} // bodyここまで
-}
-
+    } // bodyここまで
+} // Mapここまで
 #Preview {
     MapView()
 }
