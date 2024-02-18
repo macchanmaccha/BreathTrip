@@ -24,18 +24,14 @@ struct MapView: View {
                     Marker(spot.spotName, coordinate: spot.coordinate)
                 } // ForEach
             } // Map
+            // ダークモード
             .colorScheme(.dark)
         } // VStack
-//        .safeAreaInset(edge: .bottom) {
-//            
-//        }
-//        .background(Color(.backgroundNavy))
-//        .onChange(of: region) {
-//            region = .automatic
-//        }
         .onAppear {
             viewModel.fetchSpotList()
         } // .onAppearここまで
+        // タブ背景色の設定
+        .toolbarBackground(Color(.backgroundNavy), for: .tabBar)
     } // bodyここまで
 } // Mapここまで
 #Preview {
