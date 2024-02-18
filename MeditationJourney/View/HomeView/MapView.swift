@@ -27,6 +27,8 @@ struct MapView: View {
             // ダークモード
             .colorScheme(.dark)
         } // VStack
+        // タブ背景色の設定
+        .toolbarBackground(Color(.backgroundNavy), for: .tabBar)
         .onAppear {
             viewModel.fetchSpotList()
         } // .onAppearここまで
