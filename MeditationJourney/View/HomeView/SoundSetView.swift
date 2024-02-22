@@ -14,17 +14,6 @@ struct SoundSetView: View {
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
-    // 音声ガイドToggleを管理する変数
-    @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
-    // 音声ガイドのアイコンを管理
-    private var speakerIcon: some View {
-        isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
-        Image(systemName: "speaker.slash.fill")
-    } // speakerIconここまで
-    // 音声ガイドONOFFを管理する変数
-    private var speakerStatusText: Text {
-        Text(isAudioGuideOn ? "ON" : "OFF")
-    } // speakerStatusTextここまで
     // 選択できる分数
     private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60]
     var body: some View {
@@ -46,23 +35,6 @@ struct SoundSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    VStack {
-                        // 音声ガイドボタン
-                        Button(action: {
-                            isAudioGuideOn.toggle()
-                        }) {
-                            // 音声ガイドアイコン
-                            speakerIcon
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(Color(.backgroundNavy))
-                                .font(.title)
-                        } // Buttonここまで
-                        // ON、OFFのテキスト表示
-                        speakerStatusText
-                            .frame(width: 30, height: 5)
-                            .font(.caption2)
-                            .foregroundColor(Color(.backgroundNavy))
-                    } // VStackここまで
                 } // HStackここまで
                 .frame(width: 200)
                 .padding()
