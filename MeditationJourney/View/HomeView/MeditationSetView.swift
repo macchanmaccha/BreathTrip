@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct MeditationSetView: View {
+    // MeditatingSetViewModelをインスタンス化
+    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
+    // フルスクリーンを管理する変数
+    @State private var isShowFullScreen: Bool = false
     // 音声ガイドToggleを管理する変数
-    @State private var isAudioGuideOn: Bool = false
-    // 選択する時間を管理する変数
-    @AppStorage("timer_Value") var selectedMinutes: Int = 1
-    // 選択した音を表示する変数
-    @AppStorage("selected_SoundName") var selectedSoundName: SoundModel = .europe1
-    // MinutesModel
-    @State var model: MinutesModel = MinutesModel()
+    @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
     // 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
         isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
@@ -27,8 +25,8 @@ struct MeditationSetView: View {
     private var speakerStatusText: Text {
         Text(isAudioGuideOn ? "ON" : "OFF")
     } // speakerStatusTextここまで
-    // フルスクリーンを管理する変数
-    @State var isShowFullScreen: Bool = false
+    // 選択できる分数
+    private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -74,8 +72,8 @@ struct MeditationSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $selectedMinutes) {
-                        ForEach(model.minutesOptions, id: \.self) { minutes in
+                    Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                        ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで
                     } // Pickerここまで
@@ -95,7 +93,7 @@ struct MeditationSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(selectedSoundName.rawValue)>")
+                        Text("\(viewModel.selectedSoundName.rawValue)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -114,7 +112,7 @@ struct MeditationSetView: View {
                         .cornerRadius(10)
                 }
                 .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    MeditatingView(viewModel: MeditatingViewModel(selectedMinutes: selectedMinutes))
+                    MeditatingView(viewModel: viewModel)
                 })
                 .padding()
                 Spacer()
@@ -123,7 +121,7 @@ struct MeditationSetView: View {
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(isShowSheet: $isShowSheet, selectedSoundName: $selectedSoundName)
+            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
 } // MeditationViewここまで

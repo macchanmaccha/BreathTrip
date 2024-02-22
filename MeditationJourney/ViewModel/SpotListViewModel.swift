@@ -9,7 +9,7 @@ import SwiftUI
 
 class SpotListViewModel: ObservableObject {
     // スポットリスト（緯度経度の情報）
-    @Published var spotList: [SpotDataModel] = []
+    @Published private(set) var spotList: [SpotDataModel] = []
     // モデルのインスタンス化
     private let spotListModel: SpotListModel = SpotListModel()
     func fetchSpotList() {
