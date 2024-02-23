@@ -30,14 +30,6 @@ struct SoundSetView: View {
                 .frame(width: 400, height: 400)
             VStack {
                 Spacer()
-                HStack {
-                    Text("音声ガイド")
-                        .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
-                    Spacer()
-                } // HStackここまで
-                .frame(width: 200)
-                .padding()
                 // 時間設定
                 HStack {
                     Text("時間")
