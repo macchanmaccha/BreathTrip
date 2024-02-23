@@ -9,17 +9,14 @@ import SwiftUI
 
 struct SelectSoundView: View {
     // viewModel
-    @StateObject var viewModel: ContinentAndSoundViewModel = ContinentAndSoundViewModel()
-    // シート変数
+    @ObservedObject var viewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
-    // 選択した音の名前を管理する変数
-    @Binding var selectedSoundName: SoundModel
+    // 選択した大陸
+    let selectedContinent: ContinentModel
     // 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     // 音Grid
-    var columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
-    // 選択した大陸（初期値はヨーロッパ）
-    var selectedContinent: ContinentModel = .europe
+    private let columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -27,7 +24,6 @@ struct SelectSoundView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Spacer(minLength: 80)
                 Text("音を選択")
                     .foregroundColor(Color(.keyWhite))
                     .font(.title)
@@ -38,7 +34,7 @@ struct SelectSoundView: View {
                         Button(action: {
                             // 音を再生するなどのアクションを実行
                             isShowSheet.toggle()
-                            selectedSoundName = sound
+                            viewModel.setSelectedSoundName(soundName: sound)
                         }) {
                             Text(sound.rawValue)
                         } // Buttonここまで
@@ -46,21 +42,30 @@ struct SelectSoundView: View {
                         .background(Color(.keyWhite).opacity(0.6))
                         .foregroundColor(Color(.backgroundNavy))
                         .cornerRadius(8)
-                    } // ForEacnここまで
+                    } // ForEachここまで
                 } // LazyVGridここまで
                 // LazyVGridの幅を調整
                 .frame(maxWidth: 300, alignment: .center)
                 .padding(10)
-                Spacer(minLength: 80)
             } // VStackここまで
         } // ZStackここまで
         .navigationBarBackButtonHidden(true)
+        // 前画面へ戻る
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     dismiss()
                 }) {
-                    Text("＜Back")
+                    Image(systemName: "chevron.backward")
+                        .tint(Color(.keyWhite))
+                } // Buttonここまで
+            } // ToolbarItemここまで
+            // シートを閉じる
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    isShowSheet.toggle()
+                }) {
+                    Image(systemName: "xmark")
                         .tint(Color(.keyWhite))
                 } // Buttonここまで
             } // ToolbarItemここまで
@@ -69,5 +74,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: ContinentAndSoundViewModel(), isShowSheet: Binding.constant(true), selectedSoundName: Binding.constant(.europe1), selectedContinent: ContinentModel.europe)
+    SelectSoundView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
 }

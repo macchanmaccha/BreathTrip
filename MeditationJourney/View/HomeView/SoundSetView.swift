@@ -1,23 +1,21 @@
 //
-//  SoundSetView.swift
+//  SelectContinentMusicView.swift
 //  MeditationJourney
 //
-//  Created by apple on 2023/09/17.
+//  Created by apple on 2023/10/09.
 //
 
 import SwiftUI
 
 struct SoundSetView: View {
+    // MeditatingSetViewModelをインスタンス化
+    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
-    // 選択する時間を管理する変数
-    @AppStorage("timer_Value") var selectedMinutes: Int = 1
-    // 選択した音を表示する変数
-    @AppStorage("selected_SoundName") var selectedSoundName: SoundModel = .europe1
-    // MinutesModel
-    @State var model: MinutesModel = MinutesModel()
     // フルスクリーンを管理する変数
-    @State var isShowFullScreen: Bool = false
+    @State private var isShowFullScreen: Bool = false
+    // 選択できる分数
+    private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60]
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -38,8 +36,8 @@ struct SoundSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $selectedMinutes) {
-                        ForEach(model.minutesOptions, id: \.self) { minutes in
+                    Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                        ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで
                     } // Pickerここまで
@@ -59,7 +57,7 @@ struct SoundSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(selectedSoundName.rawValue)>")
+                        Text("\(viewModel.selectedSoundName.rawValue)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -73,12 +71,12 @@ struct SoundSetView: View {
                     Text("はじめる")
                         .font(.title)
                         .foregroundColor(Color(.keyWhite))
-                        .padding(25)
+                        .padding(25.0)
                         .background(Color(.backgroundNavy))
                         .cornerRadius(10)
                 }
                 .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    ListeningToSoundView(viewModel: ListeningToSoundViewModel(selectedMinutes: selectedMinutes))
+                    MeditatingView(viewModel: viewModel)
                 })
                 .padding()
                 Spacer()
@@ -87,20 +85,11 @@ struct SoundSetView: View {
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(isShowSheet: $isShowSheet, selectedSoundName: $selectedSoundName)
+            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
-} // MeditationViewここまで
+    } // SoundSetViewここまで
 
-struct SoundSetView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            SoundSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 15"))  // ✅ タブの表示名
-                .previewDisplayName("iPhone 15")  // ✅ プレビューする端末（プレビューデバイス）を指定
-            SoundSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPad Air (5th generation)"))
-                .previewDisplayName("iPad Air (5th generation)")
-        }
-    }
+#Preview {
+    SelectSoundView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
 }
