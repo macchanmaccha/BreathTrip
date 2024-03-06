@@ -18,11 +18,11 @@ class MeditatingSetViewModel: ObservableObject {
         case end       // 瞑想終了
     } // enumここまで
     // 選択した音を表示する変数
-    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
+    var selectedSoundName: SoundModel = .europe1
     // 瞑想中タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     // 選択する時間を管理する変数
-    @AppStorage("timer_Value") var selectedMinutes: Int = 1
+    @AppStorage("timer_Value") var selectedMinutes: Int = 10
     // タイマー
     private var timerHandler: Timer?
     // タイマーの初期値(瞑想前タイマー5秒)をセット
