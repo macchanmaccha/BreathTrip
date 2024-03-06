@@ -15,7 +15,8 @@ struct SoundSetView: View {
     // フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
     // 選択できる分数
-    private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60]
+    private let minutesOptions: [Int?] = [10, 20, 30, 40, 50, 60, nil]
+    @State private var noSelection: Int? = 10
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -36,9 +37,13 @@ struct SoundSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                    Picker("時間を選ぶ", selection: $noSelection) {
                         ForEach(minutesOptions, id: \.self) { minutes in
-                            Text("\(minutes)分")
+                            if let minutes = minutes {
+                                Text("\(minutes)分")
+                            } else {
+                                Text("制限なし")
+                            }
                         } // ForEachここまで
                     } // Pickerここまで
                     .colorMultiply(Color(.backgroundNavy))
@@ -88,7 +93,7 @@ struct SoundSetView: View {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
-    } // SoundSetViewここまで
+} // SoundSetViewここまで
 
 #Preview {
     SelectSoundView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
