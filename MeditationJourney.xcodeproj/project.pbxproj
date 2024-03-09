@@ -198,7 +198,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					1863E1DD2AAD81BE00543D18 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -270,7 +270,6 @@
 				180644612AB6944B0080EEFF /* ListeningSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,
-				18916B442B9614B7005E4516 /* ListeningView.swift in Sources */,
 				1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */,
 				18916B482B983AD1005E4516 /* ListeningView.swift in Sources */,
 				181FC2942B20A2540033D136 /* SoundModel.swift in Sources */,

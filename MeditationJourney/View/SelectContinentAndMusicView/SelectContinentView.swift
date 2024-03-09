@@ -8,7 +8,7 @@ import SwiftUI
 
 struct SelectContinentView: View {
     // meditatingSetViewModel
-    @StateObject var meditatingSetViewModel: MeditatingSetViewModel
+    @ObservedObject var meditatingSetViewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
     // 大陸の配列
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
