@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SelectSoundView: View {
     // viewModel
-    @ObservedObject var viewModel: MeditatingSetViewModel
+    @StateObject var viewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
     // 選択した大陸
     let selectedContinent: ContinentModel

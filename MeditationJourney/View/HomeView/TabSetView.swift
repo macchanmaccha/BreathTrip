@@ -23,7 +23,7 @@ struct TabSetView: View {
                 }
                 .tag(1)
             // 音設定画面へ遷移
-            SoundSetView()
+            ListeningSetView()
                 .tabItem {
                     Label("音をきく", systemImage: "music.quarternote.3")
                 }
