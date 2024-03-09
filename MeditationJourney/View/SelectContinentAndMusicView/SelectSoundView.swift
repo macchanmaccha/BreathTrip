@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SelectSoundView: View {
-    // viewModel
-    @StateObject var viewModel: MeditatingSetViewModel
+    // meditatingSetViewModel
+    @StateObject var meditatingSetViewModel: MeditatingSetViewModel
     @Binding var isShowSheet: Bool
     // 選択した大陸
     let selectedContinent: ContinentModel
@@ -34,7 +34,7 @@ struct SelectSoundView: View {
                         Button(action: {
                             // 音を再生するなどのアクションを実行
                             isShowSheet.toggle()
-                            viewModel.setSelectedSoundName(soundName: sound)
+                            meditatingSetViewModel.setSelectedSoundName(soundName: sound)
                         }) {
                             Text(sound.rawValue)
                         } // Buttonここまで
@@ -74,5 +74,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
+    SelectSoundView(meditatingSetViewModel: MeditatingSetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
 }

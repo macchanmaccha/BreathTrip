@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ListeningSetView: View {
-    // MeditatingSetViewModelをインスタンス化
-    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    // listeningSetViewModelをインスタンス化
+    @StateObject private var listeningSetViewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
@@ -36,7 +36,7 @@ struct ListeningSetView: View {
                            .font(.title2)
                            .foregroundColor(Color(.backgroundNavy))
                        Spacer()
-                       Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                       Picker("時間を選ぶ", selection: $listeningSetViewModel.selectedMinutes) {
                            ForEach(minutesOptions, id: \.self) { minutes in
                                if let minutes = minutes {
                                    Text("\(minutes)分")
@@ -61,7 +61,7 @@ struct ListeningSetView: View {
                        Button(action: {
                            isShowSheet.toggle()
                        }) {
-                           Text("\(viewModel.selectedSoundName.rawValue)>")
+                           Text("\(listeningSetViewModel.selectedSoundName.rawValue)>")
                                .font(.title2)
                                .foregroundColor(Color(.backgroundNavy))
                        }
@@ -89,7 +89,7 @@ struct ListeningSetView: View {
            .accentColor(.blue)
            // シート
            .sheet(isPresented: $isShowSheet, content: {
-               SelectContinentView(viewModel: MeditatingSetViewModel(), isShowSheet: $isShowSheet)
+               SelectContinentView(meditatingSetViewModel: MeditatingSetViewModel(), isShowSheet: $isShowSheet)
            })
     } // bodyここまで
 } // SoundSetViewここまで

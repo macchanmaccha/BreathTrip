@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeditationSetView: View {
     // MeditatingSetViewModelをインスタンス化
-    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    @StateObject private var meditatingSetViewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
@@ -72,7 +72,7 @@ struct MeditationSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                    Picker("時間を選ぶ", selection: $meditatingSetViewModel.selectedMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで
@@ -93,7 +93,7 @@ struct MeditationSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(viewModel.selectedSoundName.rawValue)>")
+                        Text("\(meditatingSetViewModel.selectedSoundName.rawValue)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -112,7 +112,7 @@ struct MeditationSetView: View {
                         .cornerRadius(10)
                 }
                 .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    MeditatingView(viewModel: viewModel)
+                    MeditatingView(meditatingSetViewModel: meditatingSetViewModel)
                 })
                 .padding()
                 Spacer()
@@ -121,7 +121,7 @@ struct MeditationSetView: View {
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
+            SelectContinentView(meditatingSetViewModel: meditatingSetViewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
 } // MeditationViewここまで

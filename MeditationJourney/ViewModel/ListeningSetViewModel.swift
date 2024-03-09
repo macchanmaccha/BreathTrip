@@ -12,11 +12,7 @@ class ListeningSetViewModel: ObservableObject {
     @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
     // 選択する時間を管理する変数
     @AppStorage("soundTimer_Value") var selectedMinutes: Int = 10
-    enum ListeningSet {
-        case set
-        case nonSet
-    }
     var body: some View {
-        Text("Hello, SoundSetViewModel!")
+        Text("Hello, ListeningSetViewModel!")
     } // bodyここまで
 } // SoundSetViewModelここまで

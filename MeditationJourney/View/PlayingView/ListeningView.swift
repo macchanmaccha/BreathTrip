@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ListeningView: View {
-    // viewModel
-    @StateObject var viewModel: ListeningSetViewModel = ListeningSetViewModel()
     var body: some View {
         Text("Hello, World!")
     }
