@@ -121,7 +121,7 @@ struct MeditationSetView: View {
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(meditatingSetViewModel: meditatingSetViewModel, isShowSheet: $isShowSheet)
+            SelectContinentView(setViewModel: meditatingSetViewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
 } // MeditationViewここまで
