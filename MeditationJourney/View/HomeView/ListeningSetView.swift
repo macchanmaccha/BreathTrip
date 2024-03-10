@@ -93,7 +93,7 @@ struct ListeningSetView: View {
            .accentColor(.blue)
            // シート
            .sheet(isPresented: $isShowSheet, content: {
-               SelectContinentView(meditatingSetViewModel: MeditatingSetViewModel(), isShowSheet: $isShowSheet)
+               SelectContinentView(setViewModel: listeningSetViewModel, isShowSheet: $isShowSheet)
            })
     } // bodyここまで
 } // SoundSetViewここまで
