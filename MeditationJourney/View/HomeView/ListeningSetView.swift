@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ListeningSetView: View {
-    // MeditatingSetViewModelをインスタンス化
-    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    // listeningSetViewModelをインスタンス化
+    @StateObject private var listeningSetViewModel: ListeningSetViewModel = ListeningSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
     // 選択できる分数
-    private let minutesOptions: [Int?] = [20, 30, 40, 50, 60, nil]
+    private let minutesOptions: [Int?] = [10, 20, 30, 40, 50, 60, nil]
     var body: some View {
         ZStack {
                Image(.settingsBackground)
@@ -36,14 +36,18 @@ struct ListeningSetView: View {
                            .font(.title2)
                            .foregroundColor(Color(.backgroundNavy))
                        Spacer()
-                       Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
-                           ForEach(minutesOptions, id: \.self) { minutes in
-                               if let minutes = minutes {
-                                   Text("\(minutes)分")
-                               } else {
-                                   Text("制限なし")
+                       Picker("時間を選ぶ", selection: $listeningSetViewModel.selectedMinutes) {
+                           ForEach(minutesOptions.indices, id: \.self) { index in
+                               // minutesがnilでない場合、選択項目表示
+                                   if let minutes = minutesOptions[index] {
+                                       Text("\(minutes)分")
+                                           .tag(index)
+                                   } else {
+                                       // nilの場合、時間制限なしと表示
+                                       Text("時間制限なし")
+                                           .tag(nil as Int?)
+                                   }
                                }
-                           } // ForEachここまで
                        } // Pickerここまで
                        .colorMultiply(Color(.backgroundNavy))
                        .scaleEffect(CGSize(width: 1.25, height: 1.25))
@@ -61,7 +65,7 @@ struct ListeningSetView: View {
                        Button(action: {
                            isShowSheet.toggle()
                        }) {
-                           Text("\(viewModel.selectedSoundName.rawValue)>")
+                           Text("\(listeningSetViewModel.selectedSoundName.rawValue)>")
                                .font(.title2)
                                .foregroundColor(Color(.backgroundNavy))
                        }
@@ -89,7 +93,7 @@ struct ListeningSetView: View {
            .accentColor(.blue)
            // シート
            .sheet(isPresented: $isShowSheet, content: {
-               SelectContinentView(viewModel: MeditatingSetViewModel(), isShowSheet: $isShowSheet)
+               SelectContinentView(meditatingSetViewModel: MeditatingSetViewModel(), isShowSheet: $isShowSheet)
            })
     } // bodyここまで
 } // SoundSetViewここまで
