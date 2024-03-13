@@ -20,4 +20,11 @@ class SetViewModel: ObservableObject {
     func setSelectedSoundName(soundName: SoundModel) {
         selectedSoundName = soundName
     }
+    // タイマー停止・無効
+    func stopTimer() {
+        // タイマー停止
+        timerHandler?.invalidate()
+        // タイマー無効
+        timerHandler = nil
+    }
 } // SoundSetViewModelここまで

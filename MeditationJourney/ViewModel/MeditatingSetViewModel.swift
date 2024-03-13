@@ -74,13 +74,6 @@ class MeditatingSetViewModel: SetViewModel {
             } // if state == .startここまで
         } // timerHandlerここまで
     } // startMeditationTimer
-    // タイマー停止・無効
-    func stopTimer() {
-        // タイマー停止
-        timerHandler?.invalidate()
-        // タイマー無効
-        timerHandler = nil
-    }
     // 分と秒の表示
     func formattedTime() -> String {
         // 60で割ったものを分数表示に
