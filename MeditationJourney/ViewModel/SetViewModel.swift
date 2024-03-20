@@ -9,9 +9,11 @@ import SwiftUI
 
 class SetViewModel: ObservableObject {
     // 選択した音を表示する変数
-    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
+//    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
+    @Published var selectedSoundName: SoundModel = .europe1
     // 選択する時間を管理する変数
-    @AppStorage("timer_Value") var selectedMinutes: Int = 10
+//    @AppStorage("timer_Value") var selectedMinutes: Int = 10
+    @Published var selectedMinutes: Int = 10
     // 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published var remainingSeconds: Int = 0
     // タイマー

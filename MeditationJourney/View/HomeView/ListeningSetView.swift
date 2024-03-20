@@ -10,6 +10,8 @@ import SwiftUI
 struct ListeningSetView: View {
     // listeningSetViewModelをインスタンス化
     @StateObject private var viewModel: ListeningSetViewModel = ListeningSetViewModel()
+    // 選択した音を表示する変数
+    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
