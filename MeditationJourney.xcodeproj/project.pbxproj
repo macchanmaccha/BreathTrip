@@ -16,7 +16,7 @@
 		1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1834BE362AECF43300DD5E92 /* SpotListModel.swift */; };
 		1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */; };
 		183AEA572B393F4800B6E661 /* MeditatingSetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183AEA562B393F4800B6E661 /* MeditatingSetViewModel.swift */; };
-		184FD4012B9E77C5005C2F19 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184FD4002B9E77C5005C2F19 /* SetViewModel.swift */; };
+		184FD4032BAB1BF7005C2F19 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184FD4022BAB1BF7005C2F19 /* SetViewModel.swift */; };
 		185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BE0CF2AEBF0030013649E /* SpotDataModel.swift */; };
 		1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */; };
 		1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863E1E32AAD81BF00543D18 /* TabSetView.swift */; };
@@ -42,7 +42,7 @@
 		1834BE362AECF43300DD5E92 /* SpotListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListModel.swift; sourceTree = "<group>"; };
 		1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListViewModel.swift; sourceTree = "<group>"; };
 		183AEA562B393F4800B6E661 /* MeditatingSetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingSetViewModel.swift; sourceTree = "<group>"; };
-		184FD4002B9E77C5005C2F19 /* SetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
+		184FD4022BAB1BF7005C2F19 /* SetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
 		185BE0CF2AEBF0030013649E /* SpotDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDataModel.swift; sourceTree = "<group>"; };
 		1863E1DE2AAD81BE00543D18 /* MeditationJourney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeditationJourney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationJourneyApp.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
 				183AEA562B393F4800B6E661 /* MeditatingSetViewModel.swift */,
 				18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */,
-				184FD4002B9E77C5005C2F19 /* SetViewModel.swift */,
+				184FD4022BAB1BF7005C2F19 /* SetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -270,7 +270,7 @@
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				183AEA572B393F4800B6E661 /* MeditatingSetViewModel.swift in Sources */,
-				184FD4012B9E77C5005C2F19 /* SetViewModel.swift in Sources */,
+				184FD4032BAB1BF7005C2F19 /* SetViewModel.swift in Sources */,
 				180644612AB6944B0080EEFF /* ListeningSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,

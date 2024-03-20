@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MeditatingView: View {
-    // meditatingSetViewModel
-    @StateObject var meditatingSetViewModel: MeditatingSetViewModel
+    // MeditatingSetViewModel
+    @StateObject var viewModel: MeditatingSetViewModel
     // 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     // 瞑想終了アラートを管理する変数
@@ -24,9 +24,9 @@ struct MeditatingView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 // preStartまたはprePauseのとき
-                if meditatingSetViewModel.state == .preStart || meditatingSetViewModel.state == .prePause {
+                if viewModel.state == .preStart || viewModel.state == .prePause {
                     // 以下テキストを表示
-                    Text("開始まで\n\(meditatingSetViewModel.remainingSeconds)")
+                    Text("開始まで\n\(viewModel.remainingSeconds)")
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 30))
@@ -34,28 +34,28 @@ struct MeditatingView: View {
                         .bold()
                 }
                 // 瞑想中タイマーを表示
-                if meditatingSetViewModel.state == .start || meditatingSetViewModel.state == .pause {
-                    Text(meditatingSetViewModel.formattedTime())
+                if viewModel.state == .start || viewModel.state == .pause {
+                    Text(viewModel.formattedTime())
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
                 }
                 // endでないとき
-                if meditatingSetViewModel.state != .end {
+                if viewModel.state != .end {
                     // 中断ボタン
                     Button(action: {
                         // preStartだったら
-                        if meditatingSetViewModel.state == .preStart {
+                        if viewModel.state == .preStart {
                             // prePauseにする
-                            meditatingSetViewModel.updateState(newState: .prePause)
+                            viewModel.updateState(newState: .prePause)
                             // startだったら
-                        } else if meditatingSetViewModel.state == .start {
+                        } else if viewModel.state == .start {
                             // pauseにする
-                            meditatingSetViewModel.updateState(newState: .pause)
+                            viewModel.updateState(newState: .pause)
                         }
                         print("中断ボタンが押されたよ")
-                        print(meditatingSetViewModel.remainingSeconds)
+                        print(viewModel.remainingSeconds)
                     }) {
                         Text("中断する")
                             .tint(Color(.backgroundNavy))
@@ -68,18 +68,18 @@ struct MeditatingView: View {
                         // NO
                         Button("NO") {
                             // prePauseだったら
-                            if meditatingSetViewModel.state == .prePause {
+                            if viewModel.state == .prePause {
                                 // preStartにする
-                                meditatingSetViewModel.updateState(newState: .preStart)
+                                viewModel.updateState(newState: .preStart)
                                 // pauseだったら
-                            } else if meditatingSetViewModel.state == .pause {
+                            } else if viewModel.state == .pause {
                                 // startにする
-                                meditatingSetViewModel.updateState(newState: .start)
+                                viewModel.updateState(newState: .start)
                             }
                         }
                         // YES
                         Button("YES") {
-                            meditatingSetViewModel.stopTimer()
+                            viewModel.stopTimer()
                             // 設定画面に戻る
                             dismiss()
                         }
@@ -91,35 +91,35 @@ struct MeditatingView: View {
         } // ZStack
         .onAppear {
             // 画面起動時にprestart状態にする
-            meditatingSetViewModel.updateState(newState: .preStart)
+            viewModel.updateState(newState: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
-            meditatingSetViewModel.setFirstTimer()
+            viewModel.setFirstTimer()
         }
-        .onChange(of: meditatingSetViewModel.state) {
-            switch meditatingSetViewModel.state {
+        .onChange(of: viewModel.state) {
+            switch viewModel.state {
             case .preStart:
                 // 瞑想前タイマーの呼出
-                meditatingSetViewModel.startPreparationTimer()
+                viewModel.startPreparationTimer()
             case .prePause:
                 // タイマー停止・無効
-                meditatingSetViewModel.stopTimer()
+                viewModel.stopTimer()
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .start:
                 // 瞑想タイマーの呼出
-                meditatingSetViewModel.startMeditationTimer()
+                viewModel.startMeditationTimer()
             case .pause:
                 // タイマー停止・無効
-                meditatingSetViewModel.stopTimer()
+                viewModel.stopTimer()
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
-                meditatingSetViewModel.stopTimer()
+                viewModel.stopTimer()
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(meditatingSetViewModel.state)")
+            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
@@ -135,6 +135,6 @@ struct MeditatingView: View {
 
 struct MeditatingView_Previews: PreviewProvider {
     static var previews: some View {
-        MeditatingView(meditatingSetViewModel: MeditatingSetViewModel())
+        MeditatingView(viewModel: MeditatingSetViewModel())
     }
 }
