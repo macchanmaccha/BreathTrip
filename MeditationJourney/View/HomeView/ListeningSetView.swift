@@ -10,8 +10,6 @@ import SwiftUI
 struct ListeningSetView: View {
     // listeningSetViewModelをインスタンス化
     @StateObject private var viewModel: ListeningSetViewModel = ListeningSetViewModel()
-    // 選択した音を表示する変数
-    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
@@ -38,7 +36,7 @@ struct ListeningSetView: View {
                            .font(.title2)
                            .foregroundColor(Color(.backgroundNavy))
                        Spacer()
-                       Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                       Picker("時間を選ぶ", selection: $viewModel.selectedListeningMinutes) {
                            ForEach(minutesOptions.indices, id: \.self) { index in
                                // minutesがnilでない場合、選択項目表示
                                    if let minutes = minutesOptions[index] {
@@ -67,7 +65,7 @@ struct ListeningSetView: View {
                        Button(action: {
                            isShowSheet.toggle()
                        }) {
-                           Text("\(viewModel.selectedSoundName.rawValue)>")
+                           Text("\(viewModel.selectedListeningSoundName.rawValue)>")
                                .font(.title2)
                                .foregroundColor(Color(.backgroundNavy))
                        }
@@ -95,7 +93,7 @@ struct ListeningSetView: View {
            .accentColor(.blue)
            // シート
            .sheet(isPresented: $isShowSheet, content: {
-               SelectContinentView(setViewModel: viewModel, isShowSheet: $isShowSheet)
+               SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
            })
     } // bodyここまで
 } // SoundSetViewここまで

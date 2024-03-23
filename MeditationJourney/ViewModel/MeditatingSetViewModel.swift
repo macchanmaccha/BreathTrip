@@ -90,4 +90,8 @@ class MeditatingSetViewModel: SetViewModel {
         // 〇〇:〇〇表示でリターン
         return String(format: "%02d:%02d", minutes, seconds)
     } // func formattedTime()ここまで
+    // 音の設定
+    override func setSelectedSoundName(soundName: SoundModel) {
+        selectedMeditationSoundName = soundName
+    }
 } // MeditatingViewModel

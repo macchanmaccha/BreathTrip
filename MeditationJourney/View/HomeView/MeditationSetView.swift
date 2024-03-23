@@ -72,7 +72,7 @@ struct MeditationSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $viewModel.selectedMinutes) {
+                    Picker("時間を選ぶ", selection: $viewModel.selectedMeditationMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで
@@ -93,7 +93,7 @@ struct MeditationSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(viewModel.selectedSoundName.rawValue)>")
+                        Text("\(viewModel.selectedMeditationSoundName.rawValue)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -121,7 +121,7 @@ struct MeditationSetView: View {
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(setViewModel: viewModel, isShowSheet: $isShowSheet)
+            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
 } // MeditationViewここまで

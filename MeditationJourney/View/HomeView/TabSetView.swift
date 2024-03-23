@@ -15,7 +15,7 @@ struct TabSetView: View {
         // タブの設定
         TabView(selection: $selection) {
             Group {
-                     // TabViewの要素
+            // TabViewの要素
             // 瞑想設定画面へ遷移
             MeditationSetView()
                 .tabItem {
