@@ -18,83 +18,83 @@ struct ListeningSetView: View {
     private let minutesOptions: [Int?] = [10, 20, 30, 40, 50, 60, nil]
     var body: some View {
         ZStack {
-               Image(.settingsBackground)
-                   .resizable()
-                   .aspectRatio(contentMode: .fill)
-                   .edgesIgnoringSafeArea(.all)
-               // 背景枠
-               Rectangle()
-                   .fill(Color(.keyWhite))
-                   .cornerRadius(8)
-                   .opacity(0.6)
-                   .frame(width: 400, height: 400)
-               VStack {
-                   Spacer()
-                   // 時間設定
-                   HStack {
-                       Text("時間")
-                           .font(.title2)
-                           .foregroundColor(Color(.backgroundNavy))
-                       Spacer()
-                       Picker("時間を選ぶ", selection: $viewModel.selectedListeningMinutes) {
-                           ForEach(minutesOptions.indices, id: \.self) { index in
-                               // minutesがnilでない場合、選択項目表示
-                                   if let minutes = minutesOptions[index] {
-                                       Text("\(minutes)分")
-                                           .tag(index)
-                                   } else {
-                                       // nilの場合、時間制限なしと表示
-                                       Text("時間制限なし")
-                                           .tag(nil as Int?)
-                                   }
-                               }
-                       } // Pickerここまで
-                       .colorMultiply(Color(.backgroundNavy))
-                       .scaleEffect(CGSize(width: 1.25, height: 1.25))
-                       .pickerStyle(MenuPickerStyle())
-                   } // HStackここまで
-                   .foregroundColor(Color(.backgroundNavy))
-                   .frame(width: 200)
-                   .padding()
-                   // 音設定
-                   HStack {
-                       Text("音")
-                           .font(.title2)
-                           .foregroundColor(Color(.backgroundNavy))
-                       Spacer()
-                       Button(action: {
-                           isShowSheet.toggle()
-                       }) {
-                           Text("\(viewModel.selectedListeningSoundName)>")
-                               .font(.title2)
-                               .foregroundColor(Color(.backgroundNavy))
-                       }
-                   } // HStackここまで
-                   .frame(width: 200)
-                   .padding()
-                   // はじめるボタン
-                   Button(action: {
-                       isShowFullScreen.toggle()
-                   }) {
-                       Text("はじめる")
-                           .font(.title)
-                           .foregroundColor(Color(.keyWhite))
-                           .padding(25.0)
-                           .background(Color(.backgroundNavy))
-                           .cornerRadius(10)
-                   }
-                   .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                       ListeningView()
-                   })
-                   .padding()
-                   Spacer()
-               } // VStackここまで
-           } // ZStackここまで
-           .accentColor(.blue)
-           // シート
-           .sheet(isPresented: $isShowSheet, content: {
-               SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
-           })
+            Image(.settingsBackground)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+            // 背景枠
+            Rectangle()
+                .fill(Color(.keyWhite))
+                .cornerRadius(8)
+                .opacity(0.6)
+                .frame(width: 400, height: 400)
+            VStack {
+                Spacer()
+                // 時間設定
+                HStack {
+                    Text("時間")
+                        .font(.title2)
+                        .foregroundColor(Color(.backgroundNavy))
+                    Spacer()
+                    Picker("時間を選ぶ", selection: $viewModel.selectedListeningMinutes) {
+                        ForEach(minutesOptions.indices, id: \.self) { index in
+                            // minutesがnilでない場合、選択項目表示
+                            if let minutes = minutesOptions[index] {
+                                Text("\(minutes)分")
+                                    .tag(index)
+                            } else {
+                                // nilの場合、時間制限なしと表示
+                                Text("時間制限なし")
+                                    .tag(nil as Int?)
+                            }
+                        }
+                    } // Pickerここまで
+                    .colorMultiply(Color(.backgroundNavy))
+                    .scaleEffect(CGSize(width: 1.25, height: 1.25))
+                    .pickerStyle(MenuPickerStyle())
+                } // HStackここまで
+                .foregroundColor(Color(.backgroundNavy))
+                .frame(width: 200)
+                .padding()
+                // 音設定
+                HStack {
+                    Text("音")
+                        .font(.title2)
+                        .foregroundColor(Color(.backgroundNavy))
+                    Spacer()
+                    Button(action: {
+                        isShowSheet.toggle()
+                    }) {
+                        Text("\(viewModel.selectedListeningSoundName)>")
+                            .font(.title2)
+                            .foregroundColor(Color(.backgroundNavy))
+                    }
+                } // HStackここまで
+                .frame(width: 200)
+                .padding()
+                // はじめるボタン
+                Button(action: {
+                    isShowFullScreen.toggle()
+                }) {
+                    Text("はじめる")
+                        .font(.title)
+                        .foregroundColor(Color(.keyWhite))
+                        .padding(25.0)
+                        .background(Color(.backgroundNavy))
+                        .cornerRadius(10)
+                }
+                .fullScreenCover(isPresented: $isShowFullScreen, content: {
+                    ListeningView()
+                })
+                .padding()
+                Spacer()
+            } // VStackここまで
+        } // ZStackここまで
+        .accentColor(.blue)
+        // シート
+        .sheet(isPresented: $isShowSheet, content: {
+            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
+        })
     } // bodyここまで
 } // SoundSetViewここまで
 

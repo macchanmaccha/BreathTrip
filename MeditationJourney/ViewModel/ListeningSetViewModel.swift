@@ -21,7 +21,7 @@ class ListeningSetViewModel: SetViewModel {
             // 音再生タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
-      state = newState
+        state = newState
     }
     // 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {

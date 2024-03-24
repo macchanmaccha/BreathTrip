@@ -27,7 +27,7 @@ class MeditatingSetViewModel: SetViewModel {
             // 瞑想タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
-      state = newState
+        state = newState
     }
     // 瞑想前タイマー
     func startPreparationTimer() {

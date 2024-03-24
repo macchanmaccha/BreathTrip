@@ -9,7 +9,6 @@ import SwiftUI
 
 class SetViewModel: ObservableObject {
     // 選択した音を表示する変数
-    //    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
     @Published var selectedMeditationSoundName: String {
         didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: "selectedMeditationSoundName")}
     }
@@ -24,9 +23,8 @@ class SetViewModel: ObservableObject {
     }
     // 初期化
     init() {
-        selectedMeditationSoundName = UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? ""
-        selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? ""
-//        selectedListeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? "") ?? .europe1
+        selectedMeditationSoundName = UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? SoundModel.europe1.rawValue
+        selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? SoundModel.europe1.rawValue
         selectedMeditationMinutes = UserDefaults.standard.integer(forKey: "selectedMeditationMinutes")
         selectedListeningMinutes = UserDefaults.standard.integer(forKey: "selectedListeningMinutes")
     }
@@ -36,7 +34,7 @@ class SetViewModel: ObservableObject {
     @Published var remainingSeconds: Int = 0
     // タイマー
     var timerHandler: Timer?
-    // 音の設定
+    // 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
     func setSelectedSoundName(soundName: SoundModel) {
     }
 } // SoundSetViewModelここまで
