@@ -39,4 +39,20 @@ class SetViewModel: ObservableObject {
     // 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
     func setSelectedSoundName(soundName: SoundModel) {
     }
+    // タイマー停止・無効
+    func stopTimer() {
+        // タイマー停止
+        timerHandler?.invalidate()
+        // タイマー無効
+        timerHandler = nil
+    }
+    // 分と秒の表示
+    func formattedTime() -> String {
+        // 60で割ったものを分数表示に
+        let minutes = remainingSeconds / 60
+        // あまりは秒数に
+        let seconds = remainingSeconds % 60
+        // 〇〇:〇〇表示でリターン
+        return String(format: "%02d:%02d", minutes, seconds)
+    } // func formattedTime()ここまで
 } // SoundSetViewModelここまで
