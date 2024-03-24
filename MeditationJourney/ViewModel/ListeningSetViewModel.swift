@@ -18,6 +18,7 @@ class ListeningSetViewModel: SetViewModel {
     // 状態の更新
     func updateState(newState: State) {
         if state == .start && newState == .start {
+            selectedMinutes = selectedListeningMinutes
             // 音再生タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }

@@ -25,11 +25,13 @@ class SetViewModel: ObservableObject {
     init() {
         selectedMeditationSoundName = UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? SoundModel.europe1.rawValue
         selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? SoundModel.europe1.rawValue
+        selectedMeditationMinutes = 1
         selectedMeditationMinutes = UserDefaults.standard.integer(forKey: "selectedMeditationMinutes")
+        selectedListeningMinutes = 10
         selectedListeningMinutes = UserDefaults.standard.integer(forKey: "selectedListeningMinutes")
     }
     // 選択する時間を管理する変数
-    @Published var selectedMinutes: Int = 10
+    @Published var selectedMinutes: Int = 1
     // 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published var remainingSeconds: Int = 0
     // タイマー
