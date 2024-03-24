@@ -93,7 +93,7 @@ struct MeditationSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(viewModel.selectedMeditationSoundName.rawValue)>")
+                        Text("\(viewModel.selectedMeditationSoundName)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }

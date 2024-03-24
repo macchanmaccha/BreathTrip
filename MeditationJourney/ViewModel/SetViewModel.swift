@@ -10,10 +10,10 @@ import SwiftUI
 class SetViewModel: ObservableObject {
     // 選択した音を表示する変数
     //    @AppStorage("selected_Sound") var selectedSoundName: SoundModel = .europe1
-    @Published var selectedMeditationSoundName: SoundModel {
+    @Published var selectedMeditationSoundName: String {
         didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: "selectedMeditationSoundName")}
     }
-    @Published var selectedListeningSoundName: SoundModel {
+    @Published var selectedListeningSoundName: String {
         didSet {UserDefaults.standard.set(selectedListeningSoundName, forKey: "selectedListeningSoundName")}
     }
     @Published var selectedMeditationMinutes: Int {
@@ -24,8 +24,9 @@ class SetViewModel: ObservableObject {
     }
     // 初期化
     init() {
-        selectedMeditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? "") ?? .europe1
-        selectedListeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? "") ?? .europe1
+        selectedMeditationSoundName = UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? ""
+        selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? ""
+//        selectedListeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? "") ?? .europe1
         selectedMeditationMinutes = UserDefaults.standard.integer(forKey: "selectedMeditationMinutes")
         selectedListeningMinutes = UserDefaults.standard.integer(forKey: "selectedListeningMinutes")
     }

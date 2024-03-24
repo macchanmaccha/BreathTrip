@@ -92,6 +92,6 @@ class MeditatingSetViewModel: SetViewModel {
     } // func formattedTime()ここまで
     // 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
-        selectedMeditationSoundName = soundName
+        selectedMeditationSoundName = soundName.rawValue
     }
 } // MeditatingViewModel

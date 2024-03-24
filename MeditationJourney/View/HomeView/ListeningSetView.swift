@@ -65,7 +65,7 @@ struct ListeningSetView: View {
                        Button(action: {
                            isShowSheet.toggle()
                        }) {
-                           Text("\(viewModel.selectedListeningSoundName.rawValue)>")
+                           Text("\(viewModel.selectedListeningSoundName)>")
                                .font(.title2)
                                .foregroundColor(Color(.backgroundNavy))
                        }
