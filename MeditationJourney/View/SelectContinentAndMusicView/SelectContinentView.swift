@@ -7,8 +7,8 @@
 import SwiftUI
 
 struct SelectContinentView: View {
-    // setViewModel
-    @StateObject var setViewModel: SetViewModel
+    // viewModel
+    @StateObject var viewModel: SetViewModel
     @Binding var isShowSheet: Bool
     // 大陸の配列
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
@@ -28,7 +28,7 @@ struct SelectContinentView: View {
                         // 大陸の表示
                         ForEach(ContinentModel.allCases, id: \.self) { continent in
                             // 画面遷移
-                            NavigationLink(destination: SelectSoundView(setViewModel: setViewModel, isShowSheet: $isShowSheet, selectedContinent: continent)) {
+                            NavigationLink(destination: SelectSoundView(setViewModel: viewModel, isShowSheet: $isShowSheet, selectedContinent: continent)) {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
@@ -58,5 +58,5 @@ struct SelectContinentView: View {
 } // SelectContinentViewここまで
 
 #Preview {
-    SelectContinentView(setViewModel: MeditatingSetViewModel(), isShowSheet: .constant(true))
+    SelectContinentView(viewModel: MeditatingSetViewModel(), isShowSheet: .constant(true))
 }

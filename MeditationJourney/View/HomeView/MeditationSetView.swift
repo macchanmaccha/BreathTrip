@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeditationSetView: View {
     // MeditatingSetViewModelをインスタンス化
-    @StateObject private var meditatingSetViewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
@@ -72,7 +72,7 @@ struct MeditationSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $meditatingSetViewModel.selectedMinutes) {
+                    Picker("時間を選ぶ", selection: $viewModel.selectedMeditationMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで
@@ -93,7 +93,7 @@ struct MeditationSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(meditatingSetViewModel.selectedSoundName.rawValue)>")
+                        Text("\(viewModel.selectedMeditationSoundName)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -112,7 +112,7 @@ struct MeditationSetView: View {
                         .cornerRadius(10)
                 }
                 .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    MeditatingView(meditatingSetViewModel: meditatingSetViewModel)
+                    MeditatingView(viewModel: viewModel)
                 })
                 .padding()
                 Spacer()
@@ -121,7 +121,7 @@ struct MeditationSetView: View {
         .accentColor(.blue)
         // シート
         .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(setViewModel: meditatingSetViewModel, isShowSheet: $isShowSheet)
+            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
     } // bodyここまで
 } // MeditationViewここまで

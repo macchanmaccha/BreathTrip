@@ -17,19 +17,38 @@ class ListeningSetViewModel: SetViewModel {
     } // enumここまで
     // 状態の更新
     func updateState(newState: State) {
-        if state == .start && newState == .start {
+        if newState == .start {
+            selectedMinutes = selectedListeningMinutes
             // 音再生タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
-      state = newState
+        state = newState
     }
-    // 分と秒の表示
-    func formattedTime() -> String {
-        // 60で割ったものを分数表示に
-        let minutes = remainingSeconds / 60
-        // あまりは秒数に
-        let seconds = remainingSeconds % 60
-        // 〇〇:〇〇表示でリターン
-        return String(format: "%02d:%02d", minutes, seconds)
-    } // func formattedTime()ここまで
+    // 音の設定
+    override func setSelectedSoundName(soundName: SoundModel) {
+        selectedListeningSoundName = soundName.rawValue
+    }
+    // 音再生中タイマー
+    func startListeningTimer() {
+        // 多重でタイマーを開始しないようにタイマー停止をする
+        stopTimer()
+        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            print("音再生中タイマー\(#fileID) \(#function) \(#line)")
+            // 瞑想中なら
+            if state == .start {
+                // 1秒より大きいとき
+                if remainingSeconds > 1 {
+                    // マイナス1ずつしていく
+                    remainingSeconds -= 1
+                    // 1の場合（0秒となる前）
+                } else if remainingSeconds == 1 {
+                    // end
+                    state = .end
+                } // else ifここまで
+            } // if state == .startここまで
+        } // timerHandlerここまで
+    } // startListeningTimer
 } // SoundSetViewModelここまで

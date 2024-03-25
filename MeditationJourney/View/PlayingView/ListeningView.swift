@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ListeningView: View {
-    // meditatingSetViewModel
-    @StateObject var listeningSetViewModel: ListeningSetViewModel
+    // ListeningSetViewModel
+    @StateObject var viewModel: ListeningSetViewModel
     // 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     // 瞑想終了アラートを管理する変数
@@ -23,36 +23,25 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                // preStartまたはprePauseのとき
-                if listeningSetViewModel.state == .start || listeningSetViewModel.state == .pause {
-                    // 以下テキストを表示
-                    Text("開始まで\n\(listeningSetViewModel.remainingSeconds)")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(.keyWhite))
-                        .font(.system(size: 30))
-                        .frame(width: 200, height: 200)
-                        .bold()
-                }
                 // 瞑想中タイマーを表示
-                if listeningSetViewModel.state == .start || listeningSetViewModel.state == .pause {
-                    Text(listeningSetViewModel.formattedTime())
+                if viewModel.state == .start || viewModel.state == .pause {
+                    Text(viewModel.formattedTime())
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
                 }
                 // endでないとき
-                if listeningSetViewModel.state != .end {
+                if viewModel.state != .end {
                     // 中断ボタン
                     Button(action: {
-                        // preStartだったら
-                        if listeningSetViewModel.state == .start {
-                            // prePauseにする
-                            listeningSetViewModel.updateState(newState: .pause)
-                            // startだったら
+                        // startだったら
+                        if viewModel.state == .start {
+                            // pauseにする
+                            viewModel.updateState(newState: .pause)
                         }
                         print("中断ボタンが押されたよ")
-                        print(listeningSetViewModel.remainingSeconds)
+                        print(viewModel.remainingSeconds)
                     }) {
                         Text("中断する")
                             .tint(Color(.backgroundNavy))
@@ -65,14 +54,14 @@ struct ListeningView: View {
                         // NO
                         Button("NO") {
                             // pauseだったら
-                            if listeningSetViewModel.state == .pause {
+                            if viewModel.state == .pause {
                                 // startにする
-                                listeningSetViewModel.updateState(newState: .start)
+                                viewModel.updateState(newState: .start)
                             }
                         }
                         // YES
                         Button("YES") {
-                            listeningSetViewModel.stopTimer()
+                            viewModel.stopTimer()
                             // 設定画面に戻る
                             dismiss()
                         }
@@ -83,27 +72,26 @@ struct ListeningView: View {
             } // VStackここまで
         } // ZStack
         .onAppear {
-            // 画面起動時にprestart状態にする
-            listeningSetViewModel.updateState(newState: .start)
+            // 画面起動時にstart状態にする
+            viewModel.updateState(newState: .start)
         }
-        .onChange(of: listeningSetViewModel.state) {
-            switch listeningSetViewModel.state {
+        .onChange(of: viewModel.state) {
+            switch viewModel.state {
             case .start:
-//                // 瞑想タイマーの呼出
-//                listeningSetViewModel.startMeditationTimer()
-                listeningSetViewModel.formattedTime()
+                // 瞑想タイマーの呼出
+                viewModel.startListeningTimer()
             case .pause:
                 // タイマー停止・無効
-                listeningSetViewModel.stopTimer()
+                viewModel.stopTimer()
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
-                listeningSetViewModel.stopTimer()
+                viewModel.stopTimer()
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(listeningSetViewModel.state)")
+            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
@@ -119,6 +107,6 @@ struct ListeningView: View {
 
 struct ListeningView_Previews: PreviewProvider {
     static var previews: some View {
-        ListeningView(listeningSetViewModel: ListeningSetViewModel())
+        ListeningView(viewModel: ListeningSetViewModel())
     }
 }
