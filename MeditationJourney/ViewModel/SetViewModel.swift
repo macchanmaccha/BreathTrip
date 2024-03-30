@@ -5,21 +5,28 @@
 //  Created by apple on 2024/03/06.
 //
 
-import SwiftUI
+import Foundation
 
 class SetViewModel: ObservableObject {
+    // UserDefaultsのキー
+    enum UserDefaultsKey {
+        static let selectedMeditationSoundName = "selectedMeditationSoundName"
+        static let selectedListeningSoundName = "selectedMeditationSoundName"
+        static let selectedMeditationMinutes = "selectedMeditationMinutes"
+        static let selectedListeningMinutes = "selectedListeningMinutes"
+    }
     // 選択した音を表示する変数
     @Published var selectedMeditationSoundName: String {
-        didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: "selectedMeditationSoundName")}
+        didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: UserDefaultsKey.selectedMeditationSoundName)}
     }
     @Published var selectedListeningSoundName: String {
-        didSet {UserDefaults.standard.set(selectedListeningSoundName, forKey: "selectedListeningSoundName")}
+        didSet {UserDefaults.standard.set(selectedListeningSoundName, forKey: UserDefaultsKey.selectedListeningSoundName)}
     }
     @Published var selectedMeditationMinutes: Int {
-        didSet {UserDefaults.standard.set(selectedMeditationMinutes, forKey: "selectedMeditationMinutes")}
+        didSet {UserDefaults.standard.set(selectedMeditationMinutes, forKey: UserDefaultsKey.selectedMeditationMinutes)}
     }
     @Published var selectedListeningMinutes: Int {
-        didSet {UserDefaults.standard.set(selectedListeningMinutes, forKey: "selectedListeningMinutes")}
+        didSet {UserDefaults.standard.set(selectedListeningMinutes, forKey: UserDefaultsKey.selectedListeningMinutes)}
     }
     // 初期化
     init() {
