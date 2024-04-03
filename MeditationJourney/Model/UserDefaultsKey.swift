@@ -7,11 +7,17 @@
 
 import Foundation
 
-// UserDefaultsはプロジェクト全体で使われる
-// Modelに切り出して、宣言する
 enum UserDefaultsKey {
-    static let selectedMeditationSoundName = "selectedMeditationSoundName"
-    static let selectedListeningSoundName = "selectedMeditationSoundName"
-    static let selectedMeditationMinutes = "selectedMeditationMinutes"
-    static let selectedListeningMinutes = "selectedListeningMinutes"
+    static let meditationSoundName = "meditationSoundName"
+    static let meditationMinutes = "meditationMinutes"
+    static let listeningMinutes = "listeningMinutes"
+
+    static func register () {
+        UserDefaults.standard.register(defaults: [
+            // SoundModel.europe1で保存するとアプリが落ちるので、rawValueで保存
+            UserDefaultsKey.meditationSoundName: SoundModel.europe1.rawValue,
+            UserDefaultsKey.meditationMinutes: 1,
+            UserDefaultsKey.listeningMinutes: 10
+        ])
+    }
 }

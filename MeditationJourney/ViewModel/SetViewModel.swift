@@ -7,93 +7,36 @@
 
 import Foundation
 
-
-//// 初期化
-//init() {
-//   // 取得してなければ、これを使う。
-//   UserDefaults.standard.register(defaults: [
-//       UserDefaultsKey.selectedMeditationSoundName: SoundModel.europe1.rawValue,
-//       UserDefaultsKey.selectedListeningSoundName: SoundModel.europe1.rawValue,
-//       UserDefaultsKey.selectedMeditationMinutes: 1,
-//       UserDefaultsKey.selectedListeningMinutes: 10,
-//   ])
-//
-//   selectedMeditationSoundName = UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? SoundModel.europe1.rawValue
-//   selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? SoundModel.europe1.rawValue
-//   selectedMeditationMinutes = UserDefaults.standard.integer(forKey: "selectedMeditationMinutes")
-//   selectedListeningMinutes = UserDefaults.standard.integer(forKey: "selectedListeningMinutes")
-//}
-
-
-// 選択した音を表示する変数
-   @Published var selectedMeditationSoundName: SoundModel {
-       didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: UserDefaultsKey.selectedMeditationSoundName)}
-   }
-   @Published var selectedListeningSoundName: SoundModel {
-       didSet {UserDefaults.standard.set(selectedListeningSoundName, forKey: UserDefaultsKey.selectedListeningSoundName)}
-   }
-   @Published var selectedMeditationMinutes: Int {
-       didSet {UserDefaults.standard.set(selectedMeditationMinutes, forKey: UserDefaultsKey.selectedMeditationMinutes)}
-   }
-   @Published var selectedListeningMinutes: Int {
-       didSet {UserDefaults.standard.set(selectedListeningMinutes, forKey: UserDefaultsKey.selectedListeningMinutes)}
-   }
-   // 初期化
-   init() {　// <- initだとインスタン生成のときだけなので、onApperでこれをメソッドで計算してあげる。
-
-       // UserDefaultsにSetしていない時のために、ここで初期値を定義する
-       // プロジェクト全体で使う想定なので、Appに入れたほうがいい
-
-       // get
-       // enumの値が保存されているので、それをキャストする。
-       // SoundModel.europe1　のようなイメージで入っている。
-       selectedMeditationSoundName = UserDefaults.standard.object(forKey: UserDefaultsKey.selectedMeditationSoundName) as? SoundModel ?? SoundModel.europe1
-       selectedListeningSoundName = UserDefaults.standard.object(forKey: UserDefaultsKey.selectedListeningSoundName) as? SoundModel ?? SoundModel.europe1
-       selectedMeditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.selectedMeditationMinutes)
-       selectedListeningMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.selectedListeningMinutes)
-   }
-
-
-
-
-
-
-
-
-
-
-
 class SetViewModel: ObservableObject {
     // 選択した音を表示する変数
-    @Published var selectedMeditationSoundName: SoundModel {
-        didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: UserDefaultsKey.selectedMeditationSoundName)}
+    @Published var soundModel: SoundModel {
+        // 列挙型SoundModelのままではアプリが落ちるので、文字列で保存
+        didSet {UserDefaults.standard.set(soundModel.rawValue, forKey: UserDefaultsKey.meditationSoundName)}
     }
-    @Published var selectedListeningSoundName: String {
-        didSet {UserDefaults.standard.set(selectedListeningSoundName, forKey: UserDefaultsKey.selectedListeningSoundName)}
+    @Published var meditationMinutes: Int {
+        didSet {UserDefaults.standard.set(meditationMinutes, forKey: UserDefaultsKey.meditationMinutes)}
     }
-    @Published var selectedMeditationMinutes: Int {
-        didSet {UserDefaults.standard.set(selectedMeditationMinutes, forKey: UserDefaultsKey.selectedMeditationMinutes)}
+    @Published var listeningMinutes: Int {
+        didSet {UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)}
     }
-    @Published var selectedListeningMinutes: Int {
-        didSet {UserDefaults.standard.set(selectedListeningMinutes, forKey: UserDefaultsKey.selectedListeningMinutes)}
-    }
-    // 初期化
-    init() {
-        selectedMeditationSoundName = UserDefaults.standard.object(forKey: UserDefaultsKey.selectedMeditationSoundName) as SoundModel ?? SoundModel.europe1.rawValue
-        selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? SoundModel.europe1.rawValue
-        selectedMeditationMinutes = 1
-        selectedMeditationMinutes = UserDefaults.standard.integer(forKey: "selectedMeditationMinutes")
-        selectedListeningMinutes = 10
-        selectedListeningMinutes = UserDefaults.standard.integer(forKey: "selectedListeningMinutes")
-    }
+
     // 選択する時間を管理する変数
     @Published var selectedMinutes: Int = 1
     // 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published var remainingSeconds: Int = 0
     // タイマー
     var timerHandler: Timer?
-    // 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
+
+    init() {
+        // 列挙型SoundModelが文字列で保管されているので、列挙値に変換する
+        self.soundModel = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+        self.meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
+        self.listeningMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.listeningMinutes)
+    }
+
+    // 音の設定
     func setSelectedSoundName(soundName: SoundModel) {
+        soundModel = soundName
     }
     // タイマー停止・無効
     func stopTimer() {
@@ -111,4 +54,9 @@ class SetViewModel: ObservableObject {
         // 〇〇:〇〇表示でリターン
         return String(format: "%02d:%02d", minutes, seconds)
     } // func formattedTime()ここまで
+
+    // UserDefaultsと同期するために、設定値を再取得
+    func setSoundModel() {
+        self.soundModel = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+    }
 } // SoundSetViewModelここまで

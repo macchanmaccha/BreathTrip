@@ -15,17 +15,17 @@ class ListeningSetViewModel: SetViewModel {
         case pause     // 音再生タイマー中断
         case end       // 音再生終了
     } // enumここまで
+
+    override init() {
+        super.init()
+    }
     // 状態の更新
     func updateState(newState: State) {
         if state == .start && newState == .start {
-            selectedMinutes = selectedListeningMinutes
+            selectedMinutes = listeningMinutes
             // 音再生タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
         state = newState
-    }
-    // 音の設定
-    override func setSelectedSoundName(soundName: SoundModel) {
-        selectedListeningSoundName = soundName.rawValue
     }
 } // SoundSetViewModelここまで

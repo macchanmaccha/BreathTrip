@@ -17,6 +17,11 @@ class MeditatingSetViewModel: SetViewModel {
         case pause     // 瞑想タイマー中断
         case end       // 瞑想終了
     } // enumここまで
+
+    override init() {
+        super.init()
+    }
+
     // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
         remainingSeconds = 5
@@ -24,7 +29,7 @@ class MeditatingSetViewModel: SetViewModel {
     // 状態の更新
     func updateState(newState: State) {
         if state == .preStart && newState == .start {
-            selectedMinutes = selectedMeditationMinutes
+            selectedMinutes = meditationMinutes
             // 瞑想タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
@@ -75,8 +80,4 @@ class MeditatingSetViewModel: SetViewModel {
             } // if state == .startここまで
         } // timerHandlerここまで
     } // startMeditationTimer
-    // 音の設定
-    override func setSelectedSoundName(soundName: SoundModel) {
-        selectedMeditationSoundName = soundName.rawValue
-    }
 } // MeditatingViewModel
