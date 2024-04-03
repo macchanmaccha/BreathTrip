@@ -18,10 +18,6 @@ class MeditatingSetViewModel: SetViewModel {
         case end       // 瞑想終了
     } // enumここまで
 
-    override init() {
-        super.init()
-    }
-
     // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
         remainingSeconds = 5

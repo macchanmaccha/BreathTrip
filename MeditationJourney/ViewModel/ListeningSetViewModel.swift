@@ -16,9 +16,6 @@ class ListeningSetViewModel: SetViewModel {
         case end       // 音再生終了
     } // enumここまで
 
-    override init() {
-        super.init()
-    }
     // 状態の更新
     func updateState(newState: State) {
         if state == .start && newState == .start {
