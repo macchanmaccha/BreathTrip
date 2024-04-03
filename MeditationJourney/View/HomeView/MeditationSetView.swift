@@ -76,7 +76,7 @@ struct MeditationSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $selectedMeditationMinutes) {
+                    Picker("時間を選ぶ", selection: $viewModel.selectedMeditationMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで

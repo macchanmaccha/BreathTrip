@@ -30,6 +30,7 @@
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
+		FE3A85852BBD7D810006A0E6 /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3A85842BBD7D810006A0E6 /* UserDefaultsKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
+		FE3A85842BBD7D810006A0E6 /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				181FC2932B20A2540033D136 /* SoundModel.swift */,
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
+				FE3A85842BBD7D810006A0E6 /* UserDefaultsKey.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,
 				1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */,
 				18916B482B983AD1005E4516 /* ListeningView.swift in Sources */,
+				FE3A85852BBD7D810006A0E6 /* UserDefaultsKey.swift in Sources */,
 				181FC2942B20A2540033D136 /* SoundModel.swift in Sources */,
 				1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */,
 				18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */,
