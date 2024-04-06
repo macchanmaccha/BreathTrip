@@ -8,7 +8,7 @@
 import SwiftUI
 
 class MeditatingSetViewModel: SetViewModel {
-    // 瞑想画面での状態　初期値はend
+    /// 瞑想画面での状態　初期値はend
     @Published private(set) var state: State = .end
     enum State {
         case preStart  // 瞑想前タイマーカウントダウン

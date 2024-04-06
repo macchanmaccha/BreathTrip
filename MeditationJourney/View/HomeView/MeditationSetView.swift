@@ -10,6 +10,10 @@ import SwiftUI
 struct MeditationSetView: View {
     // MeditatingSetViewModelをインスタンス化
     @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    // 音の名前
+    @State var selectedMeditationSoundName = SoundModel.europe1.rawValue
+    // 分数
+    @State var selectedMeditationMinutes = 1
     // Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     // フルスクリーンを管理する変数
@@ -72,7 +76,7 @@ struct MeditationSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $viewModel.selectedMeditationMinutes) {
+                    Picker("時間を選ぶ", selection: $selectedMeditationMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
                         } // ForEachここまで
@@ -93,7 +97,7 @@ struct MeditationSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(viewModel.selectedMeditationSoundName)>")
+                        Text("\(selectedMeditationSoundName)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -123,6 +127,9 @@ struct MeditationSetView: View {
         .sheet(isPresented: $isShowSheet, content: {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
+        .onAppear {
+
+        }
     } // bodyここまで
 } // MeditationViewここまで
 

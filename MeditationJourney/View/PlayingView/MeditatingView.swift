@@ -106,7 +106,7 @@ struct MeditatingView: View {
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .start:
-                // 瞑想タイマーの呼出
+                // 音再生タイマーの呼出
                 viewModel.startMeditationTimer()
             case .pause:
                 // タイマー停止・無効
