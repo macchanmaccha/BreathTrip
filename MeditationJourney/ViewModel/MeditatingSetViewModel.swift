@@ -24,7 +24,7 @@ class MeditatingSetViewModel: SetViewModel {
     // 状態の更新
     func updateState(newState: State) {
         if state == .preStart && newState == .start {
-            selectedMinutes = selectedMeditationMinutes
+            selectedMinutes = meditationMinutes
             // 瞑想タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
@@ -77,6 +77,6 @@ class MeditatingSetViewModel: SetViewModel {
     } // startMeditationTimer
     // 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
-        selectedMeditationSoundName = soundName.rawValue
+        meditationSoundName = soundName.rawValue
     }
 } // MeditatingViewModel
