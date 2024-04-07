@@ -26,6 +26,6 @@ class ListeningSetViewModel: SetViewModel {
     }
     // 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
-        listeningSoundName = soundName.rawValue
+        listeningSoundName = soundName
     }
 } // SoundSetViewModelここまで

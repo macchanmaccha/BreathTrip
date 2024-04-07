@@ -65,7 +65,7 @@ struct ListeningSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(viewModel.listeningSoundName)>")
+                        Text("\(viewModel.listeningSoundName.rawValue)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -96,7 +96,6 @@ struct ListeningSetView: View {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
         .onAppear {
-            
         }
     } // bodyここまで
 } // SoundSetViewここまで

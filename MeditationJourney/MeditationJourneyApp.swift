@@ -11,6 +11,9 @@ import SwiftUI
 struct MeditationJourneyApp: App {
     let persistenceController = PersistenceController.shared
 
+    init() {
+        UserDefaultsKey.register()
+    }
     var body: some Scene {
         WindowGroup {
             TabSetView()

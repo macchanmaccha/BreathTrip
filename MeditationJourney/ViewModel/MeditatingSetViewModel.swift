@@ -77,6 +77,6 @@ class MeditatingSetViewModel: SetViewModel {
     } // startMeditationTimer
     // 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
-        meditationSoundName = soundName.rawValue
+        meditationSoundName = soundName
     }
 } // MeditatingViewModel
