@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListeningView: View {
-    // viewModel
+    /// ListeningSetViewModel
     @StateObject var viewModel: ListeningSetViewModel = ListeningSetViewModel()
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)

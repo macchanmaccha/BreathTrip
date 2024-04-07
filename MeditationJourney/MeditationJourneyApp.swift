@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct MeditationJourneyApp: App {
     let persistenceController = PersistenceController.shared
-
+    /// UserDefaultsのデフォルト値を設定
     init() {
         UserDefaultsKey.register()
     }

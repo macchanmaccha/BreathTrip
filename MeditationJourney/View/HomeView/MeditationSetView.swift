@@ -8,24 +8,24 @@
 import SwiftUI
 
 struct MeditationSetView: View {
-    // MeditatingSetViewModelをインスタンス化
+    /// MeditatingSetViewModelをインスタンス化
     @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
-    // Sheetを管理する変数
+    /// Sheetを管理する変数
     @State private var isShowSheet: Bool = false
-    // フルスクリーンを管理する変数
+    /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
-    // 音声ガイドToggleを管理する変数
+    /// 音声ガイドToggleを管理する変数
     @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
-    // 音声ガイドのアイコンを管理
+    /// 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
         isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
         Image(systemName: "speaker.slash.fill")
     } // speakerIconここまで
-    // 音声ガイドONOFFを管理する変数
+    /// 音声ガイドONOFFを管理する変数
     private var speakerStatusText: Text {
         Text(isAudioGuideOn ? "ON" : "OFF")
     } // speakerStatusTextここまで
-    // 選択できる分数
+    /// 選択できる分数
     private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
         ZStack {
@@ -124,6 +124,8 @@ struct MeditationSetView: View {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
         .onAppear {
+            // 瞑想の音データの再取得
+            viewModel.setSoundModel()
         }
     } // bodyここまで
 } // MeditationViewここまで

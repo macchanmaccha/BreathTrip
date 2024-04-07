@@ -8,14 +8,14 @@
 import SwiftUI
 
 class ListeningSetViewModel: SetViewModel {
-    // 音をきく画面での状態　初期値はend
+    /// 音をきく画面での状態　初期値はend
     @Published private(set) var state: State = .end
     enum State {
         case start     // 音再生タイマーカウントダウン
         case pause     // 音再生タイマー中断
         case end       // 音再生終了
     } // enumここまで
-    // 状態の更新
+    /// 状態の更新
     func updateState(newState: State) {
         if state == .start && newState == .start {
             selectedMinutes = listeningMinutes
@@ -24,8 +24,12 @@ class ListeningSetViewModel: SetViewModel {
         }
         state = newState
     }
-    // 音の設定
+    /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         listeningSoundName = soundName
+    }
+    /// UserDefaultsと同期するために、設定値を再取得
+    override func setSoundModel() {
+        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
     }
 } // SoundSetViewModelここまで

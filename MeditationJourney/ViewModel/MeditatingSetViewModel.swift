@@ -75,8 +75,12 @@ class MeditatingSetViewModel: SetViewModel {
             } // if state == .startここまで
         } // timerHandlerここまで
     } // startMeditationTimer
-    // 音の設定
+    /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         meditationSoundName = soundName
+    }
+    /// UserDefaultsと同期するために、設定値を再取得
+    override func setSoundModel() {
+        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
     }
 } // MeditatingViewModel

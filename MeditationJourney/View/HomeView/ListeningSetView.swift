@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ListeningSetView: View {
-    // listeningSetViewModelをインスタンス化
+    /// listeningSetViewModelをインスタンス化
     @StateObject private var viewModel: ListeningSetViewModel = ListeningSetViewModel()
-    // Sheetを管理する変数
+    /// Sheetを管理する変数
     @State private var isShowSheet: Bool = false
-    // フルスクリーンを管理する変数
+    /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
-    // 選択できる分数
+    /// 選択できる分数
     private let minutesOptions: [Int?] = [10, 20, 30, 40, 50, 60, nil]
     var body: some View {
         ZStack {
@@ -96,6 +96,8 @@ struct ListeningSetView: View {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
         .onAppear {
+            // 音をきく時の音データを再取得
+            viewModel.setSoundModel()
         }
     } // bodyここまで
 } // SoundSetViewここまで
