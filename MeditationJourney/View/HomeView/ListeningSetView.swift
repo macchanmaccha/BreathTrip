@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct ListeningSetView: View {
-    // listeningSetViewModelをインスタンス化
+    /// listeningSetViewModelをインスタンス化
     @StateObject private var viewModel: ListeningSetViewModel = ListeningSetViewModel()
-    // 音の名前
-    @State var selectedListeningSoundName = SoundModel.europe1.rawValue
-    // 分数
-    @State var selectedListeningMinutes = 10
-    // Sheetを管理する変数
+    /// Sheetを管理する変数
     @State private var isShowSheet: Bool = false
-    // フルスクリーンを管理する変数
+    /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
-    // 選択できる分数
+    /// 選択できる分数
     private let minutesOptions: [Int?] = [10, 20, 30, 40, 50, 60, nil]
     var body: some View {
         ZStack {
@@ -40,7 +36,7 @@ struct ListeningSetView: View {
                         .font(.title2)
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
-                    Picker("時間を選ぶ", selection: $selectedListeningMinutes) {
+                    Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
                         ForEach(minutesOptions.indices, id: \.self) { index in
                             // minutesがnilでない場合、選択項目表示
                             if let minutes = minutesOptions[index] {
@@ -69,7 +65,7 @@ struct ListeningSetView: View {
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
-                        Text("\(selectedListeningSoundName)>")
+                        Text("\(viewModel.listeningSoundName.rawValue)>")
                             .font(.title2)
                             .foregroundColor(Color(.backgroundNavy))
                     }
@@ -100,10 +96,8 @@ struct ListeningSetView: View {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
         .onAppear {
-            // 音の名前
-            selectedListeningSoundName = viewModel.selectedListeningSoundName
-            // 分数
-            selectedListeningMinutes = viewModel.selectedListeningMinutes
+            // 音をきく時の音データを再取得
+            viewModel.setSoundModel()
         }
     } // bodyここまで
 } // SoundSetViewここまで

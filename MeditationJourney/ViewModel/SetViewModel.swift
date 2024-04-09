@@ -8,37 +8,21 @@
 import Foundation
 
 class SetViewModel: ObservableObject {
-    /// UserDefaultsのキーの列挙
-    enum UserDefaultsKey {
-        static let selectedMeditationSoundName = "selectedMeditationSoundName"
-        static let selectedListeningSoundName = "selectedMeditationSoundName"
-        static let selectedMeditationMinutes = "selectedMeditationMinutes"
-        static let selectedListeningMinutes = "selectedListeningMinutes"
+    /// 瞑想の音を表示する変数
+    @Published var meditationSoundName: SoundModel {
+        didSet {UserDefaults.standard.set(meditationSoundName.rawValue, forKey: UserDefaultsKey.meditationSoundName)}
     }
-    /// 選択した瞑想の音を表示する変数
-    @Published var selectedMeditationSoundName: String {
-        didSet {UserDefaults.standard.set(selectedMeditationSoundName, forKey: UserDefaultsKey.selectedMeditationSoundName)}
+    /// 再生する音を表示する変数
+    @Published var listeningSoundName: SoundModel {
+        didSet {UserDefaults.standard.set(listeningSoundName.rawValue, forKey: UserDefaultsKey.listeningSoundName)}
     }
-    /// 選択した再生する音を表示する変数
-    @Published var selectedListeningSoundName: String {
-        didSet {UserDefaults.standard.set(selectedListeningSoundName, forKey: UserDefaultsKey.selectedListeningSoundName)}
+    /// 瞑想の分数
+    @Published var meditationMinutes: Int {
+        didSet {UserDefaults.standard.set(meditationMinutes, forKey: UserDefaultsKey.meditationMinutes)}
     }
-    /// 選択した瞑想の分数を表示する変数
-    @Published var selectedMeditationMinutes: Int {
-        didSet {UserDefaults.standard.set(selectedMeditationMinutes, forKey: UserDefaultsKey.selectedMeditationMinutes)}
-    }
-    /// 選択した再生する音の分数を表示する変数
-    @Published var selectedListeningMinutes: Int {
-        didSet {UserDefaults.standard.set(selectedListeningMinutes, forKey: UserDefaultsKey.selectedListeningMinutes)}
-    }
-    /// 選択した音、分数の初期化
-    init() {
-        selectedMeditationSoundName = UserDefaults.standard.string(forKey: "selectedMeditationSoundName") ?? SoundModel.europe1.rawValue
-        selectedListeningSoundName = UserDefaults.standard.string(forKey: "selectedListeningSoundName") ?? SoundModel.europe1.rawValue
-        selectedMeditationMinutes = 1
-        selectedMeditationMinutes = UserDefaults.standard.integer(forKey: "selectedMeditationMinutes")
-        selectedListeningMinutes = 10
-        selectedListeningMinutes = UserDefaults.standard.integer(forKey: "selectedListeningMinutes")
+    /// 音再生の分数
+    @Published var listeningMinutes: Int {
+        didSet {UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)}
     }
     /// 選択する時間を管理する変数
     @Published var selectedMinutes: Int = 1
@@ -46,6 +30,13 @@ class SetViewModel: ObservableObject {
     @Published var remainingSeconds: Int = 0
     /// タイマー
     var timerHandler: Timer?
+    /// UserDefaultsの初期化
+    init() {
+        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+        meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
+        listeningMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.listeningMinutes)
+    }
     /// 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
     func setSelectedSoundName(soundName: SoundModel) {
     }
@@ -65,4 +56,7 @@ class SetViewModel: ObservableObject {
         // 〇〇:〇〇表示でリターン
         return String(format: "%02d:%02d", minutes, seconds)
     } // func formattedTime()ここまで
-} // SoundSetViewModelここまで
+    /// 設定値の再取得 MeditatingSetViewModelおよびListeningSetViewModelでoverride
+    func setSoundModel() {
+    }
+} // SetViewModelここまで

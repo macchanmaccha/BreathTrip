@@ -8,7 +8,7 @@
 import SwiftUI
 
 class MeditatingSetViewModel: SetViewModel {
-    /// 瞑想画面での状態　初期値はend
+    // 瞑想画面での状態　初期値はend
     @Published private(set) var state: State = .end
     enum State {
         case preStart  // 瞑想前タイマーカウントダウン
@@ -24,7 +24,7 @@ class MeditatingSetViewModel: SetViewModel {
     // 状態の更新
     func updateState(newState: State) {
         if state == .preStart && newState == .start {
-            selectedMinutes = selectedMeditationMinutes
+            selectedMinutes = meditationMinutes
             // 瞑想タイマーをセット
             remainingSeconds = selectedMinutes * 60
         }
@@ -75,8 +75,12 @@ class MeditatingSetViewModel: SetViewModel {
             } // if state == .startここまで
         } // timerHandlerここまで
     } // startMeditationTimer
-    // 音の設定
+    /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
-        selectedMeditationSoundName = soundName.rawValue
+        meditationSoundName = soundName
+    }
+    /// UserDefaultsと同期するために、設定値を再取得
+    override func setSoundModel() {
+        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
     }
 } // MeditatingViewModel

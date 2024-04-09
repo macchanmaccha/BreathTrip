@@ -30,6 +30,7 @@
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
+		18E079B22BC4EEE500544DDD /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B12BC4EEE500544DDD /* UserDefaultsKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
+		18E079B12BC4EEE500544DDD /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
-				184FD3FE2B9DB554005C2F19 /* SetViewModel.swift */,
 				183AEA562B393F4800B6E661 /* MeditatingSetViewModel.swift */,
 				18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */,
 				184FD4022BAB1BF7005C2F19 /* SetViewModel.swift */,
@@ -99,6 +100,7 @@
 				181FC2932B20A2540033D136 /* SoundModel.swift */,
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
+				18E079B12BC4EEE500544DDD /* UserDefaultsKey.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -275,6 +277,7 @@
 				180644612AB6944B0080EEFF /* ListeningSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,
+				18E079B22BC4EEE500544DDD /* UserDefaultsKey.swift in Sources */,
 				1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */,
 				18916B482B983AD1005E4516 /* ListeningView.swift in Sources */,
 				181FC2942B20A2540033D136 /* SoundModel.swift in Sources */,
