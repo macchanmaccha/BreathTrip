@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct SelectSoundView: View {
-    // setViewModel
+    /// setViewModel
     @StateObject var setViewModel: SetViewModel
+    /// isShowSheet
     @Binding var isShowSheet: Bool
-    // 選択した大陸
+    /// 選択した大陸
     let selectedContinent: ContinentModel
-    // 画面を閉じるプロパティラッパー
+    /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
-    // 音Grid
+    /// 音Grid
     private let columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
         ZStack {

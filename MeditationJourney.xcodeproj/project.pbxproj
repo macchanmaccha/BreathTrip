@@ -12,6 +12,7 @@
 		180644632AB694670080EEFF /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644622AB694670080EEFF /* CalendarView.swift */; };
 		180644652AB6947A0080EEFF /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644642AB694790080EEFF /* MapView.swift */; };
 		180644672AB694D30080EEFF /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644662AB694D30080EEFF /* ExplanationView.swift */; };
+		1818FFC82BC26BCE00CE1BB4 /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */; };
 		181FC2942B20A2540033D136 /* SoundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181FC2932B20A2540033D136 /* SoundModel.swift */; };
 		1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1834BE362AECF43300DD5E92 /* SpotListModel.swift */; };
 		1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */; };
@@ -39,6 +40,7 @@
 		180644622AB694670080EEFF /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		180644642AB694790080EEFF /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		180644662AB694D30080EEFF /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
+		1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
 		181FC2932B20A2540033D136 /* SoundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundModel.swift; sourceTree = "<group>"; };
 		1834BE362AECF43300DD5E92 /* SpotListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListModel.swift; sourceTree = "<group>"; };
 		1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListViewModel.swift; sourceTree = "<group>"; };
@@ -100,7 +102,7 @@
 				181FC2932B20A2540033D136 /* SoundModel.swift */,
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
-				18E079B12BC4EEE500544DDD /* UserDefaultsKey.swift */,
+				1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -277,7 +279,7 @@
 				180644612AB6944B0080EEFF /* ListeningSetView.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,
-				18E079B22BC4EEE500544DDD /* UserDefaultsKey.swift in Sources */,
+				1818FFC82BC26BCE00CE1BB4 /* UserDefaultsKey.swift in Sources */,
 				1863E1EB2AAD81D800543D18 /* Persistence.swift in Sources */,
 				18916B482B983AD1005E4516 /* ListeningView.swift in Sources */,
 				181FC2942B20A2540033D136 /* SoundModel.swift in Sources */,

@@ -7,10 +7,11 @@
 import SwiftUI
 
 struct SelectContinentView: View {
-    // viewModel
+    /// viewModel
     @StateObject var viewModel: SetViewModel
+    /// isShowSheet
     @Binding var isShowSheet: Bool
-    // 大陸の配列
+    /// 大陸の配列
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     var body: some View {
         NavigationStack {

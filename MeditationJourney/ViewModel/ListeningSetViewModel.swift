@@ -24,6 +24,29 @@ class ListeningSetViewModel: SetViewModel {
         }
         state = newState
     }
+    // 瞑想中タイマー
+    func startListenintTimer() {
+        // 多重でタイマーを開始しないようにタイマー停止をする
+        stopTimer()
+        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            print("音再生中タイマー\(#fileID) \(#function) \(#line)")
+            // 瞑想中なら
+            if state == .start {
+                // 1秒より大きいとき
+                if remainingSeconds > 1 {
+                    // マイナス1ずつしていく
+                    remainingSeconds -= 1
+                    // 1の場合（0秒となる前）
+                } else if remainingSeconds == 1 {
+                    // end
+                    state = .end
+                } // else ifここまで
+            } // if state == .startここまで
+        } // timerHandlerここまで
+    } // startMeditationTimer
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         listeningSoundName = soundName
