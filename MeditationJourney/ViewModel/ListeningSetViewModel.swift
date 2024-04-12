@@ -17,10 +17,11 @@ class ListeningSetViewModel: SetViewModel {
     } // enumここまで
     /// 状態の更新
     func updateState(newState: State) {
-        if state == .start && newState == .start {
+        if state == .end && newState == .start {
             selectedMinutes = listeningMinutes
             // 音再生タイマーをセット
             remainingSeconds = selectedMinutes * 60
+            print("入力した分数は\(remainingSeconds)だよ")
         }
         state = newState
     }
