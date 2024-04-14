@@ -15,7 +15,7 @@ struct ListeningSetView: View {
     /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
     /// 選択できる分数
-    private let minutesOptions: [Int?] = [10, 20, 30, 40, 50, 60, nil]
+    private let minutesOptions: [Int?] = [1, 20, 30, 40, 50, 60, nil]
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -41,7 +41,7 @@ struct ListeningSetView: View {
                             // minutesがnilでない場合、選択項目表示
                             if let minutes = minutesOptions[index] {
                                 Text("\(minutes)分")
-                                    .tag(index)
+                                    .tag(minutes)
                             } else {
                                 // nilの場合、時間制限なしと表示
                                 Text("時間制限なし")

@@ -15,6 +15,19 @@ class ListeningSetViewModel: SetViewModel {
         case pause     // 音再生タイマー中断
         case end       // 音再生終了
     } // enumここまで
+    /// 音再生の分数
+    @Published var listeningMinutes: Int {
+        didSet {UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)}
+    }
+    override init() {
+        listeningMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.listeningMinutes)
+    }
+    /// 選択する時間を管理する変数
+    @Published var selectedMinutes: Int = 1
+    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    @Published var remainingSeconds: Int = 0
+    /// タイマー
+    var timerHandler: Timer?
     /// 状態の更新
     func updateState(newState: State) {
         if state == .end && newState == .start {
@@ -28,7 +41,7 @@ class ListeningSetViewModel: SetViewModel {
     // 瞑想中タイマー
     func startListenintTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
-        stopTimer()
+        //        stopTimer()
         timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
@@ -48,6 +61,22 @@ class ListeningSetViewModel: SetViewModel {
             } // if state == .startここまで
         } // timerHandlerここまで
     } // startMeditationTimer
+    /// タイマー停止・無効
+    func stopTimer() {
+        // タイマー停止
+        timerHandler?.invalidate()
+        // タイマー無効
+        timerHandler = nil
+    } // stopTimer
+        /// 分と秒の表示
+        func formattedTime() -> String {
+            // 60で割ったものを分数表示に
+            let minutes = remainingSeconds / 60
+            // あまりは秒数に
+            let seconds = remainingSeconds % 60
+            // 〇〇:〇〇表示でリターン
+            return String(format: "%02d:%02d", minutes, seconds)
+        } // func formattedTime()ここまで
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         listeningSoundName = soundName

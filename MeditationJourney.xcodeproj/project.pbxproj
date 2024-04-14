@@ -31,7 +31,7 @@
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
-		18E079B22BC4EEE500544DDD /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B12BC4EEE500544DDD /* UserDefaultsKey.swift */; };
+		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,7 +60,7 @@
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
-		18E079B12BC4EEE500544DDD /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
+		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +77,7 @@
 		1806445D2AB693780080EEFF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				18E079B72BCA5F9900544DDD /* Extensions */,
 				18A4618F2ABEC8C60034F393 /* HomeView */,
 				18A461902ABEC9500034F393 /* SelectContinentAndMusicView */,
 				18A461912ABEC9D60034F393 /* PlayingView */,
@@ -175,6 +176,14 @@
 				18916B472B983AD1005E4516 /* ListeningView.swift */,
 			);
 			path = PlayingView;
+			sourceTree = "<group>";
+		};
+		18E079B72BCA5F9900544DDD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				18E079B82BCA606800544DDD /* Int+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,6 +296,7 @@
 				18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
 				1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */,
+				18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */,
 				187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */,
 				1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */,
 				18916B462B9833AF005E4516 /* ListeningSetViewModel.swift in Sources */,

@@ -23,7 +23,7 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                // 瞑想中タイマーを表示
+                // 音再生中タイマーを表示
                 if viewModel.state == .start || viewModel.state == .pause {
                     Text(viewModel.formattedTime())
                         .foregroundColor(Color(.keyWhite))
@@ -72,7 +72,9 @@ struct ListeningView: View {
             } // VStackここまで
         } // ZStack
         .onAppear {
-            // 画面起動時にstart状態にする
+            // 一度状態をendにする
+            viewModel.updateState(newState: .end)
+            // その後start状態にする
             viewModel.updateState(newState: .start)
         }
         .onChange(of: viewModel.state) {
@@ -100,7 +102,7 @@ struct ListeningView: View {
                 dismiss()
             }
         } message: {
-            Text("おつかれさまでした")
+            Text("終了です")
         } // .alertここまで
     } // bodyここまで
 } // ListeningViewここまで
