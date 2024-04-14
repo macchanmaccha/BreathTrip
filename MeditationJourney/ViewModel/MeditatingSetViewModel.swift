@@ -25,16 +25,16 @@ class MeditatingSetViewModel: SetViewModel {
     override init() {
         meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
     }
+    /// 選択する時間を管理する変数
+    @Published var selectedMinutes: Int = 1
+    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    @Published var remainingSeconds: Int = 0
     /// タイマー
     var timerHandler: Timer?
     // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
         remainingSeconds = 5
     }
-    /// 選択する時間を管理する変数
-    @Published var selectedMinutes: Int = 1
-    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
-    @Published var remainingSeconds: Int = 0
     // 状態の更新
     func updateState(newState: State) {
         if state == .preStart && newState == .start {
@@ -96,15 +96,6 @@ class MeditatingSetViewModel: SetViewModel {
         // タイマー無効
         timerHandler = nil
     }
-    /// 分と秒の表示
-    func formattedTime() -> String {
-        // 60で割ったものを分数表示に
-        let minutes = remainingSeconds / 60
-        // あまりは秒数に
-        let seconds = remainingSeconds % 60
-        // 〇〇:〇〇表示でリターン
-        return String(format: "%02d:%02d", minutes, seconds)
-    } // func formattedTime()ここまで
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         meditationSoundName = soundName

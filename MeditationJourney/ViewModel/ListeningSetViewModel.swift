@@ -68,15 +68,6 @@ class ListeningSetViewModel: SetViewModel {
         // タイマー無効
         timerHandler = nil
     } // stopTimer
-        /// 分と秒の表示
-        func formattedTime() -> String {
-            // 60で割ったものを分数表示に
-            let minutes = remainingSeconds / 60
-            // あまりは秒数に
-            let seconds = remainingSeconds % 60
-            // 〇〇:〇〇表示でリターン
-            return String(format: "%02d:%02d", minutes, seconds)
-        } // func formattedTime()ここまで
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         listeningSoundName = soundName

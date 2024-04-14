@@ -35,7 +35,8 @@ struct MeditatingView: View {
                 }
                 // 瞑想中タイマーを表示
                 if viewModel.state == .start || viewModel.state == .pause {
-                    Text(viewModel.formattedTime())
+                    let time = viewModel.remainingSeconds.formattedTime()
+                    Text(time)
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
