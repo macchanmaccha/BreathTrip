@@ -39,7 +39,7 @@ class ListeningSetViewModel: SetViewModel {
         state = newState
     }
     // 瞑想中タイマー
-    func startListenintTimer() {
+    func startListeningTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
         //        stopTimer()
         timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in

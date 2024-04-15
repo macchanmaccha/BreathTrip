@@ -14,8 +14,8 @@ struct ListeningSetView: View {
     @State private var isShowSheet: Bool = false
     /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
-    /// 選択できる分数
-    private let minutesOptions: [Int?] = [1, 20, 30, 40, 50, 60, nil]
+    /// 選択できる分数(UserDefaultsがnilを保持できないため時間制限なしは0)
+    private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60, 0]
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -38,14 +38,13 @@ struct ListeningSetView: View {
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
                         ForEach(minutesOptions.indices, id: \.self) { index in
-                            // minutesがnilでない場合、選択項目表示
-                            if let minutes = minutesOptions[index] {
-                                Text("\(minutes)分")
-                                    .tag(minutes)
+                            // 0でないとき
+                            if minutesOptions[index] != 0 {
+                                Text("\(minutesOptions[index])分")
+                                    .tag(minutesOptions[index])
+                                // 0のとき（時間制限なしのとき）
                             } else {
-                                // nilの場合、時間制限なしと表示
                                 Text("時間制限なし")
-                                    .tag(nil as Int?)
                             }
                         }
                     } // Pickerここまで

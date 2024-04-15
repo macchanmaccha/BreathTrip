@@ -82,7 +82,7 @@ struct ListeningView: View {
             switch viewModel.state {
             case .start:
                 // 音再生タイマーの呼出
-                viewModel.startListenintTimer()
+                viewModel.startListeningTimer()
             case .pause:
                 // タイマー停止・無効
                 viewModel.stopTimer()
