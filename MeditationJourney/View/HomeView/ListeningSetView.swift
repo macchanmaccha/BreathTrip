@@ -14,7 +14,7 @@ struct ListeningSetView: View {
     @State private var isShowSheet: Bool = false
     /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
-    /// 選択できる分数(UserDefaultsがnilを保持できないため時間制限なしは0)
+    /// 選択できる分数
     private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60, 0]
     var body: some View {
         ZStack {
@@ -45,6 +45,7 @@ struct ListeningSetView: View {
                                 // 0のとき（時間制限なしのとき）
                             } else {
                                 Text("時間制限なし")
+                                    .tag(minutesOptions.last!)
                             }
                         }
                     } // Pickerここまで

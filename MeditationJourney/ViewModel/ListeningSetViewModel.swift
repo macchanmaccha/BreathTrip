@@ -31,35 +31,45 @@ class ListeningSetViewModel: SetViewModel {
     /// 状態の更新
     func updateState(newState: State) {
         if state == .end && newState == .start {
-            selectedMinutes = listeningMinutes
-            // 音再生タイマーをセット
-            remainingSeconds = selectedMinutes * 60
-            print("入力した分数は\(remainingSeconds)だよ")
+            // listeningMinutesが0でないとき
+            if listeningMinutes != 0 {
+                selectedMinutes = listeningMinutes
+                // 音再生タイマーをセット
+                remainingSeconds = selectedMinutes * 60
+                print("入力した分数は\(remainingSeconds)だよ")
+                // listeningSecondsが0のとき
+            } else {
+                remainingSeconds = 0
+            }
         }
         state = newState
     }
     // 瞑想中タイマー
     func startListeningTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
-        //        stopTimer()
-        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            print("音再生中タイマー\(#fileID) \(#function) \(#line)")
-            // 瞑想中なら
-            if state == .start {
-                // 1秒より大きいとき
-                if remainingSeconds > 1 {
-                    // マイナス1ずつしていく
-                    remainingSeconds -= 1
-                    // 1の場合（0秒となる前）
-                } else if remainingSeconds == 1 {
-                    // end
-                    state = .end
-                } // else ifここまで
-            } // if state == .startここまで
-        } // timerHandlerここまで
+        stopTimer()
+        // remainingSecondsが0でないとき
+        if remainingSeconds != 0 {
+            // タイマー起動
+            timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+                print("音再生中タイマー\(#fileID) \(#function) \(#line)")
+                // 瞑想中なら
+                if state == .start {
+                    // 1秒より大きいとき
+                    if remainingSeconds > 1 {
+                        // マイナス1ずつしていく
+                        remainingSeconds -= 1
+                        // 1の場合（0秒となる前）
+                    } else if remainingSeconds == 1 {
+                        // end
+                        state = .end
+                    } // else ifここまで
+                } // if state == .startここまで
+            } // timerHandlerここまで
+        } // ifここまで
     } // startMeditationTimer
     /// タイマー停止・無効
     func stopTimer() {

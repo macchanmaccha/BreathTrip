@@ -25,12 +25,16 @@ struct ListeningView: View {
             VStack {
                 // 音再生中タイマーを表示
                 if viewModel.state == .start || viewModel.state == .pause {
-                    let time = viewModel.remainingSeconds.formattedTime()
-                    Text(time)
-                        .foregroundColor(Color(.keyWhite))
-                        .font(.system(size: 80))
-                        .frame(width: 300, height: 200)
-                        .bold()
+                    if viewModel.remainingSeconds != 0 {
+                        let time = viewModel.remainingSeconds.formattedTime()
+                        Text(time)
+                            .foregroundColor(Color(.keyWhite))
+                            .font(.system(size: 80))
+                            .frame(width: 300, height: 200)
+                            .bold()
+                    } else if viewModel.remainingSeconds == 0 {
+                        Text("")
+                    }
                 }
                 // endでないとき
                 if viewModel.state != .end {
