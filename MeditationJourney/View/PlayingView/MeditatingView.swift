@@ -35,7 +35,8 @@ struct MeditatingView: View {
                 }
                 // 瞑想中タイマーを表示
                 if viewModel.state == .start || viewModel.state == .pause {
-                    Text(viewModel.formattedTime())
+                    let time = viewModel.remainingSeconds.formattedTime()
+                    Text(time)
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
@@ -106,7 +107,7 @@ struct MeditatingView: View {
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .start:
-                // 瞑想タイマーの呼出
+                // 音再生タイマーの呼出
                 viewModel.startMeditationTimer()
             case .pause:
                 // タイマー停止・無効

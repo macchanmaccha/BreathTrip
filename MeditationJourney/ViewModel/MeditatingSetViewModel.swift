@@ -17,6 +17,20 @@ class MeditatingSetViewModel: SetViewModel {
         case pause     // 瞑想タイマー中断
         case end       // 瞑想終了
     } // enumここまで
+    /// 瞑想の分数
+    @Published var meditationMinutes: Int {
+        didSet {UserDefaults.standard.set(meditationMinutes, forKey: UserDefaultsKey.meditationMinutes)}
+    }
+    /// UserDefaultsの初期化
+    override init() {
+        meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
+    }
+    /// 選択する時間を管理する変数
+    @Published var selectedMinutes: Int = 1
+    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    @Published var remainingSeconds: Int = 0
+    /// タイマー
+    var timerHandler: Timer?
     // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
         remainingSeconds = 5
@@ -75,6 +89,13 @@ class MeditatingSetViewModel: SetViewModel {
             } // if state == .startここまで
         } // timerHandlerここまで
     } // startMeditationTimer
+    /// タイマー停止・無効
+    func stopTimer() {
+        // タイマー停止
+        timerHandler?.invalidate()
+        // タイマー無効
+        timerHandler = nil
+    }
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         meditationSoundName = soundName

@@ -28,10 +28,14 @@
 		187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentModel.swift */; };
 		18916B462B9833AF005E4516 /* ListeningSetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */; };
 		18916B482B983AD1005E4516 /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18916B472B983AD1005E4516 /* ListeningView.swift */; };
+		189DE2192BD8B774003E9275 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189DE2182BD8B774003E9275 /* Date+Extension.swift */; };
+		189DE21B2BDA6720003E9275 /* EventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189DE21A2BDA6720003E9275 /* EventStore.swift */; };
+		189DE21D2BDA7214003E9275 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189DE21C2BDA7214003E9275 /* Event.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
-		18E079B62BC9867800544DDD /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B52BC9867800544DDD /* CalendarViewModel.swift */; };
+		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
+		18E079BB2BD4E63500544DDD /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079BA2BD4E63400544DDD /* CalendarViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,10 +61,14 @@
 		187E216C2AF91F280093A334 /* ContinentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentModel.swift; sourceTree = "<group>"; };
 		18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningSetViewModel.swift; sourceTree = "<group>"; };
 		18916B472B983AD1005E4516 /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
+		189DE2182BD8B774003E9275 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		189DE21A2BDA6720003E9275 /* EventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStore.swift; sourceTree = "<group>"; };
+		189DE21C2BDA7214003E9275 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
-		18E079B52BC9867800544DDD /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
+		18E079BA2BD4E63400544DDD /* CalendarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +85,7 @@
 		1806445D2AB693780080EEFF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				18E079B72BCA5F9900544DDD /* Extensions */,
 				18A4618F2ABEC8C60034F393 /* HomeView */,
 				18A461902ABEC9500034F393 /* SelectContinentAndMusicView */,
 				18A461912ABEC9D60034F393 /* PlayingView */,
@@ -103,6 +112,8 @@
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 				1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */,
+				189DE21A2BDA6720003E9275 /* EventStore.swift */,
+				189DE21C2BDA7214003E9275 /* Event.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -149,13 +160,13 @@
 		18A4618F2ABEC8C60034F393 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				18E079BA2BD4E63400544DDD /* CalendarViewModel.swift */,
 				1863E1E32AAD81BF00543D18 /* TabSetView.swift */,
 				1806445E2AB694080080EEFF /* MeditationSetView.swift */,
 				180644602AB6944B0080EEFF /* ListeningSetView.swift */,
 				180644622AB694670080EEFF /* CalendarView.swift */,
 				180644642AB694790080EEFF /* MapView.swift */,
 				180644662AB694D30080EEFF /* ExplanationView.swift */,
-				18E079B52BC9867800544DDD /* CalendarViewModel.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -176,6 +187,15 @@
 				18916B472B983AD1005E4516 /* ListeningView.swift */,
 			);
 			path = PlayingView;
+			sourceTree = "<group>";
+		};
+		18E079B72BCA5F9900544DDD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				18E079B82BCA606800544DDD /* Int+Extension.swift */,
+				189DE2182BD8B774003E9275 /* Date+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,15 +290,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18E079B62BC9867800544DDD /* CalendarViewModel.swift in Sources */,
+				18E079BB2BD4E63500544DDD /* CalendarViewModel.swift in Sources */,
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
 				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
+				189DE2192BD8B774003E9275 /* Date+Extension.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				183AEA572B393F4800B6E661 /* MeditatingSetViewModel.swift in Sources */,
 				184FD4032BAB1BF7005C2F19 /* SetViewModel.swift in Sources */,
 				180644612AB6944B0080EEFF /* ListeningSetView.swift in Sources */,
+				189DE21D2BDA7214003E9275 /* Event.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */,
 				1818FFC82BC26BCE00CE1BB4 /* UserDefaultsKey.swift in Sources */,
@@ -287,8 +309,10 @@
 				181FC2942B20A2540033D136 /* SoundModel.swift in Sources */,
 				1863E1E42AAD81BF00543D18 /* TabSetView.swift in Sources */,
 				18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */,
+				189DE21B2BDA6720003E9275 /* EventStore.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
 				1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */,
+				18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */,
 				187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */,
 				1834BE372AECF43300DD5E92 /* SpotListModel.swift in Sources */,
 				18916B462B9833AF005E4516 /* ListeningSetViewModel.swift in Sources */,
