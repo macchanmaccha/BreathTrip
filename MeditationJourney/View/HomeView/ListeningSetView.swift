@@ -37,17 +37,11 @@ struct ListeningSetView: View {
                         .foregroundColor(Color(.backgroundNavy))
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
-                        ForEach(minutesOptions.indices, id: \.self) { index in
-                            // 0でないとき
-                            if minutesOptions[index] != 0 {
-                                Text("\(minutesOptions[index])分")
-                                    .tag(minutesOptions[index])
-                                // 0のとき（時間制限なしのとき）
-                            } else {
-                                Text("時間制限なし")
-                                    .tag(minutesOptions.last!)
-                            }
-                        }
+                        ForEach(minutesOptions, id: \.self) { minute in
+                               let minuteText = minute != 0 ? "\(minute)分" : "時間制限なし"
+                               Text(minuteText)
+                                   .tag(minute)
+                           }
                     } // Pickerここまで
                     .colorMultiply(Color(.backgroundNavy))
                     .scaleEffect(CGSize(width: 1.25, height: 1.25))

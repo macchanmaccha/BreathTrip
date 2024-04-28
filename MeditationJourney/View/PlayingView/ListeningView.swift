@@ -23,57 +23,45 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                // 音再生中タイマーを表示
-                if viewModel.state == .start || viewModel.state == .pause {
-                    if viewModel.remainingSeconds != 0 {
-                        let time = viewModel.remainingSeconds.formattedTime()
-                        Text(time)
-                            .foregroundColor(Color(.keyWhite))
-                            .font(.system(size: 80))
-                            .frame(width: 300, height: 200)
-                            .bold()
-                    } else if viewModel.remainingSeconds == 0 {
-                        Text("")
-                    }
+                if viewModel.remainingSeconds != 0 {
+                    let time = viewModel.remainingSeconds.formattedTime()
+                    Text(time)
+                        .foregroundColor(Color(.keyWhite))
+                        .font(.system(size: 80))
+                        .frame(width: 300, height: 200)
+                        .bold()
+                } else if viewModel.remainingSeconds == 0 {
+                    Text("")
                 }
-                // endでないとき
-                if viewModel.state != .end {
-                    // 中断ボタン
-                    Button(action: {
-                        // startだったら
-                        if viewModel.state == .start {
-                            // pauseにする
-                            viewModel.updateState(newState: .pause)
-                        }
-                        print("中断ボタンが押されたよ")
-                        print(viewModel.remainingSeconds)
-                    }) {
-                        Text("中断する")
-                            .tint(Color(.backgroundNavy))
-                            .font(.title)
+                // 中断ボタン
+                Button(action: {
+                    // pauseにする
+                    viewModel.updateState(newState: .pause)
+                    print("中断ボタンが押されたよ")
+                    print(viewModel.remainingSeconds)
+                }) {
+                    Text("中断する")
+                        .tint(Color(.backgroundNavy))
+                        .font(.title)
+                }
+                .padding(25)
+                .background(Color(.keyWhite))
+                .cornerRadius(10)
+                .alert("", isPresented: $isShowStopAlert) {
+                    // NO
+                    Button("NO") {
+                            // startにする
+                            viewModel.updateState(newState: .start)
                     }
-                    .padding(25)
-                    .background(Color(.keyWhite))
-                    .cornerRadius(10)
-                    .alert("", isPresented: $isShowStopAlert) {
-                        // NO
-                        Button("NO") {
-                            // pauseだったら
-                            if viewModel.state == .pause {
-                                // startにする
-                                viewModel.updateState(newState: .start)
-                            }
-                        }
-                        // YES
-                        Button("YES") {
-                            viewModel.stopTimer()
-                            // 設定画面に戻る
-                            dismiss()
-                        }
-                    } message: {
-                        Text("中断して前の画面に戻りますか？")
-                    } // .alertここまで
-                } // if isShowStopButtonここまで
+                    // YES
+                    Button("YES") {
+                        viewModel.stopTimer()
+                        // 設定画面に戻る
+                        dismiss()
+                    }
+                } message: {
+                    Text("中断して前の画面に戻りますか？")
+                } // .alertここまで
             } // VStackここまで
         } // ZStack
         .onAppear {

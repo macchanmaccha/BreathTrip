@@ -77,7 +77,6 @@
 		1806445D2AB693780080EEFF /* View */ = {
 			isa = PBXGroup;
 			children = (
-				18E079B72BCA5F9900544DDD /* Extensions */,
 				18A4618F2ABEC8C60034F393 /* HomeView */,
 				18A461902ABEC9500034F393 /* SelectContinentAndMusicView */,
 				18A461912ABEC9D60034F393 /* PlayingView */,
@@ -128,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */,
+				18E079B72BCA5F9900544DDD /* Extensions */,
 				1806445D2AB693780080EEFF /* View */,
 				1834BE3B2AECFB2F00DD5E92 /* ViewModel */,
 				185BE0CE2AEBEFC60013649E /* Model */,

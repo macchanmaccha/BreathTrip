@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SelectSoundView: View {
     /// setViewModel
-    @StateObject var setViewModel: SetViewModel
+    @StateObject var viewModel: SetViewModel
     /// isShowSheet
     @Binding var isShowSheet: Bool
     /// 選択した大陸
@@ -35,7 +35,7 @@ struct SelectSoundView: View {
                         Button(action: {
                             // 音を再生するなどのアクションを実行
                             isShowSheet.toggle()
-                            setViewModel.setSelectedSoundName(soundName: sound)
+                            viewModel.setSelectedSoundName(soundName: sound)
                         }) {
                             Text(sound.rawValue)
                         } // Buttonここまで
@@ -75,5 +75,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(setViewModel: SetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
+    SelectSoundView(viewModel: SetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
 }
