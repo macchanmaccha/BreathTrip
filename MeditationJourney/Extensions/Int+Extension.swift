@@ -8,6 +8,9 @@
 extension Int {
     /// 分と秒の表示
     func formattedTime() -> String {
+        if self == 0 {
+            return ""
+        }
         // 60で割ったものを分数表示に
         let minutes = self / 60
         // あまりは秒数に

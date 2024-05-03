@@ -23,16 +23,11 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                if viewModel.remainingSeconds != 0 {
-                    let time = viewModel.remainingSeconds.formattedTime()
-                    Text(time)
+                    Text(viewModel.remainingSeconds.formattedTime())
                         .foregroundColor(Color(.keyWhite))
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
-                } else if viewModel.remainingSeconds == 0 {
-                    Text("")
-                }
                 // 中断ボタン
                 Button(action: {
                     // pauseにする
