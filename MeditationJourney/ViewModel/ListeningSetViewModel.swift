@@ -18,9 +18,9 @@ class ListeningSetViewModel: SetViewModel {
         listeningMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.listeningMinutes)
     }
     /// 選択する時間を管理する変数
-    @Published var selectedMinutes: Int = 1
+    @Published private(set) var selectedMinutes: Int = 1
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
-    @Published var remainingSeconds: Int = 0
+    @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
     var timerHandler: Timer?
     /// 状態の更新

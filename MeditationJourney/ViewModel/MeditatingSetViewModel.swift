@@ -19,9 +19,9 @@ class MeditatingSetViewModel: SetViewModel {
         meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
     }
     /// 選択する時間を管理する変数
-    @Published var selectedMinutes: Int = 1
+    @Published private(set) var selectedMinutes: Int = 1
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
-    @Published var remainingSeconds: Int = 0
+    @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
     var timerHandler: Timer?
     // タイマーの初期値(瞑想前タイマー5秒)をセット
