@@ -10,11 +10,6 @@ import SwiftUI
 class ListeningSetViewModel: SetViewModel {
     /// 音をきく画面での状態　初期値はend
     @Published private(set) var state: State = .end
-    enum State {
-        case start     // 音再生タイマーカウントダウン
-        case pause     // 音再生タイマー中断
-        case end       // 音再生終了
-    } // enumここまで
     /// 音再生の分数
     @Published var listeningMinutes: Int {
         didSet {UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)}
@@ -86,4 +81,11 @@ class ListeningSetViewModel: SetViewModel {
     override func setSoundModel() {
         listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
     }
-} // SoundSetViewModelここまで
+} // ListeningSetViewModelここまで
+extension ListeningSetViewModel {
+    enum State {
+        case start     // 音再生タイマーカウントダウン
+        case pause     // 音再生タイマー中断
+        case end       // 音再生終了
+    } // enumここまで
+} // extension ListeningSetViewModelここまで

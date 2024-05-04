@@ -10,13 +10,6 @@ import SwiftUI
 class MeditatingSetViewModel: SetViewModel {
     // 瞑想画面での状態　初期値はend
     @Published private(set) var state: State = .end
-    enum State {
-        case preStart  // 瞑想前タイマーカウントダウン
-        case prePause  // 瞑想前タイマー中断
-        case start     // 瞑想タイマーカウントダウン
-        case pause     // 瞑想タイマー中断
-        case end       // 瞑想終了
-    } // enumここまで
     /// 瞑想の分数
     @Published var meditationMinutes: Int {
         didSet {UserDefaults.standard.set(meditationMinutes, forKey: UserDefaultsKey.meditationMinutes)}
@@ -104,4 +97,14 @@ class MeditatingSetViewModel: SetViewModel {
     override func setSoundModel() {
         meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
     }
-} // MeditatingViewModel
+} // MeditatingSetViewModel
+extension MeditatingSetViewModel {
+    /// 状態の管理
+    enum State {
+        case preStart  // 瞑想前タイマーカウントダウン
+        case prePause  // 瞑想前タイマー中断
+        case start     // 瞑想タイマーカウントダウン
+        case pause     // 瞑想タイマー中断
+        case end       // 瞑想終了
+    } // enumここまで
+}
