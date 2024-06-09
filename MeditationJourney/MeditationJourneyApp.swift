@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct MeditationJourneyApp: App {
-    @StateObject var myEvents = EventStore(preview: true)
+    //@StateObject var myEvents = EventStore(preview: true)
     let persistenceController = PersistenceController.shared
     /// UserDefaultsのデフォルト値を設定
     init() {
@@ -19,7 +19,7 @@ struct MeditationJourneyApp: App {
         WindowGroup {
             TabSetView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(myEvents)
+                //.environmentObject(myEvents)
         }
     }
 }
