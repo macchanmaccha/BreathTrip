@@ -30,7 +30,6 @@
 		187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentModel.swift */; };
 		18916B462B9833AF005E4516 /* ListeningSetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */; };
 		18916B482B983AD1005E4516 /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18916B472B983AD1005E4516 /* ListeningView.swift */; };
-		189DE2192BD8B774003E9275 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189DE2182BD8B774003E9275 /* Date+Extension.swift */; };
 		189DE21B2BDA6720003E9275 /* EventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189DE21A2BDA6720003E9275 /* EventStore.swift */; };
 		189DE21D2BDA7214003E9275 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189DE21C2BDA7214003E9275 /* Event.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
@@ -65,7 +64,6 @@
 		187E216C2AF91F280093A334 /* ContinentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentModel.swift; sourceTree = "<group>"; };
 		18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningSetViewModel.swift; sourceTree = "<group>"; };
 		18916B472B983AD1005E4516 /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
-		189DE2182BD8B774003E9275 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		189DE21A2BDA6720003E9275 /* EventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStore.swift; sourceTree = "<group>"; };
 		189DE21C2BDA7214003E9275 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
@@ -199,7 +197,6 @@
 				181236592C15EBAC00AD51A8 /* Calendar+Extension.swift */,
 				1812365A2C15EBAC00AD51A8 /* MeditationTimeExtension.swift */,
 				18E079B82BCA606800544DDD /* Int+Extension.swift */,
-				189DE2182BD8B774003E9275 /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -300,7 +297,6 @@
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
 				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
-				189DE2192BD8B774003E9275 /* Date+Extension.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				183AEA572B393F4800B6E661 /* MeditatingSetViewModel.swift in Sources */,
