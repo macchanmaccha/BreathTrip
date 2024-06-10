@@ -28,51 +28,57 @@ struct CalendarView: View {
     // グリッドアイテム
     let columns: [GridItem] = Array(repeating: .init(.fixed(50)), count: 7)
     var body: some View {
-        VStack {
-            // 年月の表示
-            Text(String(format: "%04d/%02d", year, month))
-            // フォントサイズは30
-                .font(.system(size: 30))
-            HStack {
-                // 曜日のループ
-                ForEach(weekdays, id: \.self) { weekday in
-                    Text(weekday)
-                    // フレーム
-                        .frame(width: 50, height: 50, alignment: .center)
-                } // ForEachここまで
-            } // HStackここまで
-            LazyVGrid(columns: columns, spacing: 50) {
-                // それぞれの日付をループで処理
-                ForEach(calendarDates) { calendarDate in
-                    // 日付が存在する場合、日を表示
-                    if let date = calendarDate.date,
-                       let day = Calendar.current.day(for: date) {
-                        ZStack {
-                            // 日付表示
-                            Text("\(day)")
-                            // 文字サイズ
-                                .font(.system(size: 25))
-                            // 今日の日付は赤色、その他は黒色
-                                .foregroundColor(Calendar.current.isDateInToday(date) ? .red : .black)
-                            // サイズ
-                                .frame(width: 50, height: 50)
-                            // 瞑想時間に応じた背景色
-                                .background(Color.backgroundColor(for: calendarDate.meditationTime))
-                            // 角の丸み
-                                .cornerRadius(5)
-                        } // ZStackここまで
-                        // 日付が存在しない時
-                    } else {
-                        // 何も表示しない
-                        Text("")
+        ZStack {
+            Image(.settingsBackground)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+            VStack {
+                // 年月の表示
+                Text(String(format: "%04d/%02d", year, month))
+                // フォントサイズは30
+                    .font(.system(size: 30))
+                HStack {
+                    // 曜日のループ
+                    ForEach(weekdays, id: \.self) { weekday in
+                        Text(weekday)
                         // フレーム
-                            .frame(width: 50, height: 50)
-                    } // if let　ここまで
-                } // ForEachここまで
-            } // LazyVGridここまで
-        } // VStackここまで
-        // フレーム
-        .frame(width: 500, height: 500, alignment: .center)
+                            .frame(width: 50, height: 50, alignment: .center)
+                    } // ForEachここまで
+                } // HStackここまで
+                LazyVGrid(columns: columns, spacing: 50) {
+                    // それぞれの日付をループで処理
+                    ForEach(calendarDates) { calendarDate in
+                        // 日付が存在する場合、日を表示
+                        if let date = calendarDate.date,
+                           let day = Calendar.current.day(for: date) {
+                            ZStack {
+                                // 日付表示
+                                Text("\(day)")
+                                // 文字サイズ
+                                    .font(.system(size: 25))
+                                // 今日の日付は赤色、その他は黒色
+                                    .foregroundColor(Calendar.current.isDateInToday(date) ? .red : .black)
+                                // サイズ
+                                    .frame(width: 50, height: 50)
+                                // 瞑想時間に応じた背景色
+                                    .background(Color.backgroundColor(for: calendarDate.meditationTime))
+                                // 角の丸み
+                                    .cornerRadius(5)
+                            } // ZStackここまで
+                            // 日付が存在しない時
+                        } else {
+                            // 何も表示しない
+                            Text("")
+                            // フレーム
+                                .frame(width: 50, height: 50)
+                        } // if let　ここまで
+                    } // ForEachここまで
+                } // LazyVGridここまで
+            } // VStackここまで
+            // フレーム
+            .frame(width: 500, height: 500, alignment: .center)
+        }
     } // bodyここまで
 } // CalendarViewここまで
 
