@@ -29,19 +29,22 @@ struct CalendarView: View {
     let columns: [GridItem] = Array(repeating: .init(.fixed(50)), count: 7)
     var body: some View {
         ZStack {
-            Image(.settingsBackground)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+            // 背景色を紺色に設定
+            Color("backgroundNavy")
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 // 年月の表示
-                Text(String(format: "%04d/%02d", year, month))
+                Text(String(format: "< %04d/%02d >", year, month))
+                    .foregroundColor(Color(.keyWhite))
+                    .bold()
                 // フォントサイズは30
                     .font(.system(size: 30))
                 HStack {
                     // 曜日のループ
                     ForEach(weekdays, id: \.self) { weekday in
                         Text(weekday)
+                            .foregroundColor(Color(.keyWhite))
+                            .bold()
                         // フレーム
                             .frame(width: 50, height: 50, alignment: .center)
                     } // ForEachここまで
@@ -57,14 +60,15 @@ struct CalendarView: View {
                                 Text("\(day)")
                                 // 文字サイズ
                                     .font(.system(size: 25))
-                                // 今日の日付は赤色、その他は黒色
-                                    .foregroundColor(Calendar.current.isDateInToday(date) ? .red : .black)
+                                    .bold()
+                                // 今日の日付は赤色、その他は白色
+                                    .foregroundColor(Calendar.current.isDateInToday(date) ? .red : Color(.keyWhite))
                                 // サイズ
                                     .frame(width: 50, height: 50)
                                 // 瞑想時間に応じた背景色
                                     .background(Color.backgroundColor(for: calendarDate.meditationTime))
                                 // 角の丸み
-                                    .cornerRadius(5)
+                                    .cornerRadius(20)
                             } // ZStackここまで
                             // 日付が存在しない時
                         } else {
@@ -78,7 +82,7 @@ struct CalendarView: View {
             } // VStackここまで
             // フレーム
             .frame(width: 500, height: 500, alignment: .center)
-        }
+        } // ZStackここまで
     } // bodyここまで
 } // CalendarViewここまで
 
