@@ -18,15 +18,15 @@ struct CalendarDates: Identifiable {
 
 struct CalendarView: View {
     // 現在の年
-    let year = Calendar.current.year(for: Date()) ?? 0
+    private let year = Calendar.current.year(for: Date()) ?? 0
     // 現在の月
-    let month = Calendar.current.month(for: Date()) ?? 0
+    private let month = Calendar.current.month(for: Date()) ?? 0
     // 日付の配列
-    let calendarDates = createCalendarDates(Date())
+    private let calendarDates = createCalendarDates(Date())
     // 曜日
-    let weekdays = Calendar.current.shortWeekdaySymbols
+    private let weekdays = Calendar.current.shortWeekdaySymbols
     // グリッドアイテム
-    let columns: [GridItem] = Array(repeating: .init(.fixed(50)), count: 7)
+    private let columns: [GridItem] = Array(repeating: .init(.fixed(50)), count: 7)
     var body: some View {
         ZStack {
             // 背景色を紺色に設定
@@ -61,8 +61,8 @@ struct CalendarView: View {
                                 // 文字サイズ
                                     .font(.system(size: 25))
                                     .bold()
-                                // 今日の日付は赤色、その他は白色
-                                    .foregroundColor(Calendar.current.isDateInToday(date) ? .red : Color(.keyWhite))
+                                // 今日の日付はライム色、その他はキーホワイト
+                                    .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
                                 // サイズ
                                     .frame(width: 50, height: 50)
                                 // 瞑想時間に応じた背景色
@@ -86,7 +86,7 @@ struct CalendarView: View {
     } // bodyここまで
 } // CalendarViewここまで
 
-func createCalendarDates(_ date: Date) -> [CalendarDates] {
+private func createCalendarDates(_ date: Date) -> [CalendarDates] {
     // 日付配列プロパティ
     var days = [CalendarDates]()
     // 今月の開始日
@@ -106,12 +106,17 @@ func createCalendarDates(_ date: Date) -> [CalendarDates] {
         // 今月の開始日から1日ずつ加算
         days.append(CalendarDates(date: Calendar.current.date(byAdding: .day, value: day, to: startOfMonth), meditationTime: meditationTime))
     } // for day inここまで
-    // カレンダー初日、最終日、
+    // 最初と最後の日付を取得
     guard let firstDay = days.first, let lastDay = days.last,
-          //
+          // それぞれ存在するならば
           let firstDate = firstDay.date, let lastDate = lastDay.date,
+          // 最初の日の曜日を取得
           let firstDateWeekday = Calendar.current.weekday(for: firstDate),
-          let lastDateWeekday = Calendar.current.weekday(for: lastDate) else { return [] }
+          // 最後の日の曜日を取得
+          let lastDateWeekday = Calendar.current.weekday(for: lastDate) else {
+        // なければ何も返却しない
+        return []
+    } // guard let ここまで
     // 初週のオフセット日数
     let firstWeekEmptyDays = firstDateWeekday - 1
     // 最終週のオフセット日数
