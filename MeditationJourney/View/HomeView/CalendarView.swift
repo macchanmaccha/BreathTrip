@@ -64,11 +64,11 @@ struct CalendarView: View {
                                 // 今日の日付はライム色、その他はキーホワイト
                                     .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
                                 // サイズ
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: 45, height: 45)
                                 // 瞑想時間に応じた背景色
                                     .background(Color.backgroundColor(for: calendarDate.meditationTime))
                                 // 角の丸み
-                                    .cornerRadius(20)
+                                    .cornerRadius(10)
                             } // ZStackここまで
                             // 日付が存在しない時
                         } else {
