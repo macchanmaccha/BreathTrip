@@ -28,62 +28,62 @@ struct CalendarView: View {
     // グリッドアイテム
     private let columns: [GridItem] = Array(repeating: .init(.fixed(50)), count: 7)
     var body: some View {
+        GeometryReader { geometry in
             ZStack {
                 // 背景色を紺色に設定
                 Color("backgroundNavy")
                     .edgesIgnoringSafeArea(.all)
-                GeometryReader { geometry in
-                    VStack {
-                        // 年月の表示
-                        Text(String(format: "< %04d/%02d >", year, month))
-                            .foregroundColor(Color(.keyWhite))
-                            .bold()
-                        // フォントサイズは30
-                            .font(.system(size: 30))
-                        HStack {
-                            // 曜日のループ
-                            ForEach(weekdays, id: \.self) { weekday in
-                                Text(weekday)
-                                    .foregroundColor(Color(.keyWhite))
-                                    .bold()
+                VStack {
+                    // 年月の表示
+                    Text(String(format: "< %04d/%02d >", year, month))
+                        .foregroundColor(Color(.keyWhite))
+                        .bold()
+                    // フォントサイズは30
+                        .font(.system(size: 30))
+                    HStack {
+                        // 曜日のループ
+                        ForEach(weekdays, id: \.self) { weekday in
+                            Text(weekday)
+                                .foregroundColor(Color(.keyWhite))
+                                .bold()
+                            // フレーム
+                                .frame(width: 50, height: 50, alignment: .center)
+                        } // ForEachここまで
+                    } // HStackここまで
+                    LazyVGrid(columns: columns, spacing: 50) {
+                        // それぞれの日付をループで処理
+                        ForEach(calendarDates) { calendarDate in
+                            // 日付が存在する場合、日を表示
+                            if let date = calendarDate.date,
+                               let day = Calendar.current.day(for: date) {
+                                ZStack {
+                                    // 日付表示
+                                    Text("\(day)")
+                                    // 文字サイズ
+                                        .font(.system(size: 25))
+                                        .bold()
+                                    // 今日の日付はライム色、その他はキーホワイト
+                                        .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
+                                    // サイズ
+                                        .frame(width: 45, height: 45)
+                                    // 瞑想時間に応じた背景色
+                                        .background(Color.backgroundColor(for: calendarDate.meditationTime))
+                                    // 角の丸み
+                                        .cornerRadius(10)
+                                } // ZStackここまで
+                                // 日付が存在しない時
+                            } else {
+                                // 何も表示しない
+                                Text("")
                                 // フレーム
-                                    .frame(width: 50, height: 50, alignment: .center)
-                            } // ForEachここまで
-                        } // HStackここまで
-                        LazyVGrid(columns: columns, spacing: 50) {
-                            // それぞれの日付をループで処理
-                            ForEach(calendarDates) { calendarDate in
-                                // 日付が存在する場合、日を表示
-                                if let date = calendarDate.date,
-                                   let day = Calendar.current.day(for: date) {
-                                    ZStack {
-                                        // 日付表示
-                                        Text("\(day)")
-                                        // 文字サイズ
-                                            .font(.system(size: 25))
-                                            .bold()
-                                        // 今日の日付はライム色、その他はキーホワイト
-                                            .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
-                                        // サイズ
-                                            .frame(width: 45, height: 45)
-                                        // 瞑想時間に応じた背景色
-                                            .background(Color.backgroundColor(for: calendarDate.meditationTime))
-                                        // 角の丸み
-                                            .cornerRadius(10)
-                                    } // ZStackここまで
-                                    // 日付が存在しない時
-                                } else {
-                                    // 何も表示しない
-                                    Text("")
-                                    // フレーム
-                                        .frame(width: 50, height: 50)
-                                } // if let　ここまで
-                            } // ForEachここまで
-                        } // LazyVGridここまで
-                    } // VStackここまで
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                } // geometry ここまで
+                                    .frame(width: 50, height: 50)
+                            } // if let　ここまで
+                        } // ForEachここまで
+                    } // LazyVGridここまで
+                } // VStackここまで
             } // ZStackここまで
+            .frame(width: geometry.size.width, height: geometry.size.height)
+        }
     } // bodyここまで
 } // CalendarViewここまで
 
