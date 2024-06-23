@@ -28,29 +28,32 @@ struct CalendarView: View {
     // グリッドアイテム
     private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 40, maximum: 80)), count: 7)
     var body: some View {
-            ZStack {
-                // 背景色を紺色に設定
-                Color("backgroundNavy")
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-                    // 年月の表示
-                    Text(String(format: "< %04d/%02d >", year, month))
-                        .foregroundColor(Color(.keyWhite))
-                        .bold()
-                    // フォントサイズは30
-                        .font(.system(size: 30))
-                    LazyVGrid(columns: columns) {
+        ZStack {
+            // 背景色を紺色に設定
+            Color("backgroundNavy")
+                .edgesIgnoringSafeArea(.all)
+            VStack {
+                // 年月の表示
+                Text(String(format: "< %04d/%02d >", year, month))
+                    .foregroundColor(Color(.keyWhite))
+                    .bold()
+                // フォントサイズは30
+                    .font(.system(size: 30))
+                GeometryReader { geometry in
+                    VStack {
+                        LazyVGrid(columns: columns) {
                             // 曜日のループ
                             ForEach(weekdays, id: \.self) { weekday in
                                 Text(weekday)
                                     .foregroundColor(Color(.keyWhite))
+                                    .lineLimit(1)
+                                // 文字サイズ
                                     .bold()
                                 // フレーム
                                     .frame(minWidth: 45, minHeight: 45)
-                                    .minimumScaleFactor(0.8)
                             } // ForEachここまで
-                    }
-                    LazyVGrid(columns: columns) {
+                        }
+                        LazyVGrid(columns: columns) {
                             // それぞれの日付をループで処理
                             ForEach(calendarDates) { calendarDate in
                                 // 日付が存在する場合、日を表示
@@ -77,9 +80,44 @@ struct CalendarView: View {
                                     Text("")
                                 } // if let　ここまで
                             } // ForEachここまで
-                    } // LazyVGridここまで
-                } // VStackここまで
-            } // ZStackここまで
+                        } // LazyVGridここまで
+                    }
+                } // geometryここまで
+                // 色の説明　LessからMoreまで
+                HStack {
+                    // 右寄せ
+                    Spacer()
+                    Text("Less")
+                        .foregroundColor(Color(.keyWhite))
+                    Rectangle()
+                        .frame(maxWidth: 20, maxHeight: 25 )
+                        .foregroundColor(.blue)
+                        .cornerRadius(4)
+                    Rectangle()
+                        .frame(maxWidth: 20, maxHeight: 25 )
+                        .foregroundColor(.blue)
+                        .cornerRadius(4)
+                    Rectangle()
+                        .frame(maxWidth: 20, maxHeight: 25 )
+                        .foregroundColor(.blue)
+                        .cornerRadius(4)
+                    Rectangle()
+                        .frame(maxWidth: 20, maxHeight: 25 )
+                        .foregroundColor(.blue)
+                        .cornerRadius(4)
+                    Rectangle()
+                        .frame(maxWidth: 20, maxHeight: 25 )
+                        .foregroundColor(.blue)
+                        .cornerRadius(4)
+                    Rectangle()
+                        .frame(maxWidth: 20, maxHeight: 25 )
+                        .foregroundColor(.blue)
+                        .cornerRadius(4)
+                    Text("More")
+                        .foregroundColor(Color(.keyWhite))
+                }
+            } // VStackここまで
+        } // ZStackここまで
     } // bodyここまで
 } // CalendarViewここまで
 
