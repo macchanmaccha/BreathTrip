@@ -9,19 +9,48 @@ import SwiftUI
 
 struct ExplanationView: View {
     var body: some View {
-        ZStack {
-            Image(.settingsBackground)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
-            // 背景枠
-            Rectangle()
-                .fill(Color(.keyWhite))
-                .cornerRadius(8)
-                .opacity(0.6)
-                .frame(width: 400, height: 400)
-        } // ZStackここまで
-        
+        NavigationStack {
+            ZStack {
+                Image(.settingsBackground)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+                // 背景枠
+                Rectangle()
+                    .fill(Color(.keyWhite))
+                    .cornerRadius(8)
+                    .opacity(0.6)
+                    .frame(width: 400, height: 400)
+                VStack {
+                    Text("（仮）世界の音を聴きながら\n瞑想するためのものです。\n毎日の瞑想を習慣にしましょう。")
+                        .padding()
+                    NavigationLink(destination: WayOfMeditationView()) {
+                        Text("瞑想のやりかた")
+                            .padding()
+                            .frame(maxWidth: 200)
+                            .background(Color(.backgroundNavy))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    NavigationLink(destination: EffectOfMeditationView()) {
+                        Text("瞑想の効果")
+                            .padding()
+                            .frame(maxWidth: 200)
+                            .background(Color(.backgroundNavy))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    NavigationLink(destination: DescriptionView()) {
+                        Text("アプリの使い方")
+                            .padding()
+                            .frame(maxWidth: 200)
+                            .background(Color(.backgroundNavy))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+            } // ZStackここまで
+        } // NavigationStackここまで
     } // bodyここまで
 } // ExplanationViewここまで
 
