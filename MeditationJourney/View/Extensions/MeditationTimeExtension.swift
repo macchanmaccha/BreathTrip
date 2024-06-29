@@ -10,19 +10,19 @@ import SwiftUI
 extension Color {
     static func backgroundColor(for meditationTime: Int) -> Color {
         switch meditationTime {
-            // 勉強時間が1〜20分だったとき
+            // 瞑想時間が1〜20分だったとき
         case 1...20:
             // firstStageBlue
             return Color(.firstStageBlue)
-            // 勉強時間が21〜40分だったとき
+            // 瞑想時間が21〜40分だったとき
         case 21...40:
             // secondStageBlue
             return Color(.secondStageBlue)
-            // 勉強時間が41〜60分だったとき
+            // 瞑想時間が41〜60分だったとき
         case 41...60:
             // thirdStageBlue
             return Color(.thirdStageBlue)
-            // 勉強しなかったとき
+            // 瞑想しなかったとき
         default:
             // デフォルトの背景色
             return Color.clear
