@@ -18,9 +18,9 @@ struct CalendarDates: Identifiable {
 
 struct CalendarView: View {
     // 現在の年
-    private let year = Calendar.current.year(for: Date()) ?? 0
+    private let year = Calendar.current.year(from: Date()) ?? 0
     // 現在の月
-    private let month = Calendar.current.month(for: Date()) ?? 0
+    private let month = Calendar.current.month(from: Date()) ?? 0
     // 日付の配列
     private let calendarDates = createCalendarDates(Date())
     // 曜日
@@ -59,7 +59,7 @@ struct CalendarView: View {
                         ForEach(calendarDates) { calendarDate in
                             // 日付が存在する場合、日を表示
                             if let date = calendarDate.date,
-                               let day = Calendar.current.day(for: date) {
+                               let day = Calendar.current.day(from: date) {
                                 ZStack {
                                     // 日付表示
                                     Text("\(day)")
@@ -121,12 +121,12 @@ private func createCalendarDates(_ date: Date) -> [CalendarDates] {
     // 日付配列プロパティ
     var days = [CalendarDates]()
     // 今月の開始日
-    let startOfMonth = Calendar.current.startOfMonth(for: date)
+    let startDateOfMonth = Calendar.current.startDateOfMonth(from: date)
     // 今月の日数
-    let daysInMonth = Calendar.current.daysInMonth(for: date)
+    let daysInMonth = Calendar.current.daysInMonth(from: date)
     // 開始日と日数がなければ
     guard let daysInMonth = daysInMonth,
-          let startOfMonth = startOfMonth else {
+          let startDateOfMonth = startDateOfMonth else {
         // 何も返却しない
         return[]
     } // guard let　ここまで
@@ -135,16 +135,16 @@ private func createCalendarDates(_ date: Date) -> [CalendarDates] {
         // ランダムな瞑想時間を設定
         let meditationTime = Int.random(in: 0...60)
         // 今月の開始日から1日ずつ加算
-        days.append(CalendarDates(date: Calendar.current.date(byAdding: .day, value: day, to: startOfMonth), meditationTime: meditationTime))
+        days.append(CalendarDates(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth), meditationTime: meditationTime))
     } // for day inここまで
     // 最初と最後の日付を取得
     guard let firstDay = days.first, let lastDay = days.last,
           // それぞれ存在するならば
           let firstDate = firstDay.date, let lastDate = lastDay.date,
           // 最初の日の曜日を取得
-          let firstDateWeekday = Calendar.current.weekday(for: firstDate),
+          let firstDateWeekday = Calendar.current.weekday(from: firstDate),
           // 最後の日の曜日を取得
-          let lastDateWeekday = Calendar.current.weekday(for: lastDate) else {
+          let lastDateWeekday = Calendar.current.weekday(from: lastDate) else {
         // なければ何も返却しない
         return []
     } // guard let ここまで
