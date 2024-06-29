@@ -120,16 +120,12 @@ struct CalendarView: View {
 private func createCalendarDates(_ date: Date) -> [CalendarDates] {
     // 日付配列プロパティ
     var days = [CalendarDates]()
-    // 今月の開始日
-    let startDateOfMonth = Calendar.current.startDateOfMonth(from: date)
-    // 今月の日数
-    let daysInMonth = Calendar.current.daysInMonth(from: date)
-    // 開始日と日数がなければ
-    guard let daysInMonth = daysInMonth,
-          let startDateOfMonth = startDateOfMonth else {
+    // 月の初めの日付と月の日数がなければ
+    guard let startDateOfMonth = Calendar.current.startDateOfMonth(from: date),
+          let daysInMonth = Calendar.current.daysInMonth(from: date) else {
         // 何も返却しない
-        return[]
-    } // guard let　ここまで
+        return []
+    } // guard let ここまで
     // 今月の全ての日付
     for day in 0..<daysInMonth {
         // ランダムな瞑想時間を設定
@@ -138,13 +134,12 @@ private func createCalendarDates(_ date: Date) -> [CalendarDates] {
         days.append(CalendarDates(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth), meditationTime: meditationTime))
     } // for day inここまで
     // 最初と最後の日付を取得
-    guard let firstDay = days.first, let lastDay = days.last,
-          // それぞれ存在するならば
-          let firstDate = firstDay.date, let lastDate = lastDay.date,
-          // 最初の日の曜日を取得
-          let firstDateWeekday = Calendar.current.weekday(from: firstDate),
-          // 最後の日の曜日を取得
-          let lastDateWeekday = Calendar.current.weekday(from: lastDate) else {
+    // 最初の日と最後の日
+    guard let firstDay = days.first?.date, let lastDay = days.last?.date,
+          // 最初の日の曜日
+          let firstDateWeekday = Calendar.current.weekday(from: firstDay),
+          // 最後の日の曜日
+          let lastDateWeekday = Calendar.current.weekday(from: lastDay) else {
         // なければ何も返却しない
         return []
     } // guard let ここまで
