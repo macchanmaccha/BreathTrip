@@ -18,9 +18,9 @@ struct CalendarDates: Identifiable {
 
 struct CalendarView: View {
     // 現在の年
-    private let year = Calendar.current.year(from: Date()) ?? 0
+    private let year = Calendar.current.year(from: Date())
     // 現在の月
-    private let month = Calendar.current.month(from: Date()) ?? 0
+    private let month = Calendar.current.month(from: Date())
     // 日付の配列
     private let calendarDates = createCalendarDates(Date())
     // 曜日
@@ -34,83 +34,95 @@ struct CalendarView: View {
                 Color("backgroundNavy")
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    // 年月の表示
-                    Text(String(format: "< %04d/%02d >", year, month))
-                        .foregroundColor(Color(.keyWhite))
-                        .bold()
-                    // フォントサイズは30
-                        .font(.title)
-                        .minimumScaleFactor(0.5)
-                    LazyVGrid(columns: columns) {
-                        // 曜日のループ
-                        ForEach(weekdays, id: \.self) { weekday in
-                            Text(weekday)
+                    // 現在の年月が存在すれば
+                    if let currentYear = year,
+                       let currentMonth = month, false {
+                        // 年月の表示
+                        Text(String(format: "< %04d/%02d >", currentYear, currentMonth))
+                            .foregroundColor(Color(.keyWhite))
+                            .bold()
+                        // フォントサイズは30
+                            .font(.title)
+                            .minimumScaleFactor(0.5)
+                        LazyVGrid(columns: columns) {
+                            // 曜日のループ
+                            ForEach(weekdays, id: \.self) { weekday in
+                                Text(weekday)
+                                    .foregroundColor(Color(.keyWhite))
+                                    .lineLimit(1)
+                                // 文字サイズ
+                                    .font(.headline)
+                                    .bold()
+                                // フレーム
+                                    .frame(minWidth: 45, minHeight: 45)
+                            } // ForEachここまで
+                        } // LazyVGridここまで
+                        LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
+                            // それぞれの日付をループで処理
+                            ForEach(calendarDates) { calendarDate in
+                                // 日付が存在する場合、日を表示
+                                if let date = calendarDate.date,
+                                   let day = Calendar.current.day(from: date) {
+                                    ZStack {
+                                        // 日付表示
+                                        Text("\(day)")
+                                        // 文字サイズ
+                                            .font(.title2)
+                                            .bold()
+                                        // 今日の日付はライム色、その他はキーホワイト
+                                            .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
+                                        // サイズ
+                                            .frame(minWidth: 45, minHeight: 60)
+                                        // 瞑想時間に応じた背景色
+                                            .background(Color.backgroundColor(for: calendarDate.meditationTime))
+                                        // 角の丸み
+                                            .cornerRadius(10)
+                                    } // ZStackここまで
+                                    // 日付が存在しない時
+                                } else {
+                                    // 何も表示しない
+                                    Text("")
+                                } // if let　ここまで
+                            } // ForEachここまで
+                        } // LazyVGridここまで
+                        // 色の説明　LessからMoreまで
+                        HStack {
+                            // 右寄せ
+                            Spacer()
+                            Text("Less")
                                 .foregroundColor(Color(.keyWhite))
-                                .lineLimit(1)
-                            // 文字サイズ
-                                .font(.headline)
-                                .bold()
-                            // フレーム
-                                .frame(minWidth: 45, minHeight: 45)
-                        } // ForEachここまで
-                    } // LazyVGridここまで
-                    LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // それぞれの日付をループで処理
-                        ForEach(calendarDates) { calendarDate in
-                            // 日付が存在する場合、日を表示
-                            if let date = calendarDate.date,
-                               let day = Calendar.current.day(from: date) {
-                                ZStack {
-                                    // 日付表示
-                                    Text("\(day)")
-                                    // 文字サイズ
-                                        .font(.title2)
-                                        .bold()
-                                    // 今日の日付はライム色、その他はキーホワイト
-                                        .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
-                                    // サイズ
-                                        .frame(minWidth: 45, minHeight: 60)
-                                    // 瞑想時間に応じた背景色
-                                        .background(Color.backgroundColor(for: calendarDate.meditationTime))
-                                    // 角の丸み
-                                        .cornerRadius(10)
-                                } // ZStackここまで
-                                // 日付が存在しない時
-                            } else {
-                                // 何も表示しない
-                                Text("")
-                            } // if let　ここまで
-                        } // ForEachここまで
-                    } // LazyVGridここまで
-                    // 色の説明　LessからMoreまで
-                    HStack {
-                        // 右寄せ
-                        Spacer()
-                        Text("Less")
+                            Rectangle()
+                                .border(.gray, width: 1.5)
+                                .frame(maxWidth: 20, maxHeight: 25 )
+                                .foregroundColor(.clear)
+                                .cornerRadius(4)
+                            Rectangle()
+                                .border(.gray, width: 1.5)
+                                .frame(maxWidth: 20, maxHeight: 25 )
+                                .foregroundColor(Color(.firstStageBlue))
+                                .cornerRadius(4)
+                            Rectangle()
+                                .border(.gray, width: 1.5)
+                                .frame(maxWidth: 20, maxHeight: 25 )
+                                .foregroundColor(Color(.secondStageBlue))
+                                .cornerRadius(4)
+                            Rectangle()
+                                .border(.gray, width: 1.5)
+                                .frame(maxWidth: 20, maxHeight: 25 )
+                                .foregroundColor(Color(.thirdStageBlue))
+                                .cornerRadius(4)
+                            Text("More")
+                                .foregroundColor(Color(.keyWhite))
+                        } // HStackここまで
+                    } else {
+                        // 現在の年月が存在しなければ
+                        Text("カレンダーを表示できません。\nアプリを再起動してください。")
                             .foregroundColor(Color(.keyWhite))
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25 )
-                            .foregroundColor(.clear)
-                            .cornerRadius(4)
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25 )
-                            .foregroundColor(Color(.firstStageBlue))
-                            .cornerRadius(4)
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25 )
-                            .foregroundColor(Color(.secondStageBlue))
-                            .cornerRadius(4)
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25 )
-                            .foregroundColor(Color(.thirdStageBlue))
-                            .cornerRadius(4)
-                        Text("More")
-                            .foregroundColor(Color(.keyWhite))
-                    } // HStackここまで
+                            .bold()
+                        // フォントサイズは30
+                            .font(.title)
+                            .minimumScaleFactor(0.5)
+                    } // if letここまで
                 } // VStackここまで
             } // ZStackここまで
         } // geometryここまで
