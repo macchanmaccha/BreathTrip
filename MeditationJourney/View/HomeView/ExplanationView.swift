@@ -20,34 +20,40 @@ struct ExplanationView: View {
                     .fill(Color(.keyWhite))
                     .cornerRadius(8)
                     .opacity(0.6)
-                    .frame(width: 400, height: 400)
+//                    .frame(width: 400, height: 400)
                 VStack {
-                    Text("（仮）世界の音を聴きながら\n瞑想するためのものです。\n毎日の瞑想を習慣にしましょう。")
-                        .padding()
+                    Text("世界の音を聴きながら\n瞑想するためのものです。\n毎日の瞑想を習慣にしましょう。")
+                        .font(.title2)
                     NavigationLink(destination: WayOfMeditationView()) {
                         Text("瞑想のやりかた")
-                            .padding()
-                            .frame(maxWidth: 200)
+                            .font(.title2)
+                            .padding(25)
+                            .frame(maxWidth: 350)
                             .background(Color(.backgroundNavy))
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
+                    .padding()
                     NavigationLink(destination: EffectOfMeditationView()) {
                         Text("瞑想の効果")
-                            .padding()
-                            .frame(maxWidth: 200)
+                            .font(.title2)
+                            .padding(25)
+                            .frame(maxWidth: 350)
                             .background(Color(.backgroundNavy))
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
+                    .padding()
                     NavigationLink(destination: DescriptionView()) {
                         Text("アプリの使い方")
-                            .padding()
-                            .frame(maxWidth: 200)
+                            .font(.title2)
+                            .padding(25)
+                            .frame(maxWidth: 350)
                             .background(Color(.backgroundNavy))
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
+                    .padding()
                 }
             } // ZStackここまで
         } // NavigationStackここまで
