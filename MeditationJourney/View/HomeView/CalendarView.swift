@@ -36,7 +36,7 @@ struct CalendarView: View {
                 VStack {
                     // 現在の年月が存在すれば
                     if let currentYear = year,
-                       let currentMonth = month, false {
+                       let currentMonth = month {
                         // 年月の表示
                         Text(String(format: "< %04d/%02d >", currentYear, currentMonth))
                             .foregroundColor(Color(.keyWhite))
