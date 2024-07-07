@@ -10,7 +10,6 @@ import SwiftUI
 struct ExplanationView: View {
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
                 ZStack {
                     Image(.settingsBackground)
                         .resizable()
@@ -22,41 +21,60 @@ struct ExplanationView: View {
                         .cornerRadius(8)
                         .opacity(0.6)
                     VStack {
-                        Text("世界の音を聴きながら\n瞑想するためのものです。\n毎日の瞑想を習慣にしましょう。")
+                        Text("このアプリは、\n世界の音を聴きながら\n瞑想の旅へ出かけることができます。")
                             .font(.title2)
+                            .multilineTextAlignment(.center)
                         NavigationLink(destination: WayOfMeditationView()) {
-                            Text("瞑想のやりかた")
-                                .font(.title2)
-                                .padding(25)
-                                .frame(maxWidth: 350)
-                                .background(Color(.backgroundNavy))
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
+                            HStack {
+                                Image(systemName: "figure.mind.and.body")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .padding(.horizontal)
+                                Text("瞑想のやりかた")
+                            }
+                            .font(.title2)
+                            .padding(20)
+                            .frame(maxWidth: 350, alignment: .leading)
+                            .background(Color(.backgroundNavy))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+
                         }
-                        .padding()
+                        .padding(5)
                         NavigationLink(destination: EffectOfMeditationView()) {
-                            Text("瞑想の効果")
+                            HStack {
+                                Image(systemName: "heart.circle.fill")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .padding(.horizontal)
+                                Text("瞑想の効果")
+                            }
                                 .font(.title2)
-                                .padding(25)
-                                .frame(maxWidth: 350)
+                                .padding(20)
+                                .frame(maxWidth: 350, alignment: .leading)
                                 .background(Color(.backgroundNavy))
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
                         }
-                        .padding()
+                        .padding(5)
                         NavigationLink(destination: DescriptionView()) {
-                            Text("アプリの使い方")
+                            HStack {
+                                Image(systemName: "person.fill.questionmark")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .padding(.horizontal)
+                                Text("アプリの使い方")
+                            }
                                 .font(.title2)
-                                .padding(25)
-                                .frame(maxWidth: 350)
+                                .padding(20)
+                                .frame(maxWidth: 350, alignment: .leading)
                                 .background(Color(.backgroundNavy))
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
                         }
-                        .padding()
+                        .padding(5)
                     }
                 } // ZStackここまで
-            } // geometryここまで
         } // NavigationStackここまで
     } // bodyここまで
 } // ExplanationViewここまで
