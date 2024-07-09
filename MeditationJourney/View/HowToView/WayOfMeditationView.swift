@@ -9,9 +9,13 @@ import SwiftUI
 
 struct WayOfMeditationView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+        ZStack {
+            // 背景色を紺色に設定
+            Color("backgroundNavy")
+                .edgesIgnoringSafeArea(.all)
+        } // ZStackここまで
+    } // bodyここまで
+} // Viewここまで
 
 #Preview {
     WayOfMeditationView()
