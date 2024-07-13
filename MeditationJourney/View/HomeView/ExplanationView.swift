@@ -24,6 +24,7 @@ struct ExplanationView: View {
                     Text("このアプリは、\n世界の音を聴きながら\n瞑想の旅へ出かけることができます。")
                         .font(.title2)
                         .multilineTextAlignment(.center)
+                    // 瞑想のやり方を説明する画面へ遷移
                     NavigationLink(destination: WayOfMeditationView()) {
                         HStack {
                             Image(systemName: "figure.mind.and.body")
@@ -38,9 +39,9 @@ struct ExplanationView: View {
                         .background(Color(.backgroundNavy))
                         .foregroundColor(.white)
                         .cornerRadius(8)
-                        
                     }
                     .padding(5)
+                    // 瞑想の効果を説明する画面へ遷移
                     NavigationLink(destination: EffectOfMeditationView()) {
                         HStack {
                             Image(systemName: "heart.circle.fill")
@@ -57,6 +58,7 @@ struct ExplanationView: View {
                         .cornerRadius(8)
                     }
                     .padding(5)
+                    // アプリの使い方を説明する画面へ遷移
                     NavigationLink(destination: DescriptionView()) {
                         HStack {
                             Image(systemName: "person.fill.questionmark")
