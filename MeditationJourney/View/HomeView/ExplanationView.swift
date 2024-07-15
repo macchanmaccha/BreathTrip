@@ -24,7 +24,7 @@ struct ExplanationView: View {
                     Text("このアプリは、\n世界の音を聴きながら\n瞑想の旅へ出かけることができます。")
                         .font(.title2)
                         .multilineTextAlignment(.center)
-                    // 瞑想のやり方を説明する画面へ遷移
+                    // 瞑想のやり方を説明する画面へ遷
                     NavigationLink(destination: WayOfMeditationView()) {
                         HStack {
                             Image(systemName: "figure.mind.and.body")
