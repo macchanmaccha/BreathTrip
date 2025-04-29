@@ -17,7 +17,7 @@ enum ContinentModel: String, CaseIterable {
     var soundList: [SoundModel] {
         switch self {
         case .europe:
-            return [.europe1, .europe2, .europe3, .europe4, .europe5, .europe6]
+            return [.europa1, .europa2, .europa3, .europa4, .europa5, .europa6]
         case .oceania:
             return [.oceania1, .oceania2, .oceania3, .oceania4, .oceania5, .oceania6]
         case .asia:

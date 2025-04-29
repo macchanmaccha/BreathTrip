@@ -7,12 +7,12 @@
 
 import Foundation
 enum SoundModel: String, CaseIterable {
-    case europe1 = "ヨーロッパ音1"
-    case europe2 = "ヨーロッパ音2"
-    case europe3 = "ヨーロッパ音3"
-    case europe4 = "ヨーロッパ音4"
-    case europe5 = "ヨーロッパ音5"
-    case europe6 = "ヨーロッパ音6"
+    case europa1 = "ヨーロッパ音1"
+    case europa2 = "ヨーロッパ音2"
+    case europa3 = "ヨーロッパ音3"
+    case europa4 = "ヨーロッパ音4"
+    case europa5 = "ヨーロッパ音5"
+    case europa6 = "ヨーロッパ音6"
     case oceania1 = "オセアニア音1"
     case oceania2 = "オセアニア音2"
     case oceania3 = "オセアニア音3"
@@ -45,17 +45,17 @@ enum SoundModel: String, CaseIterable {
     case southAmerica6 = "南アメリカ6"
     var fileName: String {
         switch self {
-        case .europe1:
+        case .europa1:
             return "europeFile1"
-        case .europe2:
+        case .europa2:
             return "europeFile2"
-        case .europe3:
+        case .europa3:
             return "europeFile3"
-        case .europe4:
+        case .europa4:
             return "europeFile4"
-        case .europe5:
+        case .europa5:
             return "europeFile5"
-        case .europe6:
+        case .europa6:
             return "europeFile6"
         case .oceania1:
             return "oceaniaFile1"

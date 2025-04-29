@@ -18,8 +18,8 @@ class SetViewModel: ObservableObject {
     }
     /// UserDefaultsの初期化
     init () {
-        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
-        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
+        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
     }
     /// 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
     func setSelectedSoundName(soundName: SoundModel) {

@@ -37,6 +37,7 @@
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
+		18ED915D2DA556D300EFB19E /* Untitled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ED915C2DA556CF00EFB19E /* Untitled.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
+		18ED915C2DA556CF00EFB19E /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 		18A4618F2ABEC8C60034F393 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				18ED915C2DA556CF00EFB19E /* Untitled.swift */,
 				1863E1E32AAD81BF00543D18 /* TabSetView.swift */,
 				1806445E2AB694080080EEFF /* MeditationSetView.swift */,
 				1856660B2C3A3830009A1AD7 /* ListeningSetView.swift */,
@@ -305,6 +308,7 @@
 				1856660C2C3A3830009A1AD7 /* ListeningSetView.swift in Sources */,
 				18A3722D2C2C3F22002E3C5D /* EffectOfMeditationView.swift in Sources */,
 				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
+				18ED915D2DA556D300EFB19E /* Untitled.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
