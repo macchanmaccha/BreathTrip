@@ -75,5 +75,5 @@ struct SelectSoundView: View {
 }
 
 #Preview {
-    SelectSoundView(viewModel: SetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
+    SelectSoundView(viewModel: SetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europa)
 }

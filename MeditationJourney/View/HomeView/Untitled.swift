@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MeditationInfo: Identifiable {
+struct MeditationInformation: Identifiable {
     let id = UUID()
     let date: Date
     let country: String
@@ -34,7 +34,7 @@ struct ContentView: View {
     // 時間選択のPickerの初期値
     @State private var selectedDuration = 10
     // recordsの配列
-    @State private var records: [MeditationInfo] = []
+    @State private var records: [MeditationInformation] = []
     // 国
     let countries = ["日本", "アメリカ"]
     // 時間
@@ -57,7 +57,7 @@ struct ContentView: View {
                 } // Pickerここまで
                 // 記録するボタン
                 Button("記録する") {
-                    let newRecord = MeditationInfo(date: Date(), country: selectedCountry, minutes: selectedDuration)
+                    let newRecord = MeditationInformation(date: Date(), country: selectedCountry, minutes: selectedDuration)
                     records.append(newRecord)
                 } // Button
                 .padding()

@@ -8,6 +8,7 @@
 import Foundation
 
 // カレンダーの拡張機能
+
 extension Calendar {
     /// 今月の開始日を取得する
     /// - Parameter date: 対象日
@@ -69,3 +70,21 @@ extension Calendar {
         return components.weekday
     }
 }
+extension Date {
+    var month: Int {
+        Calendar.current.month(from: self) ?? 1
+    }
+}
+
+//extension Date {
+//    var month: Int {
+//        Calendar.current.month (from: self) ?? 1
+//    }
+//
+//    var startDateOfMonth: Date? {
+//        // 年月の構成要素
+//        let components = Calendar.current.dateComponents([.month, .year], from: self)
+//        //構成要素から日付を返却
+//        return Calendar.current.date(from: components)
+//    }
+//}

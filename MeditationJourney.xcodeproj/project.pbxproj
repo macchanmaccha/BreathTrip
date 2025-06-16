@@ -30,6 +30,7 @@
 		187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187E216C2AF91F280093A334 /* ContinentModel.swift */; };
 		18916B462B9833AF005E4516 /* ListeningSetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */; };
 		18916B482B983AD1005E4516 /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18916B472B983AD1005E4516 /* ListeningView.swift */; };
+		1898DBE02DDF37CE00C2A18F /* MeditationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1898DBDF2DDF37C800C2A18F /* MeditationInfo.swift */; };
 		18A3722B2C2C3EDA002E3C5D /* WayOfMeditationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722A2C2C3EDA002E3C5D /* WayOfMeditationView.swift */; };
 		18A3722D2C2C3F22002E3C5D /* EffectOfMeditationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */; };
 		18A3722F2C2C3F5D002E3C5D /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */; };
@@ -65,6 +66,7 @@
 		187E216C2AF91F280093A334 /* ContinentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinentModel.swift; sourceTree = "<group>"; };
 		18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningSetViewModel.swift; sourceTree = "<group>"; };
 		18916B472B983AD1005E4516 /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
+		1898DBDF2DDF37C800C2A18F /* MeditationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationInfo.swift; sourceTree = "<group>"; };
 		18A3722A2C2C3EDA002E3C5D /* WayOfMeditationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayOfMeditationView.swift; sourceTree = "<group>"; };
 		18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectOfMeditationView.swift; sourceTree = "<group>"; };
 		18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
@@ -100,8 +102,8 @@
 		1834BE3B2AECFB2F00DD5E92 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
 				183AEA562B393F4800B6E661 /* MeditatingSetViewModel.swift */,
+				1834BE3C2AECFB6400DD5E92 /* SpotListViewModel.swift */,
 				18916B452B9833AF005E4516 /* ListeningSetViewModel.swift */,
 				184FD4022BAB1BF7005C2F19 /* SetViewModel.swift */,
 			);
@@ -116,6 +118,7 @@
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
 				1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */,
+				1898DBDF2DDF37C800C2A18F /* MeditationInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				185BE0D02AEBF0030013649E /* SpotDataModel.swift in Sources */,
 				18ED915D2DA556D300EFB19E /* Untitled.swift in Sources */,
 				180644652AB6947A0080EEFF /* MapView.swift in Sources */,
+				1898DBE02DDF37CE00C2A18F /* MeditationInfo.swift in Sources */,
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				183AEA572B393F4800B6E661 /* MeditatingSetViewModel.swift in Sources */,
