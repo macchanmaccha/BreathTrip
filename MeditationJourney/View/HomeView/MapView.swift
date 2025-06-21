@@ -32,17 +32,19 @@ struct MapView: View {
         } // VStack
         .onAppear {
             viewModel.fetchSpotList()
+            // 瞑想のデータ
             viewModel.meditationRecords = [
                 MeditationInfo(date: Date(), worldHeritage: "白神山地", meditationTime: 30),
-                MeditationInfo(date: Date(), worldHeritage: "ナイアガラの滝", meditationTime: 35),
+                MeditationInfo(date: Date(), worldHeritage: "ナイアガラの滝", meditationTime: 10),
                 // 明日のデータ
-                MeditationInfo(date: Date()-1, worldHeritage: "万里の長城", meditationTime: 40),
+                MeditationInfo(date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, worldHeritage: "万里の長城", meditationTime: 40),
                 MeditationInfo(date: Date(), worldHeritage: "白神山地", meditationTime: 30),
-                MeditationInfo(date: Date()-30, worldHeritage: "モン・サン・ミシェル", meditationTime: 30),
+                MeditationInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, worldHeritage: "モン・サン・ミシェル", meditationTime: 30),
                 MeditationInfo(date: Date(), worldHeritage: "モン・サン・ミシェル", meditationTime: 30),
-                MeditationInfo(date: Date()+40, worldHeritage: "白神山地", meditationTime: 30),
+                MeditationInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, worldHeritage: "白神山地", meditationTime: 30),
                 MeditationInfo(date: Date(), worldHeritage: "モン・サン・ミシェル", meditationTime: 30),
-                MeditationInfo(date: Date(), worldHeritage: "ナイアガラの滝", meditationTime: 30)
+                MeditationInfo(date: Date(), worldHeritage: "ナイアガラの滝", meditationTime: 30),
+                MeditationInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, worldHeritage: "万里の長城", meditationTime: 40)
             ]
         } // .onAppearここまで
     } // bodyここまで
