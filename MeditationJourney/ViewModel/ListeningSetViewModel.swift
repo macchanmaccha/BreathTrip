@@ -79,7 +79,7 @@ class ListeningSetViewModel: SetViewModel {
     }
     /// UserDefaultsと同期するために、設定値を再取得
     override func setSoundModel() {
-        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
     }
 } // ListeningSetViewModelここまで
 extension ListeningSetViewModel {

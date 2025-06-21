@@ -34,6 +34,7 @@
 		18A3722D2C2C3F22002E3C5D /* EffectOfMeditationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */; };
 		18A3722F2C2C3F5D002E3C5D /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
+		18AF87522E0682E900A38FF0 /* MeditationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AF87512E0682DB00A38FF0 /* MeditationInfo.swift */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
@@ -68,6 +69,7 @@
 		18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectOfMeditationView.swift; sourceTree = "<group>"; };
 		18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
+		18AF87512E0682DB00A38FF0 /* MeditationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationInfo.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				187E216C2AF91F280093A334 /* ContinentModel.swift */,
+				18AF87512E0682DB00A38FF0 /* MeditationInfo.swift */,
 				181FC2932B20A2540033D136 /* SoundModel.swift */,
 				185BE0CF2AEBF0030013649E /* SpotDataModel.swift */,
 				1834BE362AECF43300DD5E92 /* SpotListModel.swift */,
@@ -238,7 +241,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					1863E1DD2AAD81BE00543D18 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -323,6 +326,7 @@
 				18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */,
 				1863E1E22AAD81BE00543D18 /* MeditationJourneyApp.swift in Sources */,
 				1812365B2C15EBAC00AD51A8 /* Calendar+Extension.swift in Sources */,
+				18AF87522E0682E900A38FF0 /* MeditationInfo.swift in Sources */,
 				1834BE3D2AECFB6400DD5E92 /* SpotListViewModel.swift in Sources */,
 				18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */,
 				187E216D2AF91F280093A334 /* ContinentModel.swift in Sources */,
@@ -339,6 +343,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -369,6 +374,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = JL9HPDPZL7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -400,6 +406,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -430,6 +437,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = JL9HPDPZL7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -460,7 +468,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MeditationJourney/Preview Content\"";
-				DEVELOPMENT_TEAM = JL9HPDPZL7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=*]" = arm64;
@@ -494,7 +501,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MeditationJourney/Preview Content\"";
-				DEVELOPMENT_TEAM = JL9HPDPZL7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=*]" = arm64;

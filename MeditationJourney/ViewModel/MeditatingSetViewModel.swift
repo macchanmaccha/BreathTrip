@@ -18,8 +18,6 @@ class MeditatingSetViewModel: SetViewModel {
     override init() {
         meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
     }
-    /// 選択する時間を管理する変数
-    @Published private(set) var selectedMinutes: Int = 1
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
@@ -31,9 +29,8 @@ class MeditatingSetViewModel: SetViewModel {
     // 状態の更新
     func updateState(newState: State) {
         if state == .preStart && newState == .start {
-            selectedMinutes = meditationMinutes
             // 瞑想タイマーをセット
-            remainingSeconds = selectedMinutes * 60
+            remainingSeconds = meditationMinutes * 60
         }
         state = newState
     }
@@ -95,7 +92,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// UserDefaultsと同期するために、設定値を再取得
     override func setSoundModel() {
-        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europe1.rawValue) ?? SoundModel.europe1
+        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
     }
 } // MeditatingSetViewModel
 extension MeditatingSetViewModel {
