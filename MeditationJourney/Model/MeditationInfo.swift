@@ -12,8 +12,8 @@ struct MeditationInfo: Identifiable {
     let id = UUID()
     // 日付
     let date: Date
-    // 世界遺産
-    let worldHeritage: String
+    // 世界の音
+    let worldSounds: String
     // 時間
     let meditationTime: Int
 }

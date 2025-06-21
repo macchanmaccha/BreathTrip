@@ -20,7 +20,7 @@ class SpotListViewModel: ObservableObject {
     // 60分以上達成の世界遺産にマップピン
     var worldHeritageSpots: [SpotDataModel] {
         // グループ化して合計時間を計算
-        let totals = Dictionary(grouping: meditationRecords, by: { $0.worldHeritage }).mapValues { $0.reduce(0) {$0 + $1.meditationTime }}
+        let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds }).mapValues { $0.reduce(0) {$0 + $1.meditationTime }}
         // 60分以上のスポットのみ抽出
         return spotList.filter { spot in
             if let total = totals[spot.spotName], total >= 60 {
