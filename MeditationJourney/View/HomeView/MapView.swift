@@ -20,12 +20,9 @@ struct MapView: View {
         VStack {
             // 地図の表示およびマーカーの表示
             Map(position: $region) {
-                ForEach(viewModel.worldHeritageSpots, id: \.id) { spot in
+                ForEach(viewModel.achievedSpots, id: \.id) { spot in
                     Marker(spot.spotName, coordinate: spot.coordinate)
                 } // ForEach
-//                ForEach(viewModel.spotList, id: \.id) { spot in
-//                    Marker(spot.spotName, coordinate: spot.coordinate)
-//                } // ForEach
             } // Map
             // ダークモード
             .colorScheme(.dark)
@@ -46,6 +43,7 @@ struct MapView: View {
                 MeditationInfo(date: Date(), worldSounds: "ナイアガラの滝", meditationTime: 30),
                 MeditationInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, worldSounds: "万里の長城", meditationTime: 40)
             ]
+            viewModel.calculateAchievedSpots()
         } // .onAppearここまで
     } // bodyここまで
 } // Mapここまで
