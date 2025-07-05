@@ -7,131 +7,190 @@
 import SwiftUI
 
 /// カレンダーの日付を表す構造体
-struct CalendarDates: Identifiable {
+struct CalendarInfo: Identifiable {
     // 識別子
     var id = UUID()
-    // 日付
-    var date: Date?
+    // 日付（日付は必ず存在するため非オプショナル型）
+    var date: Date
     // 瞑想時間
     var meditationTime: Int
 } // CalendarDatesここまで
 
 struct CalendarView: View {
-    // 現在の年
-    private let year = Calendar.current.year(from: Date())
-    // 現在の月
-    private let month = Calendar.current.month(from: Date())
-    // 日付の配列
-    private let calendarDates = createCalendarDates(Date())
+    // 現在表示中の年月を管理 初期値は今日
+    @State private var displayDate: Date = Date()
+    // 現在の年 displayDateから
+    private var year: Int {
+        Calendar.current.year(from: displayDate) ?? 20000
+    }
+//    // 現在の月　displayDateから
+//    private var month: Int {
+//        Calendar.current.month(from: displayDate) ?? 1
+//    }
+    // 日付と瞑想時間の配列
+    private var calendarDates: [CalendarInfo] {
+        //
+        var result = createCalendarDates(displayDate)
+        while result.count < 42 {
+            result.append(CalendarInfo(meditationTime: 0))
+        }
+        return result
+    }
+    ////  // 日付に応じた瞑想時間の設定 計算した結果を格納する
+    //var checkDates: [Date?: Int] {
+    //    // グループ化して合計時間を計算
+    //    let totals = Dictionary(grouping: meditationRecords, by: { $0.date }).mapValues { $0.reduce(0) {$0 + $1.meditationTime }
+    //    }
+    //    return totals
+    //} // var checkDates
     // 曜日
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // グリッドアイテム
     private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 40, maximum: 80)), count: 7)
+    // 瞑想の記録
+    @State var meditationRecords: [CalendarInfo] = []
+    // 日付と時間
+    @State var checkDates: [Date: Int] = [:]
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 // 背景色を紺色に設定
                 Color("backgroundNavy")
                     .edgesIgnoringSafeArea(.all)
-                VStack {
-                    // 現在の年月が存在すれば
-                    if let currentYear = year,
-                       let currentMonth = month {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("\(String(year))年")
+                        .foregroundColor(Color(.keyWhite))
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    HStack {
                         // 年月の表示
-                        Text(String(format: "< %04d/%02d >", currentYear, currentMonth))
+                        Text("\(displayDate.month)月")
                             .foregroundColor(Color(.keyWhite))
                             .bold()
                         // フォントサイズは30
-                            .font(.title)
+                            .font(.largeTitle.bold())
                             .minimumScaleFactor(0.5)
-                        LazyVGrid(columns: columns) {
-                            // 曜日のループ
-                            ForEach(weekdays, id: \.self) { weekday in
-                                Text(weekday)
-                                    .foregroundColor(Color(.keyWhite))
-                                    .lineLimit(1)
-                                // 文字サイズ
-                                    .font(.headline)
-                                    .bold()
-                                // フレーム
-                                    .frame(minWidth: 45, minHeight: 45)
-                            } // ForEachここまで
-                        } // LazyVGridここまで
-                        LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                            // それぞれの日付をループで処理
-                            ForEach(calendarDates) { calendarDate in
-                                // 日付が存在する場合、日を表示
-                                if let date = calendarDate.date,
-                                   let day = Calendar.current.day(from: date) {
-                                    ZStack {
-                                        // 日付表示
-                                        Text("\(day)")
-                                        // 文字サイズ
-                                            .font(.title2)
-                                            .bold()
-                                        // 今日の日付はライム色、その他はキーホワイト
-                                            .foregroundColor(Calendar.current.isDateInToday(date) ? Color(.dateInTodayLime) : Color(.keyWhite))
-                                        // サイズ
-                                            .frame(minWidth: 45, minHeight: 60)
-                                        // 瞑想時間に応じた背景色
-                                            .background(Color.backgroundColor(for: calendarDate.meditationTime))
-                                        // 角の丸み
-                                            .cornerRadius(10)
-                                    } // ZStackここまで
-                                    // 日付が存在しない時
-                                } else {
-                                    // 何も表示しない
-                                    Text("")
-                                } // if let　ここまで
-                            } // ForEachここまで
-                        } // LazyVGridここまで
-                        // 色の説明　LessからMoreまで
-                        HStack {
-                            // 右寄せ
-                            Spacer()
-                            Text("Less")
+                        Spacer(minLength: 0)
+                        Button {
+                            // 前月へ
+                            if let newDate = Calendar.current.date(byAdding: .month, value: -1, to: displayDate) {
+                                displayDate = newDate
+                            }
+                        } label: {
+                            Image(systemName: "chevron.left")
+                        }
+                        .foregroundColor(Color(.keyWhite))
+                        .font(.title2)
+                        .minimumScaleFactor(0.5)
+                        Button {
+                            if let newDate = Calendar.current.date(byAdding: .month, value: 1, to: displayDate) {
+                                displayDate = newDate
+                            }
+                        } label: {
+                            Image(systemName: "chevron.right")
+                        }
+                        .foregroundColor(Color(.keyWhite))
+                        .font(.title2)
+                        .minimumScaleFactor(0.5)
+                    }
+                    LazyVGrid(columns: columns) {
+                        // 曜日のループ
+                        ForEach(weekdays, id: \.self) { weekday in
+                            Text(weekday)
                                 .foregroundColor(Color(.keyWhite))
-                            Rectangle()
-                                .border(.gray, width: 1.5)
-                                .frame(maxWidth: 20, maxHeight: 25 )
-                                .foregroundColor(.clear)
-                                .cornerRadius(4)
-                            Rectangle()
-                                .border(.gray, width: 1.5)
-                                .frame(maxWidth: 20, maxHeight: 25 )
-                                .foregroundColor(Color(.firstStageBlue))
-                                .cornerRadius(4)
-                            Rectangle()
-                                .border(.gray, width: 1.5)
-                                .frame(maxWidth: 20, maxHeight: 25 )
-                                .foregroundColor(Color(.secondStageBlue))
-                                .cornerRadius(4)
-                            Rectangle()
-                                .border(.gray, width: 1.5)
-                                .frame(maxWidth: 20, maxHeight: 25 )
-                                .foregroundColor(Color(.thirdStageBlue))
-                                .cornerRadius(4)
-                            Text("More")
-                                .foregroundColor(Color(.keyWhite))
-                        } // HStackここまで
-                    } else {
-                        // 現在の年月が存在しなければ
-                        Text("カレンダーを表示できません。\nアプリを再起動してください。")
+                                .lineLimit(1)
+                            // 文字サイズ
+                                .font(.headline)
+                                .bold()
+                            // フレーム
+                                .frame(minWidth: 45, minHeight: 45)
+                        } // ForEachここまで
+                    } // LazyVGridここまで
+                    LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
+                        // それぞれの日付をループで処理
+                        ForEach(calendarDates) { calendarDate in
+                            ZStack {
+//                                // 日付が存在する場合
+//                                if let date = calendarDate.date {
+                                    // 日付表示
+                                Text("\(Calendar.current.component(.day, from: calendarDate.date))")
+                                    // 文字サイズ
+                                        .font(.title2)
+                                        .bold()
+                                    // 今日の日付はライム色、その他はキーホワイト
+                                        .foregroundColor(Calendar.current.isDateInToday(calendarDate.date) ? Color(.dateInTodayLime) : Color(.keyWhite))
+                                    // サイズ
+                                        .frame(minWidth: 45, minHeight: 60)
+                                    // 瞑想時間に応じた背景色
+                                        .background(Color.backgroundColor(for: calendarDate.meditationTime))
+                                    // 角の丸み
+                                        .cornerRadius(10)
+//                                } else {
+//                                    // 現在の年月が存在しなければ
+//                                    Text("")
+//                                        .foregroundColor(Color(.keyWhite))
+//                                        .bold()
+//                                    // フォントサイズは30
+//                                        .font(.title)
+//                                        .minimumScaleFactor(0.5)
+//                                    // サイズ
+//                                        .frame(minWidth: 45, minHeight: 60)
+//                                } // if let
+                            } // ZStackここまで
+                        } // ForEachここまで
+                    } // LazyVGridここまで
+                    // 色の説明　LessからMoreまで
+                    HStack {
+                        // 右寄せ
+                        Spacer()
+                        Text("Less")
                             .foregroundColor(Color(.keyWhite))
-                            .bold()
-                        // フォントサイズは30
-                            .font(.title)
-                            .minimumScaleFactor(0.5)
-                    } // if letここまで
+                        Rectangle()
+                            .border(.gray, width: 1.5)
+                            .frame(maxWidth: 20, maxHeight: 25 )
+                            .foregroundColor(.clear)
+                            .cornerRadius(4)
+                        Rectangle()
+                            .border(.gray, width: 1.5)
+                            .frame(maxWidth: 20, maxHeight: 25 )
+                            .foregroundColor(Color(.firstStageBlue))
+                            .cornerRadius(4)
+                        Rectangle()
+                            .border(.gray, width: 1.5)
+                            .frame(maxWidth: 20, maxHeight: 25 )
+                            .foregroundColor(Color(.secondStageBlue))
+                            .cornerRadius(4)
+                        Rectangle()
+                            .border(.gray, width: 1.5)
+                            .frame(maxWidth: 20, maxHeight: 25 )
+                            .foregroundColor(Color(.thirdStageBlue))
+                            .cornerRadius(4)
+                        Text("More")
+                            .foregroundColor(Color(.keyWhite))
+                    } // HStackここまで
                 } // VStackここまで
             } // ZStackここまで
         } // geometryここまで
+        .onAppear {
+            // 仮の瞑想記録を代入
+               meditationRecords = calendarDates
+               checkDates = checkDate(from: meditationRecords)
+        }
     } // bodyここまで
 } // CalendarViewここまで
 
-private func createCalendarDates(_ date: Date) -> [CalendarDates] {
-    // 日付配列プロパティ
-    var days = [CalendarDates]()
+private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
+    // 瞑想時間のサンプルデータ
+    let timeData = [
+        // 今日
+        CalendarInfo(date: Date(), meditationTime: 40),
+        // 昨日
+        CalendarInfo(date: Calendar.current.date(byAdding: .day, value: -1, to: Date()), meditationTime: 10),
+        // 一昨日
+        CalendarInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date()), meditationTime: 60)
+    ]
+    // 指定月のカレンダー
+    var days = [CalendarInfo]()
     // 月の初めの日付と月の日数がなければ
     guard let startDateOfMonth = Calendar.current.startDateOfMonth(from: date),
           let daysInMonth = Calendar.current.daysInMonth(from: date) else {
@@ -140,10 +199,23 @@ private func createCalendarDates(_ date: Date) -> [CalendarDates] {
     } // guard let ここまで
     // 今月の全ての日付
     for day in 0..<daysInMonth {
-        // ランダムな瞑想時間を設定
-        let meditationTime = Int.random(in: 0...60)
+        // 今月の開始日から1日ずつ加算した日付
+        guard let currentDate = Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth) else {
+            // 日付がなければ処理しない
+            continue
+        }
+        // currentDateと同じ日付を探す
+        let meditationTime = timeData.first(where: { record in
+            // record.date が nil（＝日付が存在しない）なら false にする
+            guard let recordDate = record.date else {
+                return false
+            }
+            // recordDate が currentDate と同じ日（年月日）か確認
+                return Calendar.current.isDate(recordDate, inSameDayAs: currentDate)
+            // なければ0
+            })?.meditationTime ?? 0
         // 今月の開始日から1日ずつ加算
-        days.append(CalendarDates(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth), meditationTime: meditationTime))
+        days.append(CalendarInfo(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth), meditationTime: meditationTime))
     } // for day inここまで
     // 最初と最後の日付を取得
     // 最初の日と最後の日
@@ -161,14 +233,41 @@ private func createCalendarDates(_ date: Date) -> [CalendarDates] {
     let lastWeekEmptyDays = 7 - lastDateWeekday
     // 初週のオフセットを追加
     for _ in 0..<firstWeekEmptyDays {
-        days.insert(CalendarDates(date: nil, meditationTime: 0), at: 0)
+        days.insert(CalendarInfo(date: nil, meditationTime: 0), at: 0)
     }
     // 最終週のオフセットを追加
     for _ in 0..<lastWeekEmptyDays {
-        days.append(CalendarDates(date: nil, meditationTime: 0))
+        days.append(CalendarInfo(date: nil, meditationTime: 0))
     }
     return days
 } // createCalendarDate
+/// 日付に応じた瞑想時間の設定 計算した結果を格納する
+func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
+    // グループ化したものをgroupedに
+    // 日付がnilのものはDateに変換
+    let grouped = Dictionary(grouping: records.compactMap { record -> (Date, Int)? in
+        guard let date = record.date else { return nil }
+        return (date, record.meditationTime)
+    }) { $0.0 }
+
+    let totals = grouped.mapValues { entries in
+        entries.reduce(0) { $0 + $1.1 }
+    }
+
+    return totals
+}
+////  // 日付に応じた瞑想時間の設定 計算した結果を格納する
+//var checkDates: [Date?: Int] {
+//    // グループ化して合計時間を計算
+//    let totals = Dictionary(grouping: meditationRecords, by: { $0.date }).mapValues { $0.reduce(0) {$0 + $1.meditationTime }
+//    }
+//    return totals
+//} // var checkDates
+
+func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
+let totals = Dictionary(grouping: records, by: { $0.date }).mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
+    return totals
+}
 
 struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
