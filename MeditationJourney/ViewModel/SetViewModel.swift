@@ -9,13 +9,9 @@ import Foundation
 
 class SetViewModel: ObservableObject {
     /// 瞑想の音を表示する変数
-    @Published var meditationSoundName: SoundModel {
-        didSet {UserDefaults.standard.set(meditationSoundName.rawValue, forKey: UserDefaultsKey.meditationSoundName)}
-    }
+    @Published var meditationSoundName: SoundModel
     /// 再生する音を表示する変数
-    @Published var listeningSoundName: SoundModel {
-        didSet {UserDefaults.standard.set(listeningSoundName.rawValue, forKey: UserDefaultsKey.listeningSoundName)}
-    }
+    @Published var listeningSoundName: SoundModel
     /// UserDefaultsの初期化
     init() {
         meditationSoundName = Self.loadSound(forKey: UserDefaultsKey.meditationSoundName)
@@ -32,6 +28,12 @@ class SetViewModel: ObservableObject {
         // rawとmodelが存在しなければ、デフォルトでeuropa1を引っ張る
         return .europa1
     } // func loadSound
+    func saveMeditationSound() {
+        UserDefaults.standard.set(meditationSoundName.rawValue, forKey: UserDefaultsKey.meditationSoundName)
+    }
+    func saveListeningSound() {
+        UserDefaults.standard.set(listeningSoundName.rawValue, forKey: UserDefaultsKey.listeningSoundName)
+    }
     /// 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
     func setSelectedSoundName(soundName: SoundModel) {
     }

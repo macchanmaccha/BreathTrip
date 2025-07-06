@@ -54,8 +54,6 @@ struct TabSetView: View {
     } // bodyここまで
 } // ContentViewここまで
 
-struct TabSetView_Previews: PreviewProvider {
-    static var previews: some View {
-        TabSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-    }
+#Preview {
+        TabSetView()
 }

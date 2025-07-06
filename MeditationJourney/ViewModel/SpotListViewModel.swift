@@ -9,9 +9,9 @@ import SwiftUI
 
 class SpotListViewModel: ObservableObject {
     // スポットリスト（緯度経度の情報）
-    /*@Published*/ private(set) var spotList: [SpotDataModel] = []
+    private(set) var spotList: [SpotDataModel] = []
     // 瞑想の記録
-    /*@Published*/ var meditationRecords: [MeditationInfo] = []
+    var meditationRecords: [MeditationInfo] = []
     // 60分以上達成の音の場所を格納するプロパティ
     @Published var achievedSpots: [SpotDataModel] = []
     // モデルのインスタンス化
@@ -40,11 +40,8 @@ class SpotListViewModel: ObservableObject {
         let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds })
             .mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
         // 60分以上のスポットのみ抽出して保持
-        achievedSpots = spotList.filter { spot in
-            if let total = totals[spot.spotName], total >= 60 {
-                return true
-            }
-            return false
+        achievedSpots = spotList.filter {
+            (totals[$0.spotName] ?? 0) >= 60
         }
     } // func calculateAchievedSpots
 } // SpotListViewModelここまで

@@ -92,6 +92,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// UserDefaultsと同期するために、設定値を再取得
     override func setSoundModel() {
+        saveMeditationSound()
         meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
     }
 } // MeditatingSetViewModel
