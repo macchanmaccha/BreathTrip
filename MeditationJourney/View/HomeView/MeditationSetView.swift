@@ -133,12 +133,14 @@ struct MeditationSetView: View {
 struct MeditationSetView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MeditationSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 16"))  // ✅ タブの表示名
-                .previewDisplayName("iPhone 16")  // ✅ プレビューする端末（プレビューデバイス）を指定
-            MeditationSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPad Air (6th generation)"))
-                .previewDisplayName("iPad Air (6th generation)")
+            MeditationSetView()
+            // ✅ タブの表示名
+                .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
+            // ✅ プレビューする端末（プレビューデバイス）を指定
+                .previewDisplayName("iPhone 16")
+            MeditationSetView()
+                .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
+                .previewDisplayName("iPad Pro (11-inch)")
         }
     }
 }
