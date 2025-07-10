@@ -10,13 +10,6 @@ import SwiftUI
 class ListeningSetViewModel: SetViewModel {
     /// 音をきく画面での状態　初期値はend
     @Published private(set) var state: State = .end
-    /// 音再生の分数
-    @Published var listeningMinutes: Int {
-        didSet {UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)}
-    }
-    override init() {
-        listeningMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.listeningMinutes)
-    }
     /// 選択する時間を管理する変数
     @Published private(set) var selectedMinutes: Int = 1
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
@@ -76,11 +69,8 @@ class ListeningSetViewModel: SetViewModel {
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         listeningSoundName = soundName
-    }
-    /// UserDefaultsと同期するために、設定値を再取得
-    override func setSoundModel() {
         saveListeningSound()
-        listeningSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.listeningSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
+        saveListeningMinutes()
     }
 } // ListeningSetViewModelここまで
 extension ListeningSetViewModel {

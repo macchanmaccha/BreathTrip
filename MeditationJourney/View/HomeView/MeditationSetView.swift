@@ -80,6 +80,9 @@ struct MeditationSetView: View {
                     .colorMultiply(Color(.backgroundNavy))
                     .scaleEffect(CGSize(width: 1.25, height: 1.25))
                     .pickerStyle(MenuPickerStyle())
+                    .onChange(of: viewModel.meditationMinutes) {
+                        viewModel.saveMeditationMinutes()
+                    }
                 } // HStackここまで
                 .foregroundColor(Color(.backgroundNavy))
                 .frame(width: 200)
@@ -123,10 +126,6 @@ struct MeditationSetView: View {
         .sheet(isPresented: $isShowSheet, content: {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
-        .onAppear {
-            // 瞑想の音データの再取得
-            viewModel.setSoundModel()
-        }
     } // bodyここまで
 } // MeditationViewここまで
 

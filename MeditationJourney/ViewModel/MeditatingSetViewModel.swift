@@ -10,14 +10,6 @@ import SwiftUI
 class MeditatingSetViewModel: SetViewModel {
     // 瞑想画面での状態　初期値はend
     @Published private(set) var state: State = .end
-    /// 瞑想の分数
-    @Published var meditationMinutes: Int {
-        didSet {UserDefaults.standard.set(meditationMinutes, forKey: UserDefaultsKey.meditationMinutes)}
-    }
-    /// UserDefaultsの初期化
-    override init() {
-        meditationMinutes = UserDefaults.standard.integer(forKey: UserDefaultsKey.meditationMinutes)
-    }
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
@@ -89,11 +81,8 @@ class MeditatingSetViewModel: SetViewModel {
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         meditationSoundName = soundName
-    }
-    /// UserDefaultsと同期するために、設定値を再取得
-    override func setSoundModel() {
         saveMeditationSound()
-        meditationSoundName = SoundModel(rawValue: UserDefaults.standard.string(forKey: UserDefaultsKey.meditationSoundName) ?? SoundModel.europa1.rawValue) ?? SoundModel.europa1
+        saveMeditationMinutes()
     }
 } // MeditatingSetViewModel
 extension MeditatingSetViewModel {
