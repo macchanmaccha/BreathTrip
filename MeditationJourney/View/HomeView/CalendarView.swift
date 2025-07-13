@@ -23,26 +23,15 @@ struct CalendarView: View {
     private var year: Int {
         Calendar.current.year(from: displayDate) ?? 20000
     }
-//    // 現在の月　displayDateから
-//    private var month: Int {
-//        Calendar.current.month(from: displayDate) ?? 1
-//    }
     // 日付と瞑想時間の配列
     private var calendarDates: [CalendarInfo] {
         //
         var result = createCalendarDates(displayDate)
         while result.count < 42 {
-            result.append(CalendarInfo(meditationTime: 0))
+            result.append(CalendarInfo(date: Date(), meditationTime: 0))
         }
         return result
     }
-    ////  // 日付に応じた瞑想時間の設定 計算した結果を格納する
-    //var checkDates: [Date?: Int] {
-    //    // グループ化して合計時間を計算
-    //    let totals = Dictionary(grouping: meditationRecords, by: { $0.date }).mapValues { $0.reduce(0) {$0 + $1.meditationTime }
-    //    }
-    //    return totals
-    //} // var checkDates
     // 曜日
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // グリッドアイテム
@@ -110,32 +99,19 @@ struct CalendarView: View {
                         // それぞれの日付をループで処理
                         ForEach(calendarDates) { calendarDate in
                             ZStack {
-//                                // 日付が存在する場合
-//                                if let date = calendarDate.date {
-                                    // 日付表示
+                                // 日付表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
-                                    // 文字サイズ
-                                        .font(.title2)
-                                        .bold()
-                                    // 今日の日付はライム色、その他はキーホワイト
-                                        .foregroundColor(Calendar.current.isDateInToday(calendarDate.date) ? Color(.dateInTodayLime) : Color(.keyWhite))
-                                    // サイズ
-                                        .frame(minWidth: 45, minHeight: 60)
-                                    // 瞑想時間に応じた背景色
-                                        .background(Color.backgroundColor(for: calendarDate.meditationTime))
-                                    // 角の丸み
-                                        .cornerRadius(10)
-//                                } else {
-//                                    // 現在の年月が存在しなければ
-//                                    Text("")
-//                                        .foregroundColor(Color(.keyWhite))
-//                                        .bold()
-//                                    // フォントサイズは30
-//                                        .font(.title)
-//                                        .minimumScaleFactor(0.5)
-//                                    // サイズ
-//                                        .frame(minWidth: 45, minHeight: 60)
-//                                } // if let
+                                // 文字サイズ
+                                    .font(.title2)
+                                    .bold()
+                                // 今日の日付はライム色、その他はキーホワイト
+                                    .foregroundColor(Calendar.current.isDateInToday(calendarDate.date) ? Color(.dateInTodayLime) : Color(.keyWhite))
+                                // サイズ
+                                    .frame(minWidth: 45, minHeight: 60)
+                                // 瞑想時間に応じた背景色
+                                    .background(Color.backgroundColor(for: calendarDate.meditationTime))
+                                // 角の丸み
+                                    .cornerRadius(10)
                             } // ZStackここまで
                         } // ForEachここまで
                     } // LazyVGridここまで
@@ -173,8 +149,8 @@ struct CalendarView: View {
         } // geometryここまで
         .onAppear {
             // 仮の瞑想記録を代入
-               meditationRecords = calendarDates
-               checkDates = checkDate(from: meditationRecords)
+            meditationRecords = calendarDates
+            checkDates = checkDate(from: meditationRecords)
         }
     } // bodyここまで
 } // CalendarViewここまで
@@ -185,9 +161,9 @@ private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
         // 今日
         CalendarInfo(date: Date(), meditationTime: 40),
         // 昨日
-        CalendarInfo(date: Calendar.current.date(byAdding: .day, value: -1, to: Date()), meditationTime: 10),
+        CalendarInfo(date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, meditationTime: 10),
         // 一昨日
-        CalendarInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date()), meditationTime: 60)
+        CalendarInfo(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, meditationTime: 60)
     ]
     // 指定月のカレンダー
     var days = [CalendarInfo]()
@@ -206,16 +182,12 @@ private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
         }
         // currentDateと同じ日付を探す
         let meditationTime = timeData.first(where: { record in
-            // record.date が nil（＝日付が存在しない）なら false にする
-            guard let recordDate = record.date else {
-                return false
-            }
             // recordDate が currentDate と同じ日（年月日）か確認
-                return Calendar.current.isDate(recordDate, inSameDayAs: currentDate)
+            Calendar.current.isDate(record.date, inSameDayAs: currentDate)
             // なければ0
-            })?.meditationTime ?? 0
+        })?.meditationTime ?? 0
         // 今月の開始日から1日ずつ加算
-        days.append(CalendarInfo(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth), meditationTime: meditationTime))
+        days.append(CalendarInfo(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth)!, meditationTime: meditationTime))
     } // for day inここまで
     // 最初と最後の日付を取得
     // 最初の日と最後の日
@@ -233,44 +205,27 @@ private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
     let lastWeekEmptyDays = 7 - lastDateWeekday
     // 初週のオフセットを追加
     for _ in 0..<firstWeekEmptyDays {
-        days.insert(CalendarInfo(date: nil, meditationTime: 0), at: 0)
+        days.insert(CalendarInfo(date: Date(), meditationTime: 0), at: 0)
     }
     // 最終週のオフセットを追加
     for _ in 0..<lastWeekEmptyDays {
-        days.append(CalendarInfo(date: nil, meditationTime: 0))
+        days.append(CalendarInfo(date: Date(), meditationTime: 0))
     }
     return days
 } // createCalendarDate
 /// 日付に応じた瞑想時間の設定 計算した結果を格納する
 func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
-    // グループ化したものをgroupedに
-    // 日付がnilのものはDateに変換
-    let grouped = Dictionary(grouping: records.compactMap { record -> (Date, Int)? in
-        guard let date = record.date else { return nil }
-        return (date, record.meditationTime)
-    }) { $0.0 }
-
-    let totals = grouped.mapValues { entries in
-        entries.reduce(0) { $0 + $1.1 }
-    }
-
+    let totals = Dictionary(grouping: records, by: { $0.date }).mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
     return totals
 }
-////  // 日付に応じた瞑想時間の設定 計算した結果を格納する
-//var checkDates: [Date?: Int] {
-//    // グループ化して合計時間を計算
-//    let totals = Dictionary(grouping: meditationRecords, by: { $0.date }).mapValues { $0.reduce(0) {$0 + $1.meditationTime }
-//    }
-//    return totals
-//} // var checkDates
-
-func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
-let totals = Dictionary(grouping: records, by: { $0.date }).mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
-    return totals
-}
-
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarView()
-    }
+// private func generateCalendar(for date: Date) -> [CalendarInfo] {
+//     //
+//     var result = createCalendarDates(displayDate)
+//     while result.count < 42 {
+//         result.append(CalendarInfo(date: Date(), meditationTime: 0))
+//     }
+//     return result
+// }
+#Preview {
+    CalendarView()
 }

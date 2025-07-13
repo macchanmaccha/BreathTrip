@@ -1,0 +1,50 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project",
+                "MeditationJourney.xcodeproj",
+                "-scheme",
+                "MeditationJourney",
+                "-configuration",
+                "Debug",
+                "-destination",
+                "platform=iOS Simulator,id=D3BD052A-A9E3-4A47-9E71-03477A5651A5"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project",
+                "MeditationJourney.xcodeproj",
+                "-scheme",
+                "MeditationJourney",
+                "clean"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+} 
