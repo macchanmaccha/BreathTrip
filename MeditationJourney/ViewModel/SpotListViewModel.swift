@@ -8,12 +8,12 @@
 import SwiftUI
 
 class SpotListViewModel: ObservableObject {
-    // スポットリスト（緯度経度の情報）
-    private(set) var spotList: [SpotDataModel] = []
-    // 瞑想の記録
-    var meditationRecords: [MeditationInfo] = []
     // 60分以上達成の音の場所を格納するプロパティ
     @Published var achievedSpots: [SpotDataModel] = []
+    // 瞑想の記録
+    var meditationRecords: [MeditationInfo] = []
+    // スポットリスト（緯度経度の情報）
+    private(set) var spotList: [SpotDataModel] = []
     // モデルのインスタンス化
     private let spotListModel: SpotListModel = SpotListModel()
     func fetchSpotList() {

@@ -1,0 +1,10 @@
+{
+    "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
+    "lldb.executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb",
+    "lldb.consoleMode": "commands",
+    "lldb.evaluationTimeout": 5000,
+    "lldb.showDisassembly": "auto",
+    "lldb.dereferencePointers": true,
+    "lldb.consoleHeight": 200,
+    "lldb.consoleWidth": 120
+}

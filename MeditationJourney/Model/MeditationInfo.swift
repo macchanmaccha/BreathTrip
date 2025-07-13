@@ -8,7 +8,7 @@
 import Foundation
 
 // 瞑想の情報
-struct MeditationInfo: Identifiable {
+struct MeditationInfo: Identifiable, Codable {
     let id = UUID()
     // 日付
     let date: Date
