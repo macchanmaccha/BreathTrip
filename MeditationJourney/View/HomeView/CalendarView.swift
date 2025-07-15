@@ -95,24 +95,27 @@ struct CalendarView: View {
                                 .frame(minWidth: 45, minHeight: 45)
                         } // ForEachここまで
                     } // LazyVGridここまで
+                    // カレンダーの日付セルを表示するグリッド
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // それぞれの日付をループで処理
+                        // calendarDatesには今月以外（前月・翌月）のダミー日付も含まれる
                         ForEach(calendarDates) { calendarDate in
-                            ZStack {
-                                // 日付表示
+                            // このセルの日付が「表示中の月」と同じかどうかを判定
+                            if Calendar.current.component(.month, from: calendarDate.date) == Calendar.current.component(.month, from: displayDate) {
+                                // 今月の日付なら日付を表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
-                                // 文字サイズ
                                     .font(.title2)
                                     .bold()
-                                // 今日の日付はライム色、その他はキーホワイト
+                                    // 今日ならライム色、それ以外は白
                                     .foregroundColor(Calendar.current.isDateInToday(calendarDate.date) ? Color(.dateInTodayLime) : Color(.keyWhite))
-                                // サイズ
                                     .frame(minWidth: 45, minHeight: 60)
-                                // 瞑想時間に応じた背景色
                                     .background(Color.backgroundColor(for: calendarDate.meditationTime))
-                                // 角の丸み
                                     .cornerRadius(10)
-                            } // ZStackここまで
+                            } else {
+                                // 今月以外（前月・翌月のダミー日付）は空白を表示
+                                Color.backgroundColor(for: calendarDate.meditationTime)
+                                    .frame(minWidth: 45, minHeight: 60)
+                                    .cornerRadius(10)
+                            }
                         } // ForEachここまで
                     } // LazyVGridここまで
                     // 色の説明　LessからMoreまで
