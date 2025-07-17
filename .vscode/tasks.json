@@ -13,7 +13,7 @@
                 "-configuration",
                 "Debug",
                 "-destination",
-                "platform=iOS Simulator,id=D3BD052A-A9E3-4A47-9E71-03477A5651A5"
+                "platform=iOS Simulator,name=iPhone 15,OS=17.4"
             ],
             "group": {
                 "kind": "build",
@@ -26,6 +26,25 @@
                 "panel": "shared"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "build-simple",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project",
+                "MeditationJourney.xcodeproj",
+                "-scheme",
+                "MeditationJourney",
+                "build"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
         },
         {
             "label": "clean",

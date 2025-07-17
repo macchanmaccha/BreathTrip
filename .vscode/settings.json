@@ -6,6 +6,5 @@
     "lldb.showDisassembly": "auto",
     "lldb.dereferencePointers": true,
     "lldb.consoleHeight": 200,
-    "lldb.consoleWidth": 120,
-    "lldb.launch.expressions": "native"
-} 
+    "lldb.consoleWidth": 120
+}

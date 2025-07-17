@@ -80,6 +80,9 @@ struct MeditationSetView: View {
                     .colorMultiply(Color(.backgroundNavy))
                     .scaleEffect(CGSize(width: 1.25, height: 1.25))
                     .pickerStyle(MenuPickerStyle())
+                    .onChange(of: viewModel.meditationMinutes) {
+                        viewModel.saveMeditationMinutes()
+                    }
                 } // HStackここまで
                 .foregroundColor(Color(.backgroundNavy))
                 .frame(width: 200)
@@ -123,22 +126,20 @@ struct MeditationSetView: View {
         .sheet(isPresented: $isShowSheet, content: {
             SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
         })
-        .onAppear {
-            // 瞑想の音データの再取得
-            viewModel.setSoundModel()
-        }
     } // bodyここまで
 } // MeditationViewここまで
 
 struct MeditationSetView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MeditationSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 16"))  // ✅ タブの表示名
-                .previewDisplayName("iPhone 16")  // ✅ プレビューする端末（プレビューデバイス）を指定
-            MeditationSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPad Air (6th generation)"))
-                .previewDisplayName("iPad Air (6th generation)")
+            MeditationSetView()
+            // ✅ タブの表示名
+                .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
+            // ✅ プレビューする端末（プレビューデバイス）を指定
+                .previewDisplayName("iPhone 16")
+            MeditationSetView()
+                .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
+                .previewDisplayName("iPad Pro (11-inch)")
         }
     }
 }
