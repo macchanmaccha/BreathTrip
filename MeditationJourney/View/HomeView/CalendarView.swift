@@ -23,15 +23,6 @@ struct CalendarView: View {
     private var year: Int {
         Calendar.current.year(from: displayDate) ?? 20000
     }
-    // 日付と瞑想時間の配列
-    private var calendarDates: [CalendarInfo] {
-        //
-        var result = createCalendarDates(displayDate)
-        while result.count < 42 {
-            result.append(CalendarInfo(date: Date(), meditationTime: 0))
-        }
-        return result
-    }
     // 曜日
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // グリッドアイテム
@@ -97,8 +88,8 @@ struct CalendarView: View {
                     } // LazyVGridここまで
                     // カレンダーの日付セルを表示するグリッド
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // calendarDatesには今月以外（前月・翌月）のダミー日付も含まれる
-                        ForEach(calendarDates) { calendarDate in
+                        // getCalendarDates()には今月以外（前月・翌月）のダミー日付も含まれる
+                        ForEach(getCalendarDates()) { calendarDate in
                             // このセルの日付が「表示中の月」と同じかどうかを判定
                             if Calendar.current.component(.month, from: calendarDate.date) == Calendar.current.component(.month, from: displayDate) {
                                 // 今月の日付なら日付を表示
@@ -152,13 +143,21 @@ struct CalendarView: View {
         } // geometryここまで
         .onAppear {
             // 仮の瞑想記録を代入
-            meditationRecords = calendarDates
+            meditationRecords = getCalendarDates()
             checkDates = checkDate(from: meditationRecords)
         }
     } // bodyここまで
-} // CalendarViewここまで
-
-private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
+     // 日付と瞑想時間の配列を取得するメソッド
+    private func getCalendarDates() -> [CalendarInfo] {
+        //
+        var result = createCalendarDates(displayDate)
+        while result.count < 42 {
+            result.append(CalendarInfo(date: Date(), meditationTime: 0))
+        }
+        return result
+    }
+    // MARK: - Private Methods
+    private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
     // 瞑想時間のサンプルデータ
     let timeData = [
         // 今日
@@ -215,20 +214,15 @@ private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
         days.append(CalendarInfo(date: Date(), meditationTime: 0))
     }
     return days
-} // createCalendarDate
+    } // createCalendarDate
+} // CalendarViewここまで
+
 /// 日付に応じた瞑想時間の設定 計算した結果を格納する
 func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
     let totals = Dictionary(grouping: records, by: { $0.date }).mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
     return totals
 }
-// private func generateCalendar(for date: Date) -> [CalendarInfo] {
-//     //
-//     var result = createCalendarDates(displayDate)
-//     while result.count < 42 {
-//         result.append(CalendarInfo(date: Date(), meditationTime: 0))
-//     }
-//     return result
-// }
+
 #Preview {
     CalendarView()
 }
