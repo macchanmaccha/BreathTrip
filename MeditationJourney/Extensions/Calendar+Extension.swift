@@ -7,84 +7,59 @@
 
 import Foundation
 
-// カレンダーの拡張機能
+// Dateの拡張機能
 
-extension Calendar {
+extension Date {
     /// 今月の開始日を取得する
-    /// - Parameter date: 対象日
     /// - Returns: 開始日
-    func startDateOfMonth(from date: Date) -> Date? {
+    var startDateOfMonth: Date {
         // 年月の構成要素
-        let components = dateComponents([.month, .year], from: date)
+        let components = Calendar.current.dateComponents([.month, .year], from: self)
         // 構成要素から日付を返却
-        return self.date(from: components)
-    } // func startDateOfMonth
+        return Calendar.current.date(from: components) ?? Date()
+    }
     /// 今月の日数を取得する
-    /// - Parameter date: 対象日
     /// - Returns: 日数
-    func daysInMonth(from date: Date) -> Int? {
+    var daysInMonth: Int {
         // 月の日数の返却
-        return range(of: .day, in: .month, for: date)?.count
-    } // func fromDaysInMonth
+        return Calendar.current.range(of: .day, in: .month, for: self)?.count ?? 1
+    }
     /// 今月の週数を取得する
-    /// - Parameter date: 対象日
     /// - Returns: 週数
-    func weeksInMonth(from date: Date) -> Int? {
+    var weeksInMonth: Int {
         // 週数の返却
-        return range(of: .weekOfMonth, in: .month, for: date)?.count
+        return Calendar.current.range(of: .weekOfMonth, in: .month, for: self)?.count ?? 1
     }
     /// 対象日の年の取得
-    /// - Parameter date: 対象日
     /// - Returns: 年
-    func year(from date: Date) -> Int? {
+    var year: Int {
         // 年の構成要素
-        let components = dateComponents([.year], from: date)
+        let components = Calendar.current.dateComponents([.year], from: self)
         // 年の返却
-        return components.year
+        return components.year ?? 1
     }
     /// 対象日の月の取得
-    /// - Parameter date: 対象日
     /// - Returns: 月
-    func month(from date: Date) -> Int? {
+    var month: Int {
         // 月の構成要素
-        let components = dateComponents([.month], from: date)
+        let components = Calendar.current.dateComponents([.month], from: self)
         // 月の返却
-        return components.month
+        return components.month ?? 1
     }
     /// 対象日の日の取得
-    /// - Parameter date: 対象日
     /// - Returns: 日
-    func day(from date: Date) -> Int? {
+    var day: Int {
         // 日の構成要素
-        let components = dateComponents([.day], from: date)
+        let components = Calendar.current.dateComponents([.day], from: self)
         // 日の返却
-        return components.day
+        return components.day ?? 1
     }
     /// 対象日の曜日の取得
-    /// - Parameter date: 対象日
     /// - Returns: 曜日
-    func weekday(from date: Date) -> Int? {
+    var weekday: Int {
         // 曜日の構成要素
-        let components = dateComponents([.weekday], from: date)
+        let components = Calendar.current.dateComponents([.weekday], from: self)
         // 曜日の返却
-        return components.weekday
+        return components.weekday ?? 1
     }
 }
-extension Date {
-    var month: Int {
-        Calendar.current.month(from: self) ?? 1
-    }
-}
-
-//extension Date {
-//    var month: Int {
-//        Calendar.current.month (from: self) ?? 1
-//    }
-//
-//    var startDateOfMonth: Date? {
-//        // 年月の構成要素
-//        let components = Calendar.current.dateComponents([.month, .year], from: self)
-//        //構成要素から日付を返却
-//        return Calendar.current.date(from: components)
-//    }
-//}

@@ -14,7 +14,6 @@ enum UserDefaultsKey {
     static let meditationMinutes = "meditationMinutes"
     static let listeningMinutes = "listeningMinutes"
     static let meditationRecords = "meditationRecords"
-    
     static func register () {
         UserDefaults.standard.register(defaults: [
             // SoundModel.europe1で保存するとアプリが落ちるので、rawValueで保存

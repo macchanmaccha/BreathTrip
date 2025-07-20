@@ -21,10 +21,6 @@ struct CalendarView: View {
     // MARK: - Properties
     // 現在表示中の年月を管理する状態変数、初期値は今日の日付
     @State private var displayDate: Date = Date()
-    // 現在の年 displayDateから
-    private var year: Int {
-        Calendar.current.year(from: displayDate) ?? 20000
-    }
     // 曜日
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -44,7 +40,7 @@ struct CalendarView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(String(year))年")
+                    Text("\(String(displayDate.year))年")
                         .foregroundColor(Color(.keyWhite))
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -120,10 +116,8 @@ struct CalendarView: View {
                                     .cornerRadius(10)
                             } else {
                                 // 今月以外（前月・翌月のダミー日付）は空白を表示
-                                // ただし背景色は瞑想時間に応じて設定
-                                Color.backgroundColor(for: calendarDate.meditationTime)
+                                Text("")
                                     .frame(minWidth: 45, minHeight: 60)
-                                    .cornerRadius(10)
                             }
                         } // ForEach（日付セルループ）終了
                     } // LazyVGrid（日付グリッド）終了
@@ -132,29 +126,25 @@ struct CalendarView: View {
                         // 右寄せ
                         Spacer()
                         Text("Less")
-                            .foregroundColor(Color(.keyWhite))
-                        
+                            .foregroundColor(Color(.keyWhite))                
                         // 瞑想時間0分の色サンプル（透明）
                         Rectangle()
                             .border(.gray, width: 1.5)
                             .frame(maxWidth: 20, maxHeight: 25 )
                             .foregroundColor(.clear)
-                            .cornerRadius(4)
-                        
+                            .cornerRadius(4)       
                         // 瞑想時間1-20分の色サンプル（第1段階ブルー）
                         Rectangle()
                             .border(.gray, width: 1.5)
                             .frame(maxWidth: 20, maxHeight: 25 )
                             .foregroundColor(Color(.firstStageBlue))
                             .cornerRadius(4)
-                        
                         // 瞑想時間21-40分の色サンプル（第2段階ブルー）
                         Rectangle()
                             .border(.gray, width: 1.5)
                             .frame(maxWidth: 20, maxHeight: 25 )
                             .foregroundColor(Color(.secondStageBlue))
-                            .cornerRadius(4)
-                        
+                            .cornerRadius(4)                   
                         // 瞑想時間41分以上の色サンプル（第3段階ブルー）
                         Rectangle()
                             .border(.gray, width: 1.5)
@@ -167,7 +157,6 @@ struct CalendarView: View {
                 } // VStack（メインコンテンツ）終了
             } // ZStack（レイヤー構造）終了
         } // GeometryReader（画面サイズ取得）終了
-        
         // Viewが表示される時に実行される処理
         .onAppear {
             // 仮の瞑想記録を代入してカレンダーに表示
@@ -184,7 +173,10 @@ struct CalendarView: View {
         var result = createCalendarDates(displayDate)
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
         while result.count < 42 {
-            result.append(CalendarInfo(date: Date(), meditationTime: 0))
+            // 最後の日付から1日ずつ追加
+            let lastDate = result.last?.date ?? Date()
+            let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
+            result.append(CalendarInfo(date: nextDate, meditationTime: 0))
         }
         return result
     }
@@ -202,16 +194,10 @@ struct CalendarView: View {
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [CalendarInfo]()
-        // 月の初めの日付と月の日数を取得、取得できない場合は空配列を返す
-        guard let startDateOfMonth = Calendar.current.startDateOfMonth(from: date),
-              let daysInMonth = Calendar.current.daysInMonth(from: date) else {
-            // 何も返却しない
-            return []
-        } // guard let（月の開始日と日数取得）終了
         // 今月の全ての日付をループして処理
-        for day in 0..<daysInMonth {
+        for day in 0..<date.daysInMonth {
             // 今月の開始日から1日ずつ加算した日付を計算
-            guard let currentDate = Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth) else {
+            guard let currentDate = Calendar.current.date(byAdding: .day, value: day, to: date.startDateOfMonth) else {
                 // 日付が計算できない場合は処理をスキップ
                 continue
             }
@@ -221,31 +207,23 @@ struct CalendarView: View {
                 Calendar.current.isDate(record.date, inSameDayAs: currentDate)
                 // 見つからない場合は0分を設定
             })?.meditationTime ?? 0
-            
             // 今月の開始日から1日ずつ加算した日付と瞑想時間を配列に追加
-            days.append(CalendarInfo(date: Calendar.current.date(byAdding: .day, value: day, to: startDateOfMonth)!, meditationTime: meditationTime))
+            days.append(CalendarInfo(date: Calendar.current.date(byAdding: .day, value: day, to: date.startDateOfMonth)!, meditationTime: meditationTime))
         } // for day in（今月の日付ループ）終了
         // 最初と最後の日付を取得して週のオフセットを計算
-        // 最初の日と最後の日を取得
-        guard let firstDay = days.first?.date, let lastDay = days.last?.date,
-              // 最初の日の曜日を取得（1=日曜日、2=月曜日、...、7=土曜日）
-              let firstDateWeekday = Calendar.current.weekday(from: firstDay),
-              // 最後の日の曜日を取得
-              let lastDateWeekday = Calendar.current.weekday(from: lastDay) else {
-            // 取得できない場合は空配列を返す
-            return []
-        } // guard let（最初と最後の日付取得）終了
         // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
-        let firstWeekEmptyDays = firstDateWeekday - 1
+        let firstWeekEmptyDays = date.startDateOfMonth.weekday - 1
         // 最終週のオフセット日数を計算（月の最終日が何曜日かによって翌月の日付を何日分表示するか）
-        let lastWeekEmptyDays = 7 - lastDateWeekday
+        let lastWeekEmptyDays = 7 - date.startDateOfMonth.weekday
         // 初週のオフセットを配列の先頭に追加（前月の日付）
-        for _ in 0..<firstWeekEmptyDays {
-            days.insert(CalendarInfo(date: Date(), meditationTime: 0), at: 0)
+        for i in 0..<firstWeekEmptyDays {
+            let offsetDate = Calendar.current.date(byAdding: .day, value: -(firstWeekEmptyDays - i), to: date.startDateOfMonth) ?? Date()
+            days.insert(CalendarInfo(date: offsetDate, meditationTime: 0), at: 0)
         }
         // 最終週のオフセットを配列の末尾に追加（翌月の日付）
-        for _ in 0..<lastWeekEmptyDays {
-            days.append(CalendarInfo(date: Date(), meditationTime: 0))
+        for i in 0..<lastWeekEmptyDays {
+            let offsetDate = Calendar.current.date(byAdding: .day, value: i + 1, to: Calendar.current.date(byAdding: .day, value: date.daysInMonth - 1, to: date.startDateOfMonth) ?? Date()) ?? Date()
+            days.append(CalendarInfo(date: offsetDate, meditationTime: 0))
         }
         return days
     } // createCalendarDatesメソッド終了
