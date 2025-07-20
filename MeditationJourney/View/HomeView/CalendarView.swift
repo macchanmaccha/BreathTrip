@@ -19,16 +19,16 @@ struct CalendarInfo: Identifiable {
 
 struct CalendarView: View {
     // MARK: - Properties
+    // 瞑想の記録
+    @State var meditationRecords: [CalendarInfo] = []
+    // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
+    @State var checkDates: [Date: Int] = [:]
     // 現在表示中の年月を管理する状態変数、初期値は今日の日付
     @State private var displayDate: Date = Date()
     // 曜日
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
     private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 40, maximum: 80)), count: 7)
-    // 瞑想の記録
-    @State var meditationRecords: [CalendarInfo] = []
-    // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
-    @State var checkDates: [Date: Int] = [:]
     // MARK: - Body
     // SwiftUIのViewの本体、UIの構造を定義
     var body: some View {
@@ -126,13 +126,13 @@ struct CalendarView: View {
                         // 右寄せ
                         Spacer()
                         Text("Less")
-                            .foregroundColor(Color(.keyWhite))                
+                            .foregroundColor(Color(.keyWhite))
                         // 瞑想時間0分の色サンプル（透明）
                         Rectangle()
                             .border(.gray, width: 1.5)
                             .frame(maxWidth: 20, maxHeight: 25 )
                             .foregroundColor(.clear)
-                            .cornerRadius(4)       
+                            .cornerRadius(4)
                         // 瞑想時間1-20分の色サンプル（第1段階ブルー）
                         Rectangle()
                             .border(.gray, width: 1.5)
@@ -144,7 +144,7 @@ struct CalendarView: View {
                             .border(.gray, width: 1.5)
                             .frame(maxWidth: 20, maxHeight: 25 )
                             .foregroundColor(Color(.secondStageBlue))
-                            .cornerRadius(4)                   
+                            .cornerRadius(4)
                         // 瞑想時間41分以上の色サンプル（第3段階ブルー）
                         Rectangle()
                             .border(.gray, width: 1.5)
