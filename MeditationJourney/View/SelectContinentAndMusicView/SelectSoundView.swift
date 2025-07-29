@@ -26,7 +26,7 @@ struct SelectSoundView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Text("音を選択")
-                    .foregroundColor(.keyWhite)
+                    .foregroundStyle(.keyWhite)
                     .font(.title)
                     .padding()
                 LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
@@ -41,7 +41,7 @@ struct SelectSoundView: View {
                         }  // Buttonここまで
                         .frame(width: 130, height: 100)
                         .background(.keyWhite.opacity(0.6))
-                        .foregroundColor(.backgroundNavy)
+                        .foregroundStyle(.backgroundNavy)
                         .cornerRadius(8)
                     }  // ForEachここまで
                 }  // LazyVGridここまで

@@ -22,7 +22,7 @@ struct SelectContinentView: View {
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     Text("大陸を選択")
-                        .foregroundColor(.keyWhite)
+                        .foregroundStyle(.keyWhite)
                         .font(.title)
                         .padding()
                     LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
@@ -38,7 +38,7 @@ struct SelectContinentView: View {
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
                                     .background(.keyWhite.opacity(0.6))
-                                    .foregroundColor(.backgroundNavy)
+                                    .foregroundStyle(.backgroundNavy)
                                     .cornerRadius(8)
                             }  // NavigationLinkここまで
                         }  // ForEachここまで

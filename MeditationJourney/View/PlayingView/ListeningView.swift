@@ -24,7 +24,7 @@ struct ListeningView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 Text(viewModel.remainingSeconds.formattedTime())
-                    .foregroundColor(.keyWhite)
+                    .foregroundStyle(.keyWhite)
                     .font(.system(size: 80))
                     .frame(width: 300, height: 200)
                     .bold()

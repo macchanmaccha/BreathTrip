@@ -34,7 +34,7 @@ struct ListeningSetView: View {
                 HStack {
                     Text("時間")
                         .font(.title2)
-                        .foregroundColor(.backgroundNavy)
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
                         ForEach(minutesOptions, id: \.self) { minute in
@@ -50,21 +50,21 @@ struct ListeningSetView: View {
                         viewModel.saveListeningMinutes()
                     }
                 }  // HStackここまで
-                .foregroundColor(.backgroundNavy)
+                .foregroundStyle(.backgroundNavy)
                 .frame(width: 200)
                 .padding()
                 // 音設定
                 HStack {
                     Text("音")
                         .font(.title2)
-                        .foregroundColor(.backgroundNavy)
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
                         Text("\(viewModel.listeningSoundName.rawValue)>")
                             .font(.title2)
-                            .foregroundColor(.backgroundNavy)
+                            .foregroundStyle(.backgroundNavy)
                     }
                 }  // HStackここまで
                 .frame(width: 200)
@@ -75,7 +75,7 @@ struct ListeningSetView: View {
                 }) {
                     Text("はじめる")
                         .font(.title)
-                        .foregroundColor(.keyWhite)
+                        .foregroundStyle(.keyWhite)
                         .padding(25.0)
                         .background(.backgroundNavy)
                         .cornerRadius(10)
