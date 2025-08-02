@@ -44,7 +44,7 @@ struct MeditationSetView: View {
                 HStack {
                     Text("音声ガイド")
                         .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     VStack {
                         // 音声ガイドボタン
