@@ -22,27 +22,31 @@ struct SelectContinentView: View {
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     Text("大陸を選択")
-                        .foregroundColor(Color(.keyWhite))
+                        .foregroundColor(.keyWhite)
                         .font(.title)
                         .padding()
                     LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
                         // 大陸の表示
                         ForEach(ContinentModel.allCases, id: \.self) { continent in
                             // 画面遷移
-                            NavigationLink(destination: SelectSoundView(viewModel: viewModel, isShowSheet: $isShowSheet, selectedContinent: continent)) {
+                            NavigationLink(
+                                destination: SelectSoundView(
+                                    viewModel: viewModel, isShowSheet: $isShowSheet,
+                                    selectedContinent: continent)
+                            ) {
                                 // 大陸を1つずつ表示
                                 Text(continent.rawValue)
                                     .frame(width: 130, height: 100)
-                                    .background(Color(.keyWhite).opacity(0.6))
-                                    .foregroundColor(Color(.backgroundNavy))
+                                    .background(.keyWhite.opacity(0.6))
+                                    .foregroundColor(.backgroundNavy)
                                     .cornerRadius(8)
-                            } // NavigationLinkここまで
-                        } // ForEachここまで
-                    } // LazyVGridここまで
-                    .frame(maxWidth: 300, alignment: .center) // LazyVGridの幅を調整
+                            }  // NavigationLinkここまで
+                        }  // ForEachここまで
+                    }  // LazyVGridここまで
+                    .frame(maxWidth: 300, alignment: .center)  // LazyVGridの幅を調整
                     .padding(10)
-                } // VStackここまで
-            } // ZStackここまで
+                }  // VStackここまで
+            }  // ZStackここまで
             // シートを閉じる
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -50,13 +54,13 @@ struct SelectContinentView: View {
                         isShowSheet.toggle()
                     }) {
                         Image(systemName: "xmark")
-                            .tint(Color(.keyWhite))
-                    } // Buttonここまで
-                } // ToolbarItemここまで
-            } // .toolbarここまで
-        } // NavigationStackここまで
-    } // bodyここまで
-} // SelectContinentViewここまで
+                            .tint(.keyWhite)
+                    }  // Buttonここまで
+                }  // ToolbarItemここまで
+            }  // .toolbarここまで
+        }  // NavigationStackここまで
+    }  // bodyここまで
+}  // SelectContinentViewここまで
 
 #Preview {
     SelectContinentView(viewModel: SetViewModel(), isShowSheet: .constant(true))

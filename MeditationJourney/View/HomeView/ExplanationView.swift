@@ -17,7 +17,7 @@ struct ExplanationView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 背景枠
                 Rectangle()
-                    .fill(Color(.keyWhite))
+                    .fill(.keyWhite)
                     .cornerRadius(8)
                     .opacity(0.6)
                 VStack {
@@ -36,7 +36,7 @@ struct ExplanationView: View {
                         .font(.title2)
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
-                        .background(Color(.backgroundNavy))
+                        .background(.backgroundNavy)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                     }
@@ -53,7 +53,7 @@ struct ExplanationView: View {
                         .font(.title2)
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
-                        .background(Color(.backgroundNavy))
+                        .background(.backgroundNavy)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                     }
@@ -70,16 +70,16 @@ struct ExplanationView: View {
                         .font(.title2)
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
-                        .background(Color(.backgroundNavy))
+                        .background(.backgroundNavy)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                     }
                     .padding(5)
                 }
-            } // ZStackここまで
-        } // NavigationStackここまで
-    } // bodyここまで
-} // ExplanationViewここまで
+            }  // ZStackここまで
+        }  // NavigationStackここまで
+    }  // bodyここまで
+}  // ExplanationViewここまで
 
 struct ExplanationView_Previews: PreviewProvider {
     static var previews: some View {

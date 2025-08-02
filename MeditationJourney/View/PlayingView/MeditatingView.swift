@@ -28,7 +28,7 @@ struct MeditatingView: View {
                     // 以下テキストを表示
                     Text("開始まで\n\(viewModel.remainingSeconds)")
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color(.keyWhite))
+                        .foregroundColor(.keyWhite)
                         .font(.system(size: 30))
                         .frame(width: 200, height: 200)
                         .bold()
@@ -36,7 +36,7 @@ struct MeditatingView: View {
                 // 瞑想中タイマーを表示
                 if viewModel.state == .start || viewModel.state == .pause {
                     Text(viewModel.remainingSeconds.formattedTime())
-                        .foregroundColor(Color(.keyWhite))
+                        .foregroundColor(.keyWhite)
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
@@ -58,11 +58,11 @@ struct MeditatingView: View {
                         print(viewModel.remainingSeconds)
                     }) {
                         Text("中断する")
-                            .tint(Color(.backgroundNavy))
+                            .tint(.backgroundNavy)
                             .font(.title)
                     }
                     .padding(25)
-                    .background(Color(.keyWhite))
+                    .background(.keyWhite)
                     .cornerRadius(10)
                     .alert("", isPresented: $isShowStopAlert) {
                         // NO
@@ -85,10 +85,10 @@ struct MeditatingView: View {
                         }
                     } message: {
                         Text("中断して前の画面に戻りますか？")
-                    } // .alertここまで
-                } // if isShowStopButtonここまで
-            } // VStackここまで
-        } // ZStack
+                    }  // .alertここまで
+                }  // if isShowStopButtonここまで
+            }  // VStackここまで
+        }  // ZStack
         .onAppear {
             // 画面起動時にprestart状態にする
             viewModel.updateState(newState: .preStart)
@@ -129,9 +129,9 @@ struct MeditatingView: View {
             }
         } message: {
             Text("おつかれさまでした")
-        } // .alertここまで
-    } // bodyここまで
-} // ContentViewここまで
+        }  // .alertここまで
+    }  // bodyここまで
+}  // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {
     static var previews: some View {

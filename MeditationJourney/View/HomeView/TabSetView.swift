@@ -5,8 +5,8 @@
 //  Created by apple on 2023/09/10.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct TabSetView: View {
     // タブの選択項目を保持
@@ -47,13 +47,13 @@ struct TabSetView: View {
                     }
                     .tag(5)
             }
-            .toolbarBackground(Color(.backgroundNavy), for: .tabBar)
+            .toolbarBackground(.backgroundNavy, for: .tabBar)
             .toolbarBackground(.visible, for: .tabBar)
             .toolbarColorScheme(.dark, for: .tabBar)
-        } // TabViewここまで
-    } // bodyここまで
-} // ContentViewここまで
+        }  // TabViewここまで
+    }  // bodyここまで
+}  // ContentViewここまで
 
 #Preview {
-        TabSetView()
+    TabSetView()
 }
