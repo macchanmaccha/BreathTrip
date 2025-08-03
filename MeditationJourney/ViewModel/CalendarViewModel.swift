@@ -11,13 +11,13 @@ class CalendarViewModel: ObservableObject {
     // 現在表示中の年月を管理する状態変数、初期値は今日の日付
     @Published var displayDate: Date = Date()
     // 瞑想の記録
-    @Published var meditationRecords: [CalendarInfo] = []
+    @Published var meditationRecords: [MeditationInfo] = []
     // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
     @Published var checkDates: [Date: Int] = [:]
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
-    func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
+    func checkDate(from records: [MeditationInfo]) -> [Date: Int] {
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(grouping: records, by: { $0.date }).mapValues {
             $0.reduce(0) { $0 + $1.meditationTime }
@@ -28,7 +28,7 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Calendar Methods
     // 日付と瞑想時間の配列を取得するメソッド
     // カレンダー表示用の完全な日付配列（42日分）を生成
-    func getCalendarDates() -> [CalendarInfo] {
+    func getCalendarDates() -> [MeditationInfo] {
         // 指定月のカレンダー日付を生成
         var result = createCalendarDates(displayDate)
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
@@ -36,29 +36,31 @@ class CalendarViewModel: ObservableObject {
             // 最後の日付から1日ずつ追加
             let lastDate = result.last?.date ?? Date()
             let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
-            result.append(CalendarInfo(date: nextDate, meditationTime: 0))
+            result.append(MeditationInfo(date: nextDate, worldSounds: nil, meditationTime: 0))
         }
         return result
     }
 
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
-    func createCalendarDates(_ date: Date) -> [CalendarInfo] {
+    func createCalendarDates(_ date: Date) -> [MeditationInfo] {
         // 瞑想時間のサンプルデータ（実際のアプリではデータベースから取得）
         let timeData = [
             // 今日の瞑想時間（40分）
-            CalendarInfo(date: Date(), meditationTime: 40),
+            MeditationInfo(date: Date(), worldSounds: nil, meditationTime: 40),
             // 昨日の瞑想時間（10分）
-            CalendarInfo(
+            MeditationInfo(
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
+                worldSounds: nil,
                 meditationTime: 10),
             // 一昨日の瞑想時間（60分）
-            CalendarInfo(
+            MeditationInfo(
                 date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                meditationTime: 60)
+                worldSounds: nil,
+                meditationTime: 60),
         ]
         // 指定月のカレンダー日付を格納する配列
-        var days = [CalendarInfo]()
+        var days = [MeditationInfo]()
         // 今月の全ての日付をループして処理
         for day in 0..<date.daysInMonth {
             // 今月の開始日から1日ずつ加算した日付を計算
@@ -78,8 +80,9 @@ class CalendarViewModel: ObservableObject {
                 })?.meditationTime ?? 0
             // 今月の開始日から1日ずつ加算した日付と瞑想時間を配列に追加
             days.append(
-                CalendarInfo(
+                MeditationInfo(
                     date: Calendar.current.date(byAdding: .day, value: day, to: date.startOfMonth)!,
+                    worldSounds: nil,
                     meditationTime: meditationTime))
         }  // for day in（今月の日付ループ）終了
         // 最初と最後の日付を取得して週のオフセットを計算
@@ -93,7 +96,8 @@ class CalendarViewModel: ObservableObject {
                 Calendar.current.date(
                     byAdding: .day, value: -(firstWeekEmptyDays - i), to: date.startOfMonth)
                 ?? Date()
-            days.insert(CalendarInfo(date: offsetDate, meditationTime: 0), at: 0)
+            days.insert(
+                MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0), at: 0)
         }
         // 最終週のオフセットを配列の末尾に追加（翌月の日付）
         for i in 0..<lastWeekEmptyDays {
@@ -103,7 +107,7 @@ class CalendarViewModel: ObservableObject {
                     to: Calendar.current.date(
                         byAdding: .day, value: date.daysInMonth - 1, to: date.startOfMonth)
                         ?? Date()) ?? Date()
-            days.append(CalendarInfo(date: offsetDate, meditationTime: 0))
+            days.append(MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0))
         }
         return days
     }  // createCalendarDatesメソッド終了
