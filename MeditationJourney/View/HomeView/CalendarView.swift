@@ -44,7 +44,7 @@ struct CalendarView: View {
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
                     Text("\(String(displayDate.year))年")
-                        .foregroundStyle(Color(.keyWhite))
+                        .foregroundStyle(.keyWhite)
                         .font(.title2)
                         .fontWeight(.semibold)
                     HStack {
@@ -61,8 +61,7 @@ struct CalendarView: View {
                         Button {
                             // 前月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: -1, to: displayDate)
-                            {
+                                byAdding: .month, value: -1, to: displayDate) {
                                 displayDate = newDate
                             }
                         } label: {
@@ -76,8 +75,7 @@ struct CalendarView: View {
                         Button {
                             // 翌月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: 1, to: displayDate)
-                            {
+                                byAdding: .month, value: 1, to: displayDate) {
                                 displayDate = newDate
                             }
                         } label: {
@@ -111,8 +109,7 @@ struct CalendarView: View {
                         ForEach(getCalendarDates()) { calendarDate in
                             // このセルの日付が「表示中の月」と同じかどうかを判定
                             if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: displayDate)
-                            {
+                                == Calendar.current.component(.month, from: displayDate) {
                                 // 今月の日付なら日付を表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
                                     .font(.title2)
@@ -125,7 +122,7 @@ struct CalendarView: View {
                                     .frame(minWidth: 45, minHeight: 60)
                                     // 瞑想時間に応じた背景色を設定
                                     .background(
-                                        Color.backgroundColor(for: calendarDate.meditationTime)
+                                        Color.backgroundStyle(for: calendarDate.meditationTime)
                                     )
                                     .cornerRadius(10)
                             } else {
@@ -169,6 +166,7 @@ struct CalendarView: View {
                             .foregroundStyle(.keyWhite)
                     }  // HStack（色の説明）終了
                 }  // VStack（メインコンテンツ）終了
+                .padding(20)
             }  // ZStack（レイヤー構造）終了
         }  // GeometryReader（画面サイズ取得）終了
         // Viewが表示される時に実行される処理
