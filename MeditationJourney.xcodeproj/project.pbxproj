@@ -12,8 +12,6 @@
 		180644652AB6947A0080EEFF /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644642AB694790080EEFF /* MapView.swift */; };
 		180644672AB694D30080EEFF /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180644662AB694D30080EEFF /* ExplanationView.swift */; };
 		180F1E532E2DE36A0044B0CA /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180F1E522E2DE3640044B0CA /* CalendarViewModel.swift */; };
-		1812365B2C15EBAC00AD51A8 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181236592C15EBAC00AD51A8 /* Calendar+Extension.swift */; };
-		180F1E562E35F5D30044B0CA /* CalendarView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180F1E552E35F5CA0044B0CA /* CalendarView+Extension.swift */; };
 		1812365B2C15EBAC00AD51A8 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181236592C15EBAC00AD51A8 /* Date+Extension.swift */; };
 		1812365C2C15EBAC00AD51A8 /* MeditationTimeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1812365A2C15EBAC00AD51A8 /* MeditationTimeExtension.swift */; };
 		1818FFC82BC26BCE00CE1BB4 /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */; };
@@ -49,8 +47,6 @@
 		180644642AB694790080EEFF /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		180644662AB694D30080EEFF /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
 		180F1E522E2DE3640044B0CA /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
-		181236592C15EBAC00AD51A8 /* Calendar+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
-		180F1E552E35F5CA0044B0CA /* CalendarView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarView+Extension.swift"; sourceTree = "<group>"; };
 		181236592C15EBAC00AD51A8 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		1812365A2C15EBAC00AD51A8 /* MeditationTimeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeditationTimeExtension.swift; sourceTree = "<group>"; };
 		1818FFC72BC26BCE00CE1BB4 /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
@@ -212,7 +208,6 @@
 		18E079B72BCA5F9900544DDD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				180F1E552E35F5CA0044B0CA /* CalendarView+Extension.swift */,
 				181236592C15EBAC00AD51A8 /* Date+Extension.swift */,
 				1812365A2C15EBAC00AD51A8 /* MeditationTimeExtension.swift */,
 				18E079B82BCA606800544DDD /* Int+Extension.swift */,
@@ -320,7 +315,6 @@
 				180644632AB694670080EEFF /* CalendarView.swift in Sources */,
 				18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */,
 				183AEA572B393F4800B6E661 /* MeditatingSetViewModel.swift in Sources */,
-				180F1E562E35F5D30044B0CA /* CalendarView+Extension.swift in Sources */,
 				184FD4032BAB1BF7005C2F19 /* SetViewModel.swift in Sources */,
 				1863E1EE2AAD81D800543D18 /* MeditationJourney.xcdatamodeld in Sources */,
 				1812365C2C15EBAC00AD51A8 /* MeditationTimeExtension.swift in Sources */,

@@ -10,26 +10,33 @@ import SwiftUI
 /// 各日付の情報（日付と瞑想時間）を格納するためのデータモデル
 struct CalendarInfo: Identifiable {
     // 識別子
-    var id = UUID()
+    let id = UUID()
     // 日付（日付は必ず存在するため非オプショナル型）
     var date: Date
     // 瞑想時間
     var meditationTime: Int
 }  // CalendarDatesここまで
 
+/// 色の説明用のボックス
+struct LegendBox: View {
+    let color: Color
+
+    var body: some View {
+        Rectangle()
+            .border(.gray, width: 1.5)
+            .frame(maxWidth: 20, maxHeight: 25)
+            .foregroundColor(color)
+            .cornerRadius(4)
+    }
+}
+
 struct CalendarView: View {
     // MARK: - Properties
-    /// CalendarViewModelをインスタンス化
-    @StateObject private var viewModel: CalendarViewModel = CalendarViewModel()
-    /// 瞑想の記録
-    @State var meditationRecords: [CalendarInfo] = []
-    /// 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
-    @State var checkDates: [Date: Int] = [:]
-    /// 現在表示中の年月を管理する状態変数、初期値は今日の日付
-    @State private var displayDate: Date = Date()
-    /// 曜日
+    // viewModel
+    @StateObject var viewModel: CalendarViewModel = CalendarViewModel()
+    // 曜日
     private let weekdays = Calendar.current.shortWeekdaySymbols
-    /// カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
+    // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
     private let columns: [GridItem] = Array(
         repeating: .init(.flexible(minimum: 40, maximum: 80)), count: 7)
     // MARK: - Body
@@ -39,17 +46,17 @@ struct CalendarView: View {
         GeometryReader { geometry in
             ZStack {
                 // 背景色を紺色に設定し、セーフエリアを無視して全画面に適用
-                Color("backgroundNavy")
+                Color.backgroundNavy
                     .edgesIgnoringSafeArea(.all)
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(String(displayDate.year))年")
+                    Text("\(String(viewModel.displayDate.year))年")
                         .foregroundStyle(.keyWhite)
                         .font(.title2)
                         .fontWeight(.semibold)
                     HStack {
                         // 年月の表示
-                        Text("\(displayDate.month)月")
+                        Text("\(viewModel.displayDate.month)月")
                             .foregroundStyle(.keyWhite)
                             .bold()
                             // フォントサイズは30、画面に合わせて縮小可能
@@ -61,8 +68,8 @@ struct CalendarView: View {
                         Button {
                             // 前月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: -1, to: displayDate) {
-                                displayDate = newDate
+                                byAdding: .month, value: -1, to: viewModel.displayDate) {
+                                viewModel.displayDate = newDate
                             }
                         } label: {
                             // 左向きの矢印アイコンを表示
@@ -75,8 +82,8 @@ struct CalendarView: View {
                         Button {
                             // 翌月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: 1, to: displayDate) {
-                                displayDate = newDate
+                                byAdding: .month, value: 1, to: viewModel.displayDate) {
+                                viewModel.displayDate = newDate
                             }
                         } label: {
                             // 右向きの矢印アイコンを表示
@@ -106,10 +113,10 @@ struct CalendarView: View {
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
                         // カレンダー日付の配列をループして各日付セルを表示
                         // getCalendarDates()には今月以外（前月・翌月）のダミー日付も含まれる
-                        ForEach(getCalendarDates()) { calendarDate in
+                        ForEach(viewModel.getCalendarDates()) { calendarDate in
                             // このセルの日付が「表示中の月」と同じかどうかを判定
                             if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: displayDate) {
+                                == Calendar.current.component(.month, from: viewModel.displayDate) {
                                 // 今月の日付なら日付を表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
                                     .font(.title2)
@@ -117,7 +124,7 @@ struct CalendarView: View {
                                     // 今日ならライム色、それ以外は白色で表示
                                     .foregroundStyle(
                                         Calendar.current.isDateInToday(calendarDate.date)
-                                            ? Color(.dateInTodayLime) : Color(.keyWhite)
+                                            ? .dateInTodayLime : .keyWhite
                                     )
                                     .frame(minWidth: 45, minHeight: 60)
                                     // 瞑想時間に応じた背景色を設定
@@ -127,7 +134,10 @@ struct CalendarView: View {
                                     .cornerRadius(10)
                             } else {
                                 // 今月以外（前月・翌月のダミー日付）は空白を表示
-                                Text("")
+                                // EmptyView()ではなく透明なRectangleを使用
+                                // これにより、グリッドのセルとして正しく認識される
+                                Rectangle()
+                                    .fill(Color.clear)
                                     .frame(minWidth: 45, minHeight: 60)
                             }
                         }  // ForEach（日付セルループ）終了
@@ -136,34 +146,18 @@ struct CalendarView: View {
                     HStack {
                         // 右寄せ
                         Spacer()
-                        Text("Less")
-                            .foregroundStyle(Color(.keyWhite))
+                        Text("Low")
+                            .foregroundColor(.keyWhite)
                         // 瞑想時間0分の色サンプル（透明）
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25)
-                            .foregroundStyle(.clear)
-                            .cornerRadius(4)
+                        LegendBox(color: .clear)
                         // 瞑想時間1-20分の色サンプル（第1段階ブルー）
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25)
-                            .foregroundStyle(Color(.firstStageBlue))
-                            .cornerRadius(4)
+                        LegendBox(color: .firstStageBlue)
                         // 瞑想時間21-40分の色サンプル（第2段階ブルー）
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25)
-                            .foregroundStyle(Color(.secondStageBlue))
-                            .cornerRadius(4)
+                        LegendBox(color: .secondStageBlue)
                         // 瞑想時間41分以上の色サンプル（第3段階ブルー）
-                        Rectangle()
-                            .border(.gray, width: 1.5)
-                            .frame(maxWidth: 20, maxHeight: 25)
-                            .foregroundStyle(.thirdStageBlue)
-                            .cornerRadius(4)
-                        Text("More")
-                            .foregroundStyle(.keyWhite)
+                        LegendBox(color: .thirdStageBlue)
+                        Text("High")
+                            .foregroundColor(.keyWhite)
                     }  // HStack（色の説明）終了
                 }  // VStack（メインコンテンツ）終了
                 .padding(20)
@@ -172,104 +166,12 @@ struct CalendarView: View {
         // Viewが表示される時に実行される処理
         .onAppear {
             // 仮の瞑想記録を代入してカレンダーに表示
-            meditationRecords = getCalendarDates()
+            viewModel.meditationRecords = viewModel.getCalendarDates()
             // 日付ごとの瞑想時間合計を計算して辞書に格納
-            checkDates = checkDate(from: meditationRecords)
+            viewModel.checkDates = viewModel.checkDate(from: viewModel.meditationRecords)
         }
     }  // body（View本体）終了
-    // MARK: - Private Methods
-    // 日付と瞑想時間の配列を取得するメソッド
-    // カレンダー表示用の完全な日付配列（42日分）を生成
-    private func getCalendarDates() -> [CalendarInfo] {
-        // 指定月のカレンダー日付を生成
-        var result = createCalendarDates(displayDate)
-        // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
-        while result.count < 42 {
-            // 最後の日付から1日ずつ追加
-            let lastDate = result.last?.date ?? Date()
-            let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
-            result.append(CalendarInfo(date: nextDate, meditationTime: 0))
-        }
-        return result
-    }
-    // 指定月のカレンダー日付配列を生成するメソッド
-    //    // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
-    //    private func createCalendarDates(_ date: Date) -> [CalendarInfo] {
-    //        // 瞑想時間のサンプルデータ（実際のアプリではデータベースから取得）
-    //        let timeData = [
-    //            // 今日の瞑想時間（40分）
-    //            CalendarInfo(date: Date(), meditationTime: 40),
-    //            // 昨日の瞑想時間（10分）
-    //            CalendarInfo(
-    //                date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-    //                meditationTime: 10),
-    //            // 一昨日の瞑想時間（60分）
-    //            CalendarInfo(
-    //                date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-    //                meditationTime: 60),
-    //        ]
-    //        // 指定月のカレンダー日付を格納する配列
-    //        var days = [CalendarInfo]()
-    //        // 今月の全ての日付をループして処理
-    //        for day in 0..<date.daysInMonth {
-    //            // 今月の開始日から1日ずつ加算した日付を計算
-    //            guard
-    //                let currentDate = Calendar.current.date(
-    //                    byAdding: .day, value: day, to: date.startDateOfMonth)
-    //            else {
-    //                // 日付が計算できない場合は処理をスキップ
-    //                continue
-    //            }
-    //            // サンプルデータからcurrentDateと同じ日付の瞑想時間を検索
-    //            let meditationTime =
-    //                timeData.first(where: { record in
-    //                    // recordDate が currentDate と同じ日（年月日）か確認
-    //                    Calendar.current.isDate(record.date, inSameDayAs: currentDate)
-    //                    // 見つからない場合は0分を設定
-    //                })?.meditationTime ?? 0
-    //            // 今月の開始日から1日ずつ加算した日付と瞑想時間を配列に追加
-    //            days.append(
-    //                CalendarInfo(
-    //                    date: Calendar.current.date(
-    //                        byAdding: .day, value: day, to: date.startDateOfMonth)!,
-    //                    meditationTime: meditationTime))
-    //        }  // for day in（今月の日付ループ）終了
-    //        // 最初と最後の日付を取得して週のオフセットを計算
-    //        // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
-    //        let firstWeekEmptyDays = date.startDateOfMonth.weekday - 1
-    //        // 最終週のオフセット日数を計算（月の最終日が何曜日かによって翌月の日付を何日分表示するか）
-    //        let lastWeekEmptyDays = 7 - date.startDateOfMonth.weekday
-    //        // 初週のオフセットを配列の先頭に追加（前月の日付）
-    //        for i in 0..<firstWeekEmptyDays {
-    //            let offsetDate =
-    //                Calendar.current.date(
-    //                    byAdding: .day, value: -(firstWeekEmptyDays - i), to: date.startDateOfMonth)
-    //                ?? Date()
-    //            days.insert(CalendarInfo(date: offsetDate, meditationTime: 0), at: 0)
-    //        }
-    //        // 最終週のオフセットを配列の末尾に追加（翌月の日付）
-    //        for i in 0..<lastWeekEmptyDays {
-    //            let offsetDate =
-    //                Calendar.current.date(
-    //                    byAdding: .day, value: i + 1,
-    //                    to: Calendar.current.date(
-    //                        byAdding: .day, value: date.daysInMonth - 1, to: date.startDateOfMonth)
-    //                        ?? Date()) ?? Date()
-    //            days.append(CalendarInfo(date: offsetDate, meditationTime: 0))
-    //        }
-    //        return days
-    //    }  // createCalendarDatesメソッド終了
 }  // CalendarView構造体終了
-// MARK: - Helper Functions
-/// 日付に応じた瞑想時間の設定 計算した結果を格納する
-/// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
-func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
-    // 日付でグループ化して、同じ日付の瞑想時間を合計
-    let totals = Dictionary(grouping: records, by: { $0.date }).mapValues {
-        $0.reduce(0) { $0 + $1.meditationTime }
-    }
-    return totals
-}
 
 #Preview {
     CalendarView()
