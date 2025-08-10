@@ -57,8 +57,7 @@ struct CalendarView: View {
                         Button {
                             // 前月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: -1, to: viewModel.displayDate)
-                            {
+                                byAdding: .month, value: -1, to: viewModel.displayDate) {
                                 viewModel.displayDate = newDate
                             }
                         } label: {
@@ -72,8 +71,7 @@ struct CalendarView: View {
                         Button {
                             // 翌月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: 1, to: viewModel.displayDate)
-                            {
+                                byAdding: .month, value: 1, to: viewModel.displayDate) {
                                 viewModel.displayDate = newDate
                             }
                         } label: {
@@ -107,8 +105,7 @@ struct CalendarView: View {
                         ForEach(viewModel.getCalendarDates()) { calendarDate in
                             // このセルの日付が「表示中の月」と同じかどうかを判定
                             if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: viewModel.displayDate)
-                            {
+                                == Calendar.current.component(.month, from: viewModel.displayDate) {
                                 // 今月の日付なら日付を表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
                                     .font(.title2)

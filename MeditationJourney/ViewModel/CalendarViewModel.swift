@@ -57,7 +57,7 @@ class CalendarViewModel: ObservableObject {
             MeditationInfo(
                 date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
                 worldSounds: nil,
-                meditationTime: 60),
+                meditationTime: 60)
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
@@ -81,7 +81,7 @@ class CalendarViewModel: ObservableObject {
             // 今月の開始日から1日ずつ加算した日付と瞑想時間を配列に追加
             days.append(
                 MeditationInfo(
-                    date: Calendar.current.date(byAdding: .day, value: day, to: date.startOfMonth)!,
+                    date: currentDate,
                     worldSounds: nil,
                     meditationTime: meditationTime))
         }  // for day in（今月の日付ループ）終了
