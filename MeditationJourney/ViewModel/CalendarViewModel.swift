@@ -63,12 +63,12 @@ class CalendarViewModel: ObservableObject {
             MeditationInfo(
                 date: calendar.date(byAdding: .day, value: -2, to: Date())!,
                 worldSounds: nil,
-                meditationTime: 60),
+                meditationTime: 60)
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
         // 今月の全ての日付をループして処理
-        for day in 0..<date.daysInMonth {
+        for day in 1...date.daysInMonth {
             // 今月の開始日から1日ずつ加算した日付を計算
             guard
                 let currentDate = calendar.date(
@@ -97,23 +97,27 @@ class CalendarViewModel: ObservableObject {
         // 最終週のオフセット日数を計算（月の最終日が何曜日かによって翌月の日付を何日分表示するか）
         let lastWeekEmptyDays = 7 - startOfMonth.weekday
         // 初週のオフセットを配列の先頭に追加（前月の日付）
-        for i in 1...firstWeekEmptyDays {
-            let offsetDate =
-                calendar.date(
-                    byAdding: .day, value: -(firstWeekEmptyDays - i + 1), to: startOfMonth)
-                ?? Date()
-            days.insert(
-                MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0), at: 0)
+        if firstWeekEmptyDays > 0 {
+            for i in 1...firstWeekEmptyDays {
+                let offsetDate =
+                    calendar.date(
+                        byAdding: .day, value: -(firstWeekEmptyDays - i + 1), to: startOfMonth)
+                    ?? Date()
+                days.insert(
+                    MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0), at: 0)
+            }
         }
         // 最終週のオフセットを配列の末尾に追加（翌月の日付）
-        for i in 1...lastWeekEmptyDays {
-            let offsetDate =
-                calendar.date(
-                    byAdding: .day, value: i,
-                    to: calendar.date(
-                        byAdding: .day, value: date.daysInMonth - 1, to: startOfMonth)
-                        ?? Date()) ?? Date()
-            days.append(MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0))
+        if lastWeekEmptyDays > 0 {
+            for i in 1...lastWeekEmptyDays {
+                let offsetDate =
+                    calendar.date(
+                        byAdding: .day, value: i,
+                        to: calendar.date(
+                            byAdding: .day, value: date.daysInMonth - 1, to: startOfMonth)
+                            ?? Date()) ?? Date()
+                days.append(MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0))
+            }
         }
         return days
     }  // createCalendarDatesメソッド終了
