@@ -48,8 +48,10 @@ class CalendarViewModel: ObservableObject {
     func createCalendarDates(_ date: Date) -> [MeditationInfo] {
         // Calendar.current
         let calendar = Calendar.current
-        // 月の開始日を一度だけ計算（計算量の多い処理を避けるため）
+        // 月の開始日
         let startOfMonth = date.startOfMonth
+        // 月の日数
+        let daysInMonth = date.daysInMonth
         // 瞑想時間のサンプルデータ（実際のアプリではデータベースから取得）
         let timeData = [
             // 今日の瞑想時間（40分）
@@ -68,7 +70,7 @@ class CalendarViewModel: ObservableObject {
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
         // 今月の全ての日付をループして処理
-        for day in 1...date.daysInMonth {
+        for day in 1...daysInMonth {
             // 今月の開始日から1日ずつ加算した日付を計算
             guard
                 let currentDate = calendar.date(
@@ -114,7 +116,7 @@ class CalendarViewModel: ObservableObject {
                     calendar.date(
                         byAdding: .day, value: i,
                         to: calendar.date(
-                            byAdding: .day, value: date.daysInMonth - 1, to: startOfMonth)
+                            byAdding: .day, value: daysInMonth - 1, to: startOfMonth)
                             ?? Date()) ?? Date()
                 days.append(MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0))
             }
