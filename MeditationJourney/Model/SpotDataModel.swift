@@ -14,11 +14,13 @@ struct SpotDataModel: Identifiable {
     // 場所の名前
     let spotName: String
     // 緯度
-    let latitude: Double
-    // 経度
-    let longitude: Double
-    // 緯度経度
-    var coordinate: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    var latitude: Double {
+        coordinate.latitude
     }
+    // 経度
+    var longitude: Double {
+        coordinate.longitude
+    }
+    // 緯度経度
+    let coordinate: CLLocationCoordinate2D
 }
