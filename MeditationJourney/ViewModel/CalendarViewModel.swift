@@ -72,7 +72,7 @@ class CalendarViewModel: ObservableObject {
             // 今月の開始日から1日ずつ加算した日付を計算
             guard
                 let currentDate = calendar.date(
-                    byAdding: .day, value: day, to: startOfMonth)
+                    byAdding: .day, value: day - 1, to: startOfMonth)
             else {
                 // 日付が計算できない場合は処理をスキップ
                 continue
