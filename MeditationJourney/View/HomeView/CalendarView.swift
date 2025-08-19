@@ -22,8 +22,10 @@ struct LegendBox: View {
 struct CalendarView: View {
     // MARK: - Properties
     // viewModel
-    @StateObject var viewModel: CalendarViewModel = CalendarViewModel()
-    // 曜日
+    @StateObject var viewModel = CalendarViewModel()
+    // カレンダーデータ
+    @State private var calendarDates: [MeditationInfo] = []
+    // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
     private let columns: [GridItem] = Array(
@@ -39,13 +41,13 @@ struct CalendarView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(String(viewModel.displayDate.year))年")
+                    Text("\(String(viewModel.displayDate.year()))年")
                         .foregroundStyle(.keyWhite)
                         .font(.title2)
                         .fontWeight(.semibold)
                     HStack {
                         // 年月の表示
-                        Text("\(viewModel.displayDate.month)月")
+                        Text("\(viewModel.displayDate.month())月")
                             .foregroundStyle(.keyWhite)
                             .bold()
                             // フォントサイズは30、画面に合わせて縮小可能
@@ -57,7 +59,8 @@ struct CalendarView: View {
                         Button {
                             // 前月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: -1, to: viewModel.displayDate) {
+                                byAdding: .month, value: -1, to: viewModel.displayDate)
+                            {
                                 viewModel.displayDate = newDate
                             }
                         } label: {
@@ -71,7 +74,8 @@ struct CalendarView: View {
                         Button {
                             // 翌月の日付を計算してdisplayDateを更新
                             if let newDate = Calendar.current.date(
-                                byAdding: .month, value: 1, to: viewModel.displayDate) {
+                                byAdding: .month, value: 1, to: viewModel.displayDate)
+                            {
                                 viewModel.displayDate = newDate
                             }
                         } label: {
@@ -101,11 +105,12 @@ struct CalendarView: View {
                     // 画面の高さの3%を間隔として設定
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
                         // カレンダー日付の配列をループして各日付セルを表示
-                        // getCalendarDates()には今月以外（前月・翌月）のダミー日付も含まれる
-                        ForEach(viewModel.getCalendarDates()) { calendarDate in
+                        // 保存されたカレンダーデータを使用（毎回計算を避けるため）
+                        ForEach(calendarDates) { calendarDate in
                             // このセルの日付が「表示中の月」と同じかどうかを判定
                             if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: viewModel.displayDate) {
+                                == Calendar.current.component(.month, from: viewModel.displayDate)
+                            {
                                 // 今月の日付なら日付を表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
                                     .font(.title2)
@@ -154,9 +159,20 @@ struct CalendarView: View {
         }  // GeometryReader（画面サイズ取得）終了
         // Viewが表示される時に実行される処理
         .onAppear {
+            // カレンダーデータ
+            calendarDates = viewModel.getCalendarDates()
             // 仮の瞑想記録を代入してカレンダーに表示
-            viewModel.meditationRecords = viewModel.getCalendarDates()
+            viewModel.meditationRecords = calendarDates
             // 日付ごとの瞑想時間合計を計算して辞書に格納
+            viewModel.checkDates = viewModel.checkDate(from: viewModel.meditationRecords)
+        }
+        // 表示月が変更された時にカレンダーデータを更新
+        .onChange(of: viewModel.displayDate) {
+            // 新しい月のカレンダーデータを計算して保存
+            calendarDates = viewModel.getCalendarDates()
+            // 瞑想記録も更新
+            viewModel.meditationRecords = calendarDates
+            // 日付ごとの瞑想時間合計も再計算
             viewModel.checkDates = viewModel.checkDate(from: viewModel.meditationRecords)
         }
     }  // body（View本体）終了

@@ -49,9 +49,9 @@ class CalendarViewModel: ObservableObject {
         // Calendar.current
         let calendar = Calendar.current
         // 月の開始日
-        let startOfMonth = date.startOfMonth
+        let startOfMonth = date.startOfMonth()
         // 月の日数
-        let daysInMonth = date.daysInMonth
+        let daysInMonth = date.daysInMonth()
         // 瞑想時間のサンプルデータ（実際のアプリではデータベースから取得）
         let timeData = [
             // 今日の瞑想時間（40分）
@@ -95,9 +95,9 @@ class CalendarViewModel: ObservableObject {
         }  // for day in（今月の日付ループ）終了
         // 最初と最後の日付を取得して週のオフセットを計算
         // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
-        let firstWeekEmptyDays = startOfMonth.weekday - 1
+        let firstWeekEmptyDays = startOfMonth.weekday() - 1
         // 最終週のオフセット日数を計算（月の最終日が何曜日かによって翌月の日付を何日分表示するか）
-        let lastWeekEmptyDays = 7 - startOfMonth.weekday
+        let lastWeekEmptyDays = 7 - startOfMonth.weekday()
         // 初週のオフセットを配列の先頭に追加（前月の日付）
         if firstWeekEmptyDays > 0 {
             for i in 1...firstWeekEmptyDays {
