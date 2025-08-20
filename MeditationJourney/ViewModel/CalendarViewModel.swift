@@ -9,7 +9,7 @@ import SwiftUI
 
 class CalendarViewModel: ObservableObject {
     // 現在表示中の年月を管理する状態変数、初期値は今日の日付
-    @Published var displayDate: Date = Date()
+    @Published private(set) var displayDate: Date = Date()
     // 瞑想の記録
     @Published var meditationRecords: [MeditationInfo] = []
     // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
@@ -25,6 +25,21 @@ class CalendarViewModel: ObservableObject {
         return totals
     }
 
+    // MARK: - Navigation Methods
+    /// 前月に移動する
+    func moveToPreviousMonth() {
+        let calendar = Calendar.current
+        if let newDate = calendar.date(byAdding: .month, value: -1, to: displayDate) {
+            displayDate = newDate
+        }
+    }
+    /// 翌月に移動する
+    func moveToNextMonth() {
+        let calendar = Calendar.current
+        if let newDate = calendar.date(byAdding: .month, value: 1, to: displayDate) {
+            displayDate = newDate
+        }
+    }
     // MARK: - Calendar Methods
     // 日付と瞑想時間の配列を取得するメソッド
     // カレンダー表示用の完全な日付配列（42日分）を生成

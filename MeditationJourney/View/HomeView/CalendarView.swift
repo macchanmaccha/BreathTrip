@@ -57,12 +57,8 @@ struct CalendarView: View {
                         Spacer(minLength: 0)
                         // 前月に移動するボタン
                         Button {
-                            // 前月の日付を計算してdisplayDateを更新
-                            if let newDate = Calendar.current.date(
-                                byAdding: .month, value: -1, to: viewModel.displayDate)
-                            {
-                                viewModel.displayDate = newDate
-                            }
+                            // ViewModelのメソッドを呼び出して前月に移動
+                            viewModel.moveToPreviousMonth()
                         } label: {
                             // 左向きの矢印アイコンを表示
                             Image(systemName: "chevron.left")
@@ -72,12 +68,8 @@ struct CalendarView: View {
                         .minimumScaleFactor(0.5)
                         // 翌月に移動するボタン
                         Button {
-                            // 翌月の日付を計算してdisplayDateを更新
-                            if let newDate = Calendar.current.date(
-                                byAdding: .month, value: 1, to: viewModel.displayDate)
-                            {
-                                viewModel.displayDate = newDate
-                            }
+                            // ViewModelのメソッドを呼び出して翌月に移動
+                            viewModel.moveToNextMonth()
                         } label: {
                             // 右向きの矢印アイコンを表示
                             Image(systemName: "chevron.right")
