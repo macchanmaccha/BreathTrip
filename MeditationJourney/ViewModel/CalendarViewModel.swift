@@ -24,7 +24,6 @@ class CalendarViewModel: ObservableObject {
         }
         return totals
     }
-
     // MARK: - Navigation Methods
     /// 前月に移動する
     func moveToPreviousMonth() {
@@ -44,7 +43,6 @@ class CalendarViewModel: ObservableObject {
     // 日付と瞑想時間の配列を取得するメソッド
     // カレンダー表示用の完全な日付配列（42日分）を生成
     func getCalendarDates() -> [MeditationInfo] {
-        // Calendar.current
         let calendar = Calendar.current
         // 指定月のカレンダー日付を生成
         var result = createCalendarDates(displayDate)
@@ -57,11 +55,9 @@ class CalendarViewModel: ObservableObject {
         }
         return result
     }
-
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
     func createCalendarDates(_ date: Date) -> [MeditationInfo] {
-        // Calendar.current
         let calendar = Calendar.current
         // 月の開始日
         let startOfMonth = date.startOfMonth()
@@ -80,7 +76,7 @@ class CalendarViewModel: ObservableObject {
             MeditationInfo(
                 date: calendar.date(byAdding: .day, value: -2, to: Date())!,
                 worldSounds: nil,
-                meditationTime: 60)
+                meditationTime: 60),
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
