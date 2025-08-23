@@ -24,25 +24,6 @@ class CalendarViewModel: ObservableObject {
         }
         return totals
     }
-    // MARK: - Navigation Methods
-    /// 前月に移動する
-    func moveToPreviousMonth() {
-        let calendar = Calendar.current
-        if let newDate = calendar.date(byAdding: .month, value: -1, to: displayDate) {
-            displayDate = newDate
-            updateCalendarData()
-        }
-    }
-
-    /// 翌月に移動する
-    func moveToNextMonth() {
-        let calendar = Calendar.current
-        if let newDate = calendar.date(byAdding: .month, value: 1, to: displayDate) {
-            displayDate = newDate
-            updateCalendarData()
-        }
-    }
-
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarData() {
@@ -90,7 +71,7 @@ class CalendarViewModel: ObservableObject {
             MeditationInfo(
                 date: calendar.date(byAdding: .day, value: -2, to: Date())!,
                 worldSounds: nil,
-                meditationTime: 60),
+                meditationTime: 60)
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
@@ -148,4 +129,21 @@ class CalendarViewModel: ObservableObject {
         }
         return days
     }  // createCalendarDatesメソッド終了
+    // MARK: - Navigation Methods
+    /// 前月に移動する
+    func moveToPreviousMonth() {
+        let calendar = Calendar.current
+        if let newDate = calendar.date(byAdding: .month, value: -1, to: displayDate) {
+            displayDate = newDate
+            updateCalendarData()
+        }
+    }
+    /// 翌月に移動する
+    func moveToNextMonth() {
+        let calendar = Calendar.current
+        if let newDate = calendar.date(byAdding: .month, value: 1, to: displayDate) {
+            displayDate = newDate
+            updateCalendarData()
+        }
+    }
 }

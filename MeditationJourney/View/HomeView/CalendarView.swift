@@ -101,8 +101,7 @@ struct CalendarView: View {
                         ForEach(calendarDates) { calendarDate in
                             // このセルの日付が「表示中の月」と同じかどうかを判定
                             if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: viewModel.displayDate)
-                            {
+                                == Calendar.current.component(.month, from: viewModel.displayDate) {
                                 // 今月の日付なら日付を表示
                                 Text("\(Calendar.current.component(.day, from: calendarDate.date))")
                                     .font(.title2)

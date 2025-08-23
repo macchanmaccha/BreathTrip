@@ -86,16 +86,4 @@ extension Date {
         }
         return weekday
     }
-
-    /// 頻繁に使用される日付コンポーネントを一度に取得（パフォーマンス最適化）
-    /// - Returns: 年、月、日、曜日を含むDateComponents
-    func dateComponents() -> DateComponents {
-        return Calendar.current.dateComponents([.year, .month, .day, .weekday], from: self)
-    }
-
-    /// 年と月を一度に取得（パフォーマンス最適化）
-    /// - Returns: 年と月を含むDateComponents
-    func yearMonthComponents() -> DateComponents {
-        return Calendar.current.dateComponents([.year, .month], from: self)
-    }
 }
