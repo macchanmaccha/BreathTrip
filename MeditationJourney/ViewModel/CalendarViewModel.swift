@@ -30,14 +30,28 @@ class CalendarViewModel: ObservableObject {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: -1, to: displayDate) {
             displayDate = newDate
+            updateCalendarData()
         }
     }
+
     /// 翌月に移動する
     func moveToNextMonth() {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: 1, to: displayDate) {
             displayDate = newDate
+            updateCalendarData()
         }
+    }
+
+    // MARK: - Data Update Methods
+    /// カレンダーデータと瞑想記録を更新する
+    func updateCalendarData() {
+        // 新しい月のカレンダーデータを取得
+        let newCalendarDates = getCalendarDates()
+        // 瞑想記録を更新
+        meditationRecords = newCalendarDates
+        // 日付ごとの瞑想時間合計を再計算
+        checkDates = checkDate(from: meditationRecords)
     }
     // MARK: - Calendar Methods
     // 日付と瞑想時間の配列を取得するメソッド

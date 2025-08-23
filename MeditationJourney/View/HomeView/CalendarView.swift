@@ -153,19 +153,15 @@ struct CalendarView: View {
         .onAppear {
             // カレンダーデータ
             calendarDates = viewModel.getCalendarDates()
-            // 仮の瞑想記録を代入してカレンダーに表示
-            viewModel.meditationRecords = calendarDates
-            // 日付ごとの瞑想時間合計を計算して辞書に格納
-            viewModel.checkDates = viewModel.checkDate(from: viewModel.meditationRecords)
+            // 瞑想記録を更新
+            viewModel.updateCalendarData()
         }
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate) {
             // 新しい月のカレンダーデータを計算して保存
             calendarDates = viewModel.getCalendarDates()
-            // 瞑想記録も更新
-            viewModel.meditationRecords = calendarDates
-            // 日付ごとの瞑想時間合計も再計算
-            viewModel.checkDates = viewModel.checkDate(from: viewModel.meditationRecords)
+            // 瞑想記録を更新
+            viewModel.updateCalendarData()
         }
     }  // body（View本体）終了
 }  // CalendarView構造体終了
