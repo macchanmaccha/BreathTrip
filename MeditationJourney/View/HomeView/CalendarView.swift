@@ -98,19 +98,24 @@ struct CalendarView: View {
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
                         // カレンダー日付の配列をループして各日付セルを表示
                         // 保存されたカレンダーデータを使用（毎回計算を避けるため）
+                        let calendar = Calendar.current
+                        let displayMonth = calendar.component(.month, from: viewModel.displayDate)
+
                         ForEach(calendarDates) { calendarDate in
-                            // このセルの日付が「表示中の月」と同じかどうかを判定
-                            if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: viewModel.displayDate) {
+                            // 日付の計算
+                            // 表示中の月
+                            let isCurrentMonth =
+                                calendar.component(.month, from: calendarDate.date) == displayMonth
+                            // 日付
+                            let dayComponent = calendar.component(.day, from: calendarDate.date)
+                            let isToday = calendar.isDateInToday(calendarDate.date)
+                            if isCurrentMonth {
                                 // 今月の日付なら日付を表示
-                                Text("\(Calendar.current.component(.day, from: calendarDate.date))")
+                                Text("\(dayComponent)")
                                     .font(.title2)
                                     .bold()
                                     // 今日ならライム色、それ以外は白色で表示
-                                    .foregroundStyle(
-                                        Calendar.current.isDateInToday(calendarDate.date)
-                                            ? .dateInTodayLime : .keyWhite
-                                    )
+                                    .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
                                     .frame(minWidth: 45, minHeight: 60)
                                     // 瞑想時間に応じた背景色を設定
                                     .background(

@@ -71,7 +71,7 @@ class CalendarViewModel: ObservableObject {
             MeditationInfo(
                 date: calendar.date(byAdding: .day, value: -2, to: Date())!,
                 worldSounds: nil,
-                meditationTime: 60)
+                meditationTime: 60),
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
