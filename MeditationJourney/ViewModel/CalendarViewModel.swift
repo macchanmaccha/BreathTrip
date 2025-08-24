@@ -11,7 +11,7 @@ class CalendarViewModel: ObservableObject {
     // 現在表示中の年月を管理する状態変数、初期値は今日の日付
     @Published private(set) var displayDate: Date = Date()
     // 瞑想の記録
-    @Published var meditationRecords: [MeditationInfo] = []
+    @Published private(set) var meditationRecords: [MeditationInfo] = []
     // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
     @Published var checkDates: [Date: Int] = [:]
     // MARK: - Helper Functions

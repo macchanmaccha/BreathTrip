@@ -108,7 +108,9 @@ struct CalendarView: View {
                                 calendar.component(.month, from: calendarDate.date) == displayMonth
                             // 日付
                             let dayComponent = calendar.component(.day, from: calendarDate.date)
+                            // 今日かどうかを管理するフラグ
                             let isToday = calendar.isDateInToday(calendarDate.date)
+                            // 今月の日付なら日付を表示
                             if isCurrentMonth {
                                 // 今月の日付なら日付を表示
                                 Text("\(dayComponent)")
