@@ -32,7 +32,8 @@ class CalendarViewModel: ObservableObject {
         var result = createCalendarDates(displayDate)
         
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
-        while result.count < 42 {
+        let calendarGridSize = 42 // 6週間 × 7日
+        while result.count < calendarGridSize {
             // 最後の日付から1日ずつ追加
             let lastDate = result.last?.date ?? Date()
             let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
