@@ -27,20 +27,10 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarData() {
-        // 新しい月のカレンダーデータを取得
-        let newCalendarDates = getCalendarDates()
-        // 瞑想記録を更新
-        meditationRecords = newCalendarDates
-        // 日付ごとの瞑想時間合計を再計算
-        checkDates = checkDate(from: meditationRecords)
-    }
-    // MARK: - Calendar Methods
-    // 日付と瞑想時間の配列を取得するメソッド
-    // カレンダー表示用の完全な日付配列（42日分）を生成
-    func getCalendarDates() -> [MeditationInfo] {
         let calendar = Calendar.current
         // 指定月のカレンダー日付を生成
         var result = createCalendarDates(displayDate)
+        
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
         while result.count < 42 {
             // 最後の日付から1日ずつ追加
@@ -48,7 +38,11 @@ class CalendarViewModel: ObservableObject {
             let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
             result.append(MeditationInfo(date: nextDate, worldSounds: nil, meditationTime: 0))
         }
-        return result
+        
+        // 瞑想記録を更新
+        meditationRecords = result
+        // 日付ごとの瞑想時間合計を再計算
+        checkDates = checkDate(from: meditationRecords)
     }
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
