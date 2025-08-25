@@ -12,7 +12,7 @@ enum ContinentModel: String, CaseIterable {
     case oceania = "オセアニア大陸"
     case asia = "アジア大陸"
     case africa = "アフリカ大陸"
-    case nourthAmerica = "北アメリカ大陸"
+    case northAmerica = "北アメリカ大陸"
     case southAmerica = "南アメリカ大陸"
     var soundList: [SoundModel] {
         switch self {
@@ -24,7 +24,7 @@ enum ContinentModel: String, CaseIterable {
             return [.asia1, .asia2, .asia3, .asia4, .asia5, .asia6]
         case .africa:
             return [.africa1, .africa2, .africa3, .africa4, .africa5, .africa6]
-        case .nourthAmerica:
+        case .northAmerica:
             return [.northAmerica1, .northAmerica2, .northAmerica3, .northAmerica4, .northAmerica5, .northAmerica6]
         case .southAmerica:
             return [.southAmerica1, .southAmerica2, .southAmerica3, .southAmerica4, .southAmerica5, .southAmerica6]

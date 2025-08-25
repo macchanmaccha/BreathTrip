@@ -23,8 +23,6 @@ struct CalendarView: View {
     // MARK: - Properties
     // viewModel
     @StateObject var viewModel = CalendarViewModel()
-    // カレンダーデータ
-    @State private var calendarDates: [MeditationInfo] = []
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -101,7 +99,7 @@ struct CalendarView: View {
                         let calendar = Calendar.current
                         let displayMonth = calendar.component(.month, from: viewModel.displayDate)
 
-                        ForEach(calendarDates) { calendarDate in
+                        ForEach(viewModel.meditationRecords) { calendarDate in
                             // 日付の計算
                             // 表示中の月
                             let isCurrentMonth =
@@ -157,15 +155,11 @@ struct CalendarView: View {
         }  // GeometryReader（画面サイズ取得）終了
         // Viewが表示される時に実行される処理
         .onAppear {
-            // カレンダーデータ
-            calendarDates = viewModel.getCalendarDates()
             // 瞑想記録を更新
             viewModel.updateCalendarData()
         }
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate) {
-            // 新しい月のカレンダーデータを計算して保存
-            calendarDates = viewModel.getCalendarDates()
             // 瞑想記録を更新
             viewModel.updateCalendarData()
         }

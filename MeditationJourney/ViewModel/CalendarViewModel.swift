@@ -13,7 +13,7 @@ class CalendarViewModel: ObservableObject {
     // 瞑想の記録
     @Published private(set) var meditationRecords: [MeditationInfo] = []
     // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
-    @Published var checkDates: [Date: Int] = [:]
+    @Published private(set) var checkDates: [Date: Int] = [:]
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
