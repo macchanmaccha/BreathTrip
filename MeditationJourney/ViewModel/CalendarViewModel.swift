@@ -13,7 +13,13 @@ class CalendarViewModel: ObservableObject {
     // 瞑想の記録
     @Published private(set) var meditationRecords: [MeditationInfo] = []
     // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
-    @Published var checkDates: [Date: Int] = [:]
+    @Published private(set) var checkDates: [Date: Int] = [:]
+    /// カレンダーグリッドの週数（6週間）
+    private let calendarWeeks = 6
+    /// カレンダーグリッドの総日数（6週間 × 7日 = 42日）
+    private var totalCalendarDays: Int {
+        return calendarWeeks * 7
+    }
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
@@ -42,7 +48,7 @@ class CalendarViewModel: ObservableObject {
         // 指定月のカレンダー日付を生成
         var result = createCalendarDates(displayDate)
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
-        while result.count < 42 {
+        while result.count < totalCalendarDays {
             // 最後の日付から1日ずつ追加
             let lastDate = result.last?.date ?? Date()
             let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()

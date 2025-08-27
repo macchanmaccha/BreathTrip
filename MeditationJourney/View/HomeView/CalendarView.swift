@@ -101,15 +101,15 @@ struct CalendarView: View {
                         let calendar = Calendar.current
                         let displayMonth = calendar.component(.month, from: viewModel.displayDate)
 
-                        ForEach(calendarDates) { calendarDate in
+                        ForEach(viewModel.meditationRecords) { meditationRecord in
                             // 日付の計算
                             // 表示中の月
                             let isCurrentMonth =
-                                calendar.component(.month, from: calendarDate.date) == displayMonth
+                                calendar.component(.month, from: meditationRecord.date) == displayMonth
                             // 日付
-                            let dayComponent = calendar.component(.day, from: calendarDate.date)
+                            let dayComponent = calendar.component(.day, from: meditationRecord.date)
                             // 今日かどうかを管理するフラグ
-                            let isToday = calendar.isDateInToday(calendarDate.date)
+                            let isToday = calendar.isDateInToday(meditationRecord.date)
                             // 今月の日付なら日付を表示
                             if isCurrentMonth {
                                 // 今月の日付なら日付を表示
@@ -121,7 +121,7 @@ struct CalendarView: View {
                                     .frame(minWidth: 45, minHeight: 60)
                                     // 瞑想時間に応じた背景色を設定
                                     .background(
-                                        Color.backgroundStyle(for: calendarDate.meditationTime)
+                                        Color.backgroundStyle(for: meditationRecord.meditationTime)
                                     )
                                     .cornerRadius(10)
                             } else {
@@ -157,15 +157,11 @@ struct CalendarView: View {
         }  // GeometryReader（画面サイズ取得）終了
         // Viewが表示される時に実行される処理
         .onAppear {
-            // カレンダーデータ
-            calendarDates = viewModel.getCalendarDates()
             // 瞑想記録を更新
             viewModel.updateCalendarData()
         }
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate) {
-            // 新しい月のカレンダーデータを計算して保存
-            calendarDates = viewModel.getCalendarDates()
             // 瞑想記録を更新
             viewModel.updateCalendarData()
         }
