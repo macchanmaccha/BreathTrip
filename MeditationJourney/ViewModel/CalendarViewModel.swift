@@ -33,17 +33,8 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarData() {
-        // 新しい月のカレンダーデータを取得
-        let newCalendarDates = getCalendarDates()
-        // 瞑想記録を更新
-        meditationRecords = newCalendarDates
-        // 日付ごとの瞑想時間合計を再計算
-        checkDates = checkDate(from: meditationRecords)
-    }
-    // MARK: - Calendar Methods
-    // 日付と瞑想時間の配列を取得するメソッド
-    // カレンダー表示用の完全な日付配列（42日分）を生成
-    func getCalendarDates() -> [MeditationInfo] {
+        //    // 日付と瞑想時間の配列を取得するメソッド
+        //    // カレンダー表示用の完全な日付配列（42日分）を生成
         let calendar = Calendar.current
         // 指定月のカレンダー日付を生成
         var result = createCalendarDates(displayDate)
@@ -54,7 +45,8 @@ class CalendarViewModel: ObservableObject {
             let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
             result.append(MeditationInfo(date: nextDate, worldSounds: nil, meditationTime: 0))
         }
-        return result
+        meditationRecords = result
+        checkDates = checkDate(from: meditationRecords)
     }
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
@@ -77,7 +69,7 @@ class CalendarViewModel: ObservableObject {
             MeditationInfo(
                 date: calendar.date(byAdding: .day, value: -2, to: Date())!,
                 worldSounds: nil,
-                meditationTime: 60),
+                meditationTime: 60)
         ]
         // 指定月のカレンダー日付を格納する配列
         var days = [MeditationInfo]()
@@ -93,11 +85,11 @@ class CalendarViewModel: ObservableObject {
             }
             // サンプルデータからcurrentDateと同じ日付の瞑想時間を検索
             let meditationTime =
-                timeData.first(where: { record in
-                    // recordDate が currentDate と同じ日（年月日）か確認
-                    calendar.isDate(record.date, inSameDayAs: currentDate)
-                    // 見つからない場合は0分を設定
-                })?.meditationTime ?? 0
+            timeData.first(where: { record in
+                // recordDate が currentDate と同じ日（年月日）か確認
+                calendar.isDate(record.date, inSameDayAs: currentDate)
+                // 見つからない場合は0分を設定
+            })?.meditationTime ?? 0
             // 今月の開始日から1日ずつ加算した日付と瞑想時間を配列に追加
             days.append(
                 MeditationInfo(
@@ -114,9 +106,9 @@ class CalendarViewModel: ObservableObject {
         if firstWeekEmptyDays > 0 {
             for i in 1...firstWeekEmptyDays {
                 let offsetDate =
-                    calendar.date(
-                        byAdding: .day, value: -(firstWeekEmptyDays - i + 1), to: startOfMonth)
-                    ?? Date()
+                calendar.date(
+                    byAdding: .day, value: -(firstWeekEmptyDays - i + 1), to: startOfMonth)
+                ?? Date()
                 days.insert(
                     MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0), at: 0)
             }
@@ -125,11 +117,11 @@ class CalendarViewModel: ObservableObject {
         if lastWeekEmptyDays > 0 {
             for i in 1...lastWeekEmptyDays {
                 let offsetDate =
-                    calendar.date(
-                        byAdding: .day, value: i,
-                        to: calendar.date(
-                            byAdding: .day, value: daysInMonth - 1, to: startOfMonth)
-                            ?? Date()) ?? Date()
+                calendar.date(
+                    byAdding: .day, value: i,
+                    to: calendar.date(
+                        byAdding: .day, value: daysInMonth - 1, to: startOfMonth)
+                    ?? Date()) ?? Date()
                 days.append(MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0))
             }
         }
