@@ -14,12 +14,41 @@ class CalendarViewModel: ObservableObject {
     @Published private(set) var meditationRecords: [MeditationInfo] = []
     // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
     @Published private(set) var checkDates: [Date: Int] = [:]
+    // 表示月の各日の情報
+    @Published private(set) var dayCells: [DayCell] = []
+    
+    // 表示月の1日の情報
+    struct DayCell: Identifiable {
+        let id = UUID()
+        let day:Int
+        let isInCurrentMonth:Bool
+        let isToday:Bool
+        let meditationTime:Int
+    }
+    
     /// カレンダーグリッドの週数（6週間）
     private let calendarWeeks = 6
     /// カレンダーグリッドの総日数（6週間 × 7日 = 42日）
     private var totalCalendarDays: Int {
         return calendarWeeks * 7
     }
+
+    /// 表示用の日付セルデータを更新
+    func updateDayCells() {
+        let calendar = Calendar.current
+        let displayMonth = calendar.component(.month, from: displayDate)
+
+        dayCells = meditationRecords.map { record in
+            DayCell(
+                day: calendar.component(.day, from: record.date),
+                isInCurrentMonth: calendar.component(.month, from: record.date) == displayMonth,
+                isToday: calendar.isDateInToday(record.date),
+                meditationTime: record.meditationTime
+            )
+        }
+        
+    }
+    
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
@@ -32,7 +61,7 @@ class CalendarViewModel: ObservableObject {
     }
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
-    func updateCalendarData() {
+    func updateCalendarCells() {
         //    // 日付と瞑想時間の配列を取得するメソッド
         //    // カレンダー表示用の完全な日付配列（42日分）を生成
         let calendar = Calendar.current
@@ -47,6 +76,8 @@ class CalendarViewModel: ObservableObject {
         }
         meditationRecords = result
         checkDates = checkDate(from: meditationRecords)
+        // 表示データも同時に更新
+        updateDayCells()
     }
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
@@ -133,7 +164,7 @@ class CalendarViewModel: ObservableObject {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: -1, to: displayDate) {
             displayDate = newDate
-            updateCalendarData()
+            updateCalendarCells()
         }
     }
     /// 翌月に移動する
@@ -141,7 +172,7 @@ class CalendarViewModel: ObservableObject {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: 1, to: displayDate) {
             displayDate = newDate
-            updateCalendarData()
+            updateCalendarCells()
         }
     }
 }

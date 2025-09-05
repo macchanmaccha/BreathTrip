@@ -23,8 +23,6 @@ struct CalendarView: View {
     // MARK: - Properties
     // viewModel
     @StateObject var viewModel = CalendarViewModel()
-    // カレンダーデータ
-    @State private var calendarDates: [MeditationInfo] = []
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -96,32 +94,18 @@ struct CalendarView: View {
                     // カレンダーの日付セルを表示するグリッド
                     // 画面の高さの3%を間隔として設定
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // カレンダー日付の配列をループして各日付セルを表示
-                        // 保存されたカレンダーデータを使用（毎回計算を避けるため）
-                        let calendar = Calendar.current
-                        let displayMonth = calendar.component(.month, from: viewModel.displayDate)
-
-                        ForEach(viewModel.meditationRecords) { meditationRecord in
-                            // 日付の計算
-                            // 表示中の月
-                            let isCurrentMonth =
-                                calendar.component(.month, from: meditationRecord.date) == displayMonth
-                            // 日付
-                            let dayComponent = calendar.component(.day, from: meditationRecord.date)
-                            // 今日かどうかを管理するフラグ
-                            let isToday = calendar.isDateInToday(meditationRecord.date)
-                            // 今月の日付なら日付を表示
-                            if isCurrentMonth {
+                        ForEach(viewModel.dayCells) { cell in
+                            if cell.isInCurrentMonth {
                                 // 今月の日付なら日付を表示
-                                Text("\(dayComponent)")
+                                Text("\(cell.day)")
                                     .font(.title2)
                                     .bold()
                                     // 今日ならライム色、それ以外は白色で表示
-                                    .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
+                                    .foregroundStyle(cell.isToday ? .dateInTodayLime : .keyWhite)
                                     .frame(minWidth: 45, minHeight: 60)
                                     // 瞑想時間に応じた背景色を設定
                                     .background(
-                                        Color.backgroundStyle(for: meditationRecord.meditationTime)
+                                        Color.backgroundStyle(for: cell.meditationTime)
                                     )
                                     .cornerRadius(10)
                             } else {
@@ -158,12 +142,12 @@ struct CalendarView: View {
         // Viewが表示される時に実行される処理
         .onAppear {
             // 瞑想記録を更新
-            viewModel.updateCalendarData()
+            viewModel.updateCalendarCells()
         }
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate) {
             // 瞑想記録を更新
-            viewModel.updateCalendarData()
+            viewModel.updateCalendarCells()
         }
     }  // body（View本体）終了
 }  // CalendarView構造体終了
