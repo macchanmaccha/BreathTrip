@@ -22,7 +22,7 @@ struct LegendBox: View {
 struct CalendarView: View {
     // MARK: - Properties
     // viewModel
-    @StateObject var viewModel = CalendarViewModel()
+    @StateObject private var viewModel = CalendarViewModel()
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -101,12 +101,10 @@ struct CalendarView: View {
                                     .font(.title2)
                                     .bold()
                                     // 今日ならライム色、それ以外は白色で表示
-                                    .foregroundStyle(cell.isToday ? .dateInTodayLime : .keyWhite)
+                                    .foregroundStyle(cell.textColor)
                                     .frame(minWidth: 45, minHeight: 60)
                                     // 瞑想時間に応じた背景色を設定
-                                    .background(
-                                        Color.backgroundStyle(for: cell.meditationTime)
-                                    )
+                                    .background(cell.backgroundColor)
                                     .cornerRadius(10)
                             } else {
                                 // 今月以外（前月・翌月のダミー日付）は空白を表示

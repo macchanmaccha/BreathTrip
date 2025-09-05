@@ -24,6 +24,13 @@ class CalendarViewModel: ObservableObject {
         let isInCurrentMonth:Bool
         let isToday:Bool
         let meditationTime:Int
+        
+        var textColor: Color {
+            isToday ? .dateInTodayLime : .keyWhite
+        }
+        var backgroundColor: Color {
+            Color.backgroundStyle(for: meditationTime)
+        }
     }
     
     /// カレンダーグリッドの週数（6週間）
@@ -32,12 +39,12 @@ class CalendarViewModel: ObservableObject {
     private var totalCalendarDays: Int {
         return calendarWeeks * 7
     }
-
+    
     /// 表示用の日付セルデータを更新
     func updateDayCells() {
         let calendar = Calendar.current
         let displayMonth = calendar.component(.month, from: displayDate)
-
+        
         dayCells = meditationRecords.map { record in
             DayCell(
                 day: calendar.component(.day, from: record.date),
@@ -46,7 +53,6 @@ class CalendarViewModel: ObservableObject {
                 meditationTime: record.meditationTime
             )
         }
-        
     }
     
     // MARK: - Helper Functions
