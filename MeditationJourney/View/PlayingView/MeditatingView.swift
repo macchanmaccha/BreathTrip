@@ -16,6 +16,8 @@ struct MeditatingView: View {
     @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
+    /// CoreDataのコンテキスト
+    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         ZStack {
             Image(.playBackground)
@@ -124,6 +126,8 @@ struct MeditatingView: View {
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
             Button("OK") {
+                // 保存メソッドを呼び出し
+                viewModel.saveMeditationRecord(context: viewContext)
                 // 設定画面へ戻る
                 dismiss()
             }

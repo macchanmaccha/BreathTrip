@@ -23,8 +23,14 @@ struct CalendarView: View {
     // MARK: - Properties
     // viewModel
     @StateObject var viewModel = CalendarViewModel()
-    // カレンダーデータ
-    @State private var calendarDates: [MeditationInfo] = []
+    // データの生成、保存、取得といったデータベース操作に必要な操作を行う為のオブジェクト
+    @Environment(\.managedObjectContext) private var viewContext
+    // CoreDataから瞑想記録を取得
+    @FetchRequest(
+        entity: MeditationInfo.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: true)],
+        animation: .default)
+    private var meditationRecords: FetchedResults<MeditationInfo>
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -94,46 +100,7 @@ struct CalendarView: View {
                         }  // ForEach（曜日ループ）終了
                     }  // LazyVGrid（曜日ヘッダー）終了
                     // カレンダーの日付セルを表示するグリッド
-                    // 画面の高さの3%を間隔として設定
-                    LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // カレンダー日付の配列をループして各日付セルを表示
-                        // 保存されたカレンダーデータを使用（毎回計算を避けるため）
-                        let calendar = Calendar.current
-                        let displayMonth = calendar.component(.month, from: viewModel.displayDate)
-
-                        ForEach(viewModel.meditationRecords) { meditationRecord in
-                            // 日付の計算
-                            // 表示中の月
-                            let isCurrentMonth =
-                                calendar.component(.month, from: meditationRecord.date) == displayMonth
-                            // 日付
-                            let dayComponent = calendar.component(.day, from: meditationRecord.date)
-                            // 今日かどうかを管理するフラグ
-                            let isToday = calendar.isDateInToday(meditationRecord.date)
-                            // 今月の日付なら日付を表示
-                            if isCurrentMonth {
-                                // 今月の日付なら日付を表示
-                                Text("\(dayComponent)")
-                                    .font(.title2)
-                                    .bold()
-                                    // 今日ならライム色、それ以外は白色で表示
-                                    .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
-                                    .frame(minWidth: 45, minHeight: 60)
-                                    // 瞑想時間に応じた背景色を設定
-                                    .background(
-                                        Color.backgroundStyle(for: meditationRecord.meditationTime)
-                                    )
-                                    .cornerRadius(10)
-                            } else {
-                                // 今月以外（前月・翌月のダミー日付）は空白を表示
-                                // EmptyView()ではなく透明なRectangleを使用
-                                // これにより、グリッドのセルとして正しく認識される
-                                Rectangle()
-                                    .fill(Color.clear)
-                                    .frame(minWidth: 45, minHeight: 60)
-                            }
-                        }  // ForEach（日付セルループ）終了
-                    }  // LazyVGrid（日付グリッド）終了
+                    calendarDateGrid(geometry: geometry)
                     // 色の説明　LessからMoreまでを表示
                     HStack {
                         // 右寄せ
@@ -156,18 +123,72 @@ struct CalendarView: View {
             }  // ZStack（レイヤー構造）終了
         }  // GeometryReader（画面サイズ取得）終了
         // Viewが表示される時に実行される処理
-        .onAppear {
-            // 瞑想記録を更新
-            viewModel.updateCalendarData()
-        }
-        // 表示月が変更された時にカレンダーデータを更新
-        .onChange(of: viewModel.displayDate) {
-            // 瞑想記録を更新
-            viewModel.updateCalendarData()
-        }
+        // .onAppear {
+        //     // 瞑想記録を更新
+        //     viewModel.updateCalendarData()
+        // }
+        // // 表示月が変更された時にカレンダーデータを更新
+        // .onChange(of: viewModel.displayDate) {
+        //     // 瞑想記録を更新
+        //     viewModel.updateCalendarData()
+        // }
     }  // body（View本体）終了
+
+    // MARK: - Helper Views
+    /// カレンダーの日付セルを表示するグリッド
+    private func calendarDateGrid(geometry: GeometryProxy) -> some View {
+        // 画面の高さの3%を間隔として設定
+        LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
+            // カレンダー日付の配列をループして各日付セルを表示
+            // 保存されたカレンダーデータを使用（毎回計算を避けるため）
+            let calendar = Calendar.current
+            let displayMonth = calendar.component(.month, from: viewModel.displayDate)
+
+            // ForEach(viewModel.meditationRecords) { meditationRecord in
+            ForEach(viewModel.createCalendarDates(<#T##Date#>), id: \.objectID) { meditationRecord in
+                // 日付の計算
+                if let recordDate = meditationRecord.date {
+                    // 表示中の月
+                    let isCurrentMonth =
+                        calendar.component(.month, from: recordDate) == displayMonth
+                    // 日付
+                    let dayComponent = calendar.component(.day, from: recordDate)
+                    // 今日かどうかを管理するフラグ
+                    let isToday = calendar.isDateInToday(recordDate)
+                    // 今月の日付なら日付を表示
+                    if isCurrentMonth {
+                        // 今月の日付なら日付を表示
+                        Text("\(dayComponent)")
+                            .font(.title2)
+                            .bold()
+                            // 今日ならライム色、それ以外は白色で表示
+                            .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
+                            .frame(minWidth: 45, minHeight: 60)
+                            // 瞑想時間に応じた背景色を設定
+                            .background(
+                                Color.backgroundStyle(for: Int(meditationRecord.meditationTime))
+                            )
+                            .cornerRadius(10)
+                    } else {
+                        // 今月以外（前月・翌月のダミー日付）は空白を表示
+                        // EmptyView()ではなく透明なRectangleを使用
+                        // これにより、グリッドのセルとして正しく認識される
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(minWidth: 45, minHeight: 60)
+                    }
+                } else {
+                    // 日付がnilの場合は空白を表示
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(minWidth: 45, minHeight: 60)
+                }
+            }  // ForEach（日付セルループ）終了
+        }  // LazyVGrid（日付グリッド）終了
+    }
 }  // CalendarView構造体終了
 
 #Preview {
     CalendarView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
