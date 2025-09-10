@@ -145,40 +145,37 @@ struct CalendarView: View {
             let displayMonth = calendar.component(.month, from: viewModel.displayDate)
 
             // ForEach(viewModel.meditationRecords) { meditationRecord in
-            ForEach(viewModel.createCalendarDates(<#T##Date#>), id: \.objectID) { meditationRecord in
-                // 日付の計算
-                if let recordDate = meditationRecord.date {
-                    // 表示中の月
-                    let isCurrentMonth =
-                        calendar.component(.month, from: recordDate) == displayMonth
-                    // 日付
-                    let dayComponent = calendar.component(.day, from: recordDate)
-                    // 今日かどうかを管理するフラグ
-                    let isToday = calendar.isDateInToday(recordDate)
-                    // 今月の日付なら日付を表示
-                    if isCurrentMonth {
-                        // 今月の日付なら日付を表示
-                        Text("\(dayComponent)")
-                            .font(.title2)
-                            .bold()
-                            // 今日ならライム色、それ以外は白色で表示
-                            .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
-                            .frame(minWidth: 45, minHeight: 60)
-                            // 瞑想時間に応じた背景色を設定
-                            .background(
-                                Color.backgroundStyle(for: Int(meditationRecord.meditationTime))
-                            )
-                            .cornerRadius(10)
-                    } else {
-                        // 今月以外（前月・翌月のダミー日付）は空白を表示
-                        // EmptyView()ではなく透明なRectangleを使用
-                        // これにより、グリッドのセルとして正しく認識される
-                        Rectangle()
-                            .fill(Color.clear)
-                            .frame(minWidth: 45, minHeight: 60)
+            ForEach(viewModel.createCalendarDates(viewModel.displayDate), id: \.self) { date in
+                // 表示中の月
+                let isCurrentMonth = calendar.component(.month, from: date) == displayMonth
+                // 日付
+                let dayComponent = calendar.component(.day, from: date)
+                // 今日かどうかを管理するフラグ
+                let isToday = calendar.isDateInToday(date)
+                // 今月の日付なら日付を表示
+                if isCurrentMonth {
+                    // 瞑想記録を検索
+                    let meditationRecord = meditationRecords.first { record in
+                        guard let recordDate = record.date else { return false }
+                        return calendar.isDate(recordDate, inSameDayAs: date)
                     }
+
+                    // 今月の日付なら日付を表示
+                    Text("\(dayComponent)")
+                        .font(.title2)
+                        .bold()
+                        // 今日ならライム色、それ以外は白色で表示
+                        .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
+                        .frame(minWidth: 45, minHeight: 60)
+                        // 瞑想時間に応じた背景色を設定
+                        .background(
+                            Color.backgroundStyle(for: Int(meditationRecord?.meditationTime ?? 0))
+                        )
+                        .cornerRadius(10)
                 } else {
-                    // 日付がnilの場合は空白を表示
+                    // 今月以外（前月・翌月のダミー日付）は空白を表示
+                    // EmptyView()ではなく透明なRectangleを使用
+                    // これにより、グリッドのセルとして正しく認識される
                     Rectangle()
                         .fill(Color.clear)
                         .frame(minWidth: 45, minHeight: 60)

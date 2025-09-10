@@ -51,7 +51,7 @@ class CalendarViewModel: ObservableObject {
     // }
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
-    func createCalendarDates(_ date: Date) -> [MeditationInfo] {
+    func createCalendarDates(_ date: Date) -> [Date] {
         let calendar = Calendar.current
         // 月の開始日
         let startOfMonth = date.startOfMonth()
@@ -73,7 +73,8 @@ class CalendarViewModel: ObservableObject {
         //         meditationTime: 60),
         // ]
         // 指定月のカレンダー日付を格納する配列
-        var days = [MeditationInfo]()
+        var days = [Date]()
+
         // 今月の全ての日付をループして処理
         for day in 1...daysInMonth {
             // 今月の開始日から1日ずつ加算した日付を計算
@@ -97,6 +98,8 @@ class CalendarViewModel: ObservableObject {
             //             date: currentDate,
             //             worldSounds: nil,
             //             meditationTime: meditationTime))
+            // 今月の開始日から1日ずつ加算した日付を配列に追加
+            days.append(currentDate)
         }  // for day in（今月の日付ループ）終了
         // 最初と最後の日付を取得して週のオフセットを計算
         // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
@@ -112,6 +115,7 @@ class CalendarViewModel: ObservableObject {
                     ?? Date()
                 // days.insert(
                 //     MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0), at: 0)
+                days.insert(offsetDate, at: 0)
             }
         }
         // 最終週のオフセットを配列の末尾に追加（翌月の日付）
@@ -124,6 +128,7 @@ class CalendarViewModel: ObservableObject {
                             byAdding: .day, value: daysInMonth - 1, to: startOfMonth)
                             ?? Date()) ?? Date()
                 // days.append(MeditationInfo(date: offsetDate, worldSounds: nil, meditationTime: 0))
+                days.append(offsetDate)
             }
         }
         return days
