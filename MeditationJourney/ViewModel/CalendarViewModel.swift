@@ -32,23 +32,35 @@ class CalendarViewModel: ObservableObject {
     //     return totals
     // }
     // // MARK: - Data Update Methods
-    // /// カレンダーデータと瞑想記録を更新する
-    // func updateCalendarData() {
-    //     // 日付と瞑想時間の配列を取得するメソッド
-    //     // カレンダー表示用の完全な日付配列（42日分）を生成
-    //     let calendar = Calendar.current
-    //     // 指定月のカレンダー日付を生成
-    //     var result = createCalendarDates(displayDate)
-    //     // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
-    //     while result.count < totalCalendarDays {
-    //         // 最後の日付から1日ずつ追加
-    //         let lastDate = result.last?.date ?? Date()
-    //         let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
-    //         result.append(MeditationInfo(date: nextDate, worldSounds: nil, meditationTime: 0))
-    //     }
-    //     meditationRecords = result
-    //     checkDates = checkDate(from: meditationRecords)
-    // }
+    func updateCalendarData() -> [Date] {
+        //  //    // 日付と瞑想時間の配列を取得するメソッド
+        //  //    // カレンダー表示用の完全な日付配列（42日分）を生成
+        //  let calendar = Calendar.current
+        //  // 指定月のカレンダー日付を生成
+        //  var result = createCalendarDates(displayDate)
+        //  // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
+        //  while result.count < totalCalendarDays {
+        //      // 最後の日付から1日ずつ追加
+        //      let lastDate = result.last?.date ?? Date()
+        //      let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
+        //      result.append(MeditationInfo(date: nextDate, worldSounds: nil, meditationTime: 0))
+        //  }
+        //  meditationRecords = result
+        //  checkDates = checkDate(from: meditationRecords)
+        // カレンダー表示用の完全な日付配列（42日分）を生成
+        let calendar = Calendar.current
+        // 指定月のカレンダー日付を生成
+        let result = createCalendarDates(displayDate)
+        // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
+        var calendarDates = result
+        while calendarDates.count < totalCalendarDays {
+            // 最後の日付から1日ずつ追加
+            let lastDate = calendarDates.last ?? Date()
+            let nextDate = calendar.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
+            calendarDates.append(nextDate)
+        }
+        return calendarDates
+    }
     // 指定月のカレンダー日付配列を生成するメソッド
     // 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
     func createCalendarDates(_ date: Date) -> [Date] {
@@ -74,7 +86,6 @@ class CalendarViewModel: ObservableObject {
         // ]
         // 指定月のカレンダー日付を格納する配列
         var days = [Date]()
-
         // 今月の全ての日付をループして処理
         for day in 1...daysInMonth {
             // 今月の開始日から1日ずつ加算した日付を計算
@@ -139,7 +150,7 @@ class CalendarViewModel: ObservableObject {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: -1, to: displayDate) {
             displayDate = newDate
-            // updateCalendarData()
+            updateCalendarData()
         }
     }
     /// 翌月に移動する
@@ -147,7 +158,7 @@ class CalendarViewModel: ObservableObject {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: 1, to: displayDate) {
             displayDate = newDate
-            // updateCalendarData()
+            updateCalendarData()
         }
     }
 }

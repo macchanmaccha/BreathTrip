@@ -152,11 +152,14 @@ struct CalendarView: View {
                 let dayComponent = calendar.component(.day, from: date)
                 // 今日かどうかを管理するフラグ
                 let isToday = calendar.isDateInToday(date)
+
                 // 今月の日付なら日付を表示
                 if isCurrentMonth {
                     // 瞑想記録を検索
                     let meditationRecord = meditationRecords.first { record in
-                        guard let recordDate = record.date else { return false }
+                        guard let recordDate = record.date else {
+                            return false
+                        }
                         return calendar.isDate(recordDate, inSameDayAs: date)
                     }
 
