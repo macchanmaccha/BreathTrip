@@ -9,7 +9,7 @@ import SwiftUI
 /// 色の説明用のボックス
 struct LegendBox: View {
     let color: Color
-
+    
     var body: some View {
         Rectangle()
             .border(.gray, width: 1.5)
@@ -50,7 +50,7 @@ struct CalendarView: View {
                         Text("\(viewModel.displayDate.month())月")
                             .foregroundStyle(.keyWhite)
                             .bold()
-                            // フォントサイズは30、画面に合わせて縮小可能
+                        // フォントサイズは30、画面に合わせて縮小可能
                             .font(.largeTitle.bold())
                             .minimumScaleFactor(0.5)
                         // 右側の要素を右端に押し込むためのスペーサー
@@ -86,43 +86,28 @@ struct CalendarView: View {
                             Text(weekday)
                                 .foregroundStyle(.keyWhite)
                                 .lineLimit(1)
-                                // 文字サイズ
+                            // 文字サイズ
                                 .font(.headline)
                                 .bold()
-                                // フレーム
+                            // フレーム
                                 .frame(minWidth: 45, minHeight: 45)
                         }  // ForEach（曜日ループ）終了
                     }  // LazyVGrid（曜日ヘッダー）終了
                     // カレンダーの日付セルを表示するグリッド
                     // 画面の高さの3%を間隔として設定
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // カレンダー日付の配列をループして各日付セルを表示
-                        // 保存されたカレンダーデータを使用（毎回計算を避けるため）
-                        let calendar = Calendar.current
-                        let displayMonth = calendar.component(.month, from: viewModel.displayDate)
-
-                        ForEach(viewModel.meditationRecords) { meditationRecord in
-                            // 日付の計算
-                            // 表示中の月
-                            let isCurrentMonth =
-                                calendar.component(.month, from: meditationRecord.date) == displayMonth
-                            // 日付
-                            let dayComponent = calendar.component(.day, from: meditationRecord.date)
-                            // 今日かどうかを管理するフラグ
-                            let isToday = calendar.isDateInToday(meditationRecord.date)
+                        ForEach(viewModel.dayCells) { cell in
                             // 今月の日付なら日付を表示
-                            if isCurrentMonth {
+                            if cell.isInCurrentMonth {
                                 // 今月の日付なら日付を表示
-                                Text("\(dayComponent)")
+                                Text("\(cell.day)")
                                     .font(.title2)
                                     .bold()
-                                    // 今日ならライム色、それ以外は白色で表示
-                                    .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
+                                // 今日ならライム色、それ以外は白色で表示
+                                    .foregroundStyle(cell.textColor)
                                     .frame(minWidth: 45, minHeight: 60)
-                                    // 瞑想時間に応じた背景色を設定
-                                    .background(
-                                        Color.backgroundStyle(for: meditationRecord.meditationTime)
-                                    )
+                                // 瞑想時間に応じた背景色を設定
+                                    .background(cell.backgroundColor)
                                     .cornerRadius(10)
                             } else {
                                 // 今月以外（前月・翌月のダミー日付）は空白を表示
@@ -158,12 +143,12 @@ struct CalendarView: View {
         // Viewが表示される時に実行される処理
         .onAppear {
             // 瞑想記録を更新
-            viewModel.updateCalendarData()
+            viewModel.updateCalendarCells()
         }
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate) {
             // 瞑想記録を更新
-            viewModel.updateCalendarData()
+            viewModel.updateCalendarCells()
         }
     }  // body（View本体）終了
 }  // CalendarView構造体終了
