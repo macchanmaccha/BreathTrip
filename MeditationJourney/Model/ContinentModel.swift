@@ -27,12 +27,12 @@ enum ContinentModel: String, CaseIterable {
         case .northAmerica:
             return [
                 .northAmerica1, .northAmerica2, .northAmerica3, .northAmerica4, .northAmerica5,
-                .northAmerica6,
+                .northAmerica6
             ]
         case .southAmerica:
             return [
                 .southAmerica1, .southAmerica2, .southAmerica3, .southAmerica4, .southAmerica5,
-                .southAmerica6,
+                .southAmerica6
             ]
         }  // switch selfここまで
     }  // soundListここまで

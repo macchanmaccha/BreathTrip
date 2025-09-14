@@ -40,7 +40,6 @@ class CalendarViewModel: ObservableObject {
     func updateDayCells() {
         let calendar = Calendar.current
         let displayMonth = calendar.component(.month, from: displayDate)
-        
         dayCells = meditationRecords.map { record in
             DayCell(
                 day: calendar.component(.day, from: record.date),

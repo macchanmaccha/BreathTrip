@@ -9,7 +9,6 @@ import SwiftUI
 /// 色の説明用のボックス
 struct LegendBox: View {
     let color: Color
-    
     var body: some View {
         Rectangle()
             .border(.gray, width: 1.5)
