@@ -140,7 +140,7 @@ struct CalendarView: View {
         // 画面の高さの3%を間隔として設定
         LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
             // ForEach(viewModel.meditationRecords) { meditationRecord in
-            ForEach(viewModel.dayCells), id: \.self) { cell in
+            ForEach(viewModel.dayCells) { cell in
                 // 今月の日付なら日付を表示
                 if cell.isInCurrentMonth {
                     // 今月の日付なら日付を表示
@@ -152,7 +152,6 @@ struct CalendarView: View {
                         .frame(minWidth: 45, minHeight: 60)
                         // 瞑想時間に応じた背景色を設定
                         .background(cell.backgroundColor)
-                        )
                         .cornerRadius(10)
                 } else {
                     // 今月以外（前月・翌月のダミー日付）は空白を表示
