@@ -139,7 +139,6 @@ struct CalendarView: View {
     private func calendarDateGrid(geometry: GeometryProxy) -> some View {
         // 画面の高さの3%を間隔として設定
         LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-            // ForEach(viewModel.meditationRecords) { meditationRecord in
             ForEach(viewModel.dayCells) { cell in
                 // 今月の日付なら日付を表示
                 if cell.isInCurrentMonth {

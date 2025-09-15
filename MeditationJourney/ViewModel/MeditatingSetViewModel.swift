@@ -94,12 +94,11 @@ class MeditatingSetViewModel: SetViewModel {
         let newMeditation = MeditationInfo(context: context)
         // データを設定
         // 現在の日付
-        newMeditation.date = Date() 
+        newMeditation.date = Date()
         // 瞑想時間（分）
-        newMeditation.meditationTime = Int32(meditationMinutes) 
+        newMeditation.meditationTime = Int32(meditationMinutes)
         // 世界の音
-        newMeditation.worldSounds = meditationSoundName.rawValue  
-
+        newMeditation.worldSounds = meditationSoundName.rawValue
         // 保存処理
         do {
             try context.save()
