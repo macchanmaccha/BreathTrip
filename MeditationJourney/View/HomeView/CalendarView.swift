@@ -22,8 +22,6 @@ struct CalendarView: View {
     // MARK: - Properties
     // viewModel
     @StateObject var viewModel = CalendarViewModel()
-    // カレンダーデータ
-    @State private var calendarDates: [MeditationInfo] = []
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
