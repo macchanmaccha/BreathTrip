@@ -139,40 +139,19 @@ struct CalendarView: View {
     private func calendarDateGrid(geometry: GeometryProxy) -> some View {
         // 画面の高さの3%を間隔として設定
         LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-            // カレンダー日付の配列をループして各日付セルを表示
-            // 保存されたカレンダーデータを使用（毎回計算を避けるため）
-            let calendar = Calendar.current
-            let displayMonth = calendar.component(.month, from: viewModel.displayDate)
-
             // ForEach(viewModel.meditationRecords) { meditationRecord in
-            ForEach(viewModel.createCalendarDates(viewModel.displayDate), id: \.self) { date in
-                // 表示中の月
-                let isCurrentMonth = calendar.component(.month, from: date) == displayMonth
-                // 日付
-                let dayComponent = calendar.component(.day, from: date)
-                // 今日かどうかを管理するフラグ
-                let isToday = calendar.isDateInToday(date)
-
+            ForEach(viewModel.dayCells), id: \.self) { cell in
                 // 今月の日付なら日付を表示
-                if isCurrentMonth {
-                    // 瞑想記録を検索
-                    let meditationRecord = meditationRecords.first { record in
-                        guard let recordDate = record.date else {
-                            return false
-                        }
-                        return calendar.isDate(recordDate, inSameDayAs: date)
-                    }
-
+                if cell.isInCurrentMonth {
                     // 今月の日付なら日付を表示
-                    Text("\(dayComponent)")
+                    Text("\(cell.day)")
                         .font(.title2)
                         .bold()
                         // 今日ならライム色、それ以外は白色で表示
-                        .foregroundStyle(isToday ? .dateInTodayLime : .keyWhite)
+                        .foregroundStyle(cell.textColor)
                         .frame(minWidth: 45, minHeight: 60)
                         // 瞑想時間に応じた背景色を設定
-                        .background(
-                            Color.backgroundStyle(for: Int(meditationRecord?.meditationTime ?? 0))
+                        .background(cell.backgroundColor)
                         )
                         .cornerRadius(10)
                 } else {
