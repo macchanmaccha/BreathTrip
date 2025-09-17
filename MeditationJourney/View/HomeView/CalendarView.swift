@@ -132,6 +132,17 @@ struct CalendarView: View {
         //     // 瞑想記録を更新
         //     viewModel.updateCalendarData()
         // }
+        .onAppear {
+            // 瞑想記録をViewModelに渡してカレンダーを更新
+            viewModel.meditationRecords = Array(meditationRecords)
+            viewModel.updateCalendarCells()
+        }
+        // 表示月が変更された時にカレンダーデータを更新
+        .onChange(of: viewModel.displayDate) {
+            // 瞑想記録をViewModelに渡してカレンダーを更新
+            viewModel.meditationRecords = Array(meditationRecords)
+            viewModel.updateCalendarCells()
+        }
     }  // body（View本体）終了
 
     // MARK: - Helper Views

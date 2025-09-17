@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 enum SoundModel: String, CaseIterable {
     case europa1 = "ヨーロッパ音1"
     case europa2 = "ヨーロッパ音2"
@@ -117,6 +118,6 @@ enum SoundModel: String, CaseIterable {
             return "southAmericaFile5"
         case .southAmerica6:
             return "southAmericaFile6"
-        } // switch self
-    } // fileName
+        }  // switch self
+    }  // fileName
 }
