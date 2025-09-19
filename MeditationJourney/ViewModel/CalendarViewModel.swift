@@ -12,8 +12,6 @@ class CalendarViewModel: ObservableObject {
     @Published private(set) var displayDate: Date = Date()
     // 瞑想の記録
     @Published private(set) var meditationRecords: [MeditationInfo] = []
-    // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
-    @Published private(set) var checkDates: [Date: Int] = [:]
     // 表示月の各日の情報
     @Published private(set) var dayCells: [DayCell] = []
     // カレンダー
