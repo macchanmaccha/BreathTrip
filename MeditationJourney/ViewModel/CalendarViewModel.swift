@@ -33,7 +33,7 @@ class CalendarViewModel: ObservableObject {
         }
     }
     /// カレンダーグリッドの総日数（6週間 × 7日 = 42日）
-    private var totalCalendarDays = 42
+    private var totalCalendarDays: Int = 42
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarCells() {
@@ -65,26 +65,29 @@ class CalendarViewModel: ObservableObject {
         let startOfMonth = date.startOfMonth()
         // 月の日数
         let daysInMonth = date.daysInMonth()
+        let today = Date()
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today) ?? today
+        let dayBeforeYesterday = calendar.date(byAdding: .day, value: -2, to: today) ?? today
         // 瞑想時間のサンプルデータ（実際のアプリではデータベースから取得）
         let timeData = [
             // 今日の瞑想時間（40分）
-            MeditationInfo(date: Date(), worldSounds: nil, meditationTime: 40),
+            MeditationInfo(date: today, worldSounds: nil, meditationTime: 40),
             // 昨日の瞑想時間（10分）
             MeditationInfo(
-                date: calendar.date(byAdding: .day, value: -1, to: Date())!,
+                date: yesterday,
                 worldSounds: nil,
                 meditationTime: 10),
             // 一昨日の瞑想時間（60分）
             MeditationInfo(
-                date: calendar.date(byAdding: .day, value: -2, to: Date())!,
+                date: dayBeforeYesterday,
                 worldSounds: nil,
                 meditationTime: 20),
             MeditationInfo(
-                date: calendar.date(byAdding: .day, value: -2, to: Date())!,
+                date: dayBeforeYesterday,
                 worldSounds: nil,
                 meditationTime: 60),
             MeditationInfo(
-                date: calendar.date(byAdding: .day, value: -1, to: Date())!,
+                date: yesterday,
                 worldSounds: nil,
                 meditationTime: 60)
         ]
