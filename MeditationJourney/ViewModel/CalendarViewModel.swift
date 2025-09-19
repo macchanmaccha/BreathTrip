@@ -26,6 +26,8 @@ class CalendarViewModel: ObservableObject {
 
     // 表示月の各日の情報
     @Published private(set) var dayCells: [DayCell] = []
+    // カレンダー
+        private let calendar = Calendar.current
     // 表示月の1日の情報
     struct DayCell: Identifiable {
         let id = UUID()
