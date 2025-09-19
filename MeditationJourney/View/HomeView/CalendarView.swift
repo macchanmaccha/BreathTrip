@@ -21,7 +21,7 @@ struct LegendBox: View {
 struct CalendarView: View {
     // MARK: - Properties
     // viewModel
-    @StateObject var viewModel = CalendarViewModel()
+    @StateObject private var viewModel = CalendarViewModel()
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -138,12 +138,9 @@ struct CalendarView: View {
             }  // ZStack（レイヤー構造）終了
         }  // GeometryReader（画面サイズ取得）終了
         // Viewが表示される時に実行される処理
-        .onAppear {
-            // 瞑想記録を更新
-            viewModel.updateCalendarCells()
-        }
+//
         // 表示月が変更された時にカレンダーデータを更新
-        .onChange(of: viewModel.displayDate) {
+        .onChange(of: viewModel.displayDate, initial: true) {
             // 瞑想記録を更新
             viewModel.updateCalendarCells()
         }
