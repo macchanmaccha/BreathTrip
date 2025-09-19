@@ -137,8 +137,6 @@ struct CalendarView: View {
                 .padding(20)
             }  // ZStack（レイヤー構造）終了
         }  // GeometryReader（画面サイズ取得）終了
-        // Viewが表示される時に実行される処理
-//
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate, initial: true) {
             // 瞑想記録を更新
