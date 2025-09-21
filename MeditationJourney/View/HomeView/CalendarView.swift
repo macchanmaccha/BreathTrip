@@ -21,21 +21,24 @@ struct LegendBox: View {
 
 struct CalendarView: View {
     // MARK: - Properties
-    // viewModel
-    @StateObject var viewModel = CalendarViewModel()
     // データの生成、保存、取得といったデータベース操作に必要な操作を行う為のオブジェクト
     @Environment(\.managedObjectContext) private var viewContext
-    // CoreDataから瞑想記録を取得
-    @FetchRequest(
-        entity: MeditationInfo.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: true)],
-        animation: .default)
-    private var meditationRecords: FetchedResults<MeditationInfo>
+    // viewModel（CoreDataのコンテキストを渡す）
+    @StateObject private var viewModel: CalendarViewModel
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
     private let columns: [GridItem] = Array(
         repeating: .init(.flexible(minimum: 40, maximum: 80)), count: 7)
+
+    // MARK: - Initialization
+    /// CoreDataのコンテキストを受け取るイニシャライザー
+    init() {
+        // プレビュー用のデフォルトイニシャライザー
+        self._viewModel = StateObject(
+            wrappedValue: CalendarViewModel(
+                context: PersistenceController.preview.container.viewContext))
+    }
     // MARK: - Body
     // SwiftUIのViewの本体、UIの構造を定義
     var body: some View {
@@ -133,14 +136,12 @@ struct CalendarView: View {
         //     viewModel.updateCalendarData()
         // }
         .onAppear {
-            // 瞑想記録をViewModelに渡してカレンダーを更新
-            viewModel.meditationRecords = Array(meditationRecords)
+            // カレンダー表示を更新（CoreDataの変更監視は自動的に動作）
             viewModel.updateCalendarCells()
         }
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate) {
-            // 瞑想記録をViewModelに渡してカレンダーを更新
-            viewModel.meditationRecords = Array(meditationRecords)
+            // カレンダー表示を更新（CoreDataの変更監視は自動的に動作）
             viewModel.updateCalendarCells()
         }
     }  // body（View本体）終了

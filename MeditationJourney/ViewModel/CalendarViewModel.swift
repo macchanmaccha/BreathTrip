@@ -22,12 +22,62 @@ class CalendarViewModel: ObservableObject {
     //     animation: .default)
     // var meditationRecords: FetchedResults<MeditationInfo>
     // 瞑想記録のデータ（外部から受け取る）
-    var meditationRecords: [MeditationInfo] = []
+    // var meditationRecords: [MeditationInfo] = []
+    // CoreDataのコンテキストを取得
+    private let context: NSManagedObjectContext
+    // 瞑想記録のデータ（CoreDataから取得）
+    @Published private(set) var meditationRecords: [MeditationInfo] = []
 
     // 表示月の各日の情報
     @Published private(set) var dayCells: [DayCell] = []
+
+    // MARK: - Initialization
+    /// CoreDataのコンテキストを受け取るイニシャライザー
+    init(context: NSManagedObjectContext) {
+        self.context = context
+        // 初回データを取得
+        fetchMeditationRecords()
+        // CoreDataの変更を監視
+        observeCoreDataChanges()
+    }
+
+    // MARK: - CoreData Methods
+    /// CoreDataから瞑想記録を取得する
+    private func fetchMeditationRecords() {
+        let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
+        // 日付の昇順でソート
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: true)]
+
+        do {
+            let records = try context.fetch(request)
+            meditationRecords = records
+            print("Fetched meditation records: \(records.count) records")
+        } catch {
+            print("Fetch error: \(error)")
+            meditationRecords = []
+        }
+    }
+
+    /// CoreDataの変更を監視する
+    private func observeCoreDataChanges() {
+        NotificationCenter.default.addObserver(
+            forName: NSManagedObjectContext.didChangeObjectsNotification,
+            object: context,
+            queue: .main
+        ) { [weak self] notification in
+            print("CoreData changed, refetching meditation records...")
+            self?.fetchMeditationRecords()
+            // カレンダー表示も更新
+            self?.updateCalendarCells()
+        }
+    }
+
+    /// メモリリークを防ぐためのデイニシャライザー
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     // カレンダー
-        private let calendar = Calendar.current
+    private let calendar = Calendar.current
     // 表示月の1日の情報
     struct DayCell: Identifiable {
         let id = UUID()
