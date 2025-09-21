@@ -54,14 +54,14 @@ struct MeditationSetView: View {
                             // 音声ガイドアイコン
                             speakerIcon
                                 .frame(width: 30, height: 30)
-                                .foregroundColor(.backgroundNavy)
+                                .foregroundStyle(.backgroundNavy)
                                 .font(.title)
                         }  // Buttonここまで
                         // ON、OFFのテキスト表示
                         speakerStatusText
                             .frame(width: 30, height: 5)
                             .font(.caption2)
-                            .foregroundColor(.backgroundNavy)
+                            .foregroundStyle(.backgroundNavy)
                     }  // VStackここまで
                 }  // HStackここまで
                 .frame(width: 200)
@@ -70,7 +70,7 @@ struct MeditationSetView: View {
                 HStack {
                     Text("時間")
                         .font(.title2)
-                        .foregroundColor(.backgroundNavy)
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.meditationMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
@@ -84,21 +84,21 @@ struct MeditationSetView: View {
                         viewModel.saveMeditationMinutes()
                     }
                 }  // HStackここまで
-                .foregroundColor(.backgroundNavy)
+                .foregroundStyle(.backgroundNavy)
                 .frame(width: 200)
                 .padding()
                 // 音設定
                 HStack {
                     Text("音")
                         .font(.title2)
-                        .foregroundColor(.backgroundNavy)
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
                         Text("\(viewModel.meditationSoundName.rawValue)>")
                             .font(.title2)
-                            .foregroundColor(.backgroundNavy)
+                            .foregroundStyle(.backgroundNavy)
                     }
                 }  // HStackここまで
                 .frame(width: 200)
@@ -109,7 +109,7 @@ struct MeditationSetView: View {
                 }) {
                     Text("はじめる")
                         .font(.title)
-                        .foregroundColor(.keyWhite)
+                        .foregroundStyle(.keyWhite)
                         .padding(25.0)
                         .background(.backgroundNavy)
                         .cornerRadius(10)

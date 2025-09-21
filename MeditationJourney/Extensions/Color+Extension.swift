@@ -1,5 +1,5 @@
 //
-//  MeditationTimeExtension.swift
+//  Color+Extension.swift
 //  MeditationJourney
 //
 //  Created by apple on 2024/06/09.

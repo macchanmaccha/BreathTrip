@@ -6,21 +6,9 @@
 ////
 import SwiftUI
 
-/// カレンダーの日付を表す構造体
-/// 各日付の情報（日付と瞑想時間）を格納するためのデータモデル
-struct CalendarInfo: Identifiable {
-    // 識別子
-    let id = UUID()
-    // 日付（日付は必ず存在するため非オプショナル型）
-    var date: Date
-    // 瞑想時間
-    var meditationTime: Int
-}  // CalendarDatesここまで
-
 /// 色の説明用のボックス
 struct LegendBox: View {
     let color: Color
-
     var body: some View {
         Rectangle()
             .border(.gray, width: 1.5)
@@ -32,13 +20,9 @@ struct LegendBox: View {
 
 struct CalendarView: View {
     // MARK: - Properties
-    // 瞑想の記録
-    @State var meditationRecords: [CalendarInfo] = []
-    // 日付と瞑想時間の合計を格納する辞書、キーは日付、値は合計時間
-    @State var checkDates: [Date: Int] = [:]
-    // 現在表示中の年月を管理する状態変数、初期値は今日の日付
-    @State private var displayDate: Date = Date()
-    // 曜日
+    // viewModel
+    @StateObject private var viewModel = CalendarViewModel()
+    // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
     private let columns: [GridItem] = Array(
@@ -54,27 +38,24 @@ struct CalendarView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(String(displayDate.year))年")
+                    Text("\(String(viewModel.displayDate.year()))年")
                         .foregroundStyle(.keyWhite)
                         .font(.title2)
                         .fontWeight(.semibold)
                     HStack {
                         // 年月の表示
-                        Text("\(displayDate.month)月")
+                        Text("\(viewModel.displayDate.month())月")
                             .foregroundStyle(.keyWhite)
                             .bold()
-                            // フォントサイズは30、画面に合わせて縮小可能
+                        // フォントサイズは30、画面に合わせて縮小可能
                             .font(.largeTitle.bold())
                             .minimumScaleFactor(0.5)
                         // 右側の要素を右端に押し込むためのスペーサー
                         Spacer(minLength: 0)
                         // 前月に移動するボタン
                         Button {
-                            // 前月の日付を計算してdisplayDateを更新
-                            if let newDate = Calendar.current.date(
-                                byAdding: .month, value: -1, to: displayDate) {
-                                displayDate = newDate
-                            }
+                            // ViewModelのメソッドを呼び出して前月に移動
+                            viewModel.moveToPreviousMonth()
                         } label: {
                             // 左向きの矢印アイコンを表示
                             Image(systemName: "chevron.left")
@@ -84,11 +65,8 @@ struct CalendarView: View {
                         .minimumScaleFactor(0.5)
                         // 翌月に移動するボタン
                         Button {
-                            // 翌月の日付を計算してdisplayDateを更新
-                            if let newDate = Calendar.current.date(
-                                byAdding: .month, value: 1, to: displayDate) {
-                                displayDate = newDate
-                            }
+                            // ViewModelのメソッドを呼び出して翌月に移動
+                            viewModel.moveToNextMonth()
                         } label: {
                             // 右向きの矢印アイコンを表示
                             Image(systemName: "chevron.right")
@@ -105,36 +83,28 @@ struct CalendarView: View {
                             Text(weekday)
                                 .foregroundStyle(.keyWhite)
                                 .lineLimit(1)
-                                // 文字サイズ
+                            // 文字サイズ
                                 .font(.headline)
                                 .bold()
-                                // フレーム
+                            // フレーム
                                 .frame(minWidth: 45, minHeight: 45)
                         }  // ForEach（曜日ループ）終了
                     }  // LazyVGrid（曜日ヘッダー）終了
                     // カレンダーの日付セルを表示するグリッド
                     // 画面の高さの3%を間隔として設定
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-                        // カレンダー日付の配列をループして各日付セルを表示
-                        // getCalendarDates()には今月以外（前月・翌月）のダミー日付も含まれる
-                        ForEach(getCalendarDates()) { calendarDate in
-                            // このセルの日付が「表示中の月」と同じかどうかを判定
-                            if Calendar.current.component(.month, from: calendarDate.date)
-                                == Calendar.current.component(.month, from: displayDate) {
+                        ForEach(viewModel.dayCells) { cell in
+                            // 今月の日付なら日付を表示
+                            if cell.isInCurrentMonth {
                                 // 今月の日付なら日付を表示
-                                Text("\(Calendar.current.component(.day, from: calendarDate.date))")
+                                Text("\(cell.day)")
                                     .font(.title2)
                                     .bold()
-                                    // 今日ならライム色、それ以外は白色で表示
-                                    .foregroundStyle(
-                                        Calendar.current.isDateInToday(calendarDate.date)
-                                            ? .dateInTodayLime : .keyWhite
-                                    )
+                                // 今日ならライム色、それ以外は白色で表示
+                                    .foregroundStyle(cell.textColor)
                                     .frame(minWidth: 45, minHeight: 60)
-                                    // 瞑想時間に応じた背景色を設定
-                                    .background(
-                                        Color.backgroundStyle(for: calendarDate.meditationTime)
-                                    )
+                                // 瞑想時間に応じた背景色を設定
+                                    .background(cell.backgroundColor)
                                     .cornerRadius(10)
                             } else {
                                 // 今月以外（前月・翌月のダミー日付）は空白を表示
@@ -167,40 +137,13 @@ struct CalendarView: View {
                 .padding(20)
             }  // ZStack（レイヤー構造）終了
         }  // GeometryReader（画面サイズ取得）終了
-        // Viewが表示される時に実行される処理
-        .onAppear {
-            // 仮の瞑想記録を代入してカレンダーに表示
-            meditationRecords = getCalendarDates()
-            // 日付ごとの瞑想時間合計を計算して辞書に格納
-            checkDates = checkDate(from: meditationRecords)
+        // 表示月が変更された時にカレンダーデータを更新
+        .onChange(of: viewModel.displayDate, initial: true) {
+            // 瞑想記録を更新
+            viewModel.updateCalendarCells()
         }
     }  // body（View本体）終了
-    // MARK: - Private Methods
-    // 日付と瞑想時間の配列を取得するメソッド
-    // カレンダー表示用の完全な日付配列（42日分）を生成
-    private func getCalendarDates() -> [CalendarInfo] {
-        // 指定月のカレンダー日付を生成
-        var result = createCalendarDates(displayDate)
-        // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
-        while result.count < 42 {
-            // 最後の日付から1日ずつ追加
-            let lastDate = result.last?.date ?? Date()
-            let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate) ?? Date()
-            result.append(CalendarInfo(date: nextDate, meditationTime: 0))
-        }
-        return result
-    }
 }  // CalendarView構造体終了
-// MARK: - Helper Functions
-/// 日付に応じた瞑想時間の設定 計算した結果を格納する
-/// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
-func checkDate(from records: [CalendarInfo]) -> [Date: Int] {
-    // 日付でグループ化して、同じ日付の瞑想時間を合計
-    let totals = Dictionary(grouping: records, by: { $0.date }).mapValues {
-        $0.reduce(0) { $0 + $1.meditationTime }
-    }
-    return totals
-}
 
 #Preview {
     CalendarView()

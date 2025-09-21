@@ -28,7 +28,7 @@ struct MeditatingView: View {
                     // 以下テキストを表示
                     Text("開始まで\n\(viewModel.remainingSeconds)")
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.keyWhite)
+                        .foregroundStyle(.keyWhite)
                         .font(.system(size: 30))
                         .frame(width: 200, height: 200)
                         .bold()
@@ -36,7 +36,7 @@ struct MeditatingView: View {
                 // 瞑想中タイマーを表示
                 if viewModel.state == .start || viewModel.state == .pause {
                     Text(viewModel.remainingSeconds.formattedTime())
-                        .foregroundColor(.keyWhite)
+                        .foregroundStyle(.keyWhite)
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()

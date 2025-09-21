@@ -12,7 +12,7 @@ import Foundation
 extension Date {
     /// 今月の開始日を取得する
     /// - Returns: 開始日
-    var startOfMonth: Date {
+    func startOfMonth() -> Date {
         // カレンダーの取得
         let calendar = Calendar.current
         // 年月の構成要素
@@ -25,7 +25,7 @@ extension Date {
     }
     /// 今月の日数を取得する
     /// - Returns: 日数
-    var daysInMonth: Int {
+    func daysInMonth() -> Int {
         // 月の日数の返却
         guard let count = Calendar.current.range(of: .day, in: .month, for: self)?.count else {
             fatalError("日数の取得に失敗しました")
@@ -34,7 +34,7 @@ extension Date {
     }
     /// 今月の週数を取得する
     /// - Returns: 週数
-    var weeksInMonth: Int {
+    func weeksInMonth() -> Int {
         // 週数の返却
         guard let count = Calendar.current.range(of: .weekOfMonth, in: .month, for: self)?.count
         else {
@@ -44,7 +44,7 @@ extension Date {
     }
     /// 対象日の年の取得
     /// - Returns: 年
-    var year: Int {
+    func year() -> Int {
         // 年の構成要素
         let components = Calendar.current.dateComponents([.year], from: self)
         // 年の返却
@@ -55,7 +55,7 @@ extension Date {
     }
     /// 対象日の月の取得
     /// - Returns: 月
-    var month: Int {
+    func month() -> Int {
         // 月の構成要素
         let components = Calendar.current.dateComponents([.month], from: self)
         // 月の返却
@@ -66,7 +66,7 @@ extension Date {
     }
     /// 対象日の日の取得
     /// - Returns: 日
-    var day: Int {
+    func day() -> Int {
         // 日の構成要素
         let components = Calendar.current.dateComponents([.day], from: self)
         // 日の返却
@@ -77,7 +77,7 @@ extension Date {
     }
     /// 対象日の曜日の取得
     /// - Returns: 曜日
-    var weekday: Int {
+    func weekday() -> Int {
         // 曜日の構成要素
         let components = Calendar.current.dateComponents([.weekday], from: self)
         // 曜日の返却

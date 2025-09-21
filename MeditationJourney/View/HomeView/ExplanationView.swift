@@ -37,7 +37,7 @@ struct ExplanationView: View {
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
                         .background(.backgroundNavy)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .cornerRadius(8)
                     }
                     .padding(5)
@@ -54,7 +54,7 @@ struct ExplanationView: View {
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
                         .background(.backgroundNavy)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .cornerRadius(8)
                     }
                     .padding(5)
@@ -71,7 +71,7 @@ struct ExplanationView: View {
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
                         .background(.backgroundNavy)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .cornerRadius(8)
                     }
                     .padding(5)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 class SpotListViewModel: ObservableObject {
     // 60分以上達成の音の場所を格納するプロパティ
