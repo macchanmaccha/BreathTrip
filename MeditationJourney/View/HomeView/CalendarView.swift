@@ -9,7 +9,6 @@ import SwiftUI
 /// 色の説明用のボックス
 struct LegendBox: View {
     let color: Color
-
     var body: some View {
         Rectangle()
             .border(.gray, width: 1.5)
@@ -21,24 +20,13 @@ struct LegendBox: View {
 
 struct CalendarView: View {
     // MARK: - Properties
-    // データの生成、保存、取得といったデータベース操作に必要な操作を行う為のオブジェクト
-    @Environment(\.managedObjectContext) private var viewContext
-    // viewModel（CoreDataのコンテキストを渡す）
-    @StateObject private var viewModel: CalendarViewModel
+    // viewModel
+    @StateObject private var viewModel = CalendarViewModel()
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
     private let columns: [GridItem] = Array(
         repeating: .init(.flexible(minimum: 40, maximum: 80)), count: 7)
-
-    // MARK: - Initialization
-    /// CoreDataのコンテキストを受け取るイニシャライザー
-    init() {
-        // プレビュー用のデフォルトイニシャライザー
-        self._viewModel = StateObject(
-            wrappedValue: CalendarViewModel(
-                context: PersistenceController.preview.container.viewContext))
-    }
     // MARK: - Body
     // SwiftUIのViewの本体、UIの構造を定義
     var body: some View {
@@ -59,7 +47,7 @@ struct CalendarView: View {
                         Text("\(viewModel.displayDate.month())月")
                             .foregroundStyle(.keyWhite)
                             .bold()
-                            // フォントサイズは30、画面に合わせて縮小可能
+                        // フォントサイズは30、画面に合わせて縮小可能
                             .font(.largeTitle.bold())
                             .minimumScaleFactor(0.5)
                         // 右側の要素を右端に押し込むためのスペーサー
@@ -95,15 +83,39 @@ struct CalendarView: View {
                             Text(weekday)
                                 .foregroundStyle(.keyWhite)
                                 .lineLimit(1)
-                                // 文字サイズ
+                            // 文字サイズ
                                 .font(.headline)
                                 .bold()
-                                // フレーム
+                            // フレーム
                                 .frame(minWidth: 45, minHeight: 45)
                         }  // ForEach（曜日ループ）終了
                     }  // LazyVGrid（曜日ヘッダー）終了
                     // カレンダーの日付セルを表示するグリッド
-                    calendarDateGrid(geometry: geometry)
+                    // 画面の高さの3%を間隔として設定
+                    LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
+                        ForEach(viewModel.dayCells) { cell in
+                            // 今月の日付なら日付を表示
+                            if cell.isInCurrentMonth {
+                                // 今月の日付なら日付を表示
+                                Text("\(cell.day)")
+                                    .font(.title2)
+                                    .bold()
+                                // 今日ならライム色、それ以外は白色で表示
+                                    .foregroundStyle(cell.textColor)
+                                    .frame(minWidth: 45, minHeight: 60)
+                                // 瞑想時間に応じた背景色を設定
+                                    .background(cell.backgroundColor)
+                                    .cornerRadius(10)
+                            } else {
+                                // 今月以外（前月・翌月のダミー日付）は空白を表示
+                                // EmptyView()ではなく透明なRectangleを使用
+                                // これにより、グリッドのセルとして正しく認識される
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .frame(minWidth: 45, minHeight: 60)
+                            }
+                        }  // ForEach（日付セルループ）終了
+                    }  // LazyVGrid（日付グリッド）終了
                     // 色の説明　LessからMoreまでを表示
                     HStack {
                         // 右寄せ
@@ -125,59 +137,14 @@ struct CalendarView: View {
                 .padding(20)
             }  // ZStack（レイヤー構造）終了
         }  // GeometryReader（画面サイズ取得）終了
-        // Viewが表示される時に実行される処理
-        // .onAppear {
-        //     // 瞑想記録を更新
-        //     viewModel.updateCalendarData()
-        // }
-        // // 表示月が変更された時にカレンダーデータを更新
-        // .onChange(of: viewModel.displayDate) {
-        //     // 瞑想記録を更新
-        //     viewModel.updateCalendarData()
-        // }
-        .onAppear {
-            // カレンダー表示を更新（CoreDataの変更監視は自動的に動作）
-            viewModel.updateCalendarCells()
-        }
         // 表示月が変更された時にカレンダーデータを更新
-        .onChange(of: viewModel.displayDate) {
-            // カレンダー表示を更新（CoreDataの変更監視は自動的に動作）
+        .onChange(of: viewModel.displayDate, initial: true) {
+            // 瞑想記録を更新
             viewModel.updateCalendarCells()
         }
     }  // body（View本体）終了
-
-    // MARK: - Helper Views
-    /// カレンダーの日付セルを表示するグリッド
-    private func calendarDateGrid(geometry: GeometryProxy) -> some View {
-        // 画面の高さの3%を間隔として設定
-        LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
-            ForEach(viewModel.dayCells) { cell in
-                // 今月の日付なら日付を表示
-                if cell.isInCurrentMonth {
-                    // 今月の日付なら日付を表示
-                    Text("\(cell.day)")
-                        .font(.title2)
-                        .bold()
-                        // 今日ならライム色、それ以外は白色で表示
-                        .foregroundStyle(cell.textColor)
-                        .frame(minWidth: 45, minHeight: 60)
-                        // 瞑想時間に応じた背景色を設定
-                        .background(cell.backgroundColor)
-                        .cornerRadius(10)
-                } else {
-                    // 今月以外（前月・翌月のダミー日付）は空白を表示
-                    // EmptyView()ではなく透明なRectangleを使用
-                    // これにより、グリッドのセルとして正しく認識される
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(minWidth: 45, minHeight: 60)
-                }
-            }  // ForEach（日付セルループ）終了
-        }  // LazyVGrid（日付グリッド）終了
-    }
 }  // CalendarView構造体終了
 
 #Preview {
     CalendarView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
