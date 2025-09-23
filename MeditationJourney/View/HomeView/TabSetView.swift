@@ -11,6 +11,8 @@ import SwiftUI
 struct TabSetView: View {
     // タブの選択項目を保持
     @State private var selection: Int = 1
+    // CoreDataのコンテキストを取得
+    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         // タブの設定
         TabView(selection: $selection) {
@@ -29,7 +31,7 @@ struct TabSetView: View {
                     }
                     .tag(2)
                 // カレンダー画面へ遷移
-                CalendarView()
+                CalendarView(viewModel: CalendarViewModel(context: viewContext))
                     .tabItem {
                         Label("カレンダー", systemImage: "calendar")
                     }
