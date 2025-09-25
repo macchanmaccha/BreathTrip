@@ -15,6 +15,8 @@ class MeditatingSetViewModel: SetViewModel {
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
     var timerHandler: Timer?
+    /// 瞑想開始時刻を記録する変数
+    private var meditationStartDate: Date?
     // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
         remainingSeconds = 5
@@ -24,6 +26,8 @@ class MeditatingSetViewModel: SetViewModel {
         if state == .preStart && newState == .start {
             // 瞑想タイマーをセット
             remainingSeconds = meditationMinutes * 60
+            // 瞑想開始時刻を記録
+            meditationStartDate = Date()
         }
         state = newState
     }
@@ -93,8 +97,8 @@ class MeditatingSetViewModel: SetViewModel {
         // 新しいMeditationInfoエンティティを作成
         let newMeditation = MeditationInfo(context: context)
         // データを設定
-        // 現在の日付
-        newMeditation.date = Date()
+        // 瞑想開始日（カレンダー表示用）
+        newMeditation.date = meditationStartDate ?? Date()
         // 瞑想時間（分）
         newMeditation.meditationTime = Int32(meditationMinutes)
         // 世界の音
