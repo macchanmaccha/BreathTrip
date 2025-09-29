@@ -20,10 +20,8 @@ struct LegendBox: View {
 
 struct CalendarView: View {
     // MARK: - Properties
-    // データの生成、保存、取得といったデータベース操作に必要な操作を行う為のオブジェクト
-    @Environment(\.managedObjectContext) private var viewContext
-    // viewModel（CoreDataのコンテキストを渡す）
-    @StateObject var viewModel: CalendarViewModel
+    // viewModelは外部から渡されるので、ObservedObjectで宣言する
+    @ObservedObject var viewModel: CalendarViewModel
     // 曜日の配列を定義（Calendar.current.shortWeekdaySymbolsは高コストなので一度だけ取得）
     private let weekdays = Calendar.current.shortWeekdaySymbols
     // カレンダーのグリッドレイアウト用の列定義、7列（曜日分）で最小40最大80の柔軟な幅
@@ -149,8 +147,7 @@ struct CalendarView: View {
 }  // CalendarView構造体終了
 
 #Preview {
-    CalendarView(
-        viewModel: CalendarViewModel(context: PersistenceController.preview.container.viewContext)
-    )
-    .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    // ここではpreview用のCoreDataが渡される
+    let viewModel = CalendarViewModel(context: PersistenceController.preview.container.viewContext)
+    CalendarView(viewModel: viewModel)
 }

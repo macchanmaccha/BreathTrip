@@ -17,12 +17,19 @@ class SpotListViewModel: ObservableObject {
     private(set) var spotList: [SpotDataModel] = []
     // モデルのインスタンス化
     private let spotListModel: SpotListModel = SpotListModel()
+    
+    private let context: NSManagedObjectContext
+    
+    init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
+        self.context = context
+    }
+    
     func fetchSpotList() {
         spotList = spotListModel.spotList
     }  // fetchSpotListここまで
-    func loadMeditationInfo(viewContext: NSManagedObjectContext) {
+    func loadMeditationInfo() {
         // contextの中にnewMeditationInfoというデータを作る
-        let newMeditationInfo = MeditationInfo(context: viewContext)
+        let newMeditationInfo = MeditationInfo(context: context)
         // 日付
         newMeditationInfo.date = Date()
     }
