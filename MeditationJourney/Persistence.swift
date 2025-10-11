@@ -5,15 +5,36 @@
 //  Created by apple on 2023/09/10.
 //
 
+/*
+ 使用例:
+ 1. ViewModelでのCoreData操作:
+ class SomeViewModel: ObservableObject {
+ private let context = PersistenceController.shared.container.viewContext
+ }
+ 
+ 2. SwiftUIプレビューで使用:
+ #Preview {
+ SomeView(viewModel: SomeViewModel())
+ }
+ 
+ 3. MeditationJourneyApp.swiftでの初期化:
+ @main
+ struct MeditationJourneyApp: App {
+ let persistenceController = PersistenceController.shared
+ }
+ */
+
 import CoreData
-
+/// CoreDataスタックを管理するコントローラー
 struct PersistenceController {
+    /// アプリ全体で共有するCoreDataインスタンス
+    /// 使用例:PersistenceController.shared.container.viewContext
     static let shared = PersistenceController()
-
+    /// SwiftUIプレビュー用のいんめ
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        // サンプルデータを10件作成
+        // プレビュー表示用に10件の瞑想記録サンプルを作成
         for i in 0..<10 {
             let newMeditationInfo = MeditationInfo(context: viewContext)
             // 日付: 今日から10日前まで（過去10日分）
@@ -27,41 +48,31 @@ struct PersistenceController {
         do {
             try viewContext.save()
         } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate.
-            //            You should not use this function in a shipping application, although it may be useful during development.
+            // ⚠️本番環境では適切なエラーハンドリングに変更必要
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
         return result
     }()
-
+    /// MeditationJourney.xcdatamodeldを管理するCoreDataコンテナ
     let container: NSPersistentContainer
-
+    /// CoreDataスタックを初期化（inMemory: テスト用メモリDB）
     init(inMemory: Bool = false) {
+        // MeditationJourney.xcdatamodeldファイルを読み込んでコンテナ作成
         container = NSPersistentContainer(name: "MeditationJourney")
         if inMemory {
+            // テスト・プレビュー用のメモリDBに設定
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
+        // 永続ストア（データベースファイル）を読み込み
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate.
-                //                You should not use this function in a shipping application,
-                //                although it may be useful during development.
-
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection
-                 when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
+                // ⚠️本番環境では適切なエラーハンドリングに変更必要
+                // 考えられる原因：ディスク容量不足、権限エラー、モデルバージョン不一致など
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        // 親コンテキストからの変更を自動でマージ
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
 }

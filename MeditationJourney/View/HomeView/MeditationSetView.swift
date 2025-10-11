@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeditationSetView: View {
     /// MeditatingSetViewModelをインスタンス化
-    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    @ObservedObject var viewModel: MeditatingSetViewModel
     /// Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     /// フルスクリーンを管理する変数
@@ -135,16 +135,16 @@ struct MeditationSetView: View {
 }  // MeditationViewここまで
 
 struct MeditationSetView_Previews: PreviewProvider {
+    // ここではpreview用のCoreDataが渡される
+        static let viewModel = MeditatingSetViewModel(context: PersistenceController.preview.container.viewContext)
     static var previews: some View {
-        Group {
-            MeditationSetView()
+        MeditationSetView(viewModel: viewModel)
                 // ✅ タブの表示名
-                .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
+                    .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
                 // ✅ プレビューする端末（プレビューデバイス）を指定
-                .previewDisplayName("iPhone 16")
-            MeditationSetView()
-                .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
-                .previewDisplayName("iPad Pro (11-inch)")
-        }
+                    .previewDisplayName("iPhone 16")
+                MeditationSetView(viewModel: viewModel)
+                    .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
+                    .previewDisplayName("iPad Pro (11-inch)")
     }
 }

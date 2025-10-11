@@ -17,6 +17,10 @@ class MeditatingSetViewModel: SetViewModel {
     var timerHandler: Timer?
     /// 瞑想開始時刻を記録する変数
     private var meditationStartDate: Date?
+    private let context: NSManagedObjectContext
+    init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
+        self.context = context
+    }
     // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
         remainingSeconds = 5
@@ -93,7 +97,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     // MARK: - Data Management Methods
     /// 瞑想記録をCoreDataに保存するメソッド
-    func saveMeditationRecord(context: NSManagedObjectContext) {
+    func saveMeditationRecord() {
         // 新しいMeditationInfoエンティティを作成
         let newMeditation = MeditationInfo(context: context)
         // データを設定

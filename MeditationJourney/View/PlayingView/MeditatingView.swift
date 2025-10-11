@@ -127,7 +127,7 @@ struct MeditatingView: View {
         .alert("終了", isPresented: $isShowEndAlert) {
             Button("OK") {
                 // 保存メソッドを呼び出し
-                viewModel.saveMeditationRecord(context: viewContext)
+                viewModel.saveMeditationRecord()
                 // 設定画面へ戻る
                 dismiss()
             }

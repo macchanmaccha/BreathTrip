@@ -11,15 +11,13 @@ import SwiftUI
 struct TabSetView: View {
     // タブの選択項目を保持
     @State private var selection: Int = 1
-    // CoreDataのコンテキストを取得
-    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         // タブの設定
         TabView(selection: $selection) {
             Group {
                 // TabViewの要素
                 // 瞑想設定画面へ遷移
-                MeditationSetView()
+                MeditationSetView(viewModel: MeditatingSetViewModel())
                     .tabItem {
                         Label("瞑想", systemImage: "figure.mind.and.body")
                     }
@@ -31,13 +29,13 @@ struct TabSetView: View {
                     }
                     .tag(2)
                 // カレンダー画面へ遷移
-                CalendarView(viewModel: CalendarViewModel(context: viewContext))
+                CalendarView(viewModel: CalendarViewModel())
                     .tabItem {
                         Label("カレンダー", systemImage: "calendar")
                     }
                     .tag(3)
                 // マップ画面へ遷移
-                MapView()
+                MapView(viewModel: SpotListViewModel())
                     .tabItem {
                         Label("地図", systemImage: "map")
                     }

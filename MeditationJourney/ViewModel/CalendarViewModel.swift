@@ -49,7 +49,7 @@ class CalendarViewModel: ObservableObject {
     private var totalCalendarDays: Int = 42
     // MARK: - Initialization
     /// CoreDataのコンテキストを受け取るイニシャライザー
-    init(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         // 受け取ったコンテキストを保存
         self.context = context
     }

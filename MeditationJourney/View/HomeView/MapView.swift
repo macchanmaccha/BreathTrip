@@ -10,9 +10,7 @@ import SwiftUI
 
 struct MapView: View {
     // viewModelのインスタンス化
-    @StateObject var viewModel: SpotListViewModel = SpotListViewModel()
-    // データの生成、保存、取得といったデータベース操作に必要な操作を行う為のオブジェクト
-    @Environment(\.managedObjectContext) private var viewContext
+    @ObservedObject var viewModel: SpotListViewModel
     // マップの中心の情報、緯度経度、範囲
     @State private var region: MapCameraPosition = .region(
         MKCoordinateRegion(
@@ -39,6 +37,6 @@ struct MapView: View {
     }  // bodyここまで
 }  // Mapここまで
 #Preview {
-    MapView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    let viewModel = SpotListViewModel(context: PersistenceController.preview.container.viewContext)
+    MapView(viewModel: viewModel)
 }
