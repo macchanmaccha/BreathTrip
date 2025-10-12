@@ -10,12 +10,88 @@ import SwiftUI
 struct WayOfMeditationView: View {
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         ZStack {
             // 背景色を紺色に設定
             Color("backgroundNavy")
                 .edgesIgnoringSafeArea(.all)
-        } // ZStackここまで
+
+            ScrollView {
+                VStack(spacing: 24) {
+                    // タイトル
+                    VStack(spacing: 8) {
+                        Text("呼吸瞑想")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("keyWhite"))
+
+                        Text("心を落ち着かせる基本の瞑想法")
+                            .font(.subheadline)
+                            .foregroundColor(Color("keyWhite").opacity(0.8))
+                    }
+                    .padding(.top, 20)
+
+                    // 説明文
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("呼吸瞑想とは")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color("keyWhite"))
+
+                        Text("呼吸に意識を向けることで、心を静め、今この瞬間に集中する瞑想法です。")
+                            .font(.body)
+                            .foregroundColor(Color("keyWhite").opacity(0.9))
+                            .lineSpacing(4)
+                    }
+                    .padding(.horizontal, 20)
+
+                    // ステップ
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("やり方")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color("keyWhite"))
+                            .padding(.horizontal, 20)
+
+                        VStack(spacing: 12) {
+                            StepView(
+                                number: 1, title: "姿勢を整える", description: "背筋を伸ばして座り、リラックスした姿勢を保ちます")
+
+                            StepView(
+                                number: 2, title: "目を閉じる", description: "静かに目を閉じて、外の刺激から意識を離します")
+
+                            StepView(
+                                number: 3, title: "呼吸に集中", description: "自然な呼吸を感じ、息を吸う・吐く感覚に意識を向けます"
+                            )
+
+                            StepView(
+                                number: 4, title: "雑念を手放す",
+                                description: "他のことを考えても大丈夫。再び呼吸に意識を戻しましょう")
+                        }
+                        .padding(.horizontal, 20)
+                    }
+
+                    // ポイント
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("ポイント")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color("keyWhite"))
+                            .padding(.horizontal, 20)
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            PointView(text: "完璧を求めず、今できることを大切に")
+                            PointView(text: "毎日少しずつでも続けることが重要")
+                            PointView(text: "雑念が浮かんでも自分を責めない")
+                        }
+                        .padding(.horizontal, 20)
+                    }
+
+                    Spacer(minLength: 40)
+                }
+            }
+        }  // ZStackここまで
         .navigationBarBackButtonHidden(true)
         // 前画面へ戻る
         .toolbar {
@@ -24,12 +100,65 @@ struct WayOfMeditationView: View {
                     dismiss()
                 }) {
                     Image(systemName: "chevron.backward")
-                        .tint(Color(.keyWhite))
-                } // Buttonここまで
-            } // ToolbarItemここまで
+                        .tint(Color("keyWhite"))
+                }  // Buttonここまで
+            }  // ToolbarItemここまで
         }
-    } // bodyここまで
-} // Viewここまで
+    }  // bodyここまで
+}  // Viewここまで
+
+struct StepView: View {
+    let number: Int
+    let title: String
+    let description: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            // ステップ番号
+            Text("\(number)")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(Color("backgroundNavy"))
+                .frame(width: 28, height: 28)
+                .background(Color("keyWhite"))
+                .clipShape(Circle())
+
+            // 内容
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color("keyWhite"))
+
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(Color("keyWhite").opacity(0.8))
+                    .lineSpacing(2)
+            }
+
+            Spacer()
+        }
+        .padding(.vertical, 8)
+    }
+}
+
+struct PointView: View {
+    let text: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(Color("keyWhite"))
+                .font(.caption)
+
+            Text(text)
+                .font(.caption)
+                .foregroundColor(Color("keyWhite").opacity(0.8))
+
+            Spacer()
+        }
+    }
+}
 
 #Preview {
     WayOfMeditationView()
