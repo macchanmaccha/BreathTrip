@@ -111,6 +111,16 @@ class MeditatingSetViewModel: SetViewModel {
         do {
             try context.save()
             print("瞑想記録を保存しました")
+
+            // 保存した日付と時間と音をprint
+            let savedDate = newMeditation.date ?? Date()
+            let year = Calendar.current.component(.year, from: savedDate)
+            let month = Calendar.current.component(.month, from: savedDate)
+            let day = Calendar.current.component(.day, from: savedDate)
+            let meditationTime = Int(newMeditation.meditationTime)
+            let worldSounds = newMeditation.worldSounds ?? ""
+
+            print("\(year)年\(month)月\(day)日　　\(meditationTime)分　　\(worldSounds)")
         } catch {
             print("保存に失敗しました: \(error)")
         }
