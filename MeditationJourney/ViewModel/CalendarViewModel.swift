@@ -66,7 +66,12 @@ class CalendarViewModel: ObservableObject {
             // 取得した記録をプロパティに保存
             meditationRecords = records
             // デバッグ用：取得した記録数をログ出力
-            print("Fetched meditation records: \(meditationRecords.count) records")
+            print("CalendarViewModelで瞑想記録を取得しました: \(meditationRecords.count)件")
+
+            // 日付ごとの瞑想時間合計を表示
+            let dailyTotals = checkDate(from: meditationRecords)
+            print("日付ごとの瞑想時間合計: \(dailyTotals)")
+
         } catch {
             // エラーが発生した場合
             // デバッグ用：ログ出力

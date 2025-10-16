@@ -44,7 +44,13 @@ class SpotListViewModel: ObservableObject {
         do {
             // CoreDataから実際にデータを取得
             meditationRecords = try context.fetch(request)
-            print("瞑想記録を取得しました: \(meditationRecords.count)件")
+            print("SpotListViewModelで瞑想記録を取得しました: \(meditationRecords.count)件")
+
+            // 音の種類ごとの瞑想時間合計を表示
+            let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds ?? "" })
+                .mapValues { $0.reduce(0) { $0 + Int($1.meditationTime) } }
+            print("音の種類ごとの瞑想時間合計: \(totals)")
+
         } catch {
             // エラーが発生した場合は空の配列を設定
             print("瞑想記録の取得に失敗しました: \(error)")
@@ -56,16 +62,14 @@ class SpotListViewModel: ObservableObject {
         // 瞑想記録を音の種類（worldSounds）でグループ化し、各グループの合計時間を計算
         let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds ?? "" })
             .mapValues { $0.reduce(0) { $0 + Int($1.meditationTime) } }
-
         print("瞑想時間の合計: \(totals)")
-
         // 60分以上の瞑想時間を持つスポットのみを抽出してピン留め対象に設定
         achievedSpots = spotList.filter { spot in
             let totalTime = totals[spot.spotName] ?? 0
-            let isAchieved = totalTime >= 60
-            if isAchieved {
-                print("達成: \(spot.spotName) - \(totalTime)分")
-            }
+            let isAchieved = totalTime >= 1
+            //            if isAchieved {
+            //                print("達成: \(spot.spotName) - \(totalTime)分")
+            //            }
             return isAchieved
         }
 

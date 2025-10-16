@@ -31,7 +31,7 @@ struct MapView: View {
         .onAppear {
             viewModel.fetchSpotList()
             // 瞑想のデータ
-            //            viewModel.loadMeditationRecords()
+            viewModel.loadMeditationRecords()
             viewModel.calculateAchievedSpots()
         }  // .onAppearここまで
     }  // bodyここまで

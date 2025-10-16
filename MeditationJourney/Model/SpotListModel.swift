@@ -132,6 +132,6 @@ struct SpotListModel {
             coordinate: CLLocationCoordinate2D(latitude: -1.8312, longitude: -78.1834)),
         SpotDataModel(
             spotName: "南アメリカ6",
-            coordinate: CLLocationCoordinate2D(latitude: -16.2902, longitude: -63.5887)),
+            coordinate: CLLocationCoordinate2D(latitude: -16.2902, longitude: -63.5887))
     ]
 }

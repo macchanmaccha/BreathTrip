@@ -107,12 +107,46 @@ class MeditatingSetViewModel: SetViewModel {
         newMeditation.meditationTime = Int32(meditationMinutes)
         // 世界の音
         newMeditation.worldSounds = meditationSoundName.rawValue
+
+        // デバッグ用：保存するデータの詳細を出力
+        let dateString = newMeditation.date?.formatted(date: .abbreviated, time: .omitted) ?? "日付不明"
+        let timeString = newMeditation.date?.formatted(date: .omitted, time: .shortened) ?? "時刻不明"
+        print("=== 瞑想記録を保存します ===")
+        print("日付: \(String(describing: newMeditation.date))")
+        print("瞑想時間: \(newMeditation.meditationTime)分")
+        print("音の種類: '\(newMeditation.worldSounds ?? "nil")'")
+
         // 保存処理
         do {
             try context.save()
-            print("瞑想記録を保存しました")
+            print("✅ 瞑想記録を保存しました")
+
+            // 保存後に全記録を確認（デバッグ用）
+            let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
+            request.sortDescriptors = [
+                NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: false)
+            ]
+            let allRecords = try context.fetch(request)
+
+            print("=== 現在の瞑想記録一覧（全\(allRecords.count)件） ===")
+            if allRecords.isEmpty {
+                print("記録がありません")
+            } else {
+                for (index, record) in allRecords.enumerated() {
+                    let recordDateString =
+                        record.date?.formatted(date: .abbreviated, time: .omitted) ?? "日付不明"
+                    let recordTimeString =
+                        record.date?.formatted(date: .omitted, time: .shortened) ?? "時刻不明"
+                    let recordWorldSounds = record.worldSounds ?? "音の種類不明"
+                    print(
+                        "\(index + 1). 日付: \(recordDateString) \(recordTimeString), 瞑想時間: \(record.meditationTime)分, 音の種類: '\(recordWorldSounds)'"
+                    )
+                }
+            }
+            print("=== 一覧終了 ===")
+
         } catch {
-            print("保存に失敗しました: \(error)")
+            print("❌ 保存に失敗しました: \(error)")
         }
     }
 }  // MeditatingSetViewModel
