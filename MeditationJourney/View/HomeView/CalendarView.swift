@@ -95,7 +95,7 @@ struct CalendarView: View {
                     LazyVGrid(columns: columns, spacing: geometry.size.height * 0.03) {
                         ForEach(viewModel.dayCells) { cell in
                             // 今月の日付なら日付を表示
-                            if cell.isInCurrentMonth {
+                            if cell.isCurrentMonth {
                                 // 今月の日付なら日付を表示
                                 Text("\(cell.day)")
                                     .font(.title2)

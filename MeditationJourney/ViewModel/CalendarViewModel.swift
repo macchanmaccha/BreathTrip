@@ -16,7 +16,7 @@ struct DayCell: Identifiable {
     // 日付の日部分（1-31）
     let day: Int
     // 現在表示中の月に属するかどうか
-    let isInCurrentMonth: Bool
+    let isCurrentMonth: Bool
     // 今日の日付かどうか
     let isToday: Bool
     // その日の瞑想時間（分）
@@ -46,7 +46,7 @@ class CalendarViewModel: ObservableObject {
     /// 日付計算に使用するカレンダーオブジェクト
     private let calendar = Calendar.current
     // カレンダーグリッドの総日数（6週間 × 7日 = 42日）
-    private var totalCalendarDays: Int = 42
+    private let totalCalendarDays: Int = 42
     // MARK: - Initialization
     /// CoreDataのコンテキストを受け取るイニシャライザー
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
@@ -128,7 +128,7 @@ class CalendarViewModel: ObservableObject {
                 // 日付から日部分を抽出
                 day: calendar.component(.day, from: record.date),
                 // 表示月と同じ月かどうかを判定
-                isInCurrentMonth: calendar.isDate(
+                isCurrentMonth: calendar.isDate(
                     record.date, equalTo: displayDate, toGranularity: .month),
                 // 今日の日付かどうかを判定
                 isToday: calendar.isDateInToday(record.date),

@@ -50,11 +50,11 @@ struct MeditatingView: View {
                         // preStartだったら
                         if viewModel.state == .preStart {
                             // prePauseにする
-                            viewModel.updateState(newState: .prePause)
+                            viewModel.updateState(to: .prePause)
                             // startだったら
                         } else if viewModel.state == .start {
                             // pauseにする
-                            viewModel.updateState(newState: .pause)
+                            viewModel.updateState(to: .pause)
                         }
                         print("中断ボタンが押されたよ")
                         print(viewModel.remainingSeconds)
@@ -72,11 +72,11 @@ struct MeditatingView: View {
                             // prePauseだったら
                             if viewModel.state == .prePause {
                                 // preStartにする
-                                viewModel.updateState(newState: .preStart)
+                                viewModel.updateState(to: .preStart)
                                 // pauseだったら
                             } else if viewModel.state == .pause {
                                 // startにする
-                                viewModel.updateState(newState: .start)
+                                viewModel.updateState(to: .start)
                             }
                         }
                         // YES
@@ -93,7 +93,7 @@ struct MeditatingView: View {
         }  // ZStack
         .onAppear {
             // 画面起動時にprestart状態にする
-            viewModel.updateState(newState: .preStart)
+            viewModel.updateState(to: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
         }
@@ -135,6 +135,109 @@ struct MeditatingView: View {
             Text("おつかれさまでした")
         }  // .alertここまで
     }  // bodyここまで
+    // MARK: - View Components
+    /// 背景画像ビュー
+    private var backgroundImageView: some View {
+        Image(.playBackground)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .edgesIgnoringSafeArea(.all)
+    }
+    /// タイマー表示ビュー
+    @ViewBuilder
+    private var timerDisplayView: some View {
+        if isPreparationState {
+            preparationTimerView
+        } else if isMeditationState {
+            meditationTimerView
+        }
+    }
+    /// 準備タイマー表示
+    private var preparationTimerView: some View {
+        Text("開始まで\n\(viewModel.remainingSeconds)")
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.keyWhite)
+            .font(.system(size: 30))
+            .frame(width: 200, height: 200)
+            .bold()
+    }
+    /// 瞑想タイマー表示
+    private var meditationTimerView: some View {
+        Text(viewModel.remainingSeconds.formattedTime())
+            .foregroundStyle(.keyWhite)
+            .font(.system(size: 80))
+            .frame(width: 300, height: 200)
+            .bold()
+    }
+    /// 中断ボタン表示判定
+    private var shouldShowStopButton: Bool {
+        viewModel.state != .end
+    }
+    /// 中断ボタンビュー
+    private var stopButtonView: some View {
+        Button(action: handleStopButtonAction) {
+            Text("中断する")
+                .tint(.backgroundNavy)
+                .font(.title)
+        }
+        .padding(25)
+        .background(.keyWhite)
+        .cornerRadius(10)
+        .alert("", isPresented: $isShowStopAlert) {
+            stopAlertButtons
+        } message: {
+            Text("中断して前の画面に戻りますか？")
+        }
+    }
+    /// 中断アラートのボタン
+    private var stopAlertButtons: some View {
+        Group {
+            Button("NO") {
+                handleStopAlertNoAction()
+            }
+            Button("YES") {
+                handleStopAlertYesAction()
+            }
+        }
+    }
+    // MARK: - Helper Methods
+    /// 準備状態かどうか
+    private var isPreparationState: Bool {
+        viewModel.state == .preStart || viewModel.state == .prePause
+    }
+    /// 瞑想状態かどうか
+    private var isMeditationState: Bool {
+        viewModel.state == .start || viewModel.state == .pause
+    }
+    /// 中断ボタンアクション
+    private func handleStopButtonAction() {
+        switch viewModel.state {
+        case .preStart:
+            viewModel.updateState(to: .prePause)
+        case .start:
+            viewModel.updateState(to: .pause)
+        default:
+            break
+        }
+        print("中断ボタンが押されたよ")
+        print(viewModel.remainingSeconds)
+    }
+    /// 中断アラートのNOボタンアクション
+    private func handleStopAlertNoAction() {
+        switch viewModel.state {
+        case .prePause:
+            viewModel.updateState(to: .preStart)
+        case .pause:
+            viewModel.updateState(to: .start)
+        default:
+            break
+        }
+    }
+    /// 中断アラートのYESボタンアクション
+    private func handleStopAlertYesAction() {
+        viewModel.stopTimer()
+        dismiss()
+    }
 }  // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {

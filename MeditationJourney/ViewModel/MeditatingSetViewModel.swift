@@ -14,8 +14,8 @@ class MeditatingSetViewModel: SetViewModel {
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
-    var timerHandler: Timer?
-    /// 瞑想開始時刻を記録する変数
+    var timer: Timer?
+    /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
     private let context: NSManagedObjectContext
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
@@ -38,7 +38,7 @@ class MeditatingSetViewModel: SetViewModel {
     // 瞑想前タイマー
     func startPreparationTimer() {
         stopTimer()
-        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
             }
@@ -53,7 +53,7 @@ class MeditatingSetViewModel: SetViewModel {
                     updateState(to: .start)
                     // タイマーが有効かチェック
                     print(
-                        "\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))"
+                        "\(#fileID) \(#function) \(#line) \(String(describing: self.timer?.isValid))"
                     )
                 }  // else ifここまで
             }  // if state == .preStartここまで
@@ -63,7 +63,7 @@ class MeditatingSetViewModel: SetViewModel {
     func startMeditationTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
         stopTimer()
-        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
             }
@@ -85,9 +85,9 @@ class MeditatingSetViewModel: SetViewModel {
     /// タイマー停止・無効
     func stopTimer() {
         // タイマー停止
-        timerHandler?.invalidate()
+        timer?.invalidate()
         // タイマー無効
-        timerHandler = nil
+        timer = nil
     }
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {

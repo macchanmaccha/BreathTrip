@@ -39,8 +39,7 @@ class ListeningSetViewModel: SetViewModel {
         // remainingSecondsが0でないとき
         if remainingSeconds != 0 {
             // タイマー起動
-            timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {
-                [weak self] _ in
+            timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
                 guard let self = self else {
                     return
                 }
