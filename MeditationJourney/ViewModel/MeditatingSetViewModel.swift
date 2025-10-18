@@ -26,14 +26,14 @@ class MeditatingSetViewModel: SetViewModel {
         remainingSeconds = 5
     }
     // 状態の更新
-    func updateState(newState: State) {
-        if state == .preStart && newState == .start {
+    func updateState(to: State) {
+        if state == .preStart && to == .start {
             // 瞑想タイマーをセット
             remainingSeconds = meditationMinutes * 60
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
-        state = newState
+        state = to
     }
     // 瞑想前タイマー
     func startPreparationTimer() {
@@ -50,7 +50,7 @@ class MeditatingSetViewModel: SetViewModel {
                     remainingSeconds -= 1
                     // 1の場合（0秒となる前）
                 } else if remainingSeconds == 1 {
-                    updateState(newState: .start)
+                    updateState(to: .start)
                     // タイマーが有効かチェック
                     print(
                         "\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))"

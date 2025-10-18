@@ -55,7 +55,7 @@ class CalendarViewModel: ObservableObject {
     }
     // MARK: - CoreData Methods
     /// 指定された月の瞑想記録をCoreDataから取得する（NSPredicateで月別フィルタリングを適用）
-    func fetchMeditationRecords(for month: Date) {
+    func fetchMeditationRecords(in month: Date) {
         // MeditationInfoエンティティのフェッチリクエストを作成
         let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
         // 指定月の開始日を計算
@@ -90,7 +90,7 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
-    func calculateDailyMeditationTotals(from records: [MeditationInfo]) -> [Date: Int] {
+    func calculateDailyMeditationTotals(for records: [MeditationInfo]) -> [Date: Int] {
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(
             grouping: records,
@@ -110,9 +110,9 @@ class CalendarViewModel: ObservableObject {
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarCells() {
         // 表示中の月の瞑想記録を取得
-        fetchMeditationRecords(for: displayDate)
+        fetchMeditationRecords(in: displayDate)
         // 指定月のカレンダー日付配列を生成
-        var result: [(date: Date, meditationTime: Int)] = createCalendarDates(displayDate)
+        var result: [(date: Date, meditationTime: Int)] = createCalendarDates(for: displayDate)
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
         while result.count < totalCalendarDays {
             // 最後の日付から1日ずつ追加
@@ -139,9 +139,9 @@ class CalendarViewModel: ObservableObject {
     }
     /// 指定月のカレンダー日付配列を生成するメソッド
     /// 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
-    func createCalendarDates(_ date: Date) -> [(date: Date, meditationTime: Int)] {
+    func createCalendarDates(for date: Date) -> [(date: Date, meditationTime: Int)] {
         // 日付ごとの合計瞑想時間を事前に計算
-        let dailyMeditationTotals = calculateDailyMeditationTotals(from: meditationRecords)
+        let dailyMeditationTotals = calculateDailyMeditationTotals(for: meditationRecords)
         // 指定された日付の月の開始日を取得
         let startOfMonth = date.startOfMonth()
         // 指定された月の日数を取得
