@@ -139,8 +139,7 @@ struct CalendarView: View {
         }  // GeometryReader（画面サイズ取得）終了
         // 表示月が変更された時にカレンダーデータを更新
         .onChange(of: viewModel.displayDate, initial: true) {
-            viewModel.fetchMeditationRecords()
-            // 瞑想記録を更新
+            // 表示中の月の瞑想記録を取得してカレンダーを更新
             viewModel.updateCalendarCells()
         }
     }  // body（View本体）終了

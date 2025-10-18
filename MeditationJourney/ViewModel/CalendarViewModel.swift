@@ -54,19 +54,30 @@ class CalendarViewModel: ObservableObject {
         self.context = context
     }
     // MARK: - CoreData Methods
-    /// CoreDataから瞑想記録を取得する
-    func fetchMeditationRecords() {
+    /// 指定された月の瞑想記録をCoreDataから取得する（NSPredicateで月別フィルタリングを適用）
+    func fetchMeditationRecords(for month: Date) {
         // MeditationInfoエンティティのフェッチリクエストを作成
         let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
+        // 指定月の開始日を計算
+        let startOfMonth = month.startOfMonth()
+        // 翌月の開始日を計算
+        guard let nextMonthStart = calendar.date(byAdding: .month, value: 1, to: startOfMonth)
+        else {
+            meditationRecords = []
+            return
+        }
+        // 月別フィルタリングの条件を設定
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@", startOfMonth as NSDate, nextMonthStart as NSDate)
         // 日付の昇順でソートする設定を追加
         request.sortDescriptors = [NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: true)]
         do {
-            // CoreDataから瞑想記録を取得
+            // CoreDataから指定月の瞑想記録を取得
             let records = try context.fetch(request)
             // 取得した記録をプロパティに保存
             meditationRecords = records
             // デバッグ用：取得した記録数をログ出力
-            print("Fetched meditation records: \(meditationRecords.count) records")
+            print("Fetched meditation records for \(month): \(meditationRecords.count) records")
         } catch {
             // エラーが発生した場合
             // デバッグ用：ログ出力
@@ -79,7 +90,7 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
-    func checkDate(from records: [MeditationInfo]) -> [Date: Int] {
+    func calculateDailyMeditationTotals(from records: [MeditationInfo]) -> [Date: Int] {
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(
             grouping: records,
@@ -98,6 +109,8 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarCells() {
+        // 表示中の月の瞑想記録を取得
+        fetchMeditationRecords(for: displayDate)
         // 指定月のカレンダー日付配列を生成
         var result: [(date: Date, meditationTime: Int)] = createCalendarDates(displayDate)
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
@@ -128,7 +141,7 @@ class CalendarViewModel: ObservableObject {
     /// 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
     func createCalendarDates(_ date: Date) -> [(date: Date, meditationTime: Int)] {
         // 日付ごとの合計瞑想時間を事前に計算
-        let dailyMeditationTotals = checkDate(from: meditationRecords)
+        let dailyMeditationTotals = calculateDailyMeditationTotals(from: meditationRecords)
         // 指定された日付の月の開始日を取得
         let startOfMonth = date.startOfMonth()
         // 指定された月の日数を取得
