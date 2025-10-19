@@ -47,7 +47,7 @@ struct CalendarView: View {
                         Text("\(viewModel.displayDate.month())月")
                             .foregroundStyle(.keyWhite)
                             .bold()
-                            // フォントサイズは30、画面に合わせて縮小可能
+                        // フォントサイズは30、画面に合わせて縮小可能
                             .font(.largeTitle.bold())
                             .minimumScaleFactor(0.5)
                         // 右側の要素を右端に押し込むためのスペーサー
@@ -83,10 +83,10 @@ struct CalendarView: View {
                             Text(weekday)
                                 .foregroundStyle(.keyWhite)
                                 .lineLimit(1)
-                                // 文字サイズ
+                            // 文字サイズ
                                 .font(.headline)
                                 .bold()
-                                // フレーム
+                            // フレーム
                                 .frame(minWidth: 45, minHeight: 45)
                         }  // ForEach（曜日ループ）終了
                     }  // LazyVGrid（曜日ヘッダー）終了
@@ -100,10 +100,10 @@ struct CalendarView: View {
                                 Text("\(cell.day)")
                                     .font(.title2)
                                     .bold()
-                                    // 今日ならライム色、それ以外は白色で表示
+                                // 今日ならライム色、それ以外は白色で表示
                                     .foregroundStyle(cell.textColor)
                                     .frame(minWidth: 45, minHeight: 60)
-                                    // 瞑想時間に応じた背景色を設定
+                                // 瞑想時間に応じた背景色を設定
                                     .background(cell.backgroundColor)
                                     .cornerRadius(10)
                             } else {

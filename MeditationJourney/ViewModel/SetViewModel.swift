@@ -27,8 +27,8 @@ class SetViewModel: ObservableObject {
     private static func loadSound(withKey key: String) -> SoundModel {
         // まず、String型で曲名を引っ張る
         if let raw = UserDefaults.standard.string(forKey: key),
-            // 次に、enum型にする
-            let model = SoundModel(rawValue: raw) {
+           // 次に、enum型にする
+           let model = SoundModel(rawValue: raw) {
             return model
         }  // if let
         // rawとmodelが存在しなければ、デフォルトでeuropa1を引っ張る

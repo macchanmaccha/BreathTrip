@@ -19,7 +19,7 @@ struct MeditationSetView: View {
     /// 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
         isAudioGuideOn
-            ? Image(systemName: "speaker.wave.3.fill") : Image(systemName: "speaker.slash.fill")
+        ? Image(systemName: "speaker.wave.3.fill") : Image(systemName: "speaker.slash.fill")
     }  // speakerIconここまで
     /// 音声ガイドONOFFを管理する変数
     private var speakerStatusText: Text {
@@ -136,15 +136,15 @@ struct MeditationSetView: View {
 
 struct MeditationSetView_Previews: PreviewProvider {
     // ここではpreview用のCoreDataが渡される
-        static let viewModel = MeditatingSetViewModel(context: PersistenceController.preview.container.viewContext)
+    static let viewModel = MeditatingSetViewModel(context: PersistenceController.preview.container.viewContext)
     static var previews: some View {
         MeditationSetView(viewModel: viewModel)
-                // ✅ タブの表示名
-                    .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
-                // ✅ プレビューする端末（プレビューデバイス）を指定
-                    .previewDisplayName("iPhone 16")
-                MeditationSetView(viewModel: viewModel)
-                    .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
-                    .previewDisplayName("iPad Pro (11-inch)")
+        // ✅ タブの表示名
+            .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
+        // ✅ プレビューする端末（プレビューデバイス）を指定
+            .previewDisplayName("iPhone 16")
+        MeditationSetView(viewModel: viewModel)
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
+            .previewDisplayName("iPad Pro (11-inch)")
     }
 }
