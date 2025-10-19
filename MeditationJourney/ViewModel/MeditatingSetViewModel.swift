@@ -107,6 +107,7 @@ class MeditatingSetViewModel: SetViewModel {
         newMeditation.meditationTime = Int32(meditationMinutes)
         // 世界の音
         newMeditation.worldSounds = meditationSoundName.rawValue
+        #if DEBUG
         // デバッグ用：保存するデータの詳細を出力
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy年M月d日"
@@ -114,10 +115,12 @@ class MeditatingSetViewModel: SetViewModel {
         print("日付: \(formatter.string(from: newMeditation.date ?? Date()))")
         print("瞑想時間: \(newMeditation.meditationTime)分")
         print("音の種類: '\(newMeditation.worldSounds ?? "nil")'")
+        #endif
         // 保存処理
         do {
             try context.save()
             print("✅ 瞑想記録を保存しました")
+            #if DEBUG
             // 保存後に全記録を確認（デバッグ用）
             let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
             request.sortDescriptors = [
@@ -139,7 +142,7 @@ class MeditatingSetViewModel: SetViewModel {
                 }
             }
             print("=== 一覧終了 ===")
-
+            #endif
         } catch {
             print("❌保存に失敗しました: \(error)")
         }

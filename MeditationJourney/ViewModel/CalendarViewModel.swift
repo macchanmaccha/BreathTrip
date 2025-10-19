@@ -110,13 +110,14 @@ class CalendarViewModel: ObservableObject {
             // 同じ日付の複数の瞑想記録の時間を合計
             records.reduce(0) { $0 + Int($1.meditationTime) }
         }
-
+        #if DEBUG
         // 結果をシンプルにログ出力
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy年M月d日"
         for (date, total) in totals.sorted(by: { $0.key < $1.key }) {
             print("合計: \(formatter.string(from: date)) \(total)分")
         }
+        #endif
         return totals
     }
     // MARK: - Data Update Methods
