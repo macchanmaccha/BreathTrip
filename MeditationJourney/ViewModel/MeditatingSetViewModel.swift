@@ -107,22 +107,41 @@ class MeditatingSetViewModel: SetViewModel {
         newMeditation.meditationTime = Int32(meditationMinutes)
         // 世界の音
         newMeditation.worldSounds = meditationSoundName.rawValue
+        // デバッグ用：保存するデータの詳細を出力
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy年M月d日"
+        print("=== 瞑想記録を保存します ===")
+        print("日付: \(formatter.string(from: newMeditation.date ?? Date()))")
+        print("瞑想時間: \(newMeditation.meditationTime)分")
+        print("音の種類: '\(newMeditation.worldSounds ?? "nil")'")
         // 保存処理
         do {
             try context.save()
-            print("瞑想記録を保存しました")
+            print("✅ 瞑想記録を保存しました")
+            // 保存後に全記録を確認（デバッグ用）
+            let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
+            request.sortDescriptors = [
+                NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: false)
+            ]
+            let allRecords = try context.fetch(request)
+            print("=== 現在の瞑想記録一覧（全\(allRecords.count)件） ===")
+            if allRecords.isEmpty {
+                print("記録がありません")
+            } else {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy年M月d日"
+                for (index, record) in allRecords.enumerated() {
+                    let recordDate = record.date ?? Date()
+                    let recordWorldSounds = record.worldSounds ?? "音の種類不明"
+                    print(
+                        "\(index + 1). 日付: \(formatter.string(from: recordDate)), 瞑想時間: \(record.meditationTime)分, 音の種類: '\(recordWorldSounds)'"
+                    )
+                }
+            }
+            print("=== 一覧終了 ===")
 
-            // 保存した日付と時間と音をprint
-            let savedDate = newMeditation.date ?? Date()
-            let year = Calendar.current.component(.year, from: savedDate)
-            let month = Calendar.current.component(.month, from: savedDate)
-            let day = Calendar.current.component(.day, from: savedDate)
-            let meditationTime = Int(newMeditation.meditationTime)
-            let worldSounds = newMeditation.worldSounds ?? ""
-
-            print("\(year)年\(month)月\(day)日　　\(meditationTime)分　　\(worldSounds)")
         } catch {
-            print("保存に失敗しました: \(error)")
+            print("❌保存に失敗しました: \(error)")
         }
     }
 }  // MeditatingSetViewModel

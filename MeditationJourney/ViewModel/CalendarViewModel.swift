@@ -76,8 +76,6 @@ class CalendarViewModel: ObservableObject {
             let records = try context.fetch(request)
             // 取得した記録をプロパティに保存
             meditationRecords = records
-            // デバッグ用：取得した記録数をログ出力
-            print("Fetched meditation records for \(month): \(meditationRecords.count) records")
         } catch {
             // エラーが発生した場合
             // デバッグ用：ログ出力
@@ -91,6 +89,14 @@ class CalendarViewModel: ObservableObject {
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
     func calculateDailyMeditationTotals(for records: [MeditationInfo]) -> [Date: Int] {
+        // 各記録の詳細をシンプルにログ出力
+        for record in records {
+            let recordDate = record.date ?? Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy年M月d日"
+            print("記録: \(formatter.string(from: recordDate)) \(record.meditationTime)分")
+        }
+
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(
             grouping: records,
@@ -103,6 +109,13 @@ class CalendarViewModel: ObservableObject {
         ).mapValues { records in
             // 同じ日付の複数の瞑想記録の時間を合計
             records.reduce(0) { $0 + Int($1.meditationTime) }
+        }
+
+        // 結果をシンプルにログ出力
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy年M月d日"
+        for (date, total) in totals.sorted(by: { $0.key < $1.key }) {
+            print("合計: \(formatter.string(from: date)) \(total)分")
         }
         return totals
     }
