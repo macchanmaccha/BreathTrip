@@ -39,7 +39,6 @@ class CalendarViewModel: ObservableObject {
     @Published private(set) var meditationRecords: [MeditationInfo] = []
     /// カレンダー表示用の日付セル情報を格納する配列
     @Published private(set) var dayCells: [DayCell] = []
-    
     // MARK: - Private Properties
     /// CoreDataの操作に必要なコンテキストを保持
     private let context: NSManagedObjectContext
@@ -78,24 +77,14 @@ class CalendarViewModel: ObservableObject {
             meditationRecords = records
         } catch {
             // エラーが発生した場合
-            // デバッグ用：ログ出力
-            print("Fetch error: \(error)")
             // 空の配列を設定
             meditationRecords = []
         }
     }
-    
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
     func calculateDailyMeditationTotals(for records: [MeditationInfo]) -> [Date: Int] {
-        // 各記録の詳細をシンプルにログ出力
-        for record in records {
-            let recordDate = record.date ?? Date()
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy年M月d日"
-            print("記録: \(formatter.string(from: recordDate)) \(record.meditationTime)分")
-        }
         
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(
@@ -110,14 +99,6 @@ class CalendarViewModel: ObservableObject {
             // 同じ日付の複数の瞑想記録の時間を合計
             records.reduce(0) { $0 + Int($1.meditationTime) }
         }
-#if DEBUG
-        // 結果をシンプルにログ出力
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy年M月d日"
-        for (date, total) in totals.sorted(by: { $0.key < $1.key }) {
-            print("合計: \(formatter.string(from: date)) \(total)分")
-        }
-#endif
         return totals
     }
     // MARK: - Data Update Methods
@@ -194,7 +175,6 @@ class CalendarViewModel: ObservableObject {
                 // 前月の日付を配列の先頭に挿入
                 days.insert((date: offsetDate, meditationTime: 0), at: 0)
             }
-            
         }
         // 最終週のオフセットを配列の末尾に追加（翌月の日付）
         if lastWeekEmptyDays > 0 {
@@ -209,7 +189,6 @@ class CalendarViewModel: ObservableObject {
                 // 翌月の日付を配列の末尾に追加
                 days.append((date: offsetDate, meditationTime: 0))
             }
-            
         }
         // 生成したカレンダー日付配列を返す
         return days

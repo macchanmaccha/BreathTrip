@@ -32,8 +32,6 @@ struct ListeningView: View {
                 Button(action: {
                     // pauseにする
                     viewModel.updateState(to: .pause)
-                    print("中断ボタンが押されたよ")
-                    print(viewModel.remainingSeconds)
                 }) {
                     Text("中断する")
                         .tint(.backgroundNavy)
@@ -81,7 +79,6 @@ struct ListeningView: View {
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {

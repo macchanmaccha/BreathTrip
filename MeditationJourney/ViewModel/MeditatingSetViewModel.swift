@@ -52,9 +52,6 @@ class MeditatingSetViewModel: SetViewModel {
                 } else if remainingSeconds == 1 {
                     updateState(to: .start)
                     // タイマーが有効かチェック
-                    print(
-                        "\(#fileID) \(#function) \(#line) \(String(describing: self.timer?.isValid))"
-                    )
                 }  // else ifここまで
             }  // if state == .preStartここまで
         }  // timerHandlerここまで
@@ -67,7 +64,6 @@ class MeditatingSetViewModel: SetViewModel {
             guard let self = self else {
                 return
             }
-            print("瞑想中タイマー\(#fileID) \(#function) \(#line)")
             // 瞑想中なら
             if state == .start {
                 // 1秒より大きいとき
@@ -98,53 +94,10 @@ class MeditatingSetViewModel: SetViewModel {
     // MARK: - Data Management Methods
     /// 瞑想記録をCoreDataに保存するメソッド
     func saveMeditationRecord() {
-        // 新しいMeditationInfoエンティティを作成
-        let newMeditation = MeditationInfo(context: context)
-        // データを設定
-        // 瞑想開始日（カレンダー表示用）
-        newMeditation.date = meditationStartDate ?? Date()
-        // 瞑想時間（分）
-        newMeditation.meditationTime = Int32(meditationMinutes)
-        // 世界の音
-        newMeditation.worldSounds = meditationSoundName.rawValue
-#if DEBUG
-        // デバッグ用：保存するデータの詳細を出力
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy年M月d日"
-        print("=== 瞑想記録を保存します ===")
-        print("日付: \(formatter.string(from: newMeditation.date ?? Date()))")
-        print("瞑想時間: \(newMeditation.meditationTime)分")
-        print("音の種類: '\(newMeditation.worldSounds ?? "nil")'")
-#endif
         // 保存処理
         do {
             try context.save()
-            print("✅ 瞑想記録を保存しました")
-#if DEBUG
-            // 保存後に全記録を確認（デバッグ用）
-            let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
-            request.sortDescriptors = [
-                NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: false)
-            ]
-            let allRecords = try context.fetch(request)
-            print("=== 現在の瞑想記録一覧（全\(allRecords.count)件） ===")
-            if allRecords.isEmpty {
-                print("記録がありません")
-            } else {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy年M月d日"
-                for (index, record) in allRecords.enumerated() {
-                    let recordDate = record.date ?? Date()
-                    let recordWorldSounds = record.worldSounds ?? "音の種類不明"
-                    print(
-                        "\(index + 1). 日付: \(formatter.string(from: recordDate)), 瞑想時間: \(record.meditationTime)分, 音の種類: '\(recordWorldSounds)'"
-                    )
-                }
-            }
-            print("=== 一覧終了 ===")
-#endif
         } catch {
-            print("❌保存に失敗しました: \(error)")
         }
     }
 }  // MeditatingSetViewModel

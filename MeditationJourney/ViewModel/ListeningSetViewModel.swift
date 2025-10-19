@@ -24,7 +24,6 @@ class ListeningSetViewModel: SetViewModel {
                 selectedMinutes = listeningMinutes
                 // 音再生タイマーをセット
                 remainingSeconds = selectedMinutes * 60
-                print("入力した分数は\(remainingSeconds)だよ")
                 // listeningSecondsが0のとき
             } else {
                 remainingSeconds = 0
@@ -43,7 +42,6 @@ class ListeningSetViewModel: SetViewModel {
                 guard let self = self else {
                     return
                 }
-                print("音再生中タイマー\(#fileID) \(#function) \(#line)")
                 // 瞑想中なら
                 if state == .start {
                     // 1秒より大きいとき

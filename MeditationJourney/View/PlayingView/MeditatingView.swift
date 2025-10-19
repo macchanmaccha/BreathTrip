@@ -16,8 +16,6 @@ struct MeditatingView: View {
     @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
-    /// CoreDataのコンテキスト
-    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         ZStack {
             Image(.playBackground)
@@ -56,8 +54,6 @@ struct MeditatingView: View {
                             // pauseにする
                             viewModel.updateState(to: .pause)
                         }
-                        print("中断ボタンが押されたよ")
-                        print(viewModel.remainingSeconds)
                     }) {
                         Text("中断する")
                             .tint(.backgroundNavy)
@@ -121,7 +117,6 @@ struct MeditatingView: View {
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
@@ -219,8 +214,6 @@ struct MeditatingView: View {
         default:
             break
         }
-        print("中断ボタンが押されたよ")
-        print(viewModel.remainingSeconds)
     }
     /// 中断アラートのNOボタンアクション
     private func handleStopAlertNoAction() {
