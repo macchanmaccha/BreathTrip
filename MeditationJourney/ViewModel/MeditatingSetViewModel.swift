@@ -98,6 +98,7 @@ class MeditatingSetViewModel: SetViewModel {
         do {
             try context.save()
         } catch {
+            print("瞑想記録の保存に失敗: \(error)")
         }
     }
 }  // MeditatingSetViewModel

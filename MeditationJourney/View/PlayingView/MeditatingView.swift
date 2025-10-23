@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeditatingView: View {
     /// MeditatingSetViewModel
-    @StateObject var viewModel: MeditatingSetViewModel
+    @ObservedObject var viewModel: MeditatingSetViewModel
     /// 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     /// 瞑想終了アラートを管理する変数
@@ -130,71 +130,6 @@ struct MeditatingView: View {
             Text("おつかれさまでした")
         }  // .alertここまで
     }  // bodyここまで
-    // MARK: - View Components
-    /// 背景画像ビュー
-    private var backgroundImageView: some View {
-        Image(.playBackground)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .edgesIgnoringSafeArea(.all)
-    }
-    /// タイマー表示ビュー
-    @ViewBuilder
-    private var timerDisplayView: some View {
-        if isPreparationState {
-            preparationTimerView
-        } else if isMeditationState {
-            meditationTimerView
-        }
-    }
-    /// 準備タイマー表示
-    private var preparationTimerView: some View {
-        Text("開始まで\n\(viewModel.remainingSeconds)")
-            .multilineTextAlignment(.center)
-            .foregroundStyle(.keyWhite)
-            .font(.system(size: 30))
-            .frame(width: 200, height: 200)
-            .bold()
-    }
-    /// 瞑想タイマー表示
-    private var meditationTimerView: some View {
-        Text(viewModel.remainingSeconds.formattedTime())
-            .foregroundStyle(.keyWhite)
-            .font(.system(size: 80))
-            .frame(width: 300, height: 200)
-            .bold()
-    }
-    /// 中断ボタン表示判定
-    private var shouldShowStopButton: Bool {
-        viewModel.state != .end
-    }
-    /// 中断ボタンビュー
-    private var stopButtonView: some View {
-        Button(action: handleStopButtonAction) {
-            Text("中断する")
-                .tint(.backgroundNavy)
-                .font(.title)
-        }
-        .padding(25)
-        .background(.keyWhite)
-        .cornerRadius(10)
-        .alert("", isPresented: $isShowStopAlert) {
-            stopAlertButtons
-        } message: {
-            Text("中断して前の画面に戻りますか？")
-        }
-    }
-    /// 中断アラートのボタン
-    private var stopAlertButtons: some View {
-        Group {
-            Button("NO") {
-                handleStopAlertNoAction()
-            }
-            Button("YES") {
-                handleStopAlertYesAction()
-            }
-        }
-    }
     // MARK: - Helper Methods
     /// 準備状態かどうか
     private var isPreparationState: Bool {

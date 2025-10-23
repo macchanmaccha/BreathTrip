@@ -36,7 +36,7 @@ class CalendarViewModel: ObservableObject {
     /// 現在表示中の年月を管理する状態変数、初期値は今日の日付
     @Published private(set) var displayDate: Date = Date()
     /// CoreDataから取得した瞑想記録を格納する配列
-    @Published private(set) var meditationRecords: [MeditationInfo] = []
+    private(set) var meditationRecords: [MeditationInfo] = []
     /// カレンダー表示用の日付セル情報を格納する配列
     @Published private(set) var dayCells: [DayCell] = []
     // MARK: - Private Properties
@@ -85,7 +85,6 @@ class CalendarViewModel: ObservableObject {
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
     func calculateDailyMeditationTotals(for records: [MeditationInfo]) -> [Date: Int] {
-        
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(
             grouping: records,
@@ -189,7 +188,7 @@ class CalendarViewModel: ObservableObject {
                 // 翌月の日付を配列の末尾に追加
                 days.append((date: offsetDate, meditationTime: 0))
             }
-        }
+    }
         // 生成したカレンダー日付配列を返す
         return days
     }  // createCalendarDatesメソッド終了
