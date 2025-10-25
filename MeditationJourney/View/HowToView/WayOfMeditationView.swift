@@ -8,10 +8,28 @@
 import SwiftUI
 
 struct WayOfMeditationView: View {
+    /// 画面を閉じるプロパティラッパー
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+        ZStack {
+            // 背景色を紺色に設定
+            Color("backgroundNavy")
+                .edgesIgnoringSafeArea(.all)
+        }  // ZStackここまで
+        .navigationBarBackButtonHidden(true)
+        // 前画面へ戻る
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.backward")
+                        .tint(Color(.keyWhite))
+                }  // Buttonここまで
+            }  // ToolbarItemここまで
+        }
+    }  // bodyここまで
+}  // Viewここまで
 
 #Preview {
     WayOfMeditationView()
