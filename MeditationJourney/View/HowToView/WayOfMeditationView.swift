@@ -21,12 +21,12 @@ struct WayOfMeditationView: View {
                 VStack(spacing: 24) {
                     // タイトル
                     VStack(spacing: 8) {
-                        Text("呼吸瞑想")
+                        Text("瞑想の基本")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(Color("keyWhite"))
 
-                        Text("心を落ち着かせる基本の瞑想法")
+                        Text("このアプリでは呼吸瞑想を基本としています")
                             .font(.subheadline)
                             .foregroundColor(Color("keyWhite").opacity(0.8))
                     }
@@ -39,7 +39,7 @@ struct WayOfMeditationView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(Color("keyWhite"))
 
-                        Text("呼吸に意識を向けることで、心を静め、今この瞬間に集中する瞑想法です。")
+                        Text("呼吸に意識を向けることで、心を静め、今この瞬間に集中する瞑想法です。このアプリでは、世界の音を聴きながら呼吸瞑想を行います。")
                             .font(.body)
                             .foregroundColor(Color("keyWhite").opacity(0.9))
                             .lineSpacing(4)
