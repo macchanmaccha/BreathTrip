@@ -38,7 +38,6 @@ struct ExplanationView: View {
                         .background(Color(.backgroundNavy))
                         .foregroundColor(.white)
                         .cornerRadius(8)
-                        
                     }
                     .padding(5)
                     NavigationLink(destination: EffectOfMeditationView()) {
