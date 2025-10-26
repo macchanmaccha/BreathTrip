@@ -21,7 +21,7 @@ struct WayOfMeditationView: View {
                 VStack(spacing: 24) {
                     // タイトル
                     VStack(spacing: 8) {
-                        Text("瞑想の基本")
+                        Text("瞑想のやりかた")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(Color("keyWhite"))
@@ -48,7 +48,7 @@ struct WayOfMeditationView: View {
 
                     // ステップ
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("やり方")
+                        Text("やりかた")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundColor(Color("keyWhite"))
