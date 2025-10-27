@@ -14,7 +14,7 @@ struct MapView: View {
     // マップの中心の情報、緯度経度、範囲
     @State private var region: MapCameraPosition = .region(MKCoordinateRegion(
         center: .init(latitude: 35.682839, longitude: 139.759455),
-        span: MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
+        span: MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 60)
     ))
     var body: some View {
         VStack {
