@@ -33,7 +33,7 @@ class SpotListViewModel: ObservableObject {
     // 60分以上達成の音の場所を計算、抽出するメソッド
     func calculateAchievedSpots() {
         // グループ化して合計時間を計算
-        let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds })
+        let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds ?? "" })
             .mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
         // 60分以上のスポットのみ抽出して保持
         achievedSpots = spotList.filter {

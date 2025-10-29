@@ -79,6 +79,7 @@ class CalendarViewModel: ObservableObject {
             // エラーが発生した場合
             // 空の配列を設定
             meditationRecords = []
+            print("瞑想記録の取得に失敗: \(error)")
         }
     }
     // MARK: - Helper Functions
@@ -161,7 +162,7 @@ class CalendarViewModel: ObservableObject {
         // 最初と最後の日付を取得して週のオフセットを計算
         // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
         let firstWeekEmptyDays = startOfMonth.weekday() - 1
-        // 最終週のオフセット日数を計算（月の最終日が何曜日かによって翌月の日付を何日分表示するか）
+        // 最終週のオフセット日数を計算（月の開始日が何曜日かによって翌月の日付を何日分表示するか）
         let lastWeekEmptyDays = 7 - startOfMonth.weekday()
         // 初週のオフセットを配列の先頭に追加（前月の日付）
         if firstWeekEmptyDays > 0 {
