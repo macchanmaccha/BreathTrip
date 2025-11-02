@@ -30,7 +30,8 @@ struct PersistenceController {
     /// アプリ全体で共有するCoreDataインスタンス
     /// 使用例:PersistenceController.shared.container.viewContext
     static let shared = PersistenceController()
-    /// SwiftUIプレビュー用のいんめ
+    /// SwiftUIプレビュー用のインメモリデータベース（サンプルデータ付き）
+    /// 使用例: PersistenceController.preview.container.viewContext
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
@@ -48,7 +49,6 @@ struct PersistenceController {
         do {
             try viewContext.save()
         } catch {
-            // ⚠️本番環境では適切なエラーハンドリングに変更必要
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
@@ -67,7 +67,6 @@ struct PersistenceController {
         // 永続ストア（データベースファイル）を読み込み
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
-                // ⚠️本番環境では適切なエラーハンドリングに変更必要
                 // 考えられる原因：ディスク容量不足、権限エラー、モデルバージョン不一致など
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }

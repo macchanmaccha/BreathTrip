@@ -59,18 +59,12 @@ class SpotListViewModel: ObservableObject {
     }
     // 60分以上達成の音の場所を計算、抽出するメソッド
     func calculateAchievedSpots() {
-        // 瞑想記録を音の種類（worldSounds）でグループ化し、各グループの合計時間を計算
+        // グループ化して合計時間を計算
         let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds ?? "" })
-            .mapValues { $0.reduce(0) { $0 + Int($1.meditationTime) } }
-        print("瞑想時間の合計: \(totals)")
-        // 60分以上の瞑想時間を持つスポットのみを抽出してピン留め対象に設定
-        achievedSpots = spotList.filter { spot in
-            let totalTime = totals[spot.spotName] ?? 0
-            let isAchieved = totalTime >= 1
-            //            if isAchieved {
-            //                print("達成: \(spot.spotName) - \(totalTime)分")
-            //            }
-            return isAchieved
+            .mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
+        // 60分以上のスポットのみ抽出して保持
+        achievedSpots = spotList.filter {
+            (totals[$0.spotName] ?? 0) >= 60
         }
 
         print("達成したスポット数: \(achievedSpots.count)")

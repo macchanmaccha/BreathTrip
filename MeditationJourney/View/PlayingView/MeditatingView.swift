@@ -9,15 +9,13 @@ import SwiftUI
 
 struct MeditatingView: View {
     /// MeditatingSetViewModel
-    @StateObject var viewModel: MeditatingSetViewModel
+    @ObservedObject var viewModel: MeditatingSetViewModel
     /// 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     /// 瞑想終了アラートを管理する変数
     @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
-    /// CoreDataのコンテキスト
-    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         ZStack {
             Image(.playBackground)
@@ -50,14 +48,12 @@ struct MeditatingView: View {
                         // preStartだったら
                         if viewModel.state == .preStart {
                             // prePauseにする
-                            viewModel.updateState(newState: .prePause)
+                            viewModel.updateState(to: .prePause)
                             // startだったら
                         } else if viewModel.state == .start {
                             // pauseにする
-                            viewModel.updateState(newState: .pause)
+                            viewModel.updateState(to: .pause)
                         }
-                        print("中断ボタンが押されたよ")
-                        print(viewModel.remainingSeconds)
                     }) {
                         Text("中断する")
                             .tint(.backgroundNavy)
@@ -72,11 +68,11 @@ struct MeditatingView: View {
                             // prePauseだったら
                             if viewModel.state == .prePause {
                                 // preStartにする
-                                viewModel.updateState(newState: .preStart)
+                                viewModel.updateState(to: .preStart)
                                 // pauseだったら
                             } else if viewModel.state == .pause {
                                 // startにする
-                                viewModel.updateState(newState: .start)
+                                viewModel.updateState(to: .start)
                             }
                         }
                         // YES
@@ -93,7 +89,7 @@ struct MeditatingView: View {
         }  // ZStack
         .onAppear {
             // 画面起動時にprestart状態にする
-            viewModel.updateState(newState: .preStart)
+            viewModel.updateState(to: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
         }
@@ -121,7 +117,6 @@ struct MeditatingView: View {
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
@@ -135,6 +130,42 @@ struct MeditatingView: View {
             Text("おつかれさまでした")
         }  // .alertここまで
     }  // bodyここまで
+    // MARK: - Helper Methods
+    /// 準備状態かどうか
+    private var isPreparationState: Bool {
+        viewModel.state == .preStart || viewModel.state == .prePause
+    }
+    /// 瞑想状態かどうか
+    private var isMeditationState: Bool {
+        viewModel.state == .start || viewModel.state == .pause
+    }
+    /// 中断ボタンアクション
+    private func handleStopButtonAction() {
+        switch viewModel.state {
+        case .preStart:
+            viewModel.updateState(to: .prePause)
+        case .start:
+            viewModel.updateState(to: .pause)
+        default:
+            break
+        }
+    }
+    /// 中断アラートのNOボタンアクション
+    private func handleStopAlertNoAction() {
+        switch viewModel.state {
+        case .prePause:
+            viewModel.updateState(to: .preStart)
+        case .pause:
+            viewModel.updateState(to: .start)
+        default:
+            break
+        }
+    }
+    /// 中断アラートのYESボタンアクション
+    private func handleStopAlertYesAction() {
+        viewModel.stopTimer()
+        dismiss()
+    }
 }  // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {

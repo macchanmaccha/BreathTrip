@@ -14,8 +14,8 @@ class MeditatingSetViewModel: SetViewModel {
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
-    var timerHandler: Timer?
-    /// 瞑想開始時刻を記録する変数
+    var timer: Timer?
+    /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
     private let context: NSManagedObjectContext
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
@@ -26,19 +26,19 @@ class MeditatingSetViewModel: SetViewModel {
         remainingSeconds = 5
     }
     // 状態の更新
-    func updateState(newState: State) {
-        if state == .preStart && newState == .start {
+    func updateState(to: State) {
+        if state == .preStart && to == .start {
             // 瞑想タイマーをセット
             remainingSeconds = meditationMinutes * 60
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
-        state = newState
+        state = to
     }
     // 瞑想前タイマー
     func startPreparationTimer() {
         stopTimer()
-        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
             }
@@ -50,11 +50,8 @@ class MeditatingSetViewModel: SetViewModel {
                     remainingSeconds -= 1
                     // 1の場合（0秒となる前）
                 } else if remainingSeconds == 1 {
-                    updateState(newState: .start)
+                    updateState(to: .start)
                     // タイマーが有効かチェック
-                    print(
-                        "\(#fileID) \(#function) \(#line) \(String(describing: self.timerHandler?.isValid))"
-                    )
                 }  // else ifここまで
             }  // if state == .preStartここまで
         }  // timerHandlerここまで
@@ -63,11 +60,10 @@ class MeditatingSetViewModel: SetViewModel {
     func startMeditationTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
         stopTimer()
-        timerHandler = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
             }
-            print("瞑想中タイマー\(#fileID) \(#function) \(#line)")
             // 瞑想中なら
             if state == .start {
                 // 1秒より大きいとき
@@ -85,9 +81,9 @@ class MeditatingSetViewModel: SetViewModel {
     /// タイマー停止・無効
     func stopTimer() {
         // タイマー停止
-        timerHandler?.invalidate()
+        timer?.invalidate()
         // タイマー無効
-        timerHandler = nil
+        timer = nil
     }
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
@@ -98,55 +94,11 @@ class MeditatingSetViewModel: SetViewModel {
     // MARK: - Data Management Methods
     /// 瞑想記録をCoreDataに保存するメソッド
     func saveMeditationRecord() {
-        // 新しいMeditationInfoエンティティを作成
-        let newMeditation = MeditationInfo(context: context)
-        // データを設定
-        // 瞑想開始日（カレンダー表示用）
-        newMeditation.date = meditationStartDate ?? Date()
-        // 瞑想時間（分）
-        newMeditation.meditationTime = Int32(meditationMinutes)
-        // 世界の音
-        newMeditation.worldSounds = meditationSoundName.rawValue
-
-        // デバッグ用：保存するデータの詳細を出力
-        let dateString = newMeditation.date?.formatted(date: .abbreviated, time: .omitted) ?? "日付不明"
-        let timeString = newMeditation.date?.formatted(date: .omitted, time: .shortened) ?? "時刻不明"
-        print("=== 瞑想記録を保存します ===")
-        print("日付: \(String(describing: newMeditation.date))")
-        print("瞑想時間: \(newMeditation.meditationTime)分")
-        print("音の種類: '\(newMeditation.worldSounds ?? "nil")'")
-
         // 保存処理
         do {
             try context.save()
-            print("✅ 瞑想記録を保存しました")
-
-            // 保存後に全記録を確認（デバッグ用）
-            let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
-            request.sortDescriptors = [
-                NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: false)
-            ]
-            let allRecords = try context.fetch(request)
-
-            print("=== 現在の瞑想記録一覧（全\(allRecords.count)件） ===")
-            if allRecords.isEmpty {
-                print("記録がありません")
-            } else {
-                for (index, record) in allRecords.enumerated() {
-                    let recordDateString =
-                        record.date?.formatted(date: .abbreviated, time: .omitted) ?? "日付不明"
-                    let recordTimeString =
-                        record.date?.formatted(date: .omitted, time: .shortened) ?? "時刻不明"
-                    let recordWorldSounds = record.worldSounds ?? "音の種類不明"
-                    print(
-                        "\(index + 1). 日付: \(recordDateString) \(recordTimeString), 瞑想時間: \(record.meditationTime)分, 音の種類: '\(recordWorldSounds)'"
-                    )
-                }
-            }
-            print("=== 一覧終了 ===")
-
         } catch {
-            print("❌ 保存に失敗しました: \(error)")
+            print("瞑想記録の保存に失敗: \(error)")
         }
     }
 }  // MeditatingSetViewModel

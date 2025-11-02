@@ -16,7 +16,7 @@ struct DayCell: Identifiable {
     // 日付の日部分（1-31）
     let day: Int
     // 現在表示中の月に属するかどうか
-    let isInCurrentMonth: Bool
+    let isCurrentMonth: Bool
     // 今日の日付かどうか
     let isToday: Bool
     // その日の瞑想時間（分）
@@ -36,17 +36,16 @@ class CalendarViewModel: ObservableObject {
     /// 現在表示中の年月を管理する状態変数、初期値は今日の日付
     @Published private(set) var displayDate: Date = Date()
     /// CoreDataから取得した瞑想記録を格納する配列
-    @Published private(set) var meditationRecords: [MeditationInfo] = []
+    private(set) var meditationRecords: [MeditationInfo] = []
     /// カレンダー表示用の日付セル情報を格納する配列
     @Published private(set) var dayCells: [DayCell] = []
-
     // MARK: - Private Properties
     /// CoreDataの操作に必要なコンテキストを保持
     private let context: NSManagedObjectContext
     /// 日付計算に使用するカレンダーオブジェクト
     private let calendar = Calendar.current
     // カレンダーグリッドの総日数（6週間 × 7日 = 42日）
-    private var totalCalendarDays: Int = 42
+    private let totalCalendarDays: Int = 42
     // MARK: - Initialization
     /// CoreDataのコンテキストを受け取るイニシャライザー
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
@@ -54,37 +53,39 @@ class CalendarViewModel: ObservableObject {
         self.context = context
     }
     // MARK: - CoreData Methods
-    /// CoreDataから瞑想記録を取得する
-    func fetchMeditationRecords() {
+    /// 指定された月の瞑想記録をCoreDataから取得する（NSPredicateで月別フィルタリングを適用）
+    func fetchMeditationRecords(in month: Date) {
         // MeditationInfoエンティティのフェッチリクエストを作成
         let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
+        // 指定月の開始日を計算
+        let startOfMonth = month.startOfMonth()
+        // 翌月の開始日を計算
+        guard let nextMonthStart = calendar.date(byAdding: .month, value: 1, to: startOfMonth)
+        else {
+            meditationRecords = []
+            return
+        }
+        // 月別フィルタリングの条件を設定
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@", startOfMonth as NSDate, nextMonthStart as NSDate)
         // 日付の昇順でソートする設定を追加
         request.sortDescriptors = [NSSortDescriptor(keyPath: \MeditationInfo.date, ascending: true)]
         do {
-            // CoreDataから瞑想記録を取得
+            // CoreDataから指定月の瞑想記録を取得
             let records = try context.fetch(request)
             // 取得した記録をプロパティに保存
             meditationRecords = records
-            // デバッグ用：取得した記録数をログ出力
-            print("CalendarViewModelで瞑想記録を取得しました: \(meditationRecords.count)件")
-
-            // 日付ごとの瞑想時間合計を表示
-            let dailyTotals = checkDate(from: meditationRecords)
-            print("日付ごとの瞑想時間合計: \(dailyTotals)")
-
         } catch {
             // エラーが発生した場合
-            // デバッグ用：ログ出力
-            print("Fetch error: \(error)")
             // 空の配列を設定
             meditationRecords = []
+            print("瞑想記録の取得に失敗: \(error)")
         }
     }
-
     // MARK: - Helper Functions
     /// 日付に応じた瞑想時間の設定 計算した結果を格納する
     /// 同じ日付の複数の瞑想記録がある場合、時間を合計して返す
-    func checkDate(from records: [MeditationInfo]) -> [Date: Int] {
+    func calculateDailyMeditationTotals(for records: [MeditationInfo]) -> [Date: Int] {
         // 日付でグループ化して、同じ日付の瞑想時間を合計
         let totals = Dictionary(
             grouping: records,
@@ -103,8 +104,10 @@ class CalendarViewModel: ObservableObject {
     // MARK: - Data Update Methods
     /// カレンダーデータと瞑想記録を更新する
     func updateCalendarCells() {
+        // 表示中の月の瞑想記録を取得
+        fetchMeditationRecords(in: displayDate)
         // 指定月のカレンダー日付配列を生成
-        var result: [(date: Date, meditationTime: Int)] = createCalendarDates(displayDate)
+        var result: [(date: Date, meditationTime: Int)] = createCalendarDates(for: displayDate)
         // カレンダーグリッドを6週間（42日）で統一するため、不足分をダミーで補完
         while result.count < totalCalendarDays {
             // 最後の日付から1日ずつ追加
@@ -120,7 +123,7 @@ class CalendarViewModel: ObservableObject {
                 // 日付から日部分を抽出
                 day: calendar.component(.day, from: record.date),
                 // 表示月と同じ月かどうかを判定
-                isInCurrentMonth: calendar.isDate(
+                isCurrentMonth: calendar.isDate(
                     record.date, equalTo: displayDate, toGranularity: .month),
                 // 今日の日付かどうかを判定
                 isToday: calendar.isDateInToday(record.date),
@@ -131,9 +134,9 @@ class CalendarViewModel: ObservableObject {
     }
     /// 指定月のカレンダー日付配列を生成するメソッド
     /// 前月・翌月のオフセット日付も含めて完全なカレンダーグリッドを作成
-    func createCalendarDates(_ date: Date) -> [(date: Date, meditationTime: Int)] {
+    func createCalendarDates(for date: Date) -> [(date: Date, meditationTime: Int)] {
         // 日付ごとの合計瞑想時間を事前に計算
-        let dailyMeditationTotals = checkDate(from: meditationRecords)
+        let dailyMeditationTotals = calculateDailyMeditationTotals(for: meditationRecords)
         // 指定された日付の月の開始日を取得
         let startOfMonth = date.startOfMonth()
         // 指定された月の日数を取得
@@ -159,36 +162,34 @@ class CalendarViewModel: ObservableObject {
         // 最初と最後の日付を取得して週のオフセットを計算
         // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
         let firstWeekEmptyDays = startOfMonth.weekday() - 1
-        // 最終週のオフセット日数を計算（月の最終日が何曜日かによって翌月の日付を何日分表示するか）
+        // 最終週のオフセット日数を計算（月の開始日が何曜日かによって翌月の日付を何日分表示するか）
         let lastWeekEmptyDays = 7 - startOfMonth.weekday()
         // 初週のオフセットを配列の先頭に追加（前月の日付）
         if firstWeekEmptyDays > 0 {
             for i in 1...firstWeekEmptyDays {
                 // 前月の日付を計算
                 let offsetDate =
-                    calendar.date(
-                        byAdding: .day, value: -(firstWeekEmptyDays - i + 1), to: startOfMonth)
-                    ?? Date()
+                calendar.date(
+                    byAdding: .day, value: -(firstWeekEmptyDays - i + 1), to: startOfMonth)
+                ?? Date()
                 // 前月の日付を配列の先頭に挿入
                 days.insert((date: offsetDate, meditationTime: 0), at: 0)
             }
-
         }
         // 最終週のオフセットを配列の末尾に追加（翌月の日付）
         if lastWeekEmptyDays > 0 {
             for i in 1...lastWeekEmptyDays {
                 // 翌月の日付を計算
                 let offsetDate =
-                    calendar.date(
-                        byAdding: .day, value: i,
-                        to: calendar.date(
-                            byAdding: .day, value: daysInMonth - 1, to: startOfMonth)
-                            ?? Date()) ?? Date()
+                calendar.date(
+                    byAdding: .day, value: i,
+                    to: calendar.date(
+                        byAdding: .day, value: daysInMonth - 1, to: startOfMonth)
+                    ?? Date()) ?? Date()
                 // 翌月の日付を配列の末尾に追加
                 days.append((date: offsetDate, meditationTime: 0))
             }
-
-        }
+    }
         // 生成したカレンダー日付配列を返す
         return days
     }  // createCalendarDatesメソッド終了

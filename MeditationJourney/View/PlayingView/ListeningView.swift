@@ -31,9 +31,7 @@ struct ListeningView: View {
                 // 中断ボタン
                 Button(action: {
                     // pauseにする
-                    viewModel.updateState(newState: .pause)
-                    print("中断ボタンが押されたよ")
-                    print(viewModel.remainingSeconds)
+                    viewModel.updateState(to: .pause)
                 }) {
                     Text("中断する")
                         .tint(.backgroundNavy)
@@ -46,7 +44,7 @@ struct ListeningView: View {
                     // NO
                     Button("NO") {
                         // startにする
-                        viewModel.updateState(newState: .start)
+                        viewModel.updateState(to: .start)
                     }
                     // YES
                     Button("YES") {
@@ -61,9 +59,9 @@ struct ListeningView: View {
         }  // ZStack
         .onAppear {
             // 一度状態をendにする
-            viewModel.updateState(newState: .end)
+            viewModel.updateState(to: .end)
             // その後start状態にする
-            viewModel.updateState(newState: .start)
+            viewModel.updateState(to: .start)
         }
         .onChange(of: viewModel.state) {
             switch viewModel.state {
@@ -81,7 +79,6 @@ struct ListeningView: View {
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
