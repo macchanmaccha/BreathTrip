@@ -1,5 +1,5 @@
 //
-//  MapPinModel.swift
+//  SpotListModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2023/10/28.
@@ -88,31 +88,31 @@ struct SpotListModel {
             spotName: "タンザニア",
             coordinate: CLLocationCoordinate2D(latitude: -6.3690, longitude: 34.8888)),
         SpotDataModel(
-            spotName: "アフリカ音5",
-            coordinate: CLLocationCoordinate2D(latitude: 0.0236, longitude: 37.9062)),
+            spotName: "エチオピア",
+            coordinate: CLLocationCoordinate2D(latitude: 9.1450, longitude: 40.4897)),
         SpotDataModel(
-            spotName: "アフリカ音6",
-            coordinate: CLLocationCoordinate2D(latitude: 9.6412, longitude: 8.0000)),
+            spotName: "エリトリア",
+            coordinate: CLLocationCoordinate2D(latitude: 15.1794, longitude: 39.7823)),
 
         // 北アメリカ
         SpotDataModel(
             spotName: "アメリカ",
             coordinate: CLLocationCoordinate2D(latitude: 39.8283, longitude: -98.5795)),
         SpotDataModel(
-            spotName: "北アメリカ2",
+            spotName: "カリブ海",
+            coordinate: CLLocationCoordinate2D(latitude: 18.5000, longitude: -66.9167)),
+        SpotDataModel(
+            spotName: "カナダ",
             coordinate: CLLocationCoordinate2D(latitude: 56.1304, longitude: -106.3468)),
         SpotDataModel(
-            spotName: "北アメリカ3",
+            spotName: "マヤ地域",
             coordinate: CLLocationCoordinate2D(latitude: 23.6345, longitude: -102.5528)),
         SpotDataModel(
-            spotName: "北アメリカ4",
-            coordinate: CLLocationCoordinate2D(latitude: 15.7835, longitude: -90.2308)),
+            spotName: "メキシコ",
+            coordinate: CLLocationCoordinate2D(latitude: 19.4326, longitude: -99.1332)),
         SpotDataModel(
-            spotName: "北アメリカ5",
-            coordinate: CLLocationCoordinate2D(latitude: 12.1696, longitude: -68.9900)),
-        SpotDataModel(
-            spotName: "北アメリカ6",
-            coordinate: CLLocationCoordinate2D(latitude: 18.2208, longitude: -66.5901)),
+            spotName: "グアテマラ",
+            coordinate: CLLocationCoordinate2D(latitude: 14.6407, longitude: -90.5132)),
 
         // 南アメリカ
         SpotDataModel(
@@ -122,16 +122,16 @@ struct SpotListModel {
             spotName: "ベネズエラ",
             coordinate: CLLocationCoordinate2D(latitude: 6.4238, longitude: -66.5897)),
         SpotDataModel(
-            spotName: "南アメリカ3",
-            coordinate: CLLocationCoordinate2D(latitude: -38.4161, longitude: -63.6167)),
+            spotName: "パラグアイ",
+            coordinate: CLLocationCoordinate2D(latitude: -25.2744, longitude: -57.5660)),
         SpotDataModel(
-            spotName: "南アメリカ4",
-            coordinate: CLLocationCoordinate2D(latitude: -9.1900, longitude: -75.0152)),
+            spotName: "コスタリカ",
+            coordinate: CLLocationCoordinate2D(latitude: 9.9286, longitude: -84.0907)),
         SpotDataModel(
-            spotName: "南アメリカ5",
-            coordinate: CLLocationCoordinate2D(latitude: -1.8312, longitude: -78.1834)),
+            spotName: "ホンジュラス",
+            coordinate: CLLocationCoordinate2D(latitude: 15.7835, longitude: -86.2385)),
         SpotDataModel(
-            spotName: "南アメリカ6",
-            coordinate: CLLocationCoordinate2D(latitude: -16.2902, longitude: -63.5887))
+            spotName: "ニカラグア",
+            coordinate: CLLocationCoordinate2D(latitude: 12.1696, longitude: -86.2413))
     ]
 }

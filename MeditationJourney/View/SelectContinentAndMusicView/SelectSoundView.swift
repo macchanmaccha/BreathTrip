@@ -25,7 +25,7 @@ struct SelectSoundView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Text("音を選択")
+                Text("国・地域を選択")
                     .foregroundStyle(.keyWhite)
                     .font(.title)
                     .padding()

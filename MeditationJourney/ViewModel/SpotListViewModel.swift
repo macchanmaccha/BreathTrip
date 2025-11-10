@@ -1,5 +1,5 @@
 //
-//  SpotPinViewModel.swift
+//  SpotListViewModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2023/10/28.
@@ -44,16 +44,9 @@ class SpotListViewModel: ObservableObject {
         do {
             // CoreDataから実際にデータを取得
             meditationRecords = try context.fetch(request)
-            print("SpotListViewModelで瞑想記録を取得しました: \(meditationRecords.count)件")
-
-            // 音の種類ごとの瞑想時間合計を表示
-            let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds ?? "" })
-                .mapValues { $0.reduce(0) { $0 + Int($1.meditationTime) } }
-            print("音の種類ごとの瞑想時間合計: \(totals)")
-
         } catch {
-            // エラーが発生した場合は空の配列を設定
             print("瞑想記録の取得に失敗しました: \(error)")
+            // エラーが発生した場合は空の配列を設定
             meditationRecords = []
         }
     }
@@ -61,12 +54,10 @@ class SpotListViewModel: ObservableObject {
     func calculateAchievedSpots() {
         // グループ化して合計時間を計算
         let totals = Dictionary(grouping: meditationRecords, by: { $0.worldSounds ?? "" })
-            .mapValues { $0.reduce(0) { $0 + $1.meditationTime } }
+            .mapValues { $0.reduce(0) { $0 + Int($1.meditationTime) } }
         // 60分以上のスポットのみ抽出して保持
         achievedSpots = spotList.filter {
-            (totals[$0.spotName] ?? 0) >= 60
+            (totals[$0.spotName] ?? 0) >= 1
         }
-
-        print("達成したスポット数: \(achievedSpots.count)")
     }  // func calculateAchievedSpots
 }  // SpotListViewModelここまで

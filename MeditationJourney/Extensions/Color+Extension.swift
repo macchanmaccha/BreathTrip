@@ -15,15 +15,15 @@ extension Color {
     static func backgroundStyle(for meditationTime: Int) -> Color {
         switch meditationTime {
         // 瞑想時間が1〜20分だったとき
-        case 1...2:
+        case 1...20:
             // firstStageBlue
             return .firstStageBlue
         // 瞑想時間が21〜40分だったとき
-        case 3...4:
+        case 20...40:
             // secondStageBlue
             return .secondStageBlue
-        // 瞑想時間が41〜60分だったとき
-        case 5...6:
+        // 瞑想時間が41分以上だったとき
+        case 41...Int.max:
             // thirdStageBlue
             return .thirdStageBlue
         // 瞑想しなかったとき
