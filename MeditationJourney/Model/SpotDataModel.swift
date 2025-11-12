@@ -1,5 +1,5 @@
 //
-//  MapSpotModel.swift
+//  SpotDataModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2023/10/27.
@@ -10,15 +10,18 @@ import MapKit
 
 // Identifiableプロトコルを利用して、ピンのスポットの情報をまとめる構造体
 struct SpotDataModel: Identifiable {
-    let id = UUID()
+    // spotNameをidとして使用（一意で安定した値）
+    var id: String { spotName }
     // 場所の名前
     let spotName: String
     // 緯度
-    let latitude: Double
-    // 経度
-    let longitude: Double
-    // 緯度経度
-    var coordinate: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    var latitude: Double {
+        coordinate.latitude
     }
+    // 経度
+    var longitude: Double {
+        coordinate.longitude
+    }
+    // 緯度経度
+    let coordinate: CLLocationCoordinate2D
 }

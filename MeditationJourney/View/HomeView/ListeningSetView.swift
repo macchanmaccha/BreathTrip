@@ -24,7 +24,7 @@ struct ListeningSetView: View {
                 .edgesIgnoringSafeArea(.all)
             // 背景枠
             Rectangle()
-                .fill(Color(.keyWhite))
+                .fill(.keyWhite)
                 .cornerRadius(8)
                 .opacity(0.6)
                 .frame(width: 400, height: 400)
@@ -34,36 +34,39 @@ struct ListeningSetView: View {
                 HStack {
                     Text("時間")
                         .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
                         ForEach(minutesOptions, id: \.self) { minute in
-                               let minuteText = minute != 0 ? "\(minute)分" : "時間制限なし"
-                               Text(minuteText)
-                                   .tag(minute)
-                           }
-                    } // Pickerここまで
-                    .colorMultiply(Color(.backgroundNavy))
+                            let minuteText = minute != 0 ? "\(minute)分" : "時間制限なし"
+                            Text(minuteText)
+                                .tag(minute)
+                        }
+                    }  // Pickerここまで
+                    .colorMultiply(.backgroundNavy)
                     .scaleEffect(CGSize(width: 1.25, height: 1.25))
                     .pickerStyle(MenuPickerStyle())
-                } // HStackここまで
-                .foregroundColor(Color(.backgroundNavy))
+                    .onChange(of: viewModel.listeningMinutes) {
+                        viewModel.saveListeningMinutes()
+                    }
+                }  // HStackここまで
+                .foregroundStyle(.backgroundNavy)
                 .frame(width: 200)
                 .padding()
                 // 音設定
                 HStack {
                     Text("音")
                         .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
                         Text("\(viewModel.listeningSoundName.rawValue)>")
                             .font(.title2)
-                            .foregroundColor(Color(.backgroundNavy))
+                            .foregroundStyle(.backgroundNavy)
                     }
-                } // HStackここまで
+                }  // HStackここまで
                 .frame(width: 200)
                 .padding()
                 // はじめるボタン
@@ -72,29 +75,30 @@ struct ListeningSetView: View {
                 }) {
                     Text("はじめる")
                         .font(.title)
-                        .foregroundColor(Color(.keyWhite))
+                        .foregroundStyle(.keyWhite)
                         .padding(25.0)
-                        .background(Color(.backgroundNavy))
+                        .background(.backgroundNavy)
                         .cornerRadius(10)
                 }
-                .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    ListeningView(viewModel: viewModel)
-                })
+                .fullScreenCover(
+                    isPresented: $isShowFullScreen,
+                    content: {
+                        ListeningView(viewModel: viewModel)
+                    }
+                )
                 .padding()
                 Spacer()
-            } // VStackここまで
-        } // ZStackここまで
+            }  // VStackここまで
+        }  // ZStackここまで
         .accentColor(.blue)
         // シート
-        .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
-        })
-        .onAppear {
-            // 音をきく時の音データを再取得
-            viewModel.setSoundModel()
-        }
-    } // bodyここまで
-} // SoundSetViewここまで
+        .sheet(
+            isPresented: $isShowSheet,
+            content: {
+                SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
+            })
+    }  // bodyここまで
+}  // SoundSetViewここまで
 
 #Preview {
     ListeningSetView()

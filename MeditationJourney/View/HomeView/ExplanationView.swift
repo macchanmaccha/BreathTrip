@@ -17,13 +17,14 @@ struct ExplanationView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 背景枠
                 Rectangle()
-                    .fill(Color(.keyWhite))
+                    .fill(.keyWhite)
                     .cornerRadius(8)
                     .opacity(0.6)
                 VStack {
                     Text("このアプリは、\n世界の音を聴きながら\n瞑想の旅へ出かけることができます。")
                         .font(.title2)
                         .multilineTextAlignment(.center)
+                    // 瞑想のやり方を説明する画面へ遷
                     NavigationLink(destination: WayOfMeditationView()) {
                         HStack {
                             Image(systemName: "figure.mind.and.body")
@@ -35,12 +36,12 @@ struct ExplanationView: View {
                         .font(.title2)
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
-                        .background(Color(.backgroundNavy))
-                        .foregroundColor(.white)
+                        .background(.backgroundNavy)
+                        .foregroundStyle(.white)
                         .cornerRadius(8)
-                        
                     }
                     .padding(5)
+                    // 瞑想の効果を説明する画面へ遷移
                     NavigationLink(destination: EffectOfMeditationView()) {
                         HStack {
                             Image(systemName: "heart.circle.fill")
@@ -52,11 +53,12 @@ struct ExplanationView: View {
                         .font(.title2)
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
-                        .background(Color(.backgroundNavy))
-                        .foregroundColor(.white)
+                        .background(.backgroundNavy)
+                        .foregroundStyle(.white)
                         .cornerRadius(8)
                     }
                     .padding(5)
+                    // アプリの使い方を説明する画面へ遷移
                     NavigationLink(destination: DescriptionView()) {
                         HStack {
                             Image(systemName: "person.fill.questionmark")
@@ -68,16 +70,16 @@ struct ExplanationView: View {
                         .font(.title2)
                         .padding(20)
                         .frame(maxWidth: 350, alignment: .leading)
-                        .background(Color(.backgroundNavy))
-                        .foregroundColor(.white)
+                        .background(.backgroundNavy)
+                        .foregroundStyle(.white)
                         .cornerRadius(8)
                     }
                     .padding(5)
                 }
-            } // ZStackここまで
-        } // NavigationStackここまで
-    } // bodyここまで
-} // ExplanationViewここまで
+            }  // ZStackここまで
+        }  // NavigationStackここまで
+    }  // bodyここまで
+}  // ExplanationViewここまで
 
 struct ExplanationView_Previews: PreviewProvider {
     static var previews: some View {

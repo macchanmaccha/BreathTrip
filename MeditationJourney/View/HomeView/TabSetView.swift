@@ -5,8 +5,8 @@
 //  Created by apple on 2023/09/10.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct TabSetView: View {
     // タブの選択項目を保持
@@ -17,7 +17,7 @@ struct TabSetView: View {
             Group {
                 // TabViewの要素
                 // 瞑想設定画面へ遷移
-                MeditationSetView()
+                MeditationSetView(viewModel: MeditatingSetViewModel())
                     .tabItem {
                         Label("瞑想", systemImage: "figure.mind.and.body")
                     }
@@ -29,13 +29,13 @@ struct TabSetView: View {
                     }
                     .tag(2)
                 // カレンダー画面へ遷移
-                CalendarView()
+                CalendarView(viewModel: CalendarViewModel())
                     .tabItem {
                         Label("カレンダー", systemImage: "calendar")
                     }
                     .tag(3)
                 // マップ画面へ遷移
-                MapView()
+                MapView(viewModel: SpotListViewModel())
                     .tabItem {
                         Label("地図", systemImage: "map")
                     }
@@ -47,15 +47,13 @@ struct TabSetView: View {
                     }
                     .tag(5)
             }
-            .toolbarBackground(Color(.backgroundNavy), for: .tabBar)
+            .toolbarBackground(.backgroundNavy, for: .tabBar)
             .toolbarBackground(.visible, for: .tabBar)
             .toolbarColorScheme(.dark, for: .tabBar)
-        } // TabViewここまで
-    } // bodyここまで
-} // ContentViewここまで
+        }  // TabViewここまで
+    }  // bodyここまで
+}  // ContentViewここまで
 
-struct TabSetView_Previews: PreviewProvider {
-    static var previews: some View {
-        TabSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-    }
+#Preview {
+    TabSetView()
 }
