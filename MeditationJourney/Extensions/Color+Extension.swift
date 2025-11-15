@@ -19,11 +19,11 @@ extension Color {
             // firstStageBlue
             return .firstStageBlue
         // 瞑想時間が21〜40分だったとき
-        case 20...40:
+        case 21...40:
             // secondStageBlue
             return .secondStageBlue
         // 瞑想時間が41分以上だったとき
-        case 41...Int.max:
+        case 41...:
             // thirdStageBlue
             return .thirdStageBlue
         // 瞑想しなかったとき
