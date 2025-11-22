@@ -86,7 +86,7 @@ class MeditatingSetViewModel: SetViewModel {
         // タイマー無効
         timer = nil
     }
-    #if DEBUG
+#if DEBUG
     /// 画面タップで終了
     func forceEndForDebug() {
         // 瞑想中の場合に実行
@@ -95,7 +95,7 @@ class MeditatingSetViewModel: SetViewModel {
             remainingSeconds = 1
         }
     }
-    #endif
+#endif
     /// 音の設定
     override func setSelectedSoundName(soundName: SoundModel) {
         meditationSoundName = soundName

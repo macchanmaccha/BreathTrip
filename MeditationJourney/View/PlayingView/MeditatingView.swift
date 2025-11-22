@@ -87,12 +87,12 @@ struct MeditatingView: View {
                 }  // if isShowStopButtonここまで
             }  // VStackここまで
         }  // ZStack
-        #if DEBUG
+#if DEBUG
         // 画面タップで終了
         .onTapGesture {
             viewModel.forceEndForDebug()
         }
-        #endif
+#endif
         .onAppear {
             // 画面起動時にprestart状態にする
             viewModel.updateState(to: .preStart)
