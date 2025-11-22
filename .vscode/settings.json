@@ -1,4 +1,13 @@
 {
     "lldb.library": "/Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/LLDB",
-    "lldb.launch.expressions": "native"
+
+    "lldb.executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb",
+    "lldb.consoleMode": "commands",
+    "lldb.evaluationTimeout": 5000,
+    "lldb.showDisassembly": "auto",
+    "lldb.dereferencePointers": true,
+    "lldb.consoleHeight": 200,
+    "lldb.consoleWidth": 120,
+    "lldb.launch.expressions": "native",
+    "sweetpad.build.xcodeWorkspacePath": "MeditationJourney.xcodeproj/project.xcworkspace"
 }

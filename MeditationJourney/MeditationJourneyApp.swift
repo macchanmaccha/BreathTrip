@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct MeditationJourneyApp: App {
-    let persistenceController = PersistenceController.shared
     /// UserDefaultsのデフォルト値を設定
     init() {
         UserDefaultsKey.register()
@@ -17,7 +16,6 @@ struct MeditationJourneyApp: App {
     var body: some Scene {
         WindowGroup {
             TabSetView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

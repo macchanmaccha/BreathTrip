@@ -1,0 +1,18 @@
+# SwiftFormat設定ファイル
+# インデント設定
+--indent 4
+--tabwidth 4
+
+# 行の長さ
+--maxwidth 120
+
+# 空行の設定
+--emptybraces spaced
+
+# その他の設定
+--trimwhitespace always
+--semicolons never
+--commas always
+
+# SwiftUI関連
+--swiftversion 5.0 
