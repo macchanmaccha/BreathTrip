@@ -73,7 +73,8 @@ struct WayOfMeditationView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 20)
+                // 左右に20ポイント、下部に40ポイントのパディングを指定
+                .padding(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
             }
         }  // ZStackここまで
         .navigationBarBackButtonHidden(true)
