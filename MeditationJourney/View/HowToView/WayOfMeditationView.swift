@@ -85,7 +85,7 @@ struct WayOfMeditationView: View {
                     dismiss()
                 }) {
                     Image(systemName: "chevron.backward")
-                        .tint(Color("keyWhite"))
+                        .tint(.keyWhite)
                 }  // Buttonここまで
             }  // ToolbarItemここまで
         }
