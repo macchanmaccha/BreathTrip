@@ -47,7 +47,6 @@ struct EffectOfMeditationView: View {
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.keyWhite)
-                            .padding(.horizontal, 20)
                         VStack(spacing: 12) {
                             EffectView(
                                 icon: "brain.head.profile",
@@ -82,7 +81,6 @@ struct EffectOfMeditationView: View {
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.keyWhite)
-                            .padding(.horizontal, 20)
                         VStack(alignment: .leading, spacing: 8) {
                             TipView(text: "毎日少しずつでも続けることが大切")
                             TipView(text: "完璧を求めず、自分のペースで行う")
