@@ -25,8 +25,8 @@ struct SelectSoundView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Text("音を選択")
-                    .foregroundColor(Color(.keyWhite))
+                Text("国・地域を選択")
+                    .foregroundStyle(.keyWhite)
                     .font(.title)
                     .padding()
                 LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
@@ -38,18 +38,18 @@ struct SelectSoundView: View {
                             viewModel.setSelectedSoundName(soundName: sound)
                         }) {
                             Text(sound.rawValue)
-                        } // Buttonここまで
+                        }  // Buttonここまで
                         .frame(width: 130, height: 100)
-                        .background(Color(.keyWhite).opacity(0.6))
-                        .foregroundColor(Color(.backgroundNavy))
+                        .background(.keyWhite.opacity(0.6))
+                        .foregroundStyle(.backgroundNavy)
                         .cornerRadius(8)
-                    } // ForEachここまで
-                } // LazyVGridここまで
+                    }  // ForEachここまで
+                }  // LazyVGridここまで
                 // LazyVGridの幅を調整
                 .frame(maxWidth: 300, alignment: .center)
                 .padding(10)
-            } // VStackここまで
-        } // ZStackここまで
+            }  // VStackここまで
+        }  // ZStackここまで
         .navigationBarBackButtonHidden(true)
         // 前画面へ戻る
         .toolbar {
@@ -58,22 +58,24 @@ struct SelectSoundView: View {
                     dismiss()
                 }) {
                     Image(systemName: "chevron.backward")
-                        .tint(Color(.keyWhite))
-                } // Buttonここまで
-            } // ToolbarItemここまで
+                        .tint(.keyWhite)
+                }  // Buttonここまで
+            }  // ToolbarItemここまで
             // シートを閉じる
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
                     isShowSheet.toggle()
                 }) {
                     Image(systemName: "xmark")
-                        .tint(Color(.keyWhite))
-                } // Buttonここまで
-            } // ToolbarItemここまで
-        } // .toolbarここまで
-    } // bodyここまで
+                        .tint(.keyWhite)
+                }  // Buttonここまで
+            }  // ToolbarItemここまで
+        }  // .toolbarここまで
+    }  // bodyここまで
 }
 
 #Preview {
-    SelectSoundView(viewModel: SetViewModel(), isShowSheet: .constant(true), selectedContinent: ContinentModel.europe)
+    SelectSoundView(
+        viewModel: SetViewModel(), isShowSheet: .constant(true),
+        selectedContinent: ContinentModel.europe)
 }

@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug MeditationJourney",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Debug-iphonesimulator/MeditationJourney.app",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build",
+            "stopOnEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Attach to Process",
+            "type": "lldb",
+            "request": "attach",
+            "program": "${workspaceFolder}/build/Debug-iphonesimulator/MeditationJourney.app"
+        }
+    ]
+} 

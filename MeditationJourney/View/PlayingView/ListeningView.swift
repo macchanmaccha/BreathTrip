@@ -23,30 +23,28 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                    Text(viewModel.remainingSeconds.formattedTime())
-                        .foregroundColor(Color(.keyWhite))
-                        .font(.system(size: 80))
-                        .frame(width: 300, height: 200)
-                        .bold()
+                Text(viewModel.remainingSeconds.formattedTime())
+                    .foregroundStyle(.keyWhite)
+                    .font(.system(size: 80))
+                    .frame(width: 300, height: 200)
+                    .bold()
                 // 中断ボタン
                 Button(action: {
                     // pauseにする
-                    viewModel.updateState(newState: .pause)
-                    print("中断ボタンが押されたよ")
-                    print(viewModel.remainingSeconds)
+                    viewModel.updateState(to: .pause)
                 }) {
                     Text("中断する")
-                        .tint(Color(.backgroundNavy))
+                        .tint(.backgroundNavy)
                         .font(.title)
                 }
                 .padding(25)
-                .background(Color(.keyWhite))
+                .background(.keyWhite)
                 .cornerRadius(10)
                 .alert("", isPresented: $isShowStopAlert) {
                     // NO
                     Button("NO") {
-                            // startにする
-                            viewModel.updateState(newState: .start)
+                        // startにする
+                        viewModel.updateState(to: .start)
                     }
                     // YES
                     Button("YES") {
@@ -56,14 +54,14 @@ struct ListeningView: View {
                     }
                 } message: {
                     Text("中断して前の画面に戻りますか？")
-                } // .alertここまで
-            } // VStackここまで
-        } // ZStack
+                }  // .alertここまで
+            }  // VStackここまで
+        }  // ZStack
         .onAppear {
             // 一度状態をendにする
-            viewModel.updateState(newState: .end)
+            viewModel.updateState(to: .end)
             // その後start状態にする
-            viewModel.updateState(newState: .start)
+            viewModel.updateState(to: .start)
         }
         .onChange(of: viewModel.state) {
             switch viewModel.state {
@@ -81,7 +79,6 @@ struct ListeningView: View {
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
-            print("プロパティの更新を検知: \(viewModel.state)")
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
@@ -91,9 +88,9 @@ struct ListeningView: View {
             }
         } message: {
             Text("終了です")
-        } // .alertここまで
-    } // bodyここまで
-} // ListeningViewここまで
+        }  // .alertここまで
+    }  // bodyここまで
+}  // ListeningViewここまで
 
 struct ListeningView_Previews: PreviewProvider {
     static var previews: some View {

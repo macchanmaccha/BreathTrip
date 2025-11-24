@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeditationSetView: View {
     /// MeditatingSetViewModelをインスタンス化
-    @StateObject private var viewModel: MeditatingSetViewModel = MeditatingSetViewModel()
+    @ObservedObject var viewModel: MeditatingSetViewModel
     /// Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     /// フルスクリーンを管理する変数
@@ -18,13 +18,13 @@ struct MeditationSetView: View {
     @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
     /// 音声ガイドのアイコンを管理
     private var speakerIcon: some View {
-        isAudioGuideOn ? Image(systemName: "speaker.wave.3.fill") :
-        Image(systemName: "speaker.slash.fill")
-    } // speakerIconここまで
+        isAudioGuideOn
+        ? Image(systemName: "speaker.wave.3.fill") : Image(systemName: "speaker.slash.fill")
+    }  // speakerIconここまで
     /// 音声ガイドONOFFを管理する変数
     private var speakerStatusText: Text {
         Text(isAudioGuideOn ? "ON" : "OFF")
-    } // speakerStatusTextここまで
+    }  // speakerStatusTextここまで
     /// 選択できる分数
     private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
@@ -35,7 +35,7 @@ struct MeditationSetView: View {
                 .edgesIgnoringSafeArea(.all)
             // 背景枠
             Rectangle()
-                .fill(Color(.keyWhite))
+                .fill(.keyWhite)
                 .cornerRadius(8)
                 .opacity(0.6)
                 .frame(width: 400, height: 400)
@@ -44,7 +44,7 @@ struct MeditationSetView: View {
                 HStack {
                     Text("音声ガイド")
                         .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     VStack {
                         // 音声ガイドボタン
@@ -54,50 +54,53 @@ struct MeditationSetView: View {
                             // 音声ガイドアイコン
                             speakerIcon
                                 .frame(width: 30, height: 30)
-                                .foregroundColor(Color(.backgroundNavy))
+                                .foregroundStyle(.backgroundNavy)
                                 .font(.title)
-                        } // Buttonここまで
+                        }  // Buttonここまで
                         // ON、OFFのテキスト表示
                         speakerStatusText
                             .frame(width: 30, height: 5)
                             .font(.caption2)
-                            .foregroundColor(Color(.backgroundNavy))
-                    } // VStackここまで
-                } // HStackここまで
+                            .foregroundStyle(.backgroundNavy)
+                    }  // VStackここまで
+                }  // HStackここまで
                 .frame(width: 200)
                 .padding()
                 // 時間設定
                 HStack {
                     Text("時間")
                         .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.meditationMinutes) {
                         ForEach(minutesOptions, id: \.self) { minutes in
                             Text("\(minutes)分")
-                        } // ForEachここまで
-                    } // Pickerここまで
-                    .colorMultiply(Color(.backgroundNavy))
+                        }  // ForEachここまで
+                    }  // Pickerここまで
+                    .colorMultiply(.backgroundNavy)
                     .scaleEffect(CGSize(width: 1.25, height: 1.25))
                     .pickerStyle(MenuPickerStyle())
-                } // HStackここまで
-                .foregroundColor(Color(.backgroundNavy))
+                    .onChange(of: viewModel.meditationMinutes) {
+                        viewModel.saveMeditationMinutes()
+                    }
+                }  // HStackここまで
+                .foregroundStyle(.backgroundNavy)
                 .frame(width: 200)
                 .padding()
                 // 音設定
                 HStack {
                     Text("音")
                         .font(.title2)
-                        .foregroundColor(Color(.backgroundNavy))
+                        .foregroundStyle(.backgroundNavy)
                     Spacer()
                     Button(action: {
                         isShowSheet.toggle()
                     }) {
                         Text("\(viewModel.meditationSoundName.rawValue)>")
                             .font(.title2)
-                            .foregroundColor(Color(.backgroundNavy))
+                            .foregroundStyle(.backgroundNavy)
                     }
-                } // HStackここまで
+                }  // HStackここまで
                 .frame(width: 200)
                 .padding()
                 // はじめるボタン
@@ -106,39 +109,42 @@ struct MeditationSetView: View {
                 }) {
                     Text("はじめる")
                         .font(.title)
-                        .foregroundColor(Color(.keyWhite))
+                        .foregroundStyle(.keyWhite)
                         .padding(25.0)
-                        .background(Color(.backgroundNavy))
+                        .background(.backgroundNavy)
                         .cornerRadius(10)
                 }
-                .fullScreenCover(isPresented: $isShowFullScreen, content: {
-                    MeditatingView(viewModel: viewModel)
-                })
+                .fullScreenCover(
+                    isPresented: $isShowFullScreen,
+                    content: {
+                        MeditatingView(viewModel: viewModel)
+                    }
+                )
                 .padding()
                 Spacer()
-            } // VStackここまで
-        } // ZStackここまで
+            }  // VStackここまで
+        }  // ZStackここまで
         .accentColor(.blue)
         // シート
-        .sheet(isPresented: $isShowSheet, content: {
-            SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
-        })
-        .onAppear {
-            // 瞑想の音データの再取得
-            viewModel.setSoundModel()
-        }
-    } // bodyここまで
-} // MeditationViewここまで
+        .sheet(
+            isPresented: $isShowSheet,
+            content: {
+                SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
+            })
+    }  // bodyここまで
+}  // MeditationViewここまで
 
 struct MeditationSetView_Previews: PreviewProvider {
+    // ここではpreview用のCoreDataが渡される
+    static let viewModel = MeditatingSetViewModel(context: PersistenceController.preview.container.viewContext)
     static var previews: some View {
-        Group {
-            MeditationSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 15"))  // ✅ タブの表示名
-                .previewDisplayName("iPhone 15")  // ✅ プレビューする端末（プレビューデバイス）を指定
-            MeditationSetView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-                .previewDevice(PreviewDevice(rawValue: "iPad Air (5th generation)"))
-                .previewDisplayName("iPad Air (5th generation)")
-        }
+        MeditationSetView(viewModel: viewModel)
+        // ✅ タブの表示名
+            .previewDevice(PreviewDevice(rawValue: "iPhone 16"))
+        // ✅ プレビューする端末（プレビューデバイス）を指定
+            .previewDisplayName("iPhone 16")
+        MeditationSetView(viewModel: viewModel)
+            .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch)"))
+            .previewDisplayName("iPad Pro (11-inch)")
     }
 }
