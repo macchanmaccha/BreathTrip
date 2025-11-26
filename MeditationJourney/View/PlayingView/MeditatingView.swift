@@ -5,6 +5,8 @@
 //  Created by apple on 2023/09/23.
 //
 
+import AVFoundation
+import MusicKit
 import SwiftUI
 
 struct MeditatingView: View {
@@ -16,6 +18,12 @@ struct MeditatingView: View {
     @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
+    /// プレビューURL
+    @State private var previewURL: URL?
+    /// 曲のID
+    private let trackID: String = "848536284"
+    /// プレイヤー
+    @State private var audioPlayer: AVPlayer?
     var body: some View {
         ZStack {
             Image(.playBackground)
@@ -40,6 +48,12 @@ struct MeditatingView: View {
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
+                    // プレビューURLが存在したら
+                    if previewURL != nil {
+                        // 再生状態をplayingにする
+//                        updateState(newState: .playing)
+                    } else {
+                    }  // if previewURL
                 }
                 // endでないとき
                 if viewModel.state != .end {
@@ -172,6 +186,118 @@ struct MeditatingView: View {
         viewModel.stopTimer()
         dismiss()
     }
+    // fetchPreviewURL
+    func fetchPreviewURL(for trackID: String) async {
+        // エラーを出すメソッドを安全に返す(request)
+        do {
+            // Apple Musicの認証ステータス
+            let musicAuthorizationStatus = await MusicAuthorization.request()
+            // 認証されなかったら
+            guard musicAuthorizationStatus == .authorized else {
+                // アラート表示
+//                isShowAlert = true
+                // 処理終了　なにもしない
+                print("許可されませんでした")
+                return
+            }  // guard musicAuthorizationStatus
+            // 楽曲IDを指定してリクエストを作成
+            let request = MusicCatalogResourceRequest<Song>(
+                matching: \.id, equalTo: MusicItemID(trackID))
+            // レスポンスを取得
+            let response = try await request.response()
+            // 曲とプレビューURLが存在する場合
+            if let song = response.items.first,
+                let previewURL = song.previewAssets?.first?.url
+            {
+                // previewURLに代入
+                self.previewURL = previewURL
+                print("previewURLの取得完了！")
+            }  // if let
+            // エラーの場合
+        } catch {
+            print("指定したトラックID（\(trackID)）の曲とpreviewURLがありません")
+            print("エラーはこちら: \(error)")
+            return
+        }  // do catch
+    }  // fetchPreviewURL
+    // 曲を再生するメソッド
+    private func playBack() {
+        print("playBack1")
+        // previewURL、fadeOutEndTimeが存在しなかったら
+        guard let previewURL
+//            let fadeOutEndTime
+        else {
+            print("previewURLが存在しません")
+            print("playBack2")
+            // 処理終了
+            return
+        }  // guard let
+        // playerがnilのとき（初めての再生のとき）
+        if audioPlayer == nil {
+            print("playBack3")
+            print("🙆新しいプレーヤーを取得しました！")
+            // playerにpreviewUrlを代入する
+            audioPlayer = AVPlayer(url: previewURL)
+            // ボリュームを0に設定
+//            audioPlayer?.volume = 0.0
+            // 再生する
+            audioPlayer?.play()
+            print("playBack4")
+            print("🍀プレイヤーの状態は\(String(describing: audioPlayer?.status.rawValue))")
+            print("📣ボリュームは\(String(describing: audioPlayer?.volume))")
+//            // フェードイン
+//            fadeIn(player: audioPlayer!, duration: 5)
+//            print("playBack5")
+//        } else {
+//            print("playBack6")
+//            // 再開したとき
+//            print("🌸一時停止した後の再開だよ！")
+//            // 再生するのみ
+//            audioPlayer?.play()
+//            print("playBack7")
+        }  // if player
+//        print("playBack8")
+//        // 多重にfadeOutEndTimerが実行されないようにする
+//        stopTimer(timer: &fadeOutEndTimer)
+//        print("playBack9")
+//        // フェードアウトする時間を管理するタイマー
+//        fadeOutEndTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+//            print("playBack10")
+//            // 現在時刻
+//            let now = Date()
+//            // fadeOutTimeはfadeOutEndTimeに向かって0.1秒スライスする　0と比較し、大きい値を格納
+//            fadeOutTime = max(0, fadeOutEndTime.timeIntervalSince(now))
+//            print("❤️フェードアウトのタイマーは\(fadeOutTime)")
+//            // fadeOutTimeの5秒前になったら
+//            if fadeOutTime >= 5 && fadeOutTime < 5.1 {
+//                print("playBack11")
+//                // 5秒かけてフェードアウト
+//                fadeOut(player: audioPlayer!, duration: 5.0) {
+//                    print("playBack12")
+//                    fadeOutComplete()
+//                    print("playBack13")
+//                }
+//            } else if fadeOutTime > 0 && fadeOutTime < 5 {
+//                print("playBack14")
+//                // 0 < fadeOutTime < 5 のとき
+//                print(fadeOutTime)
+//                // 残り時間をかけてフェードアウト
+//                fadeOut(player: audioPlayer!, duration: fadeOutTime) {
+//                    print("playBack15")
+//                    fadeOutComplete()
+//                    print("playBack16")
+//                }
+//            } else if fadeOutTime == 0 {
+//                print("playBack17")
+//                // fadeOutTimeが0のとき
+//                // 処理なし
+//                return
+//            }  // if fadeOutTime...
+//            print("playBack18")
+//        }  // fadeOutEndTimer
+//        print("🟢playBack19")
+//        print("⭐️previewURLはこちら\(previewURL)")
+    }  // func playBack()
 }  // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {
