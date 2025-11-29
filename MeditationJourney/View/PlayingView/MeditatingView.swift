@@ -48,12 +48,18 @@ struct MeditatingView: View {
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
-                    // プレビューURLが存在したら
-                    if previewURL != nil {
+                        .task {
+                            // プレビューURLを取得
+                            await fetchPreviewURL(for: trackID)
+                            // プレビューURL取得後に再生
+                            playBack()
+                        }
+//                    // プレビューURLが存在したら
+//                    if previewURL != nil {
                         // 再生状態をplayingにする
 //                        updateState(newState: .playing)
-                    } else {
-                    }  // if previewURL
+//                    } else {
+//                    }  // if previewURL
                 }
                 // endでないとき
                 if viewModel.state != .end {
