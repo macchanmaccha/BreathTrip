@@ -13,7 +13,7 @@ struct DescriptionView: View {
     var body: some View {
         ZStack {
             // 背景色を紺色に設定
-            Color("backgroundNavy")
+            Color(.backgroundNavy)
                 .edgesIgnoringSafeArea(.all)
             ScrollView {
                 VStack(spacing: 24) {
@@ -22,7 +22,7 @@ struct DescriptionView: View {
                         Text("アプリの使いかた")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundColor(Color("keyWhite"))
+                            .foregroundStyle(.keyWhite)
                     }
                     .padding(.top, 20)
                     // アプリの説明
@@ -30,10 +30,10 @@ struct DescriptionView: View {
                         Text("このアプリについて")
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color("keyWhite"))
+                            .foregroundStyle(.keyWhite)
                         Text("世界の音を聴きながら呼吸瞑想を行い、日々の瞑想記録を残すことができます。瞑想した日はカレンダーに表示され、地図上にも記録が残ります。")
                             .font(.body)
-                            .foregroundColor(Color("keyWhite").opacity(0.9))
+                            .foregroundStyle(Color(.keyWhite).opacity(0.9))
                             .lineSpacing(4)
                     }
                     .padding(.horizontal, 20)
@@ -42,7 +42,7 @@ struct DescriptionView: View {
                         Text("主要機能")
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color("keyWhite"))
+                            .foregroundStyle(.keyWhite)
                             .padding(.horizontal, 20)
                         VStack(spacing: 12) {
                             FeatureView(
@@ -53,7 +53,7 @@ struct DescriptionView: View {
                             FeatureView(
                                 icon: "globe",
                                 title: "大陸と国・地域の選択",
-                                description: "瞑想中に聴きたい大陸や国・地域を選びます。世界各地の音が聴けます。"
+                                description: "瞑想中に聴きたい大陸や国・地域を選択できます。世界各地の音を楽しめます。"
                             )
                             FeatureView(
                                 icon: "calendar",
@@ -63,7 +63,7 @@ struct DescriptionView: View {
                             FeatureView(
                                 icon: "map",
                                 title: "地図への記録",
-                                description: "その国・地域で60分以上瞑想すると、地図にピンが立つようになります。"
+                                description: "その国・地域の音で60分以上瞑想すると、地図にピンが立つようになります。"
                             )
                         }
                         .padding(.horizontal, 20)
@@ -73,10 +73,10 @@ struct DescriptionView: View {
                         Text("注意事項")
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color("keyWhite"))
+                            .foregroundStyle(.keyWhite)
                             .padding(.horizontal, 20)
                         VStack(alignment: .leading, spacing: 8) {
-                            NoteView(text: "「音をきく」タブは記録には残りません。瞑想の記録を残すには「瞑想」タブを使用してください。")
+                            NoteView(text: "「音をきく」は記録には残りません。瞑想の記録を残すには「瞑想」を使用してください。")
                         }
                         .padding(.horizontal, 20)
                     }
@@ -92,7 +92,7 @@ struct DescriptionView: View {
                     dismiss()
                 }) {
                     Image(systemName: "chevron.backward")
-                        .tint(Color("keyWhite"))
+                        .tint(.keyWhite)
                 } // Buttonここまで
             } // ToolbarItemここまで
         }
@@ -108,17 +108,17 @@ struct FeatureView: View {
             // アイコン
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundColor(Color("keyWhite"))
+                .foregroundStyle(.keyWhite)
                 .frame(width: 32, height: 32)
             // 内容
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color("keyWhite"))
+                    .foregroundStyle(.keyWhite)
                 Text(description)
                     .font(.caption)
-                    .foregroundColor(Color("keyWhite").opacity(0.8))
+                    .foregroundStyle(Color(.keyWhite).opacity(0.8))
                     .lineSpacing(2)
             }
             Spacer()
@@ -132,11 +132,11 @@ struct NoteView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundColor(Color.orange)
+                .foregroundStyle(Color.orange)
                 .font(.caption)
             Text(text)
                 .font(.caption)
-                .foregroundColor(Color("keyWhite").opacity(0.9))
+                .foregroundStyle(Color(.keyWhite).opacity(0.9))
                 .lineSpacing(2)
             Spacer()
         }
