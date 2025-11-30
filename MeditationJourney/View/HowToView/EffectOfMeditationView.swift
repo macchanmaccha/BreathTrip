@@ -13,8 +13,8 @@ struct EffectOfMeditationView: View {
     var body: some View {
         ZStack {
             // 背景色を紺色に設定
-            Color("backgroundNavy")
-                .edgesIgnoringSafeArea(.all)
+            Color(.backgroundNavy)
+                .ignoresSafeArea()
             ScrollView {
                 VStack(spacing: 24) {
                     // タイトル
@@ -22,10 +22,11 @@ struct EffectOfMeditationView: View {
                         Text("瞑想の効果")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundColor(Color("keyWhite"))
+                            .foregroundStyle(.keyWhite)
                         Text("継続することで得られる様々な効果")
                             .font(.subheadline)
-                            .foregroundColor(Color("keyWhite").opacity(0.8))
+                            .foregroundStyle(.keyWhite)
+                            .opacity(0.8)
                     }
                     .padding(.top, 20)
                     // 説明文
@@ -33,20 +34,19 @@ struct EffectOfMeditationView: View {
                         Text("瞑想の効果について")
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color("keyWhite"))
+                            .foregroundStyle(.keyWhite)
                         Text("瞑想を継続すると、心身に様々な良い変化が現れます。科学的にも多くの効果が証明されています。")
                             .font(.body)
-                            .foregroundColor(Color("keyWhite").opacity(0.9))
+                            .foregroundStyle(.keyWhite)
+                            .opacity(0.9)
                             .lineSpacing(4)
                     }
-                    .padding(.horizontal, 20)
                     // 効果一覧
                     VStack(alignment: .leading, spacing: 16) {
                         Text("主な効果")
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color("keyWhite"))
-                            .padding(.horizontal, 20)
+                            .foregroundStyle(.keyWhite)
                         VStack(spacing: 12) {
                             EffectView(
                                 icon: "brain.head.profile",
@@ -74,26 +74,24 @@ struct EffectOfMeditationView: View {
                                 description: "心身のバランスが整い、健康な体づくりに役立ちます"
                             )
                         }
-                        .padding(.horizontal, 20)
                     }
                     // 継続のコツ
                     VStack(alignment: .leading, spacing: 12) {
                         Text("継続のコツ")
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color("keyWhite"))
-                            .padding(.horizontal, 20)
+                            .foregroundStyle(.keyWhite)
                         VStack(alignment: .leading, spacing: 8) {
                             TipView(text: "毎日少しずつでも続けることが大切")
                             TipView(text: "完璧を求めず、自分のペースで行う")
                             TipView(text: "効果を実感するまで時間がかかることもある")
                             TipView(text: "無理をせず、楽しみながら取り組む")
                         }
-                        .padding(.horizontal, 20)
                     }
-                    Spacer(minLength: 40)
                 }
-            }
+                // 左右に20ポイント、下部に40ポイントのパディングを指定
+                .padding(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
+            } // ScrollView
         } // ZStackここまで
         .navigationBarBackButtonHidden(true)
         // 前画面へ戻る
@@ -103,52 +101,55 @@ struct EffectOfMeditationView: View {
                     dismiss()
                 }) {
                     Image(systemName: "chevron.backward")
-                        .tint(Color("keyWhite"))
+                        .tint(.keyWhite)
                 } // Buttonここまで
             } // ToolbarItemここまで
         }
     } // bodyここまで
 } // Viewここまで
 
-struct EffectView: View {
-    let icon: String
-    let title: String
-    let description: String
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            // アイコン
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundColor(Color("keyWhite"))
-                .frame(width: 32, height: 32)
-            // 内容
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color("keyWhite"))
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(Color("keyWhite").opacity(0.8))
-                    .lineSpacing(2)
+private extension EffectOfMeditationView {
+    struct EffectView: View {
+        let icon: String
+        let title: String
+        let description: String
+        var body: some View {
+            HStack(alignment: .top, spacing: 12) {
+                // アイコン
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundStyle(.keyWhite)
+                    .frame(width: 32, height: 32)
+                // 内容
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.keyWhite)
+                    Text(description)
+                        .font(.caption)
+                        .foregroundStyle(.keyWhite)
+                        .opacity(0.8)
+                        .lineSpacing(2)
+                }
             }
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 8)
         }
-        .padding(.vertical, 8)
     }
-}
-
-struct TipView: View {
-    let text: String
-    var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            Image(systemName: "lightbulb.fill")
-                .foregroundColor(Color("keyWhite"))
-                .font(.caption)
-            Text(text)
-                .font(.caption)
-                .foregroundColor(Color("keyWhite").opacity(0.8))
-            Spacer()
+    struct TipView: View {
+        let text: String
+        var body: some View {
+            HStack(alignment: .top, spacing: 8) {
+                Image(systemName: "lightbulb.fill")
+                    .foregroundStyle(.keyWhite)
+                    .font(.caption)
+                Text(text)
+                    .font(.caption)
+                    .foregroundStyle(.keyWhite)
+                    .opacity(0.8)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

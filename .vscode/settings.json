@@ -4,6 +4,7 @@
     "lldb.launch.expressions": "native"
 =======
     "lldb.library": "/Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/LLDB",
+
     "lldb.executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb",
     "lldb.consoleMode": "commands",
     "lldb.evaluationTimeout": 5000,

@@ -57,7 +57,7 @@ class SpotListViewModel: ObservableObject {
             .mapValues { $0.reduce(0) { $0 + Int($1.meditationTime) } }
         // 60分以上のスポットのみ抽出して保持
         achievedSpots = spotList.filter {
-            (totals[$0.spotName] ?? 0) >= 1
+            (totals[$0.spotName] ?? 0) >= 60
         }
     }  // func calculateAchievedSpots
 }  // SpotListViewModelここまで
