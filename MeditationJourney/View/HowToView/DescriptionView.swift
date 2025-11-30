@@ -14,7 +14,7 @@ struct DescriptionView: View {
         ZStack {
             // 背景色を紺色に設定
             Color(.backgroundNavy)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
             ScrollView {
                 VStack(spacing: 24) {
                     // タイトル
@@ -36,29 +36,27 @@ struct DescriptionView: View {
                             .foregroundStyle(Color(.keyWhite).opacity(0.9))
                             .lineSpacing(4)
                     }
-                    .padding(.horizontal, 20)
-                    // 主要機能の説明
+                    // 機能
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("主要機能")
+                        Text("機能")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.keyWhite)
-                            .padding(.horizontal, 20)
                         VStack(spacing: 12) {
                             FeatureView(
                                 icon: "speaker.wave.3.fill",
                                 title: "音声ガイド",
-                                description: "瞑想が初めての人向けに、瞑想中にどうすればいいか音声で教えてくれます。ON/OFFを選べます。"
+                                description: "瞑想が初めての人向けに、瞑想中にどうすればいいか音声で教えてくれます。ON/OFFを切り替えられます。"
                             )
                             FeatureView(
                                 icon: "globe",
                                 title: "大陸と国・地域の選択",
-                                description: "瞑想中に聴きたい大陸や国・地域を選択できます。世界各地の音を楽しめます。"
+                                description: "瞑想中に聴きたい大陸や国・地域の音を選択します。世界旅行をしている気分で瞑想ができます。"
                             )
                             FeatureView(
                                 icon: "calendar",
                                 title: "カレンダーへの記録",
-                                description: "瞑想した日は、カレンダーの該当日の背景色で表示されます。"
+                                description: "瞑想した日は、カレンダーの該当日に背景色が表示されるようになります。瞑想時間によって色が変わります。"
                             )
                             FeatureView(
                                 icon: "map",
@@ -66,22 +64,20 @@ struct DescriptionView: View {
                                 description: "その国・地域の音で60分以上瞑想すると、地図にピンが立つようになります。"
                             )
                         }
-                        .padding(.horizontal, 20)
                     }
-                    // 重要な注意事項
+                    // 注意事項
                     VStack(alignment: .leading, spacing: 16) {
                         Text("注意事項")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.keyWhite)
-                            .padding(.horizontal, 20)
                         VStack(alignment: .leading, spacing: 8) {
-                            NoteView(text: "「音をきく」は記録には残りません。瞑想の記録を残すには「瞑想」を使用してください。")
+                            NoteView(text: "記録を残したい場合は「瞑想」を使用してください。「音をきく」では記録は残りません。")
                         }
-                        .padding(.horizontal, 20)
                     }
-                    Spacer(minLength: 40)
                 }
+                // 左右に20ポイント、下部に40ポイントのパディングを指定
+                .padding(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
             }
         } // ZStackここまで
         .navigationBarBackButtonHidden(true)
@@ -99,46 +95,47 @@ struct DescriptionView: View {
     } // bodyここまで
 } // Viewここまで
 
-struct FeatureView: View {
-    let icon: String
-    let title: String
-    let description: String
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            // アイコン
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundStyle(.keyWhite)
-                .frame(width: 32, height: 32)
-            // 内容
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
+private extension DescriptionView {
+    struct FeatureView: View {
+        let icon: String
+        let title: String
+        let description: String
+        var body: some View {
+            HStack(alignment: .top, spacing: 12) {
+                // アイコン
+                Image(systemName: icon)
+                    .font(.title2)
                     .foregroundStyle(.keyWhite)
-                Text(description)
+                    .frame(width: 32, height: 32)
+                // 内容
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.keyWhite)
+                    Text(description)
+                        .font(.caption)
+                        .foregroundStyle(Color(.keyWhite).opacity(0.8))
+                        .lineSpacing(2)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 8)
+        }
+    }
+    struct NoteView: View {
+        let text: String
+        var body: some View {
+            HStack(alignment: .top, spacing: 8) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(Color.orange)
                     .font(.caption)
-                    .foregroundStyle(Color(.keyWhite).opacity(0.8))
+                Text(text)
+                    .font(.caption)
+                    .foregroundStyle(Color(.keyWhite).opacity(0.9))
                     .lineSpacing(2)
             }
-            Spacer()
-        }
-        .padding(.vertical, 8)
-    }
-}
-
-struct NoteView: View {
-    let text: String
-    var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(Color.orange)
-                .font(.caption)
-            Text(text)
-                .font(.caption)
-                .foregroundStyle(Color(.keyWhite).opacity(0.9))
-                .lineSpacing(2)
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
