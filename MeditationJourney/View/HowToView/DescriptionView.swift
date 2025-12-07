@@ -18,13 +18,11 @@ struct DescriptionView: View {
             ScrollView {
                 VStack(spacing: 24) {
                     // タイトル
-                    VStack(spacing: 8) {
-                        Text("アプリの使いかた")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.keyWhite)
-                    }
-                    .padding(.top, 20)
+                    Text("アプリの使いかた")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.keyWhite)
+                        .padding(.top, 20)
                     // アプリの説明
                     VStack(alignment: .leading, spacing: 16) {
                         Text("このアプリについて")
@@ -33,7 +31,8 @@ struct DescriptionView: View {
                             .foregroundStyle(.keyWhite)
                         Text("世界の音を聴きながら呼吸瞑想を行い、日々の瞑想記録を残すことができます。瞑想した日はカレンダーに表示され、地図上にも記録が残ります。")
                             .font(.body)
-                            .foregroundStyle(Color(.keyWhite).opacity(0.9))
+                            .foregroundStyle(.keyWhite)
+                            .opacity(0.8)
                             .lineSpacing(4)
                     }
                     // 機能
@@ -71,9 +70,7 @@ struct DescriptionView: View {
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.keyWhite)
-                        VStack(alignment: .leading, spacing: 8) {
-                            NoteView(text: "記録を残したい場合は「瞑想」を使用してください。「音をきく」では記録は残りません。")
-                        }
+                        NoteView(text: "記録を残したい場合は「瞑想」を使用してください。「音をきく」では記録は残りません。")
                     }
                 }
                 // 左右に20ポイント、下部に40ポイントのパディングを指定
@@ -115,7 +112,8 @@ private extension DescriptionView {
                         .foregroundStyle(.keyWhite)
                     Text(description)
                         .font(.caption)
-                        .foregroundStyle(Color(.keyWhite).opacity(0.8))
+                        .foregroundStyle(.keyWhite)
+                        .opacity(0.8)
                         .lineSpacing(2)
                 }
             }
@@ -128,11 +126,12 @@ private extension DescriptionView {
         var body: some View {
             HStack(alignment: .top, spacing: 8) {
                 Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundStyle(Color.orange)
+                    .foregroundStyle(.orange)
                     .font(.caption)
                 Text(text)
                     .font(.caption)
-                    .foregroundStyle(Color(.keyWhite).opacity(0.9))
+                    .foregroundStyle(.keyWhite)
+                    .opacity(0.8)
                     .lineSpacing(2)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
