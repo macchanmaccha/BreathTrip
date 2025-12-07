@@ -5,7 +5,6 @@
 //  Created by apple on 2023/09/23.
 //
 
-import AVFoundation
 import MusicKit
 import SwiftUI
 
@@ -18,12 +17,6 @@ struct MeditatingView: View {
     @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
-    /// プレビューURL
-    @State private var previewURL: URL?
-    /// 曲のID
-    private let trackID: String = "848536284"
-    /// プレイヤー
-    @State private var audioPlayer: AVPlayer?
     var body: some View {
         ZStack {
             Image(.playBackground)
@@ -32,7 +25,7 @@ struct MeditatingView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 // preStartまたはprePauseのとき
-                if viewModel.state == .preStart || viewModel.state == .prePause {
+                if viewModel.timerState == .preStart || viewModel.timerState == .prePause {
                     // 以下テキストを表示
                     Text("開始まで\n\(viewModel.remainingSeconds)")
                         .multilineTextAlignment(.center)
@@ -42,37 +35,25 @@ struct MeditatingView: View {
                         .bold()
                 }
                 // 瞑想中タイマーを表示
-                if viewModel.state == .start || viewModel.state == .pause {
+                if viewModel.timerState == .start || viewModel.timerState == .pause {
                     Text(viewModel.remainingSeconds.formattedTime())
                         .foregroundStyle(.keyWhite)
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
                         .bold()
-                        .task {
-                            // プレビューURLを取得
-                            await fetchPreviewURL(for: trackID)
-                            // プレビューURL取得後に再生
-                            playBack()
-                        }
-//                    // プレビューURLが存在したら
-//                    if previewURL != nil {
-                        // 再生状態をplayingにする
-//                        updateState(newState: .playing)
-//                    } else {
-//                    }  // if previewURL
-                }
+                } // if
                 // endでないとき
-                if viewModel.state != .end {
+                if viewModel.timerState != .end {
                     // 中断ボタン
                     Button(action: {
                         // preStartだったら
-                        if viewModel.state == .preStart {
+                        if viewModel.timerState == .preStart {
                             // prePauseにする
-                            viewModel.updateState(to: .prePause)
+                            viewModel.updateTimerState(to: .prePause)
                             // startだったら
-                        } else if viewModel.state == .start {
+                        } else if viewModel.timerState == .start {
                             // pauseにする
-                            viewModel.updateState(to: .pause)
+                            viewModel.updateTimerState(to: .pause)
                         }
                     }) {
                         Text("中断する")
@@ -86,13 +67,13 @@ struct MeditatingView: View {
                         // NO
                         Button("NO") {
                             // prePauseだったら
-                            if viewModel.state == .prePause {
+                            if viewModel.timerState == .prePause {
                                 // preStartにする
-                                viewModel.updateState(to: .preStart)
+                                viewModel.updateTimerState(to: .preStart)
                                 // pauseだったら
-                            } else if viewModel.state == .pause {
+                            } else if viewModel.timerState == .pause {
                                 // startにする
-                                viewModel.updateState(to: .start)
+                                viewModel.updateTimerState(to: .start)
                             }
                         }
                         // YES
@@ -115,12 +96,12 @@ struct MeditatingView: View {
 #endif
         .onAppear {
             // 画面起動時にprestart状態にする
-            viewModel.updateState(to: .preStart)
+            viewModel.updateTimerState(to: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
         }
-        .onChange(of: viewModel.state) {
-            switch viewModel.state {
+        .onChange(of: viewModel.timerState) {
+            switch viewModel.timerState {
             case .preStart:
                 // 瞑想前タイマーの呼出
                 viewModel.startPreparationTimer()
@@ -159,30 +140,30 @@ struct MeditatingView: View {
     // MARK: - Helper Methods
     /// 準備状態かどうか
     private var isPreparationState: Bool {
-        viewModel.state == .preStart || viewModel.state == .prePause
+        viewModel.timerState == .preStart || viewModel.timerState == .prePause
     }
     /// 瞑想状態かどうか
     private var isMeditationState: Bool {
-        viewModel.state == .start || viewModel.state == .pause
+        viewModel.timerState == .start || viewModel.timerState == .pause
     }
     /// 中断ボタンアクション
     private func handleStopButtonAction() {
-        switch viewModel.state {
+        switch viewModel.timerState {
         case .preStart:
-            viewModel.updateState(to: .prePause)
+            viewModel.updateTimerState(to: .prePause)
         case .start:
-            viewModel.updateState(to: .pause)
+            viewModel.updateTimerState(to: .pause)
         default:
             break
         }
     }
     /// 中断アラートのNOボタンアクション
     private func handleStopAlertNoAction() {
-        switch viewModel.state {
+        switch viewModel.timerState {
         case .prePause:
-            viewModel.updateState(to: .preStart)
+            viewModel.updateTimerState(to: .preStart)
         case .pause:
-            viewModel.updateState(to: .start)
+            viewModel.updateTimerState(to: .start)
         default:
             break
         }
@@ -192,118 +173,6 @@ struct MeditatingView: View {
         viewModel.stopTimer()
         dismiss()
     }
-    // fetchPreviewURL
-    func fetchPreviewURL(for trackID: String) async {
-        // エラーを出すメソッドを安全に返す(request)
-        do {
-            // Apple Musicの認証ステータス
-            let musicAuthorizationStatus = await MusicAuthorization.request()
-            // 認証されなかったら
-            guard musicAuthorizationStatus == .authorized else {
-                // アラート表示
-//                isShowAlert = true
-                // 処理終了　なにもしない
-                print("許可されませんでした")
-                return
-            }  // guard musicAuthorizationStatus
-            // 楽曲IDを指定してリクエストを作成
-            let request = MusicCatalogResourceRequest<Song>(
-                matching: \.id, equalTo: MusicItemID(trackID))
-            // レスポンスを取得
-            let response = try await request.response()
-            // 曲とプレビューURLが存在する場合
-            if let song = response.items.first,
-                let previewURL = song.previewAssets?.first?.url
-            {
-                // previewURLに代入
-                self.previewURL = previewURL
-                print("previewURLの取得完了！")
-            }  // if let
-            // エラーの場合
-        } catch {
-            print("指定したトラックID（\(trackID)）の曲とpreviewURLがありません")
-            print("エラーはこちら: \(error)")
-            return
-        }  // do catch
-    }  // fetchPreviewURL
-    // 曲を再生するメソッド
-    private func playBack() {
-        print("playBack1")
-        // previewURL、fadeOutEndTimeが存在しなかったら
-        guard let previewURL
-//            let fadeOutEndTime
-        else {
-            print("previewURLが存在しません")
-            print("playBack2")
-            // 処理終了
-            return
-        }  // guard let
-        // playerがnilのとき（初めての再生のとき）
-        if audioPlayer == nil {
-            print("playBack3")
-            print("🙆新しいプレーヤーを取得しました！")
-            // playerにpreviewUrlを代入する
-            audioPlayer = AVPlayer(url: previewURL)
-            // ボリュームを0に設定
-//            audioPlayer?.volume = 0.0
-            // 再生する
-            audioPlayer?.play()
-            print("playBack4")
-            print("🍀プレイヤーの状態は\(String(describing: audioPlayer?.status.rawValue))")
-            print("📣ボリュームは\(String(describing: audioPlayer?.volume))")
-//            // フェードイン
-//            fadeIn(player: audioPlayer!, duration: 5)
-//            print("playBack5")
-//        } else {
-//            print("playBack6")
-//            // 再開したとき
-//            print("🌸一時停止した後の再開だよ！")
-//            // 再生するのみ
-//            audioPlayer?.play()
-//            print("playBack7")
-        }  // if player
-//        print("playBack8")
-//        // 多重にfadeOutEndTimerが実行されないようにする
-//        stopTimer(timer: &fadeOutEndTimer)
-//        print("playBack9")
-//        // フェードアウトする時間を管理するタイマー
-//        fadeOutEndTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-//            print("playBack10")
-//            // 現在時刻
-//            let now = Date()
-//            // fadeOutTimeはfadeOutEndTimeに向かって0.1秒スライスする　0と比較し、大きい値を格納
-//            fadeOutTime = max(0, fadeOutEndTime.timeIntervalSince(now))
-//            print("❤️フェードアウトのタイマーは\(fadeOutTime)")
-//            // fadeOutTimeの5秒前になったら
-//            if fadeOutTime >= 5 && fadeOutTime < 5.1 {
-//                print("playBack11")
-//                // 5秒かけてフェードアウト
-//                fadeOut(player: audioPlayer!, duration: 5.0) {
-//                    print("playBack12")
-//                    fadeOutComplete()
-//                    print("playBack13")
-//                }
-//            } else if fadeOutTime > 0 && fadeOutTime < 5 {
-//                print("playBack14")
-//                // 0 < fadeOutTime < 5 のとき
-//                print(fadeOutTime)
-//                // 残り時間をかけてフェードアウト
-//                fadeOut(player: audioPlayer!, duration: fadeOutTime) {
-//                    print("playBack15")
-//                    fadeOutComplete()
-//                    print("playBack16")
-//                }
-//            } else if fadeOutTime == 0 {
-//                print("playBack17")
-//                // fadeOutTimeが0のとき
-//                // 処理なし
-//                return
-//            }  // if fadeOutTime...
-//            print("playBack18")
-//        }  // fadeOutEndTimer
-//        print("🟢playBack19")
-//        print("⭐️previewURLはこちら\(previewURL)")
-    }  // func playBack()
 }  // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {
