@@ -33,7 +33,7 @@ class ListeningSetViewModel: SetViewModel {
         }
         state = to
     }
-    // 瞑想中タイマー
+    // 音をきくタイマー
     func startListeningTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
         stopTimer()
@@ -41,7 +41,7 @@ class ListeningSetViewModel: SetViewModel {
         guard remainingSeconds > 0 else {
             return
         }
-        // 終了時刻は、残り時間+1秒を考慮（60:00もカウントに含めるため）
+        // 終了時刻は、残り時間+1秒を考慮
         endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
