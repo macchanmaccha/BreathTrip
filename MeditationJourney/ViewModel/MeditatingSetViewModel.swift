@@ -43,20 +43,26 @@ class MeditatingSetViewModel: SetViewModel {
     // 瞑想前タイマー
     func startPreparationTimer() {
         stopTimer()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        // 終了時刻は、残り時間+1秒を考慮
+        endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
+        // タイマー起動
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else {
                 return
             }
             // preStartのとき
             if state == .preStart {
-                // 1より大きいとき
-                if remainingSeconds > 1 {
-                    // 1ずつマイナス
-                    remainingSeconds -= 1
-                    // 1の場合（0秒となる前）
-                } else if remainingSeconds == 1 {
-                    updateState(to: .start)
-                    // タイマーが有効かチェック
+                // endTimeが存在するとき
+                if let endTime = self.endTime {
+                    // 現在時刻と終了時刻の差を評価し、0以上の値を返す
+                    let remainigTimeInterval = max(0, endTime.timeIntervalSince(Date()))
+                    // Int型に変換してremainingSecondsに格納
+                    remainingSeconds = Int(remainigTimeInterval)
+                    // remainingSecondsが0以下のとき
+                    if remainingSeconds <= 0 {
+                        updateState(to: .start)
+                        stopTimer()
+                    }
                 }  // else ifここまで
             }  // if state == .preStartここまで
         }  // timerHandlerここまで
@@ -69,8 +75,8 @@ class MeditatingSetViewModel: SetViewModel {
         guard remainingSeconds > 0 else {
             return
         }
-        // 終了時刻は、残り時間を考慮
-        endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds))
+        // 終了時刻は、残り時間+1秒を考慮
+        endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else {
@@ -107,8 +113,8 @@ class MeditatingSetViewModel: SetViewModel {
     func forceEndForDebug() {
         // 瞑想中の場合に実行
         if state == .start {
-            // 残り時間を1秒に設定
-            remainingSeconds = 1
+            // end状態にする
+            state = .end
         }
     }
 #endif
