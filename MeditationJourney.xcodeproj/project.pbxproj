@@ -71,6 +71,7 @@
 		18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
+		18BCE6662EE99AD6005C9BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +141,7 @@
 		1863E1E02AAD81BE00543D18 /* MeditationJourney */ = {
 			isa = PBXGroup;
 			children = (
+				18BCE6662EE99AD6005C9BE5 /* Info.plist */,
 				1863E1E12AAD81BE00543D18 /* MeditationJourneyApp.swift */,
 				18E079B72BCA5F9900544DDD /* Extensions */,
 				1806445D2AB693780080EEFF /* View */,
@@ -477,7 +479,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "瞑想中にAppleMusicの楽曲を再生するために使用";
+				INFOPLIST_FILE = MeditationJourney/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "AppleMusicの楽曲を再生します";
 				INFOPLIST_KEY_NSMediaLibraryUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -514,7 +517,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "瞑想中にAppleMusicの楽曲を再生するために使用";
+				INFOPLIST_FILE = MeditationJourney/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "AppleMusicの楽曲を再生します";
 				INFOPLIST_KEY_NSMediaLibraryUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

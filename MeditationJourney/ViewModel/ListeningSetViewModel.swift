@@ -9,7 +9,7 @@ import SwiftUI
 
 class ListeningSetViewModel: SetViewModel {
     /// 音をきく画面での状態　初期値はend
-    @Published private(set) var state: State = .end
+    @Published private(set) var timerState: TimerState = .end
     /// 選択する時間を管理する変数
     @Published private(set) var selectedMinutes: Int = 1
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
@@ -19,8 +19,8 @@ class ListeningSetViewModel: SetViewModel {
     /// タイマーの終了時刻を管理する変数
     private var endTime: Date?
     /// 状態の更新
-    func updateState(to: State) {
-        if state == .end && to == .start {
+    func updateState(to: TimerState) {
+        if timerState == .end && to == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
                 selectedMinutes = listeningMinutes
@@ -31,7 +31,7 @@ class ListeningSetViewModel: SetViewModel {
                 remainingSeconds = 0
             }
         }
-        state = to
+        timerState = to
     }
     // 音をきくタイマー
     func startListeningTimer() {
@@ -49,7 +49,7 @@ class ListeningSetViewModel: SetViewModel {
                 return
             }
             // 瞑想中なら
-            if state == .start {
+            if timerState == .start {
                 // endTimeが存在するとき
                 if let endTime = self.endTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
@@ -59,7 +59,7 @@ class ListeningSetViewModel: SetViewModel {
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
-                        state = .end
+                        timerState = .end
                         // タイマー停止
                         stopTimer()
                     } // if remainingSeconds <= 0
@@ -82,7 +82,7 @@ class ListeningSetViewModel: SetViewModel {
     }
 }  // ListeningSetViewModelここまで
 extension ListeningSetViewModel {
-    enum State {
+    enum TimerState {
         case start  // 音再生タイマーカウントダウン
         case pause  // 音再生タイマー中断
         case end  // 音再生終了

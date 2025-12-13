@@ -20,11 +20,11 @@ class MeditatingSetViewModel: SetViewModel {
     /// プレビューURL
     private var previewURL: URL?
     /// 曲のID
-    private let trackID: String = "848536284"
+    let trackID: String = "848536284"
     /// プレイヤー
     private var audioPlayer: AVPlayer?
     /// 設定画面へ誘導するアラート
-    private var isShowAlert = false
+    @Published var isShowAlert = false
     /// タイマー
     var timer: Timer?
     /// タイマーの終了時刻を管理する変数
@@ -93,6 +93,8 @@ class MeditatingSetViewModel: SetViewModel {
         }
         // 終了時刻は、残り時間+1秒を考慮
         endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
+        // 音再生
+        updatePlaybackState(to: .playing)
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else {
@@ -110,6 +112,8 @@ class MeditatingSetViewModel: SetViewModel {
                     if remainingSeconds <= 0 {
                         // end
                         timerState = .end
+                        // 音の停止
+                        updatePlaybackState(to: .stopped)
                         // タイマー停止
                         stopTimer()
                     } // if remainingSeconds <= 0
@@ -169,19 +173,9 @@ class MeditatingSetViewModel: SetViewModel {
             audioPlayer?.pause()
             // playerをnilに
             audioPlayer = nil
-            // selectedDurationMinutesTimerを無効、nil
-//            stopTimer(timer: &selectedDurationMinutesTimer)
-            // fadeOutEndTimerを無効、nilにする
-//            stopTimer(timer: &fadeOutEndTimer)
         case .paused:
             // 曲を一時停止
             audioPlayer?.pause()
-            // selectedDurationMinutesTimerを無効、nil
-//            stopTimer(timer: &selectedDurationMinutesTimer)
-//            // fadeOutEndTimerを無効、nilにする
-//            stopTimer(timer: &fadeOutEndTimer)
-//            // fadeOutTimerを無効、nilにする
-//            stopTimer(timer: &fadeOutTimer)
         }  // switch newState
         playbackState = to
     }
@@ -221,9 +215,7 @@ class MeditatingSetViewModel: SetViewModel {
     private func playBack() {
         print("playBack1")
         // previewURL、fadeOutEndTimeが存在しなかったら
-        guard let previewURL
-//            ,let fadeOutEndTime
-        else {
+        guard let previewURL else {
             print("previewURLが存在しません")
             print("playBack2")
             // 処理終了
@@ -231,29 +223,16 @@ class MeditatingSetViewModel: SetViewModel {
         }  // guard let
         // playerがnilのとき（初めての再生のとき）
         if audioPlayer == nil {
-            print("playBack3")
-            print("🙆新しいプレーヤーを取得しました！")
             // playerにpreviewUrlを代入する
             audioPlayer = AVPlayer(url: previewURL)
 //            // ボリュームを0に設定
 //            audioPlayer?.volume = 0.0
             // 再生する
             audioPlayer?.play()
-            print("playBack4")
-            print("🍀プレイヤーの状態は\(String(describing: audioPlayer?.status.rawValue))")
-            print("📣ボリュームは\(String(describing: audioPlayer?.volume))")
-//            // フェードイン
-//            fadeIn(player: audioPlayer!, duration: 5)
-//            print("playBack5")
         } else {
-//            print("playBack6")
-//            // 再開したとき
-//            print("🌸一時停止した後の再開だよ！")
             // 再生するのみ
             audioPlayer?.play()
-            print("playBack7")
         }  // if player
-        print("playBack8")
     }  // func playBack()
 }  // MeditatingSetViewModel
 extension MeditatingSetViewModel {

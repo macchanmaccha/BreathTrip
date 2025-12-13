@@ -125,12 +125,32 @@ struct MeditationSetView: View {
             }  // VStackここまで
         }  // ZStackここまで
         .accentColor(.blue)
+        // AppleMusicへのアクセスが許可されなかった時に、設定画面への遷移を促すアラート
+        .alert(isPresented: $viewModel.isShowAlert) {
+            Alert(
+                title: Text("メディアとApple Musicへのアクセスがオフになっています"),
+                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。設定アプリで変更できます。"),
+                primaryButton: .default(Text("設定を開く")) {
+                    // 設定アプリの自分のアプリの設定画面を開く
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                },
+                secondaryButton: .cancel(Text("キャンセル"))
+            )  // Alert
+        }  // .alertここまで
         // シート
         .sheet(
             isPresented: $isShowSheet,
             content: {
                 SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
             })
+        .onAppear {
+            // プレビューURLを取得（認証チェックも含む）
+            Task {
+                await viewModel.fetchPreviewURL(for: viewModel.trackID)
+            }
+        }
     }  // bodyここまで
 }  // MeditationViewここまで
 
