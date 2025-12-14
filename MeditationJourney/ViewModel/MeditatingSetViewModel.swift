@@ -16,9 +16,7 @@ class MeditatingSetViewModel: SetViewModel {
     /// タイマー
     var timer: Timer?
     /// タイマーの終了時刻を管理する変数
-    private var meditationEndDate: Date?
-    /// タイマーの終了時刻を管理する変数
-    private var endTime: Date?
+    private var meditationEndTime: Date?
     /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
     private let context: NSManagedObjectContext
@@ -44,7 +42,7 @@ class MeditatingSetViewModel: SetViewModel {
     func startPreparationTimer() {
         stopTimer()
         // 終了時刻は、残り時間+1秒を考慮
-        endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
+        meditationEndTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else {
@@ -53,17 +51,17 @@ class MeditatingSetViewModel: SetViewModel {
             // preStartのとき
             if state == .preStart {
                 // endTimeが存在するとき
-                if let endTime = self.endTime {
+                if let endTime = self.meditationEndTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
-                    let remainigTimeInterval = max(0, endTime.timeIntervalSince(Date()))
+                    let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
                     // Int型に変換してremainingSecondsに格納
-                    remainingSeconds = Int(remainigTimeInterval)
+                    remainingSeconds = Int(remainingTimeInterval)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         updateState(to: .start)
                         stopTimer()
                     }
-                }  // else ifここまで
+                }  // if let endTime ここまで
             }  // if state == .preStartここまで
         }  // timerHandlerここまで
     }  // funcここまで
@@ -71,12 +69,12 @@ class MeditatingSetViewModel: SetViewModel {
     func startMeditationTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
         stopTimer()
-        // remainingSecondsが0より大きとき
+        // remainingSecondsが0より大きいとき
         guard remainingSeconds > 0 else {
             return
         }
         // 終了時刻は、残り時間+1秒を考慮
-        endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
+        meditationEndTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else {
@@ -85,11 +83,11 @@ class MeditatingSetViewModel: SetViewModel {
             // 瞑想中なら
             if state == .start {
                 // endTimeが存在するとき
-                if let endTime = self.endTime {
+                if let endTime = self.meditationEndTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
-                    let remainigTimeInterval = max(0, endTime.timeIntervalSince(Date()))
+                    let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
                     // Int型に変換してremainingSecondsに格納
-                    remainingSeconds = Int(remainigTimeInterval)
+                    remainingSeconds = Int(remainingTimeInterval)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
@@ -109,7 +107,7 @@ class MeditatingSetViewModel: SetViewModel {
         timer = nil
     }
 #if DEBUG
-    /// 画面タップで終了
+    /// デバッグ用：画面タップで終了
     func forceEndForDebug() {
         // 瞑想中の場合に実行
         if state == .start {
@@ -141,6 +139,9 @@ class MeditatingSetViewModel: SetViewModel {
         } catch {
             print("瞑想記録の保存に失敗: \(error)")
         }
+    }
+    deinit {
+        stopTimer()
     }
 }  // MeditatingSetViewModel
 extension MeditatingSetViewModel {

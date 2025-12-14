@@ -88,7 +88,7 @@ struct MeditatingView: View {
             }  // VStackここまで
         }  // ZStack
 #if DEBUG
-        // 画面タップで終了
+        /// デバッグ用：画面タップで終了
         .onTapGesture {
             viewModel.forceEndForDebug()
         }
