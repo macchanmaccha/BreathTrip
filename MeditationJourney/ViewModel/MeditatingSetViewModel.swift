@@ -11,7 +11,7 @@ import SwiftUI
 class MeditatingSetViewModel: SetViewModel {
     // 瞑想画面での状態　初期値はend
     @Published private(set) var state: State = .end
-    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    /// 瞑想中タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
     private var timer: Timer?

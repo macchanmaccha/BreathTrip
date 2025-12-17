@@ -10,8 +10,6 @@ import SwiftUI
 class ListeningSetViewModel: SetViewModel {
     /// 音をきく画面での状態　初期値はend
     @Published private(set) var state: State = .end
-    /// 選択する時間を管理する変数
-    @Published private(set) var selectedMinutes: Int = 1
     /// 音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
@@ -23,9 +21,8 @@ class ListeningSetViewModel: SetViewModel {
         if state == .end && to == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
-                selectedMinutes = listeningMinutes
                 // 音再生タイマーをセット
-                remainingSeconds = selectedMinutes * 60
+                remainingSeconds = listeningMinutes * 60
                 // listeningMinutesが0のとき
             } else {
                 remainingSeconds = 0
