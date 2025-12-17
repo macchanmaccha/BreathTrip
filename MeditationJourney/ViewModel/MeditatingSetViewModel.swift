@@ -14,7 +14,7 @@ class MeditatingSetViewModel: SetViewModel {
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
-    var timer: Timer?
+    private var timer: Timer?
     /// タイマーの終了時刻を管理する変数
     private var meditationEndTime: Date?
     /// 瞑想開始日時を記録する変数
@@ -116,8 +116,8 @@ class MeditatingSetViewModel: SetViewModel {
         }
     }
 #endif
-    /// 音の設定
-    override func setSelectedSoundName(soundName: SoundModel) {
+    /// 時間と音の保存
+    override func saveSoundAndMinutes(soundName: SoundModel) {
         meditationSoundName = soundName
         saveMeditationSound()
         saveMeditationMinutes()

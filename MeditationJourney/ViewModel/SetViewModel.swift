@@ -52,10 +52,7 @@ class SetViewModel: ObservableObject {
     func saveListeningMinutes() {
         UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)
     }
-    /// 音の設定 MeditatingSetViewModelおよびListeningSetViewModelでoverride
-    func setSelectedSoundName(soundName: SoundModel) {
-    }
-    /// 設定値の再取得 MeditatingSetViewModelおよびListeningSetViewModelでoverride
-    func setSoundModel() {
+    /// 時間と音の保存 MeditatingSetViewModelおよびListeningSetViewModelでoverride
+    func saveSoundAndMinutes(soundName: SoundModel) {
     }
 }  // SetViewModelここまで

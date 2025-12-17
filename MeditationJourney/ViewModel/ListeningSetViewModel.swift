@@ -12,10 +12,10 @@ class ListeningSetViewModel: SetViewModel {
     @Published private(set) var state: State = .end
     /// 選択する時間を管理する変数
     @Published private(set) var selectedMinutes: Int = 1
-    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    /// 音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
-    var timer: Timer?
+    private var timer: Timer?
     /// タイマーの終了時刻を管理する変数
     private var listeningEndTime: Date?
     /// 状態の更新
@@ -26,7 +26,7 @@ class ListeningSetViewModel: SetViewModel {
                 selectedMinutes = listeningMinutes
                 // 音再生タイマーをセット
                 remainingSeconds = selectedMinutes * 60
-                // listeningSecondsが0のとき
+                // listeningMinutesが0のとき
             } else {
                 remainingSeconds = 0
             }
@@ -74,8 +74,8 @@ class ListeningSetViewModel: SetViewModel {
         // タイマー無効
         timer = nil
     }  // stopTimer
-    /// 音の設定
-    override func setSelectedSoundName(soundName: SoundModel) {
+    /// 時間と音の保存
+    override func saveSoundAndMinutes(soundName: SoundModel) {
         listeningSoundName = soundName
         saveListeningSound()
         saveListeningMinutes()
