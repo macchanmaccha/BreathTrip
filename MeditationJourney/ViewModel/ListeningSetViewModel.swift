@@ -1,5 +1,5 @@
 //
-//  SoundSetViewModel.swift
+//  ListeningSetViewModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2024/03/06.
@@ -15,18 +15,17 @@ class ListeningSetViewModel: SetViewModel {
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
-    var timer: Timer?
+    private var timer: Timer?
     /// タイマーの終了時刻を管理する変数
-    private var endTime: Date?
+    private var listeningEndTime: Date?
     /// 状態の更新
     func updateState(to: TimerState) {
         if timerState == .end && to == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
-                selectedMinutes = listeningMinutes
                 // 音再生タイマーをセット
-                remainingSeconds = selectedMinutes * 60
-                // listeningSecondsが0のとき
+                remainingSeconds = listeningMinutes * 60
+                // listeningMinutesが0のとき
             } else {
                 remainingSeconds = 0
             }
@@ -37,12 +36,12 @@ class ListeningSetViewModel: SetViewModel {
     func startListeningTimer() {
         // 多重でタイマーを開始しないようにタイマー停止をする
         stopTimer()
-        // remainingSecondsが0より大きとき
+        // remainingSecondsが0より大きいとき
         guard remainingSeconds > 0 else {
             return
         }
         // 終了時刻は、残り時間+1秒を考慮
-        endTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
+        listeningEndTime = Date().addingTimeInterval(TimeInterval(remainingSeconds + 1))
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else {
@@ -51,11 +50,11 @@ class ListeningSetViewModel: SetViewModel {
             // 瞑想中なら
             if timerState == .start {
                 // endTimeが存在するとき
-                if let endTime = self.endTime {
+                if let endTime = self.listeningEndTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
-                    let remainigTimeInterval = max(0, endTime.timeIntervalSince(Date()))
+                    let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
                     // Int型に変換してremainingSecondsに格納
-                    remainingSeconds = Int(remainigTimeInterval)
+                    remainingSeconds = Int(remainingTimeInterval)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
@@ -66,7 +65,7 @@ class ListeningSetViewModel: SetViewModel {
                 }  // if let endTime
             }  // if state == .startここまで
         }  // timerHandlerここまで
-    }  // startMeditationTimer
+    }  // startListeningTimer
     /// タイマー停止・無効
     func stopTimer() {
         // タイマー停止
@@ -74,11 +73,14 @@ class ListeningSetViewModel: SetViewModel {
         // タイマー無効
         timer = nil
     }  // stopTimer
-    /// 音の設定
-    override func setSelectedSoundName(soundName: SoundModel) {
+    /// 時間と音の保存
+    override func saveSoundAndMinutes(soundName: SoundModel) {
         listeningSoundName = soundName
         saveListeningSound()
         saveListeningMinutes()
+    }
+    deinit {
+        stopTimer()
     }
 }  // ListeningSetViewModelここまで
 extension ListeningSetViewModel {
