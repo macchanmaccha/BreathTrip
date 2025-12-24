@@ -15,24 +15,22 @@ class MeditatingSetViewModel: SetViewModel {
     @Published private(set) var timerState: TimerState = .end
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
+    /// 設定画面へ誘導するアラート
+    @Published var isShowAlert = false
+    /// 曲のID
+    let trackID: String = "848536284"
     /// 再生状態　初期は.stopped
     private var playbackState: PlaybackState = .stopped
     /// プレビューURL
     private var previewURL: URL?
-    /// 曲のID
-    let trackID: String = "848536284"
     /// プレイヤー
     private var audioPlayer: AVPlayer?
-    /// 設定画面へ誘導するアラート
-    @Published var isShowAlert = false
     /// タイマー
     private var timer: Timer?
     /// タイマーの終了時刻を管理する変数
     private var meditationEndTime: Date?
     /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
-    /// 30秒ごとの繰り返し再生を管理するタイマー
-    private var repeatTimer: Timer?
     private let context: NSManagedObjectContext
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.context = context
@@ -200,18 +198,14 @@ class MeditatingSetViewModel: SetViewModel {
             }  // if let
             // エラーの場合
         } catch {
-            print("指定したトラックID（\(trackID)）の曲とpreviewURLがありません")
-            print("エラーはこちら: \(error)")
+            print("ERROR: \(error)")
             return
         }  // do catch
     }  // fetchPreviewURL
     // 曲を再生するメソッド
     private func playBack() {
-        print("playBack1")
         // previewURL、fadeOutEndTimeが存在しなかったら
         guard let previewURL else {
-            print("previewURLが存在しません")
-            print("playBack2")
             // 処理終了
             return
         }  // guard let
@@ -219,12 +213,10 @@ class MeditatingSetViewModel: SetViewModel {
         if audioPlayer == nil {
             // playerにpreviewUrlを代入する
             audioPlayer = AVPlayer(url: previewURL)
-//            // ボリュームを0に設定
-//            audioPlayer?.volume = 0.0
             // 再生する
             audioPlayer?.play()
         } else {
-            // 再生するのみ
+            // 再生する
             audioPlayer?.play()
         }  // if player
     }  // func playBack()

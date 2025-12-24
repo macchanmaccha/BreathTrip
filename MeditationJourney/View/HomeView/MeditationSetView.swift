@@ -105,6 +105,10 @@ struct MeditationSetView: View {
                 .padding()
                 // はじめるボタン
                 Button(action: {
+                    // プレビューURLを取得（認証チェックも含む）
+                    Task {
+                        await viewModel.fetchPreviewURL(for: viewModel.trackID)
+                    }
                     isShowFullScreen.toggle()
                 }) {
                     Text("はじめる")
@@ -145,12 +149,6 @@ struct MeditationSetView: View {
             content: {
                 SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
             })
-        .onAppear {
-            // プレビューURLを取得（認証チェックも含む）
-            Task {
-                await viewModel.fetchPreviewURL(for: viewModel.trackID)
-            }
-        }
     }  // bodyここまで
 }  // MeditationViewここまで
 

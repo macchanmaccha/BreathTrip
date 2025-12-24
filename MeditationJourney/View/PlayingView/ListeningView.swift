@@ -31,7 +31,7 @@ struct ListeningView: View {
                 // 中断ボタン
                 Button(action: {
                     // pauseにする
-                    viewModel.updateState(to: .pause)
+                    viewModel.updateTimerState(to: .pause)
                 }) {
                     Text("中断する")
                         .tint(.backgroundNavy)
@@ -44,11 +44,14 @@ struct ListeningView: View {
                     // NO
                     Button("NO") {
                         // startにする
-                        viewModel.updateState(to: .start)
+                        viewModel.updateTimerState(to: .start)
                     }
                     // YES
                     Button("YES") {
+                        // タイマー停止
                         viewModel.stopTimer()
+                        // 音の再生を完全に停止
+                        viewModel.updatePlaybackState(to: .stopped)
                         // 設定画面に戻る
                         dismiss()
                     }
@@ -59,23 +62,29 @@ struct ListeningView: View {
         }  // ZStack
         .onAppear {
             // 一度状態をendにする
-            viewModel.updateState(to: .end)
+            viewModel.updateTimerState(to: .end)
             // その後start状態にする
-            viewModel.updateState(to: .start)
+            viewModel.updateTimerState(to: .start)
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
             case .start:
                 // 音再生タイマーの呼出
                 viewModel.startListeningTimer()
+                // 音の再生を開始
+                viewModel.updatePlaybackState(to: .playing)
             case .pause:
                 // タイマー停止・無効
                 viewModel.stopTimer()
+                // 音の再生を一時停止
+                viewModel.updatePlaybackState(to: .paused)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
                 viewModel.stopTimer()
+                // 音の再生を停止
+                viewModel.updatePlaybackState(to: .stopped)
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
