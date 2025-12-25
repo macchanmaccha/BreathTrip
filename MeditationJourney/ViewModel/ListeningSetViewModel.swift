@@ -6,24 +6,12 @@
 //
 
 import SwiftUI
-import AVFoundation
-import MusicKit
 
 class ListeningSetViewModel: SetViewModel {
     /// 音をきく画面での状態　初期値はend
     @Published private(set) var timerState: TimerState = .end
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
-    /// 設定画面へ誘導するアラート
-    @Published var isShowAlert = false
-    /// 曲のID
-    let trackID: String = "848536284"
-    /// 再生状態　初期は.stopped
-    private var playbackState: PlaybackState = .stopped
-    /// プレビューURL
-    private var previewURL: URL?
-    /// プレイヤー
-    private var audioPlayer: AVPlayer?
     /// タイマー
     private var timer: Timer?
     /// タイマーの終了時刻を管理する変数
@@ -90,72 +78,6 @@ class ListeningSetViewModel: SetViewModel {
         saveListeningSound()
         saveListeningMinutes()
     }
-    func updatePlaybackState(to: PlaybackState) {
-        // toが以下の状態となる場合
-        switch to {
-        // 再生状態になったら
-        case .playing:
-            playBack()
-        case .stopped:
-            // 曲を停止
-            audioPlayer?.pause()
-            // playerをnilに
-            audioPlayer = nil
-        case .paused:
-            // 曲を一時停止
-            audioPlayer?.pause()
-        }  // switch newState
-        playbackState = to
-    }
-    func fetchPreviewURL(for trackID: String) async {
-        // エラーを出すメソッドを安全に返す(request)
-        do {
-            // Apple Musicの認証ステータス
-            let musicAuthorizationStatus = await MusicAuthorization.request()
-            // 認証されなかったら
-            guard musicAuthorizationStatus == .authorized else {
-                // アラート表示
-                isShowAlert = true
-                // 処理終了　なにもしない
-                print("許可されませんでした")
-                return
-            }  // guard musicAuthorizationStatus
-            // 楽曲IDを指定してリクエストを作成
-            let request = MusicCatalogResourceRequest<Song>(
-                matching: \.id, equalTo: MusicItemID(trackID))
-            // レスポンスを取得
-            let response = try await request.response()
-            // 曲とプレビューURLが存在する場合
-            if let song = response.items.first,
-                let previewURL = song.previewAssets?.first?.url {
-                // previewURLに代入
-                self.previewURL = previewURL
-                print("previewURLの取得完了！")
-            }  // if let
-            // エラーの場合
-        } catch {
-            print("ERROR: \(error)")
-            return
-        }  // do catch
-    }  // fetchPreviewURL
-    // 曲を再生するメソッド
-    private func playBack() {
-        // previewURL、fadeOutEndTimeが存在しなかったら
-        guard let previewURL else {
-            // 処理終了
-            return
-        }  // guard let
-        // playerがnilのとき（初めての再生のとき）
-        if audioPlayer == nil {
-            // playerにpreviewUrlを代入する
-            audioPlayer = AVPlayer(url: previewURL)
-            // 再生する
-            audioPlayer?.play()
-        } else {
-            // 再生する
-            audioPlayer?.play()
-        }  // if player
-    }  // func playBack()
     deinit {
         stopTimer()
     }
@@ -166,13 +88,4 @@ extension ListeningSetViewModel {
         case pause  // 音再生タイマー中断
         case end  // 音再生終了
     }  // enumここまで
-    // 再生状態を管理する列挙体
-    enum PlaybackState {
-        // 再生中
-        case playing
-        // 停止
-        case stopped
-        // 一時停止
-        case paused
-    } // enum PlaybackStateここまで
 }  // extension ListeningSetViewModelここまで
