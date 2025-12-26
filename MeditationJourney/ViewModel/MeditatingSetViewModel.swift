@@ -93,7 +93,7 @@ class MeditatingSetViewModel: SetViewModel {
                         // end
                         timerState = .end
                         // 音の停止
-                        updatePlaybackState(to: .stopped)
+                        updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
                         // タイマー停止
                         stopTimer()
                     } // if remainingSeconds <= 0

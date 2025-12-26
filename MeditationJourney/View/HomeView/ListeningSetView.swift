@@ -74,9 +74,11 @@ struct ListeningSetView: View {
                     // プレビューURLを取得（認証チェックも含む）
                     Task {
                         await viewModel.fetchPreviewURL(for: viewModel.trackID)
+                        // プレビューURLの取得完了後にフルスクリーンを表示
+                        await MainActor.run {
+                            isShowFullScreen.toggle()
+                        }
                     }
-                    // フルスクリーンを表示
-                    isShowFullScreen.toggle()
                 }) {
                     Text("はじめる")
                         .font(.title)

@@ -57,7 +57,7 @@ class ListeningSetViewModel: SetViewModel {
                     if remainingSeconds <= 0 {
                         // end
                         timerState = .end
-                        updatePlaybackState(to: .stopped)
+                        updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
                         // タイマー停止
                         stopTimer()
                     } // if remainingSeconds <= 0
