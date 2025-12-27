@@ -73,10 +73,13 @@ struct ListeningSetView: View {
                 Button(action: {
                     // プレビューURLを取得（認証チェックも含む）
                     Task {
-                        await viewModel.fetchPreviewURL(for: viewModel.trackID)
+                        // 認証とプレビューURLの取得が成功した場合のみフルスクリーンを表示
+                        let success = await viewModel.fetchPreviewURL(for: viewModel.trackID)
+                        if success {
                         // プレビューURLの取得完了後にフルスクリーンを表示
                         await MainActor.run {
                             isShowFullScreen.toggle()
+                            }
                         }
                     }
                 }) {
@@ -102,7 +105,7 @@ struct ListeningSetView: View {
         .alert(isPresented: $viewModel.isShowAlert) {
             Alert(
                 title: Text("メディアとApple Musicへのアクセスがオフになっています"),
-                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。設定アプリで変更できます。"),
+                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。\n\n設定画面で「アプリ」→「MeditationJourney」→「メディアとApple Music」の順にタップし、アクセスを許可してください。"),
                 primaryButton: .default(Text("設定を開く")) {
                     // 設定アプリの自分のアプリの設定画面を開く
                     if let url = URL(string: UIApplication.openSettingsURLString) {

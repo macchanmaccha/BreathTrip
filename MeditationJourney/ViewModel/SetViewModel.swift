@@ -21,7 +21,7 @@ class SetViewModel: ObservableObject {
     /// 設定画面へ誘導するアラート
     @Published var isShowAlert = false
     /// 曲のID
-    let trackID: String = "848536284"
+    let trackID: String = "1613642543"
     /// 再生状態　初期は.stopped
     private var playbackState: PlaybackState = .stopped
     /// プレビューURL
@@ -86,18 +86,20 @@ class SetViewModel: ObservableObject {
         }  // switch newState
         playbackState = to
     }
-    /// プレビューURLを取得するメソッド
-    func fetchPreviewURL(for trackID: String) async {
+    /// プレビューURLを取得するメソッド（成功した場合trueを返す）
+    func fetchPreviewURL(for trackID: String) async -> Bool {
         // エラーを出すメソッドを安全に返す(request)
         do {
             // Apple Musicの認証ステータス
             let musicAuthorizationStatus = await MusicAuthorization.request()
             // 認証されなかったら
             guard musicAuthorizationStatus == .authorized else {
-                // アラート表示
-                isShowAlert = true
-                // 処理終了　なにもしない
-                return
+                // アラート表示（メインスレッドで実行）
+                await MainActor.run {
+                    self.isShowAlert = true
+                }
+                // 処理終了　失敗を返す
+                return false
             }  // guard musicAuthorizationStatus
             // 楽曲IDを指定してリクエストを作成
             let request = MusicCatalogResourceRequest<Song>(
@@ -109,10 +111,14 @@ class SetViewModel: ObservableObject {
                 let previewURL = song.previewAssets?.first?.url {
                 // previewURLに代入
                 self.previewURL = previewURL
+                // 成功を返す
+                return true
             }  // if let
+            // プレビューURLが取得できなかった場合
+            return false
             // エラーの場合
         } catch {
-            return
+            return false
         }  // do catch
     }  // fetchPreviewURL
     /// 曲を再生するメソッド

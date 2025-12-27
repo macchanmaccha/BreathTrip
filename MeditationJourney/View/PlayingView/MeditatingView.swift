@@ -146,42 +146,6 @@ struct MeditatingView: View {
             Text("おつかれさまでした")
         }  // .alertここまで
     }  // bodyここまで
-    // MARK: - Helper Methods
-    /// 準備状態かどうか
-    private var isPreparationState: Bool {
-        viewModel.timerState == .preStart || viewModel.timerState == .prePause
-    }
-    /// 瞑想状態かどうか
-    private var isMeditationState: Bool {
-        viewModel.timerState == .start || viewModel.timerState == .pause
-    }
-    /// 中断ボタンアクション
-    private func handleStopButtonAction() {
-        switch viewModel.timerState {
-        case .preStart:
-            viewModel.updateTimerState(to: .prePause)
-        case .start:
-            viewModel.updateTimerState(to: .pause)
-        default:
-            break
-        }
-    }
-    /// 中断アラートのNOボタンアクション
-    private func handleStopAlertNoAction() {
-        switch viewModel.timerState {
-        case .prePause:
-            viewModel.updateTimerState(to: .preStart)
-        case .pause:
-            viewModel.updateTimerState(to: .start)
-        default:
-            break
-        }
-    }
-    /// 中断アラートのYESボタンアクション
-    private func handleStopAlertYesAction() {
-        viewModel.stopTimer()
-        dismiss()
-    }
 }  // ContentViewここまで
 
 struct MeditatingView_Previews: PreviewProvider {
