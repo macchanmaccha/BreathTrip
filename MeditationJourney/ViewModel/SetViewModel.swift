@@ -20,6 +20,14 @@ class SetViewModel: ObservableObject {
     @Published var listeningMinutes: Int
     /// 設定画面へ誘導するアラート
     @Published var isShowAlert = false
+    /// fadeOutのタイマー
+    @Published private var fadeOutTimer: Timer?
+    /// fadeOutの終了時間を管理する変数
+    @Published private var fadeOutEndTime: Date?
+    /// fadeOutの秒数を管理する変数（初期値は30.0）
+    @Published private var fadeOutTime: TimeInterval = 30.0
+    /// fadeOutを終了するタイマー
+    @Published private var fadeOutEndTimer: Timer?
     /// 曲のID
     let trackID: String = "1613642543"
     /// 再生状態　初期は.stopped
