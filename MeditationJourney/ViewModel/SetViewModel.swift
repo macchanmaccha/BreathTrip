@@ -32,20 +32,20 @@ class SetViewModel: ObservableObject {
         return fadeInTimer?.isValid ?? false
     }
     /// fadeInのタイマー
-    @Published var fadeInTimer: Timer?
+    var fadeInTimer: Timer?
     /// fadeOutを管理
     private var isFadeOut: Bool {
         // stopTimer()でタイマーが停止したらfadeOutTimerがnilになる
         return fadeOutTimer?.isValid ?? false
     }
     /// fadeOutのタイマー
-    @Published var fadeOutTimer: Timer?
+    var fadeOutTimer: Timer?
     /// fadeOutの終了時間を管理する変数
-    @Published var fadeOutEndTime: Date?
+    var fadeOutEndTime: Date?
     /// fadeOutの秒数を管理する変数（初期値は30.0）
-    @Published var fadeOutTime: TimeInterval = 30.0
+    var fadeOutTime: TimeInterval = 30.0
     /// fadeOutを終了するタイマー
-    @Published var fadeOutEndTimer: Timer?
+    var fadeOutEndTimer: Timer?
     /// 曲のID
     let trackID: String = "1613642543"
     /// 再生状態　初期は.stopped
