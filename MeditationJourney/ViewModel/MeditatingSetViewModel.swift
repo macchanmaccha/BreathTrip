@@ -30,6 +30,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     // 状態の更新
     func updateTimerState(to: TimerState) {
+        // すでにプレスタート状態のときに、スタート状態になった場合
         if timerState == .preStart && to == .start {
             // 瞑想タイマーをセット
             remainingSeconds = meditationMinutes * 60
@@ -107,6 +108,16 @@ class MeditatingSetViewModel: SetViewModel {
         timer?.invalidate()
         // タイマー無効
         timer = nil
+    }
+    func startPlayAndTimer() {
+        // 多重でタイマーを開始しないようにする
+        stopTimer()
+        // fadeOutの終了時刻は、fadeOutTimeを考慮
+        fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
+        // 再生を開始
+        playBack()
+        // タイマーを開始
+        startMeditationTimer()
     }
 #if DEBUG
     /// デバッグ用：画面タップで終了

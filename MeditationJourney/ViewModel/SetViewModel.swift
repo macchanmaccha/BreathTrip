@@ -20,6 +20,8 @@ class SetViewModel: ObservableObject {
     @Published var listeningMinutes: Int
     /// 設定画面へ誘導するアラート
     @Published var isShowAlert = false
+    /// 表示秒数(タイマーの時間)
+    @Published private var remainingTime: TimeInterval = 0
     /// タイマーの終了時刻を管理する変数
     private var endTime: Date?
     /// タイマー
@@ -30,20 +32,20 @@ class SetViewModel: ObservableObject {
         return fadeInTimer?.isValid ?? false
     }
     /// fadeInのタイマー
-    @Published private var fadeInTimer: Timer?
+    @Published var fadeInTimer: Timer?
     /// fadeOutを管理
     private var isFadeOut: Bool {
         // stopTimer()でタイマーが停止したらfadeOutTimerがnilになる
         return fadeOutTimer?.isValid ?? false
     }
     /// fadeOutのタイマー
-    @Published private var fadeOutTimer: Timer?
+    @Published var fadeOutTimer: Timer?
     /// fadeOutの終了時間を管理する変数
-    @Published private var fadeOutEndTime: Date?
+    @Published var fadeOutEndTime: Date?
     /// fadeOutの秒数を管理する変数（初期値は30.0）
-    @Published private var fadeOutTime: TimeInterval = 30.0
+    @Published var fadeOutTime: TimeInterval = 30.0
     /// fadeOutを終了するタイマー
-    @Published private var fadeOutEndTimer: Timer?
+    @Published var fadeOutEndTimer: Timer?
     /// 曲のID
     let trackID: String = "1613642543"
     /// 再生状態　初期は.stopped
@@ -98,6 +100,8 @@ class SetViewModel: ObservableObject {
         switch to {
         // 再生状態になったら
         case .playing:
+            // fadeOutの終了時刻は、fadeOutTimeを考慮
+            fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
             playBack()
         case .stopped:
             // 曲を停止
@@ -148,7 +152,7 @@ class SetViewModel: ObservableObject {
         }  // do catch
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
-    private func playBack() {
+    func playBack() {
         // previewURLとfadeOutEndTimeが存在しなかったら
         guard let previewURL, let fadeOutEndTime else {
             // 処理終了
@@ -168,13 +172,36 @@ class SetViewModel: ObservableObject {
             // 再生する
             audioPlayer?.play()
         }  // if player
+        // 多重にfadeOutEndTimeが実行されないようにする
+        stopTimer(timer: &fadeOutEndTimer)
+        // フェードアウトする時間を管理するタイマー
+        fadeOutEndTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            // 現在時刻
+            let now = Date()
+            // fadeOutTimeはfadeOutEndTimeに向かって0.1秒スライスする　0と比較し、大きい値を格納
+            self.fadeOutTime = max(0, fadeOutEndTime.timeIntervalSince(now))
+            // fadeOutTimeの5秒前になったら
+            if self.fadeOutTime >= 5 && self.fadeOutTime < 5.1 {
+                // 5秒かけてフェードアウト
+                self.fadeOut(player: self.audioPlayer!, duration: 5.0) {
+                    self.fadeOutComplete()
+                }
+            } else if self.fadeOutTime > 0 && self.fadeOutTime < 5 {
+                // 残り時間をかけてフェードアウト
+                self.fadeOut(player: self.audioPlayer!, duration: self.fadeOutTime) {
+                    self.fadeOutComplete()
+                }
+            } else if self.fadeOutTime == 0 {
+                // fadeOutTimeが0のとき
+                // 処理なし
+                return
+            }  // if fadeOutTime...
+        }  // fadeOutEndTimer
     }  // func playBack()
     // 自然に聞こえるフェードイン
     func fadeIn(player: AVPlayer, duration: TimeInterval) {
-        print("フェードイン1")
         // もしisFadeInとisFadeOutがtrueまたはmeditationMinutesが10秒以下またはlisteningMinutesが10秒以下なら
-        if isFadeIn || isFadeOut || meditationMinutes <= 10 || listeningMinutes <= 10 {
-            // フェードインしない
+        if isFadeIn || isFadeOut || meditationMinutes * 60 <= 10 || listeningMinutes * 60 <= 10 {
             return
         }  // if isFadeIn
         // 100ミリ秒ごとに音量を変更
@@ -183,10 +210,8 @@ class SetViewModel: ObservableObject {
         let totalSteps = Int(duration / interval)
         // 現在のステップ　初期は0
         var currentStep = 0
-        print("フェードイン2")
         // フェードインのタイマー
         fadeInTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
-            print("フェードイン3")
             // 現在の段階が合計段階よりも小さいとき
             if currentStep < totalSteps {
                 // 音量の変更を指数関数的に調整
@@ -202,14 +227,11 @@ class SetViewModel: ObservableObject {
                 self.stopTimer(timer: &self.fadeInTimer)
             }  // if currentStep < totalSteps
         }  // fadeInTimer
-        print("フェードイン4")
     }  // func fadeIn
     // 自然に聞こえるフェードアウト
     func fadeOut(player: AVPlayer, duration: TimeInterval, completion: @escaping () -> Void) {
-        print("🧡fadeOut関数をたたいたよ！")
         // フェードアウトしているとき
         if isFadeOut == true {
-            print("💚isFadeOutがtrueなので処理なし")
             // 何も処理しない
             return
         }  // if isFadeOut...
@@ -242,17 +264,14 @@ class SetViewModel: ObservableObject {
                 self.stopTimer(timer: &self.fadeOutTimer)
                 // フェードアウトが終わったらクロージャーを呼び出す
                 // 同期関数内のためTask使用、メインスレッドに乗り換えたためクロージャー呼び出し
-                print("==================================fadeOutCompleteをたたいたよ")
                 Task { @MainActor in
                     completion()
                 }  // Task
             }  // if currentStep
         }  // Timer
-        print("🪈fadeOutはおわり")
     }  // func fadeOut
     // 再生完了後の処理
     func fadeOutComplete() {
-        print("音量が0になりました。")
         // endTimeが存在しない場合は何もしない
         guard let endTime else {
             return
@@ -272,18 +291,15 @@ class SetViewModel: ObservableObject {
                 playBack()
                 // meditationMinutesが1以上10未満の場合
             } else if meditationMinutes >= 1 && meditationMinutes < 10 || listeningMinutes >= 1 && listeningMinutes < 10 {
-                print("🐻1~9のときの処理にはいってるよ！🐻")
                 return
             }  // if meditationMinutes...
             // 終了時刻が到来済の場合
         } else if Date() >= endTime {
             if meditationMinutes < 1 || listeningMinutes < 1 {
-                print("⚠️状態がストップになりました⚠️")
                 // 状態をstoppedにする
                 updatePlaybackState(to: .stopped)
             }
         }
-        print("😎😎😎😎😎fedeOutCompleteおわり")
     }  // func fadeOutComplete
     // func stopTimer
     func stopTimer(timer: inout Timer?) {
