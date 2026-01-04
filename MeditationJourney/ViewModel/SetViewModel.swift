@@ -3,7 +3,7 @@
 //  MeditationJourney
 //
 //  Created by apple on 2024/03/06.
-//
+//<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="150" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/jp/album/%E9%8A%80%E6%B2%B3%E9%89%84%E9%81%93999-%E3%82%B7%E3%83%B3-%E3%83%9F%E3%83%83%E3%82%AF%E3%82%B9/1576665425?i=1576665786"></iframe>
 
 import Foundation
 import AVFoundation
@@ -47,7 +47,7 @@ class SetViewModel: ObservableObject {
     /// fadeOutを終了するタイマー
     var fadeOutEndTimer: Timer?
     /// 曲のID
-    let trackID: String = "1613642543"
+    let trackID: String = "1576665786"
     /// 再生状態　初期は.stopped
     private var playbackState: PlaybackState = .stopped
     /// プレビューURL
@@ -98,7 +98,7 @@ class SetViewModel: ObservableObject {
     func updatePlaybackState(to: PlaybackState) {
         // toが以下の状態となる場合
         switch to {
-        // 再生状態になったら
+            // 再生状態になったら
         case .playing:
             // fadeOutの終了時刻は、fadeOutTimeを考慮
             fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
@@ -138,7 +138,7 @@ class SetViewModel: ObservableObject {
             let response = try await request.response()
             // 曲とプレビューURLが存在する場合
             if let song = response.items.first,
-                let previewURL = song.previewAssets?.first?.url {
+               let previewURL = song.previewAssets?.first?.url {
                 // previewURLに代入
                 self.previewURL = previewURL
                 // 成功を返す

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MeditatingView: View {
     /// MeditatingSetViewModel
-    @ObservedObject var viewModel: MeditatingSetViewModel
+    @StateObject var viewModel: MeditatingSetViewModel
     /// 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     /// 瞑想終了アラートを管理する変数
