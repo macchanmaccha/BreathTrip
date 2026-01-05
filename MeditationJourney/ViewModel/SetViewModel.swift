@@ -1,5 +1,5 @@
 //
-//  SoundSetViewModel.swift
+//  SetViewModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2024/03/06.
@@ -48,7 +48,7 @@ class SetViewModel: ObservableObject {
     }  // func loadSound
     /// 分数を引っ張るメソッド
     private static func loadMinutes(withKey key: String) -> Int {
-        return UserDefaults.standard.integer(forKey: key)
+        UserDefaults.standard.integer(forKey: key)
     }
     func saveMeditationSound() {
         UserDefaults.standard.set(
@@ -64,17 +64,19 @@ class SetViewModel: ObservableObject {
     func saveListeningMinutes() {
         UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)
     }
-    /// 時間と音の保存 MeditatingSetViewModelおよびListeningSetViewModelでoverride
+    /// サブクラスでオーバーライドして実装する
+    /// - Parameter soundName: 保存する音のモデル
     func saveSoundAndMinutes(soundName: SoundModel) {
+        // サブクラスでオーバーライド
     }
     // MARK: - Apple Music API Methods
     /// 再生状態を更新するメソッド
-    func updatePlaybackState(to: PlaybackState) {
-        // toが以下の状態となる場合
-        switch to {
-        // 再生状態になったら
+    func updatePlaybackState(to newState: PlaybackState) {
+        // newStateが以下の状態となる場合
+        switch newState {
+            // 再生状態になったら
         case .playing:
-            playBack()
+            resumePlayback()
         case .stopped:
             // 曲を停止
             audioPlayer?.pause()
@@ -84,7 +86,7 @@ class SetViewModel: ObservableObject {
             // 曲を一時停止
             audioPlayer?.pause()
         }  // switch newState
-        playbackState = to
+        playbackState = newState
     }
     /// プレビューURLを取得するメソッド（成功した場合trueを返す）
     func fetchPreviewURL(for trackID: String) async -> Bool {
@@ -108,7 +110,7 @@ class SetViewModel: ObservableObject {
             let response = try await request.response()
             // 曲とプレビューURLが存在する場合
             if let song = response.items.first,
-                let previewURL = song.previewAssets?.first?.url {
+               let previewURL = song.previewAssets?.first?.url {
                 // previewURLに代入
                 self.previewURL = previewURL
                 // 成功を返す
@@ -122,7 +124,7 @@ class SetViewModel: ObservableObject {
         }  // do catch
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
-    private func playBack() {
+    private func resumePlayback() {
         // previewURLが存在しなかったら
         guard let previewURL else {
             // 処理終了
@@ -130,15 +132,18 @@ class SetViewModel: ObservableObject {
         }  // guard let
         // playerがnilのとき（初めての再生のとき）
         if audioPlayer == nil {
-            // playerにpreviewUrlを代入する
             audioPlayer = AVPlayer(url: previewURL)
-            // 再生する
-            audioPlayer?.play()
-        } else {
-            // 再生する
-            audioPlayer?.play()
-        }  // if player
-    }  // func playBack()
+        }
+        // 再生する
+        audioPlayer?.play()
+    }  // func resumePlayback()
+    // 終了時
+    deinit {
+        // プレイヤー停止
+        audioPlayer?.pause()
+        // プレイヤーをnil
+        audioPlayer = nil
+    }
 }  // SetViewModelここまで
 extension SetViewModel {
     // 再生状態を管理する列挙体

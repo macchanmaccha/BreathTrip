@@ -16,15 +16,6 @@ struct MeditationSetView: View {
     @State private var isShowFullScreen: Bool = false
     /// 音声ガイドToggleを管理する変数
     @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
-    /// 音声ガイドのアイコンを管理
-    private var speakerIcon: some View {
-        isAudioGuideOn
-        ? Image(systemName: "speaker.wave.3.fill") : Image(systemName: "speaker.slash.fill")
-    }  // speakerIconここまで
-    /// 音声ガイドONOFFを管理する変数
-    private var speakerStatusText: Text {
-        Text(isAudioGuideOn ? "ON" : "OFF")
-    }  // speakerStatusTextここまで
     /// 選択できる分数
     private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
@@ -51,14 +42,15 @@ struct MeditationSetView: View {
                         Button(action: {
                             isAudioGuideOn.toggle()
                         }) {
-                            // 音声ガイドアイコン
-                            speakerIcon
-                                .frame(width: 30, height: 30)
-                                .foregroundStyle(.backgroundNavy)
-                                .font(.title)
+                            Image(systemName: isAudioGuideOn
+                                  ? "speaker.wave.3.fill"
+                                  : "speaker.slash.fill")
+                            .frame(width: 30, height: 30)
+                            .foregroundStyle(.backgroundNavy)
+                            .font(.title)
                         }  // Buttonここまで
                         // ON、OFFのテキスト表示
-                        speakerStatusText
+                        Text( isAudioGuideOn ? "ON" : "OFF")
                             .frame(width: 30, height: 5)
                             .font(.caption2)
                             .foregroundStyle(.backgroundNavy)
@@ -110,10 +102,7 @@ struct MeditationSetView: View {
                         // 認証とプレビューURLの取得が成功した場合のみフルスクリーンを表示
                         let success = await viewModel.fetchPreviewURL(for: viewModel.trackID)
                         if success {
-                        // プレビューURLの取得完了後にフルスクリーンを表示
-                        await MainActor.run {
                             isShowFullScreen.toggle()
-                            }
                         }
                     }
                 }) {
@@ -139,7 +128,7 @@ struct MeditationSetView: View {
         .alert(isPresented: $viewModel.isShowAlert) {
             Alert(
                 title: Text("メディアとApple Musicへのアクセスがオフになっています"),
-                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。\n\n設定画面で「アプリ」→「MeditationJourney」→「メディアとApple Music」の順にタップし、アクセスを許可してください。"),
+                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。"),
                 primaryButton: .default(Text("設定を開く")) {
                     // 設定アプリの自分のアプリの設定画面を開く
                     if let url = URL(string: UIApplication.openSettingsURLString) {
