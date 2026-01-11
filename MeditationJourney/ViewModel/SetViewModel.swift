@@ -1,9 +1,9 @@
 //
-//  SoundSetViewModel.swift
+//  SetViewModel.swift
 //  MeditationJourney
 //
 //  Created by apple on 2024/03/06.
-//<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="150" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/jp/album/%E9%8A%80%E6%B2%B3%E9%89%84%E9%81%93999-%E3%82%B7%E3%83%B3-%E3%83%9F%E3%83%83%E3%82%AF%E3%82%B9/1576665425?i=1576665786"></iframe>
+//
 
 import Foundation
 import AVFoundation
@@ -74,7 +74,7 @@ class SetViewModel: ObservableObject {
     }  // func loadSound
     /// 分数を引っ張るメソッド
     private static func loadMinutes(withKey key: String) -> Int {
-        return UserDefaults.standard.integer(forKey: key)
+        UserDefaults.standard.integer(forKey: key)
     }
     func saveMeditationSound() {
         UserDefaults.standard.set(
@@ -90,19 +90,21 @@ class SetViewModel: ObservableObject {
     func saveListeningMinutes() {
         UserDefaults.standard.set(listeningMinutes, forKey: UserDefaultsKey.listeningMinutes)
     }
-    /// 時間と音の保存 MeditatingSetViewModelおよびListeningSetViewModelでoverride
+    /// サブクラスでオーバーライドして実装する
+    /// - Parameter soundName: 保存する音のモデル
     func saveSoundAndMinutes(soundName: SoundModel) {
+        // サブクラスでオーバーライド
     }
     // MARK: - Apple Music API Methods
     /// 再生状態を更新するメソッド
-    func updatePlaybackState(to: PlaybackState) {
-        // toが以下の状態となる場合
-        switch to {
+    func updatePlaybackState(to newState: PlaybackState) {
+        // newStateが以下の状態となる場合
+        switch newState {
             // 再生状態になったら
         case .playing:
             // fadeOutの終了時刻は、fadeOutTimeを考慮
             fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-            playBack()
+            resumePlayback()
         case .stopped:
             // 曲を停止
             audioPlayer?.pause()
@@ -114,7 +116,7 @@ class SetViewModel: ObservableObject {
             // 曲を一時停止
             audioPlayer?.pause()
         }  // switch newState
-        playbackState = to
+        playbackState = newState
     }
     /// プレビューURLを取得するメソッド（成功した場合trueを返す）
     func fetchPreviewURL(for trackID: String) async -> Bool {
@@ -152,7 +154,7 @@ class SetViewModel: ObservableObject {
         }  // do catch
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
-    func playBack() {
+    func resumePlayback() {
         // previewURLとfadeOutEndTimeが存在しなかったら
         guard let previewURL, let fadeOutEndTime else {
             // 処理終了
@@ -160,7 +162,6 @@ class SetViewModel: ObservableObject {
         }  // guard let
         // playerがnilのとき（初めての再生のとき）
         if audioPlayer == nil {
-            // playerにpreviewUrlを代入する
             audioPlayer = AVPlayer(url: previewURL)
             // ボリュームを0に設定
             audioPlayer?.volume = 0.0
@@ -168,10 +169,9 @@ class SetViewModel: ObservableObject {
             audioPlayer?.play()
             // フェードイン
             fadeIn(player: audioPlayer!, duration: 5)
-        } else {
-            // 再生する
-            audioPlayer?.play()
-        }  // if player
+        }
+        // 再生する
+        audioPlayer?.play()
         // 多重にfadeOutEndTimeが実行されないようにする
         stopTimer(timer: &fadeOutEndTimer)
         // フェードアウトする時間を管理するタイマー
@@ -288,7 +288,7 @@ class SetViewModel: ObservableObject {
                 // fadeOutの終了時刻は、1行上で30を入れたfadeOutTimeを考慮
                 fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
                 // 再生
-                playBack()
+                resumePlayback()
                 // meditationMinutesが1以上10未満の場合
             } else if meditationMinutes >= 1 && meditationMinutes < 10 || listeningMinutes >= 1 && listeningMinutes < 10 {
                 return
@@ -309,6 +309,13 @@ class SetViewModel: ObservableObject {
         // タイマーをnil
         timer = nil
     }  // stopTimer()
+    // 終了時
+    deinit {
+        // プレイヤー停止
+        audioPlayer?.pause()
+        // プレイヤーをnil
+        audioPlayer = nil
+    }
 }  // SetViewModelここまで
 extension SetViewModel {
     // 再生状態を管理する列挙体

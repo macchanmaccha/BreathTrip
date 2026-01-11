@@ -115,7 +115,7 @@ class MeditatingSetViewModel: SetViewModel {
         // fadeOutの終了時刻は、fadeOutTimeを考慮
         fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
         // 再生を開始
-        playBack()
+        resumePlayback()
         // タイマーを開始
         startMeditationTimer()
     }
