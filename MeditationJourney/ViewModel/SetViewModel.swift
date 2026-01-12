@@ -23,18 +23,16 @@ class SetViewModel: ObservableObject {
     /// 表示秒数(タイマーの時間)
     @Published var remainingTime: TimeInterval = 0
     /// タイマーの終了時刻を管理する変数
-    private var endTime: Date?
-    /// タイマー
-    private var timer: Timer?
+    var endTime: Date?
     /// fadeInを管理
-    private var isFadeIn: Bool {
+    var isFadeIn: Bool {
         // stopTimer()でタイマーが停止したらfadeInTimerがnilになる
         return fadeInTimer?.isValid ?? false
     }
     /// fadeInのタイマー
     var fadeInTimer: Timer?
     /// fadeOutを管理
-    private var isFadeOut: Bool {
+    var isFadeOut: Bool {
         // stopTimer()でタイマーが停止したらfadeOutTimerがnilになる
         return fadeOutTimer?.isValid ?? false
     }
@@ -51,9 +49,9 @@ class SetViewModel: ObservableObject {
     /// 再生状態　初期は.stopped
     private var playbackState: PlaybackState = .stopped
     /// プレビューURL
-    private var previewURL: URL?
+    var previewURL: URL?
     /// プレイヤー
-    private var audioPlayer: AVPlayer?
+    var audioPlayer: AVPlayer?
     /// UserDefaultsの初期化
     init() {
         meditationSoundName = Self.loadSound(withKey: UserDefaultsKey.meditationSoundName)
@@ -120,194 +118,19 @@ class SetViewModel: ObservableObject {
     }
     /// プレビューURLを取得するメソッド（成功した場合trueを返す）
     func fetchPreviewURL(for trackID: String) async -> Bool {
-        // エラーを出すメソッドを安全に返す(request)
-        do {
-            // Apple Musicの認証ステータス
-            let musicAuthorizationStatus = await MusicAuthorization.request()
-            // 認証されなかったら
-            guard musicAuthorizationStatus == .authorized else {
-                // アラート表示（メインスレッドで実行）
-                await MainActor.run {
-                    self.isShowAlert = true
-                }
-                // 処理終了　失敗を返す
-                return false
-            }  // guard musicAuthorizationStatus
-            // 楽曲IDを指定してリクエストを作成
-            let request = MusicCatalogResourceRequest<Song>(
-                matching: \.id, equalTo: MusicItemID(trackID))
-            // レスポンスを取得
-            let response = try await request.response()
-            // 曲とプレビューURLが存在する場合
-            if let song = response.items.first,
-               let previewURL = song.previewAssets?.first?.url {
-                // previewURLに代入
-                self.previewURL = previewURL
-                // 成功を返す
-                return true
-            }  // if let
-            // プレビューURLが取得できなかった場合
-            return false
-            // エラーの場合
-        } catch {
-            return false
-        }  // do catch
+        return false
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
     func resumePlayback() {
-        // previewURLとfadeOutEndTimeが存在しなかったら
-        guard let previewURL, let fadeOutEndTime else {
-            // 処理終了
-            return
-        }  // guard let
-        // 終了時刻は、残り時間を考慮
-        endTime = Date().addingTimeInterval(remainingTime)
-        // playerがnilのとき（初めての再生のとき）
-        if audioPlayer == nil {
-            audioPlayer = AVPlayer(url: previewURL)
-            // ボリュームを0に設定
-            audioPlayer?.volume = 0.0
-            // 再生する
-            audioPlayer?.play()
-            // フェードイン
-            fadeIn(player: audioPlayer!, duration: 5)
-        }
-        // 再生する
-        audioPlayer?.play()
-        // 多重にfadeOutEndTimeが実行されないようにする
-        stopTimer(timer: &fadeOutEndTimer)
-        // フェードアウトする時間を管理するタイマー
-        fadeOutEndTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            // weak selfをアンラップ
-            guard let self = self else { return }
-            // 現在時刻
-            let now = Date()
-            // fadeOutTimeはfadeOutEndTimeに向かって0.1秒スライスする　0と比較し、大きい値を格納
-            self.fadeOutTime = max(0, fadeOutEndTime.timeIntervalSince(now))
-            // fadeOutTimeの5秒前になったら
-            if self.fadeOutTime >= 5 && self.fadeOutTime < 5.1 {
-                // 5秒かけてフェードアウト
-                self.fadeOut(player: self.audioPlayer!, duration: 5.0) {
-                    self.fadeOutComplete()
-                }
-            } else if self.fadeOutTime > 0 && self.fadeOutTime < 5 {
-                // 残り時間をかけてフェードアウト
-                self.fadeOut(player: self.audioPlayer!, duration: self.fadeOutTime) {
-                    self.fadeOutComplete()
-                }
-            } else if self.fadeOutTime == 0 {
-                // fadeOutTimeが0のとき
-                // 処理なし
-                return
-            }  // if fadeOutTime...
-        }  // fadeOutEndTimer
-    }  // func playBack()
+    }  // func resumePlayBack()
     // 自然に聞こえるフェードイン
     func fadeIn(player: AVPlayer, duration: TimeInterval) {
-        // もしisFadeInとisFadeOutがtrueまたはmeditationMinutesが10秒以下またはlisteningMinutesが10秒以下なら
-        if isFadeIn || isFadeOut || meditationMinutes * 60 <= 10 || listeningMinutes * 60 <= 10 {
-            return
-        }  // if isFadeIn
-        // 100ミリ秒ごとに音量を変更
-        let interval: TimeInterval = 0.1
-        // 合計ステップ（フェードインをする時間が5なら、intervalが0.1なので段階は50）
-        let totalSteps = Int(duration / interval)
-        // 現在のステップ　初期は0
-        var currentStep = 0
-        // フェードインのタイマー
-        fadeInTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            // weak selfをアンラップ
-            guard let self = self else { return }
-            // 現在の段階が合計段階よりも小さいとき
-            if currentStep < totalSteps {
-                // 音量の変更を指数関数的に調整
-                let normalizedTime = Double(currentStep) / Double(totalSteps)
-                // 2乗することで、初期はゆっくり、後半は急激に上昇
-                player.volume = Float(pow(normalizedTime, 2))
-                // 現在のステップ　初期は0
-                currentStep += 1
-            } else {
-                // 最大音量に設定
-                player.volume = 1.0
-                // fadeInTimerを無効、nilに
-                self.stopTimer(timer: &self.fadeInTimer)
-            }  // if currentStep < totalSteps
-        }  // fadeInTimer
     }  // func fadeIn
     // 自然に聞こえるフェードアウト
     func fadeOut(player: AVPlayer, duration: TimeInterval, completion: @escaping () -> Void) {
-        // フェードアウトしているとき
-        if isFadeOut == true {
-            // 何も処理しない
-            return
-        }  // if isFadeOut...
-        // フェードアウトは0.1刻み
-        let interval: TimeInterval = 0.1
-        // 合計ステップ（フェードアウトをする時間が5なら、intervalが0.1なので段階は50）
-        let totalSteps = Int(duration / interval)
-        // 現在のステップ　初期は0
-        var currentStep = 0
-        // 現在の音量を開始音量とする
-        let startVolume = player.volume
-        // フェードアウトのタイマー　インターバルは0.1、繰り返す
-        fadeOutTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            // weak selfをアンラップ
-            guard let self = self else { return }
-            // 現在の段階が合計段階よりも小さいとき
-            if currentStep < totalSteps {
-                // 音量の変更を指数関数的に調整
-                let normalizedTime = Double(currentStep) / Double(totalSteps)
-                // 音量が徐々に減少
-                player.volume = Float(startVolume * pow(Float(1.0 - normalizedTime), 2))
-                // 現在の段階に1を足す
-                currentStep += 1
-            } else {
-                // 音量をゼロに設定
-                player.volume = 0.0
-                // プレイヤーを止める
-                player.pause()
-                // プレイヤーをnilに
-                self.audioPlayer = nil
-                // fadeOutTimerを無効、nilに
-                self.stopTimer(timer: &self.fadeOutTimer)
-                // フェードアウトが終わったらクロージャーを呼び出す
-                // 同期関数内のためTask使用、メインスレッドに乗り換えたためクロージャー呼び出し
-                Task { @MainActor in
-                    completion()
-                }  // Task
-            }  // if currentStep
-        }  // Timer
     }  // func fadeOut
     // 再生完了後の処理
     func fadeOutComplete() {
-        // endTimeが存在しない場合は何もしない
-        guard let endTime else {
-            return
-        }
-        // 終了時間が未到来の場合
-        if Date() < endTime {
-            // remainingTimeが10以上の場合
-            if remainingTime >= 10 {
-                print("再度再生します。")
-                // fadeOutEndTimerを無効、nilにする
-                stopTimer(timer: &fadeOutEndTimer)
-                // fadeOutTimeに30を格納（30秒後をフェードアウト終了時間とするため）
-                fadeOutTime = 30
-                // fadeOutの終了時刻は、1行上で30を入れたfadeOutTimeを考慮
-                fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-                // 再生
-                resumePlayback()
-                // remainingTimeが1以上10未満の場合
-            } else if remainingTime >= 1 && remainingTime < 10 {
-                return
-            }  // if meditationMinutes...
-            // 終了時刻が到来済の場合
-        } else if Date() >= endTime {
-            if remainingTime < 1 {
-                // 状態をstoppedにする
-                updatePlaybackState(to: .stopped)
-            }
-        }
     }  // func fadeOutComplete
     // func stopTimer
     func stopTimer(timer: inout Timer?) {
