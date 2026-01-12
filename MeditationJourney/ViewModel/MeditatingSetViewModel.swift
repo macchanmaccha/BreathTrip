@@ -109,16 +109,6 @@ class MeditatingSetViewModel: SetViewModel {
         // タイマー無効
         timer = nil
     }
-    func startPlayAndTimer() {
-        // 多重でタイマーを開始しないようにする
-        stopTimer()
-        // fadeOutの終了時刻は、fadeOutTimeを考慮
-        fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-        // 再生を開始
-        resumePlayback()
-        // タイマーを開始
-        startMeditationTimer()
-    }
 #if DEBUG
     /// デバッグ用：画面タップで終了
     func forceEndForDebug() {
@@ -152,6 +142,10 @@ class MeditatingSetViewModel: SetViewModel {
         } catch {
             print("瞑想記録の保存に失敗: \(error)")
         }
+    }
+    override func resumePlayback() {
+        remainingTime = TimeInterval(meditationMinutes * 60)
+        super.resumePlayback()
     }
     deinit {
         stopTimer()

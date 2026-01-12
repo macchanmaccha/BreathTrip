@@ -21,7 +21,7 @@ class SetViewModel: ObservableObject {
     /// 設定画面へ誘導するアラート
     @Published var isShowAlert = false
     /// 表示秒数(タイマーの時間)
-    @Published private var remainingTime: TimeInterval = 0
+    @Published var remainingTime: TimeInterval = 0
     /// タイマーの終了時刻を管理する変数
     private var endTime: Date?
     /// タイマー
@@ -160,6 +160,8 @@ class SetViewModel: ObservableObject {
             // 処理終了
             return
         }  // guard let
+        // 終了時刻は、残り時間を考慮
+        endTime = Date().addingTimeInterval(remainingTime)
         // playerがnilのとき（初めての再生のとき）
         if audioPlayer == nil {
             audioPlayer = AVPlayer(url: previewURL)
@@ -175,7 +177,9 @@ class SetViewModel: ObservableObject {
         // 多重にfadeOutEndTimeが実行されないようにする
         stopTimer(timer: &fadeOutEndTimer)
         // フェードアウトする時間を管理するタイマー
-        fadeOutEndTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+        fadeOutEndTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            // weak selfをアンラップ
+            guard let self = self else { return }
             // 現在時刻
             let now = Date()
             // fadeOutTimeはfadeOutEndTimeに向かって0.1秒スライスする　0と比較し、大きい値を格納
@@ -211,7 +215,9 @@ class SetViewModel: ObservableObject {
         // 現在のステップ　初期は0
         var currentStep = 0
         // フェードインのタイマー
-        fadeInTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
+        fadeInTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            // weak selfをアンラップ
+            guard let self = self else { return }
             // 現在の段階が合計段階よりも小さいとき
             if currentStep < totalSteps {
                 // 音量の変更を指数関数的に調整
@@ -244,7 +250,9 @@ class SetViewModel: ObservableObject {
         // 現在の音量を開始音量とする
         let startVolume = player.volume
         // フェードアウトのタイマー　インターバルは0.1、繰り返す
-        fadeOutTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
+        fadeOutTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            // weak selfをアンラップ
+            guard let self = self else { return }
             // 現在の段階が合計段階よりも小さいとき
             if currentStep < totalSteps {
                 // 音量の変更を指数関数的に調整
@@ -278,8 +286,8 @@ class SetViewModel: ObservableObject {
         }
         // 終了時間が未到来の場合
         if Date() < endTime {
-            // meditationMinutesまたはlisteningMinutesが10以上の場合
-            if meditationMinutes >= 10 || listeningMinutes >= 10 {
+            // remainingTimeが10以上の場合
+            if remainingTime >= 10 {
                 print("再度再生します。")
                 // fadeOutEndTimerを無効、nilにする
                 stopTimer(timer: &fadeOutEndTimer)
@@ -289,13 +297,13 @@ class SetViewModel: ObservableObject {
                 fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
                 // 再生
                 resumePlayback()
-                // meditationMinutesが1以上10未満の場合
-            } else if meditationMinutes >= 1 && meditationMinutes < 10 || listeningMinutes >= 1 && listeningMinutes < 10 {
+                // remainingTimeが1以上10未満の場合
+            } else if remainingTime >= 1 && remainingTime < 10 {
                 return
             }  // if meditationMinutes...
             // 終了時刻が到来済の場合
         } else if Date() >= endTime {
-            if meditationMinutes < 1 || listeningMinutes < 1 {
+            if remainingTime < 1 {
                 // 状態をstoppedにする
                 updatePlaybackState(to: .stopped)
             }

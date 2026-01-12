@@ -78,6 +78,10 @@ class ListeningSetViewModel: SetViewModel {
         saveListeningSound()
         saveListeningMinutes()
     }
+    override func resumePlayback() {
+        remainingTime = TimeInterval(listeningMinutes * 60)
+        super.resumePlayback()
+    }
     deinit {
         stopTimer()
     }
