@@ -24,16 +24,16 @@ class MeditatingSetViewModel: SetViewModel {
         self.context = context
         super.init()
     }
-    // タイマーの初期値(瞑想前タイマー5秒)をセット
+    // タイマーの初期値(瞑想前タイマー5秒)をセット　5から表示するため
     func setFirstTimer() {
-        remainingSeconds = 5
+        remainingSeconds = 6
     }
     // 状態の更新
     func updateTimerState(to: TimerState) {
         // すでにプレスタート状態のときに、スタート状態になった場合
         if timerState == .preStart && to == .start {
-            // 瞑想タイマーをセット
-            remainingSeconds = TimeInterval(meditationMinutes * 60)
+            // 瞑想タイマーをセット 選択分数を表示するため0.9秒を追加
+            remainingSeconds = TimeInterval(meditationMinutes * 60) + 0.9
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
@@ -57,8 +57,8 @@ class MeditatingSetViewModel: SetViewModel {
                     let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
                     // Int型に変換してremainingSecondsに格納
                     remainingSeconds = remainingTimeInterval
-                    // remainingSecondsが0以下のとき
-                    if remainingSeconds <= 0 {
+                    // remainingSecondsが1以下のとき(0を表示しないため)
+                    if remainingSeconds <= 1 {
                         updateTimerState(to: .start)
                         stopTimer(timer: &preparationTimer)
                     }

@@ -19,8 +19,8 @@ class ListeningSetViewModel: SetViewModel {
         if timerState == .end && to == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
-                // 音再生タイマーをセット
-                remainingSeconds = TimeInterval(listeningMinutes * 60)
+                // 音再生タイマーをセット 選択分数を表示するため0.9秒追加
+                remainingSeconds = TimeInterval(listeningMinutes * 60) + 0.9
                 // listeningMinutesが0のとき
             } else {
                 remainingSeconds = 0
