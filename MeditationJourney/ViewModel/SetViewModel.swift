@@ -23,7 +23,7 @@ class SetViewModel: ObservableObject {
     /// 曲のID
     let trackID: String = "1613642543"
     /// 再生状態　初期は.stopped
-    private var playbackState: PlaybackState = .stopped
+    private var playbackState: PlaybackState = .stop
     /// プレビューURL
     private var previewURL: URL?
     /// プレイヤー
@@ -77,12 +77,12 @@ class SetViewModel: ObservableObject {
             // 再生状態になったら
         case .playing:
             resumePlayback()
-        case .stopped:
+        case .stop:
             // 曲を停止
             audioPlayer?.pause()
             // playerをnilに
             audioPlayer = nil
-        case .paused:
+        case .pause:
             // 曲を一時停止
             audioPlayer?.pause()
         }  // switch newState
@@ -151,8 +151,8 @@ extension SetViewModel {
         // 再生中
         case playing
         // 停止
-        case stopped
+        case stop
         // 一時停止
-        case paused
+        case pause
     } // enum PlaybackStateここまで
 }

@@ -29,14 +29,14 @@ class MeditatingSetViewModel: SetViewModel {
         remainingSeconds = 5
     }
     // 状態の更新
-    func updateTimerState(to: TimerState) {
-        if timerState == .preStart && to == .start {
+    func updateTimerState(to newState: TimerState) {
+        if timerState == .preStart && newState == .start {
             // 瞑想タイマーをセット
             remainingSeconds = meditationMinutes * 60
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
-        timerState = to
+        timerState = newState
     }
     // 瞑想前タイマー
     func startPreparationTimer() {
@@ -91,9 +91,9 @@ class MeditatingSetViewModel: SetViewModel {
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
-                        timerState = .end
+                        updateTimerState(to: .end)
                         // 音の停止
-                        updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                        updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
                         stopTimer()
                     } // if remainingSeconds <= 0
@@ -114,7 +114,7 @@ class MeditatingSetViewModel: SetViewModel {
         // 瞑想中の場合に実行
         if timerState == .start {
             // end状態にする
-            timerState = .end
+            updateTimerState(to: .end)
         }
     }
 #endif

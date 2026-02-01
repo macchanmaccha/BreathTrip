@@ -81,7 +81,7 @@ struct MeditatingView: View {
                             // タイマー停止
                             viewModel.stopTimer()
                             // 音の再生を完全に停止
-                            viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                            viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                             // 設定画面に戻る
                             dismiss()
                         }
@@ -122,14 +122,14 @@ struct MeditatingView: View {
                 // タイマー停止・無効
                 viewModel.stopTimer()
                 // 音の再生を一時停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.paused)
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
                 viewModel.stopTimer()
                 // 音の再生を停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }

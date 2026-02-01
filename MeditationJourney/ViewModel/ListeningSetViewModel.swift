@@ -17,8 +17,8 @@ class ListeningSetViewModel: SetViewModel {
     /// タイマーの終了時刻を管理する変数
     private var listeningEndTime: Date?
     /// 状態の更新
-    func updateTimerState(to: TimerState) {
-        if timerState == .end && to == .start {
+    func updateTimerState(to newState: TimerState) {
+        if timerState == .end && newState == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
                 // 音再生タイマーをセット
@@ -28,7 +28,7 @@ class ListeningSetViewModel: SetViewModel {
                 remainingSeconds = 0
             }
         }
-        timerState = to
+        timerState = newState
     }
     // 音をきくタイマー
     func startListeningTimer() {
@@ -56,8 +56,8 @@ class ListeningSetViewModel: SetViewModel {
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
-                        timerState = .end
-                        updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                        updateTimerState(to: .end)
+                        updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
                         stopTimer()
                     } // if remainingSeconds <= 0
