@@ -23,11 +23,21 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Text(Int(viewModel.remainingSeconds).formattedTime())
-                    .foregroundStyle(.keyWhite)
-                    .font(.system(size: 80))
-                    .frame(width: 300, height: 200)
-                    .bold()
+                // 時間無制限の場合
+                if viewModel.listeningMinutes == 1440 {
+                    Text("∞")
+                        .foregroundStyle(.keyWhite)
+                        .font(.system(size: 80))
+                        .frame(width: 300, height: 200)
+                        .bold()
+                } else {
+                    // 時間無制限以外の場合
+                    Text(Int(viewModel.remainingSeconds).formattedTime())
+                        .foregroundStyle(.keyWhite)
+                        .font(.system(size: 80))
+                        .frame(width: 300, height: 200)
+                        .bold()
+                }
                 // 中断ボタン
                 Button(action: {
                     // pauseにする

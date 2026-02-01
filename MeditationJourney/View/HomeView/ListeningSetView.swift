@@ -15,7 +15,7 @@ struct ListeningSetView: View {
     /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
     /// 選択できる分数
-    private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60, 0]
+    private let minutesOptions: [Int] = [10, 20, 30, 40, 50, 60, 1440]
     var body: some View {
         ZStack {
             Image(.settingsBackground)
@@ -38,7 +38,7 @@ struct ListeningSetView: View {
                     Spacer()
                     Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
                         ForEach(minutesOptions, id: \.self) { minute in
-                            let minuteText = minute != 0 ? "\(minute)分" : "時間制限なし"
+                            let minuteText = minute != 1440 ? "\(minute)分" : "時間制限なし"
                             Text(minuteText)
                                 .tag(minute)
                         }
