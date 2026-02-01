@@ -20,8 +20,6 @@ class SetViewModel: ObservableObject {
     @Published var listeningMinutes: Int
     /// 設定画面へ誘導するアラート
     @Published var isShowAlert = false
-    /// 表示秒数(タイマーの時間)
-    @Published var remainingTime: TimeInterval = 0
     /// タイマーの終了時刻を管理する変数
     var endTime: Date?
     /// fadeInを管理
@@ -29,6 +27,8 @@ class SetViewModel: ObservableObject {
         // stopTimer()でタイマーが停止したらfadeInTimerがnilになる
         return fadeInTimer?.isValid ?? false
     }
+    /// ユーザーが選択するタイマー
+    var selectedDurationMinutesTimer: Timer?
     /// fadeInのタイマー
     var fadeInTimer: Timer?
     /// fadeOutを管理
@@ -45,9 +45,9 @@ class SetViewModel: ObservableObject {
     /// fadeOutを終了するタイマー
     var fadeOutEndTimer: Timer?
     /// 曲のID
-    let trackID: String = "1576665786"
+    let trackID: String = "1613642543"
     /// 再生状態　初期は.stopped
-    private var playbackState: PlaybackState = .stopped
+    var playbackState: PlaybackState = .stopped
     /// プレビューURL
     var previewURL: URL?
     /// プレイヤー
@@ -96,25 +96,6 @@ class SetViewModel: ObservableObject {
     // MARK: - Apple Music API Methods
     /// 再生状態を更新するメソッド
     func updatePlaybackState(to newState: PlaybackState) {
-        // newStateが以下の状態となる場合
-        switch newState {
-            // 再生状態になったら
-        case .playing:
-            // fadeOutの終了時刻は、fadeOutTimeを考慮
-            fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-            resumePlayback()
-        case .stopped:
-            // 曲を停止
-            audioPlayer?.pause()
-            // 30秒を入れ直す
-            fadeOutTime = 30.0
-            // playerをnilに
-            audioPlayer = nil
-        case .paused:
-            // 曲を一時停止
-            audioPlayer?.pause()
-        }  // switch newState
-        playbackState = newState
     }
     /// プレビューURLを取得するメソッド（成功した場合trueを返す）
     func fetchPreviewURL(for trackID: String) async -> Bool {

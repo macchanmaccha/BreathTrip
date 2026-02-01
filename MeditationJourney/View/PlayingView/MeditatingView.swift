@@ -27,7 +27,7 @@ struct MeditatingView: View {
                 // preStartまたはprePauseのとき
                 if viewModel.timerState == .preStart || viewModel.timerState == .prePause {
                     // 以下テキストを表示
-                    Text("開始まで\n\(viewModel.remainingSeconds)")
+                    Text("開始まで\n\(Int(viewModel.remainingSeconds))")
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.keyWhite)
                         .font(.system(size: 30))
@@ -36,7 +36,7 @@ struct MeditatingView: View {
                 }
                 // 瞑想中タイマーを表示
                 if viewModel.timerState == .start || viewModel.timerState == .pause {
-                    Text(viewModel.remainingSeconds.formattedTime())
+                    Text(Int(viewModel.remainingSeconds).formattedTime())
                         .foregroundStyle(.keyWhite)
                         .font(.system(size: 80))
                         .frame(width: 300, height: 200)
@@ -79,7 +79,8 @@ struct MeditatingView: View {
                         // YES
                         Button("YES") {
                             // タイマー停止
-                            viewModel.stopTimer()
+                            viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
+                            viewModel.stopTimer(timer: &viewModel.preparationTimer)
                             // 音の再生を完全に停止
                             viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
                             // 設定画面に戻る
@@ -110,28 +111,39 @@ struct MeditatingView: View {
                 viewModel.startPreparationTimer()
             case .prePause:
                 // タイマー停止・無効
-                viewModel.stopTimer()
+                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .start:
-                // 瞑想中タイマーの呼出
-                viewModel.startMeditationTimer()
                 // 音の再生を開始
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
             case .pause:
                 // タイマー停止・無効
-                viewModel.stopTimer()
+                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // 音の再生を一時停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.paused)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
-                viewModel.stopTimer()
+                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
+                viewModel.stopTimer(timer: &viewModel.preparationTimer)
                 // 音の再生を停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
                 // 終了アラート表示
                 isShowEndAlert.toggle()
+            }
+        }
+        .onChange(of: viewModel.remainingSeconds) { _, newValue in
+            // remainingSecondsが5秒になったらフェードアウト
+            if newValue > 5 && newValue < 5.1 {
+                if let player = viewModel.audioPlayer {
+                    viewModel.fadeOut(player: player, duration: 5.0) {
+                        viewModel.fadeOutComplete()
+                    }
+                }
+            } else if newValue <= 0 {
+                viewModel.updateTimerState(to: .end)
             }
         }
         // 瞑想終了アラート

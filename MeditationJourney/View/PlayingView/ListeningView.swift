@@ -23,7 +23,7 @@ struct ListeningView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Text(viewModel.remainingSeconds.formattedTime())
+                Text(Int(viewModel.remainingSeconds).formattedTime())
                     .foregroundStyle(.keyWhite)
                     .font(.system(size: 80))
                     .frame(width: 300, height: 200)
@@ -49,7 +49,7 @@ struct ListeningView: View {
                     // YES
                     Button("YES") {
                         // タイマー停止
-                        viewModel.stopTimer()
+                        viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                         // 音の再生を完全に停止
                         viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
                         // 設定画面に戻る
@@ -69,20 +69,18 @@ struct ListeningView: View {
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
             case .start:
-                // 音再生タイマーの呼出
-                viewModel.startListeningTimer()
                 // 音の再生を開始
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
             case .pause:
                 // タイマー停止・無効
-                viewModel.stopTimer()
+                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // 音の再生を一時停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.paused)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
-                viewModel.stopTimer()
+                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // 音の再生を停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
                 // 終了アラート表示
