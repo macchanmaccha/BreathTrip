@@ -103,6 +103,12 @@ struct MeditatingView: View {
             viewModel.updateTimerState(to: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
+            // 表示中はスリープを無効
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            // 画面を閉じるときはスリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {

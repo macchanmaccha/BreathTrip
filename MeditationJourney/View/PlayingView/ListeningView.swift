@@ -75,6 +75,12 @@ struct ListeningView: View {
             viewModel.updateTimerState(to: .end)
             // その後start状態にする
             viewModel.updateTimerState(to: .start)
+            // 表示中はスリープを無効
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            // 画面を閉じるときはスリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
