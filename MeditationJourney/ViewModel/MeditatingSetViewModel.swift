@@ -24,16 +24,16 @@ class MeditatingSetViewModel: SetViewModel {
         self.context = context
         super.init()
     }
-    // タイマーの初期値(瞑想前タイマー5秒)をセット　5から表示するため
+    // タイマーの初期値(瞑想前タイマー5秒)をセット
     func setFirstTimer() {
-        remainingSeconds = 6
+        remainingSeconds = 5
     }
     // 状態の更新
     func updateTimerState(to: TimerState) {
         // すでにプレスタート状態のときに、スタート状態になった場合
         if timerState == .preStart && to == .start {
             // 瞑想タイマーをセット 選択分数を表示するため0.9秒を追加
-            remainingSeconds = TimeInterval(meditationMinutes * 60) + 0.9
+            remainingSeconds = TimeInterval(meditationMinutes * 60)
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
@@ -56,9 +56,8 @@ class MeditatingSetViewModel: SetViewModel {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
                     let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
                     // Int型に変換してremainingSecondsに格納
-                    remainingSeconds = remainingTimeInterval
-                    // remainingSecondsが1以下のとき(0を表示しないため)
-                    if remainingSeconds <= 1 {
+                    remainingSeconds = ceil(remainingTimeInterval)
+                    if remainingSeconds == 0 {
                         updateTimerState(to: .start)
                         stopTimer(timer: &preparationTimer)
                     }
@@ -153,7 +152,7 @@ class MeditatingSetViewModel: SetViewModel {
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
     override func resumePlayback() {
-//        remainingTime = TimeInterval(meditationMinutes * 60)
+        //        remainingTime = TimeInterval(meditationMinutes * 60)
         // previewURLとfadeOutEndTimeが存在しなかったら
         guard let previewURL, let fadeOutEndTime else {
             // 処理終了
@@ -383,7 +382,7 @@ class MeditatingSetViewModel: SetViewModel {
         playbackState = newState
     }
     deinit {
-//        stopTimer(timer: &Timer?)
+        //        stopTimer(timer: &Timer?)
     }
 }  // MeditatingSetViewModel
 extension MeditatingSetViewModel {

@@ -103,26 +103,26 @@ struct MeditatingView: View {
             viewModel.updateTimerState(to: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
-            // 表示中はスリープを無効
-            UIApplication.shared.isIdleTimerDisabled = true
-        }
-        .onDisappear {
-            // 画面を閉じるときはスリープを有効
-            UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
             case .preStart:
                 // 瞑想前タイマーの呼出
                 viewModel.startPreparationTimer()
+                // 表示中はスリープを無効
+                UIApplication.shared.isIdleTimerDisabled = true
             case .prePause:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
+                // 画面を閉じるときはスリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
             case .start:
                 // 音の再生を開始
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
+                // 表示中はスリープを無効
+                UIApplication.shared.isIdleTimerDisabled = true
             case .pause:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
@@ -130,12 +130,18 @@ struct MeditatingView: View {
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.paused)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
+                // 画面を閉じるときはスリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
             case .end:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 viewModel.stopTimer(timer: &viewModel.preparationTimer)
+                // 画面を閉じるときはスリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
                 // 音の再生を停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                // 保存メソッドを呼び出し
+                viewModel.saveMeditationRecord()
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
@@ -155,8 +161,6 @@ struct MeditatingView: View {
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
             Button("OK") {
-                // 保存メソッドを呼び出し
-                viewModel.saveMeditationRecord()
                 // 設定画面へ戻る
                 dismiss()
             }
