@@ -68,6 +68,9 @@ struct ListeningView: View {
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
+            case .idle:
+                // 何もしない
+                break
             case .start:
                 // 音再生タイマーの呼出
                 viewModel.startListeningTimer()

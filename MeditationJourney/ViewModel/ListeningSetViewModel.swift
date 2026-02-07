@@ -8,8 +8,8 @@
 import SwiftUI
 
 class ListeningSetViewModel: SetViewModel {
-    /// 音をきく画面での状態　初期値はend
-    @Published private(set) var timerState: TimerState = .end
+    /// 瞑想画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
@@ -84,6 +84,7 @@ class ListeningSetViewModel: SetViewModel {
 }  // ListeningSetViewModelここまで
 extension ListeningSetViewModel {
     enum TimerState {
+        case idle // 開始前の待機状態
         case start  // 音再生タイマーカウントダウン
         case pause  // 音再生タイマー中断
         case end  // 音再生終了

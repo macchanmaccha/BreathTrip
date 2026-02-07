@@ -105,6 +105,9 @@ struct MeditatingView: View {
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
+            case .idle:
+                // 何もしない
+                break
             case .preStart:
                 // 瞑想前タイマーの呼出
                 viewModel.startPreparationTimer()
@@ -130,6 +133,8 @@ struct MeditatingView: View {
                 viewModel.stopTimer()
                 // 音の再生を停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
+                // 保存メソッドを呼び出し
+                viewModel.saveMeditationRecord()
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }
@@ -137,8 +142,6 @@ struct MeditatingView: View {
         // 瞑想終了アラート
         .alert("終了", isPresented: $isShowEndAlert) {
             Button("OK") {
-                // 保存メソッドを呼び出し
-                viewModel.saveMeditationRecord()
                 // 設定画面へ戻る
                 dismiss()
             }

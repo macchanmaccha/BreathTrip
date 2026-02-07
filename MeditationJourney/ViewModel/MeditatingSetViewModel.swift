@@ -9,8 +9,8 @@ import CoreData
 import SwiftUI
 
 class MeditatingSetViewModel: SetViewModel {
-    // 瞑想画面での状態　初期値はend
-    @Published private(set) var timerState: TimerState = .end
+    /// 瞑想画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: Int = 0
     /// タイマー
@@ -149,6 +149,7 @@ class MeditatingSetViewModel: SetViewModel {
 extension MeditatingSetViewModel {
     /// 瞑想タイマー状態の管理
     enum TimerState {
+        case idle // 開始前の待機状態
         case preStart  // 瞑想前タイマーカウントダウン
         case prePause  // 瞑想前タイマー中断
         case start  // 瞑想タイマーカウントダウン
