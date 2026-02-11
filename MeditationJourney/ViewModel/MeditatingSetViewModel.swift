@@ -32,7 +32,7 @@ class MeditatingSetViewModel: SetViewModel {
     func updateTimerState(to: TimerState) {
         // すでにプレスタート状態のときに、スタート状態になった場合
         if timerState == .preStart && to == .start {
-            // 瞑想タイマーをセット 選択分数を表示するため0.9秒を追加
+            // 瞑想タイマーをセット
             remainingSeconds = TimeInterval(meditationMinutes * 60)
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
@@ -55,7 +55,7 @@ class MeditatingSetViewModel: SetViewModel {
                 if let endTime = self.endTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
                     let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
-                    // Int型に変換してremainingSecondsに格納
+                    // 小数点を切上げ（小数点第1位が1~9のとき、切上げした正数を表示するため）
                     remainingSeconds = ceil(remainingTimeInterval)
                     if remainingSeconds == 0 {
                         updateTimerState(to: .start)
@@ -101,7 +101,9 @@ class MeditatingSetViewModel: SetViewModel {
                 // endTimeが存在するとき
                 if let endTime = self.endTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
-                    remainingSeconds = max(0, endTime.timeIntervalSince(Date()))
+                    let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
+                    // 小数点を切上げ（小数点第1位が1~9のとき、切上げした正数を表示するため）
+                    remainingSeconds = ceil(remainingTimeInterval)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
