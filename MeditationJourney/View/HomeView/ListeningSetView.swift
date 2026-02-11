@@ -74,12 +74,9 @@ struct ListeningSetView: View {
                     // プレビューURLを取得（認証チェックも含む）
                     Task {
                         // 認証とプレビューURLの取得が成功した場合のみフルスクリーンを表示
-                        let success = await viewModel.fetchPreviewURL(for: viewModel.trackID)
-                        if success {
-                        // プレビューURLの取得完了後にフルスクリーンを表示
-                        await MainActor.run {
+                        if await viewModel.fetchPreviewURL(for: viewModel.trackID) {
+                            // プレビューURLの取得完了後にフルスクリーンを表示
                             isShowFullScreen.toggle()
-                            }
                         }
                     }
                 }) {

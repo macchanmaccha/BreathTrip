@@ -10,13 +10,13 @@ import AVFoundation
 import MusicKit
 
 class ListeningSetViewModel: SetViewModel {
-    /// 音をきく画面での状態　初期値はend
-    @Published private(set) var timerState: TimerState = .end
+    /// 瞑想画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: TimeInterval = 0
     /// 状態の更新
-    func updateTimerState(to: TimerState) {
-        if timerState == .end && to == .start {
+    func updateTimerState(to newState: TimerState) {
+        if timerState == .end && newState == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
                 // 音再生タイマーをセット 選択分数を表示するため0.9秒追加
@@ -26,7 +26,7 @@ class ListeningSetViewModel: SetViewModel {
                 remainingSeconds = 0
             }
         }
-        timerState = to
+        timerState = newState
     }
     func startPlayAndTimer() {
         // 多重でタイマーを開始しないようにする
@@ -64,13 +64,14 @@ class ListeningSetViewModel: SetViewModel {
                 // endTimeが存在するとき
                 if let endTime = self.endTime {
                     // 現在時刻と終了時刻の差を評価し、0以上の値を返す
-                    remainingSeconds = max(0, endTime.timeIntervalSince(Date()))
+                    let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
+                    // 小数点を切上げ（小数点第1位が1~9のとき、切上げした正数を表示するため）
+                    remainingSeconds = ceil(remainingTimeInterval)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
-                        timerState = .end
-                        // 音の停止
-                        updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                        updateTimerState(to: .end)
+                        updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
                         stopTimer(timer: &selectedDurationMinutesTimer)
                     } // if remainingSeconds <= 0
@@ -274,7 +275,7 @@ class ListeningSetViewModel: SetViewModel {
         } else if Date() >= endTime {
             if remainingSeconds < 1 {
                 // 状態をstoppedにする
-                updatePlaybackState(to: .stopped)
+                updatePlaybackState(to: .stop)
             }
         }
     }  // func fadeOutComplete
@@ -286,7 +287,7 @@ class ListeningSetViewModel: SetViewModel {
         case .playing:
             // startPlayAndTimerを実行
             startPlayAndTimer()
-        case .stopped:
+        case .stop:
             // 曲を停止
             audioPlayer?.pause()
             // 30秒を入れ直す
@@ -297,7 +298,7 @@ class ListeningSetViewModel: SetViewModel {
             stopTimer(timer: &selectedDurationMinutesTimer)
             // fadeOutEndTimerを無効、nilにする
             stopTimer(timer: &fadeOutEndTimer)
-        case .paused:
+        case .pause:
             // 曲を一時停止
             audioPlayer?.pause()
             // selectedDurationMinutesTimerを無効、nil
@@ -322,6 +323,7 @@ class ListeningSetViewModel: SetViewModel {
 }  // ListeningSetViewModelここまで
 extension ListeningSetViewModel {
     enum TimerState {
+        case idle // 開始前の待機状態
         case start  // 音再生タイマーカウントダウン
         case pause  // 音再生タイマー中断
         case end  // 音再生終了

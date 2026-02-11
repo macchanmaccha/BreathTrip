@@ -46,8 +46,8 @@ class SetViewModel: ObservableObject {
     var fadeOutEndTimer: Timer?
     /// 曲のID
     let trackID: String = "1613642543"
-    /// 再生状態　初期は.stopped
-    var playbackState: PlaybackState = .stopped
+    /// 再生状態　初期は.stop
+    var playbackState: PlaybackState = .stop
     /// プレビューURL
     var previewURL: URL?
     /// プレイヤー
@@ -135,8 +135,8 @@ extension SetViewModel {
         // 再生中
         case playing
         // 停止
-        case stopped
+        case stop
         // 一時停止
-        case paused
+        case pause
     } // enum PlaybackStateここまで
 }

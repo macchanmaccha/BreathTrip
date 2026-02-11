@@ -11,8 +11,8 @@ import AVFoundation
 import MusicKit
 
 class MeditatingSetViewModel: SetViewModel {
-    // 瞑想画面での状態　初期値はend
-    @Published private(set) var timerState: TimerState = .end
+    /// 瞑想画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: TimeInterval = 0
     /// 瞑想前のタイマー
@@ -29,15 +29,14 @@ class MeditatingSetViewModel: SetViewModel {
         remainingSeconds = 5
     }
     // 状態の更新
-    func updateTimerState(to: TimerState) {
-        // すでにプレスタート状態のときに、スタート状態になった場合
-        if timerState == .preStart && to == .start {
+    func updateTimerState(to newState: TimerState) {
+        if timerState == .preStart && newState == .start {
             // 瞑想タイマーをセット
             remainingSeconds = TimeInterval(meditationMinutes * 60)
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
-        timerState = to
+        timerState = newState
     }
     // 瞑想前タイマー
     func startPreparationTimer() {
@@ -107,9 +106,9 @@ class MeditatingSetViewModel: SetViewModel {
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
-                        timerState = .end
+                        updateTimerState(to: .end)
                         // 音の停止
-                        updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                        updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
                         stopTimer(timer: &selectedDurationMinutesTimer)
                     } // if remainingSeconds <= 0
@@ -307,7 +306,7 @@ class MeditatingSetViewModel: SetViewModel {
         } else if Date() >= endTime {
             if remainingSeconds < 1 {
                 // 状態をstoppedにする
-                updatePlaybackState(to: .stopped)
+                updatePlaybackState(to: .stop)
             }
         }
     }  // func fadeOutComplete
@@ -324,7 +323,7 @@ class MeditatingSetViewModel: SetViewModel {
         // 瞑想中の場合に実行
         if timerState == .start {
             // end状態にする
-            timerState = .end
+            updateTimerState(to: .end)
         }
     }
 #endif
@@ -360,7 +359,7 @@ class MeditatingSetViewModel: SetViewModel {
         case .playing:
             // startPlayAndTimerを実行
             startPlayAndTimer()
-        case .stopped:
+        case .stop:
             // 曲を停止
             audioPlayer?.pause()
             // 30秒を入れ直す
@@ -371,7 +370,7 @@ class MeditatingSetViewModel: SetViewModel {
             stopTimer(timer: &selectedDurationMinutesTimer)
             // fadeOutEndTimerを無効、nilにする
             stopTimer(timer: &fadeOutEndTimer)
-        case .paused:
+        case .pause:
             // 曲を一時停止
             audioPlayer?.pause()
             // selectedDurationMinutesTimerを無効、nil
@@ -390,6 +389,7 @@ class MeditatingSetViewModel: SetViewModel {
 extension MeditatingSetViewModel {
     /// 瞑想タイマー状態の管理
     enum TimerState {
+        case idle // 開始前の待機状態
         case preStart  // 瞑想前タイマーカウントダウン
         case prePause  // 瞑想前タイマー中断
         case start  // 瞑想タイマーカウントダウン

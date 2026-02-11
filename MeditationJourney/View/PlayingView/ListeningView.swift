@@ -61,7 +61,7 @@ struct ListeningView: View {
                         // タイマー停止
                         viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                         // 音の再生を完全に停止
-                        viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                        viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // 設定画面に戻る
                         dismiss()
                     }
@@ -84,6 +84,9 @@ struct ListeningView: View {
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
+            case .idle:
+                // 何もしない
+                break
             case .start:
                 // 音の再生を開始
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
@@ -91,14 +94,14 @@ struct ListeningView: View {
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // 音の再生を一時停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.paused)
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
             case .end:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // 音の再生を停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                 // 終了アラート表示
                 isShowEndAlert.toggle()
             }

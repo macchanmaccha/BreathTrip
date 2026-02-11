@@ -82,7 +82,7 @@ struct MeditatingView: View {
                             viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                             viewModel.stopTimer(timer: &viewModel.preparationTimer)
                             // 音の再生を完全に停止
-                            viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                            viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                             // 設定画面に戻る
                             dismiss()
                         }
@@ -106,6 +106,9 @@ struct MeditatingView: View {
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
+            case .idle:
+                // 何もしない
+                break
             case .preStart:
                 // 瞑想前タイマーの呼出
                 viewModel.startPreparationTimer()
@@ -127,7 +130,7 @@ struct MeditatingView: View {
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 // 音の再生を一時停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.paused)
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
                 // 画面を閉じるときはスリープを有効
@@ -139,7 +142,7 @@ struct MeditatingView: View {
                 // 画面を閉じるときはスリープを有効
                 UIApplication.shared.isIdleTimerDisabled = false
                 // 音の再生を停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stopped)
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                 // 保存メソッドを呼び出し
                 viewModel.saveMeditationRecord()
                 // 終了アラート表示
