@@ -93,7 +93,10 @@ class SetViewModel: ObservableObject {
     func saveSoundAndMinutes(soundName: SoundModel) {
         // サブクラスでオーバーライド
     }
-    // MARK: - Apple Music API Methods
+    // 他アプリとの音の競合対策
+    func configureAudioSession() {
+    }
+    // Apple Music API Methods
     /// 再生状態を更新するメソッド
     func updatePlaybackState(to newState: PlaybackState) {
     }

@@ -5,18 +5,21 @@
 //  Created by apple on 2023/09/23.
 //
 
+import AVFoundation
 import MusicKit
 import SwiftUI
 
 struct MeditatingView: View {
     /// MeditatingSetViewModel
-    @StateObject var viewModel: MeditatingSetViewModel
+    @ObservedObject var viewModel: MeditatingSetViewModel
     /// 瞑想中断アラートを管理する変数
     @State private var isShowStopAlert: Bool = false
     /// 瞑想終了アラートを管理する変数
     @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
+    /// アプリの状態（バックグラウンド検知用）
+    @Environment(\.scenePhase) private var scenePhase
     var body: some View {
         ZStack {
             Image(.playBackground)
@@ -24,9 +27,17 @@ struct MeditatingView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                // preStartまたはprePauseのとき
+                // preStart、prePause、またはpreStart時に画面離脱した場合（suspendedかつstateBeforeLeavingがpreStart/prePause）のみ表示
                 if viewModel.timerState == .preStart || viewModel.timerState == .prePause {
-                    // 以下テキストを表示
+                    Text("開始まで\n\(Int(viewModel.remainingSeconds))")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.keyWhite)
+                        .font(.system(size: 30))
+                        .frame(width: 200, height: 200)
+                        .bold()
+                } else if viewModel.timerState == .suspended,
+                          let state = viewModel.stateBeforeLeaving,
+                          state == .preStart || state == .prePause {
                     Text("開始まで\n\(Int(viewModel.remainingSeconds))")
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.keyWhite)
@@ -74,6 +85,15 @@ struct MeditatingView: View {
                             } else if viewModel.timerState == .pause {
                                 // startにする
                                 viewModel.updateTimerState(to: .start)
+                            } else if viewModel.timerState == .suspended,
+                                      let state = viewModel.stateBeforeLeaving,
+                                      state == .preStart {
+                                // startにする
+                                viewModel.updateTimerState(to: .preStart)
+                            } else if viewModel.timerState == .suspended,
+                                      let state = viewModel.stateBeforeLeaving,
+                                      state == .start {
+                                viewModel.updateTimerState(to: .start)
                             }
                         }
                         // YES
@@ -104,6 +124,14 @@ struct MeditatingView: View {
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
         }
+        // 画面離脱時の処理
+        .onChange(of: scenePhase) { _, newPhase in
+            // 画面離脱時の処理
+            if newPhase == .background {
+                // 画面離脱時の処理を呼び出し
+                viewModel.updateTimerState(to: .suspended)
+            }
+        } // .onChange(of: scenePhase)ここまで
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
             case .idle:
@@ -112,19 +140,20 @@ struct MeditatingView: View {
             case .preStart:
                 // 瞑想前タイマーの呼出
                 viewModel.startPreparationTimer()
-                // 表示中はスリープを無効
+                // スリープを無効
                 UIApplication.shared.isIdleTimerDisabled = true
             case .prePause:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
+                viewModel.stopTimer(timer: &viewModel.preparationTimer)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
-                // 画面を閉じるときはスリープを有効
+                // スリープを有効
                 UIApplication.shared.isIdleTimerDisabled = false
             case .start:
                 // 音の再生を開始
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
-                // 表示中はスリープを無効
+                // スリープを無効
                 UIApplication.shared.isIdleTimerDisabled = true
             case .pause:
                 // タイマー停止・無効
@@ -133,20 +162,71 @@ struct MeditatingView: View {
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
-                // 画面を閉じるときはスリープを有効
+                // スリープを有効
                 UIApplication.shared.isIdleTimerDisabled = false
             case .end:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
                 viewModel.stopTimer(timer: &viewModel.preparationTimer)
-                // 画面を閉じるときはスリープを有効
-                UIApplication.shared.isIdleTimerDisabled = false
                 // 音の再生を停止
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                 // 保存メソッドを呼び出し
                 viewModel.saveMeditationRecord()
                 // 終了アラート表示
                 isShowEndAlert.toggle()
+                // スリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
+            case .suspended:
+                // タイマー停止・無効
+                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
+                // 音の再生を一時停止
+                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
+                // isShowAlertをtrue
+                isShowStopAlert.toggle()
+                // スリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
+            }
+        }
+        /// 音声割り込みの監視（着信及び緊急時の割り込み）
+        .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)) { notification in
+            // 通知を受け取ったら、userInfoを取得 userInfoは通知の内容を含む辞書
+            guard let userInfo = notification.userInfo,
+                  // 通知の種類を取得
+                  let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                  // 通知の種類をAVAudioSession.InterruptionTypeに変換
+                  let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+            // 通知の種類に応じて処理を分岐
+            switch type {
+            case .began:
+                switch viewModel.timerState {
+                    // preStartの場合
+                case .preStart:
+                    viewModel.updateTimerState(to: .prePause)
+                    // startの場合
+                case .start:
+                    viewModel.updateTimerState(to: .pause)
+                default:
+                    break
+                }
+            case .ended:
+                // optionsValueを取得
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+                // optionsValueをAVAudioSession.InterruptionOptionsに変換
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                // shouldResumeがtrueの場合
+                if options.contains(.shouldResume) {
+                    switch viewModel.timerState {
+                    case .prePause:
+                        viewModel.updateTimerState(to: .preStart)
+                    case .pause:
+                        viewModel.updateTimerState(to: .start)
+                    default:
+                        break
+                    }
+                }
+                // 未知の通知の場合
+            @unknown default:
+                break
             }
         }
         .onChange(of: viewModel.remainingSeconds) { _, newValue in

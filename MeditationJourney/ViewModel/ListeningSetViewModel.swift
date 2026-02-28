@@ -19,8 +19,8 @@ class ListeningSetViewModel: SetViewModel {
         if timerState == .end && newState == .start {
             // listeningMinutesが0でないとき
             if listeningMinutes != 0 {
-                // 音再生タイマーをセット 選択分数を表示するため0.9秒追加
-                remainingSeconds = TimeInterval(listeningMinutes * 60) + 0.9
+                // 音再生タイマーをセット
+                remainingSeconds = TimeInterval(listeningMinutes * 60)
                 // listeningMinutesが0のとき
             } else {
                 remainingSeconds = 0
@@ -122,7 +122,7 @@ class ListeningSetViewModel: SetViewModel {
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
     override func resumePlayback() {
-//        remainingTime = TimeInterval(meditationMinutes * 60)
+        configureAudioSession()
         // previewURLとfadeOutEndTimeが存在しなかったら
         guard let previewURL, let fadeOutEndTime else {
             // 処理終了
@@ -320,6 +320,22 @@ class ListeningSetViewModel: SetViewModel {
     deinit {
         stopTimer(timer: &selectedDurationMinutesTimer)
     }
+    // 他アプリの音を止めこのアプリの音を優先する(電話・緊急アラートは自動的に最優先)メソッド
+    override func configureAudioSession() {
+        // シングルトンインスタンスを取得
+        let session = AVAudioSession.sharedInstance()
+        do {
+            // setCategoryでアプリの音の用途を宣言
+            // .soloAmbientは他アプリの音を止めてこのアプリの音を優先
+            // mode: .default = デフォルトモード
+            try session.setCategory(.soloAmbient, mode: .default)
+            // 成功した場合は音声セッションをアクティブにする（true）
+            try session.setActive(true)
+        } catch {
+            // エラーが発生した場合は、エラーを表示
+            print("AVAudioSession設定エラー: \(error)")
+        }
+    } // configureAudioSession()
 }  // ListeningSetViewModelここまで
 extension ListeningSetViewModel {
     enum TimerState {

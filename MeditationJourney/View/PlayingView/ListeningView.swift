@@ -5,6 +5,7 @@
 //  Created by apple on 2023/09/23.
 //
 
+import AVFoundation
 import SwiftUI
 
 struct ListeningView: View {
@@ -70,17 +71,38 @@ struct ListeningView: View {
                 }  // .alertここまで
             }  // VStackここまで
         }  // ZStack
+        /*
+         音声割り込みの監視（電話・他アプリが音を奪ったとき）：
+         - 音はシステムが自動で止めるが、タイマーは止まらない
+         - このため、割り込み通知を受け取ってタイマーも停止する必要がある
+         - .began = 割り込み開始 → 一時停止状態に
+         - .ended + shouldResume = 再開可能 → 再生再開
+         */
+        .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)) { notification in
+            guard let userInfo = notification.userInfo,
+                  let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                  let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+
+            switch type {
+            case .began:
+                if viewModel.timerState == .start {
+                    viewModel.updateTimerState(to: .pause)
+                }
+            case .ended:
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                if options.contains(.shouldResume), viewModel.timerState == .pause {
+                    viewModel.updateTimerState(to: .start)
+                }
+            @unknown default:
+                break
+            }
+        }
         .onAppear {
             // 一度状態をendにする
             viewModel.updateTimerState(to: .end)
             // その後start状態にする
             viewModel.updateTimerState(to: .start)
-            // 表示中はスリープを無効
-            UIApplication.shared.isIdleTimerDisabled = true
-        }
-        .onDisappear {
-            // 画面を閉じるときはスリープを有効
-            UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: viewModel.timerState) {
             switch viewModel.timerState {
@@ -90,6 +112,8 @@ struct ListeningView: View {
             case .start:
                 // 音の再生を開始
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
+                // スリープを無効
+                UIApplication.shared.isIdleTimerDisabled = true
             case .pause:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
@@ -97,6 +121,8 @@ struct ListeningView: View {
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
                 // isShowAlertをtrue
                 isShowStopAlert.toggle()
+                // スリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
             case .end:
                 // タイマー停止・無効
                 viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
@@ -104,6 +130,8 @@ struct ListeningView: View {
                 viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                 // 終了アラート表示
                 isShowEndAlert.toggle()
+                // スリープを有効
+                UIApplication.shared.isIdleTimerDisabled = false
             }
         }
         // 瞑想終了アラート

@@ -19,6 +19,8 @@ class MeditatingSetViewModel: SetViewModel {
     var preparationTimer: Timer?
     /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
+    /// 画面を離れる前の状態（復帰時に再開するため）
+    private(set) var stateBeforeLeaving: TimerState?
     private let context: NSManagedObjectContext
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.context = context
@@ -35,6 +37,9 @@ class MeditatingSetViewModel: SetViewModel {
             remainingSeconds = TimeInterval(meditationMinutes * 60)
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
+        }
+        if newState == .suspended {
+            stateBeforeLeaving = timerState
         }
         timerState = newState
     }
@@ -153,7 +158,7 @@ class MeditatingSetViewModel: SetViewModel {
     }  // fetchPreviewURL
     /// 曲を再生するメソッド
     override func resumePlayback() {
-        //        remainingTime = TimeInterval(meditationMinutes * 60)
+        configureAudioSession()
         // previewURLとfadeOutEndTimeが存在しなかったら
         guard let previewURL, let fadeOutEndTime else {
             // 処理終了
@@ -383,8 +388,40 @@ class MeditatingSetViewModel: SetViewModel {
         playbackState = newState
     }
     deinit {
-        //        stopTimer(timer: &Timer?)
+        stopTimer(timer: &selectedDurationMinutesTimer)
     }
+    /// 画面復帰時に「再開する」を選んだとき
+    func resumeFromSuspended() {
+        // stateBeforeLeavingがnilの場合何もしない
+        guard let state = stateBeforeLeaving else { return }
+        // stateBeforeLeavingをnilにする
+        stateBeforeLeaving = nil
+        // stateBeforeLeavingの状態に更新
+        updateTimerState(to: state)
+    }
+    /// 画面復帰時に「中断する」を選んだとき
+    func abortFromSuspended() {
+        stateBeforeLeaving = nil
+        stopTimer(timer: &selectedDurationMinutesTimer)
+        stopTimer(timer: &preparationTimer)
+        updatePlaybackState(to: .stop)
+    }
+    // 他アプリの音を止めこのアプリの音を優先する(電話・緊急アラートは自動的に最優先)メソッド
+    override func configureAudioSession() {
+        // シングルトンインスタンスを取得
+        let session = AVAudioSession.sharedInstance()
+        do {
+            // setCategoryでアプリの音の用途を宣言
+            // .soloAmbient = ソロアンビエントモード。他アプリの音を止めて、このアプリの音を優先する
+            // mode: .default = デフォルトモード
+            try session.setCategory(.soloAmbient, mode: .default)
+            // 成功した場合は音声セッションをアクティブにする（true）
+            try session.setActive(true)
+        } catch {
+            // エラーが発生した場合は、エラーを表示
+            print("AVAudioSession設定エラー: \(error)")
+        }
+    } // configureAudioSession()
 }  // MeditatingSetViewModel
 extension MeditatingSetViewModel {
     /// 瞑想タイマー状態の管理
@@ -395,5 +432,6 @@ extension MeditatingSetViewModel {
         case start  // 瞑想タイマーカウントダウン
         case pause  // 瞑想タイマー中断
         case end  // 瞑想終了
+        case suspended  // 画面を離れたため一時停止
     }  // enum Stateここまで
 }

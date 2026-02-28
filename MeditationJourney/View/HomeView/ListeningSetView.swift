@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ListeningSetView: View {
-    /// listeningSetViewModelをインスタンス化
-    @StateObject private var viewModel: ListeningSetViewModel = ListeningSetViewModel()
+    /// ListeningSetViewModelをインスタンス化
+    @ObservedObject var viewModel: ListeningSetViewModel
     /// Sheetを管理する変数
     @State private var isShowSheet: Bool = false
     /// フルスクリーンを管理する変数
@@ -122,5 +122,5 @@ struct ListeningSetView: View {
 }  // SoundSetViewここまで
 
 #Preview {
-    ListeningSetView()
+    ListeningSetView(viewModel: ListeningSetViewModel())
 }
