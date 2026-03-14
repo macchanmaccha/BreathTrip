@@ -12,10 +12,6 @@ import SwiftUI
 struct MeditatingView: View {
     /// MeditatingSetViewModel
     @ObservedObject var viewModel: MeditatingSetViewModel
-    /// 瞑想中断アラートを管理する変数
-    @State private var isShowStopAlert: Bool = false
-    /// 瞑想終了アラートを管理する変数
-    @State private var isShowEndAlert: Bool = false
     /// 画面を閉じるプロパティラッパー
     @Environment(\.dismiss) private var dismiss
     /// アプリの状態（バックグラウンド検知用）
@@ -46,7 +42,7 @@ struct MeditatingView: View {
                         .bold()
                 }
                 // 瞑想中タイマーを表示
-                if viewModel.timerState == .start || viewModel.timerState == .pause {
+                if viewModel.timerState == .start || viewModel.timerState == .pause || viewModel.timerState == .suspended && viewModel.stateBeforeLeaving == .start {
                     Text(Int(viewModel.remainingSeconds).formattedTime())
                         .foregroundStyle(.keyWhite)
                         .font(.system(size: 80))
@@ -60,11 +56,22 @@ struct MeditatingView: View {
                         // preStartだったら
                         if viewModel.timerState == .preStart {
                             // prePauseにする
-                            viewModel.updateTimerState(to: .prePause)
+                            viewModel.updateMeditationTimerState(to: .prePause)
                             // startだったら
                         } else if viewModel.timerState == .start {
                             // pauseにする
-                            viewModel.updateTimerState(to: .pause)
+                            viewModel.updateMeditationTimerState(to: .pause)
+                            // 画面離脱状態の場合
+                        } else if viewModel.timerState == .suspended {
+                            // 画面離脱前の状態がpreStartなら
+                            if viewModel.stateBeforeLeaving == .preStart {
+                                // prePauseにする
+                                viewModel.updateMeditationTimerState(to: .prePause)
+                                // 画面離脱前の状態がstartなら
+                            } else if viewModel.stateBeforeLeaving == .start {
+                                // pauseにする
+                                viewModel.updateMeditationTimerState(to: .pause)
+                            }
                         }
                     }) {
                         Text("中断する")
@@ -74,26 +81,24 @@ struct MeditatingView: View {
                     .padding(25)
                     .background(.keyWhite)
                     .cornerRadius(10)
-                    .alert("", isPresented: $isShowStopAlert) {
+                    .alert("", isPresented: $viewModel.isShowStopAlert) {
                         // NO
                         Button("NO") {
                             // prePauseだったら
                             if viewModel.timerState == .prePause {
                                 // preStartにする
-                                viewModel.updateTimerState(to: .preStart)
+                                viewModel.updateMeditationTimerState(to: .preStart)
                                 // pauseだったら
                             } else if viewModel.timerState == .pause {
                                 // startにする
-                                viewModel.updateTimerState(to: .start)
-                            } else if viewModel.timerState == .suspended,
-                                      let state = viewModel.stateBeforeLeaving,
-                                      state == .preStart {
-                                // startにする
-                                viewModel.updateTimerState(to: .preStart)
-                            } else if viewModel.timerState == .suspended,
-                                      let state = viewModel.stateBeforeLeaving,
-                                      state == .start {
-                                viewModel.updateTimerState(to: .start)
+                                viewModel.updateMeditationTimerState(to: .start)
+                                // suspended状態の場合で、
+                            } else if viewModel.timerState == .suspended {
+                                if viewModel.stateBeforeLeaving == .preStart || viewModel.stateBeforeLeaving == .prePause {
+                                    viewModel.updateMeditationTimerState(to: .preStart)
+                                } else if viewModel.stateBeforeLeaving == .pause || viewModel.stateBeforeLeaving == .start {
+                                    viewModel.updateMeditationTimerState(to: .start)
+                                }
                             }
                         }
                         // YES
@@ -120,7 +125,7 @@ struct MeditatingView: View {
 #endif
         .onAppear {
             // 画面起動時にprestart状態にする
-            viewModel.updateTimerState(to: .preStart)
+            viewModel.updateMeditationTimerState(to: .preStart)
             // 画面起動時に瞑想前タイマー5秒をセットする
             viewModel.setFirstTimer()
         }
@@ -128,106 +133,16 @@ struct MeditatingView: View {
         .onChange(of: scenePhase) { _, newPhase in
             // 画面離脱時の処理
             if newPhase == .background {
-                // 画面離脱時の処理を呼び出し
-                viewModel.updateTimerState(to: .suspended)
+                // 画面離脱時は例外なくどの状態であってもsuspendedにする
+                viewModel.updateBackground(to: .suspended)
             }
         } // .onChange(of: scenePhase)ここまで
         .onChange(of: viewModel.timerState) {
-            switch viewModel.timerState {
-            case .idle:
-                // 何もしない
-                break
-            case .preStart:
-                // 瞑想前タイマーの呼出
-                viewModel.startPreparationTimer()
-                // スリープを無効
-                UIApplication.shared.isIdleTimerDisabled = true
-            case .prePause:
-                // タイマー停止・無効
-                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
-                viewModel.stopTimer(timer: &viewModel.preparationTimer)
-                // isShowAlertをtrue
-                isShowStopAlert.toggle()
-                // スリープを有効
-                UIApplication.shared.isIdleTimerDisabled = false
-            case .start:
-                // 音の再生を開始
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.playing)
-                // スリープを無効
-                UIApplication.shared.isIdleTimerDisabled = true
-            case .pause:
-                // タイマー停止・無効
-                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
-                // 音の再生を一時停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
-                // isShowAlertをtrue
-                isShowStopAlert.toggle()
-                // スリープを有効
-                UIApplication.shared.isIdleTimerDisabled = false
-            case .end:
-                // タイマー停止・無効
-                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
-                viewModel.stopTimer(timer: &viewModel.preparationTimer)
-                // 音の再生を停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
-                // 保存メソッドを呼び出し
-                viewModel.saveMeditationRecord()
-                // 終了アラート表示
-                isShowEndAlert.toggle()
-                // スリープを有効
-                UIApplication.shared.isIdleTimerDisabled = false
-            case .suspended:
-                // タイマー停止・無効
-                viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
-                // 音の再生を一時停止
-                viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.pause)
-                // isShowAlertをtrue
-                isShowStopAlert.toggle()
-                // スリープを有効
-                UIApplication.shared.isIdleTimerDisabled = false
-            }
+            viewModel.updateTimer()
         }
         /// 音声割り込みの監視（着信及び緊急時の割り込み）
         .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)) { notification in
-            // 通知を受け取ったら、userInfoを取得 userInfoは通知の内容を含む辞書
-            guard let userInfo = notification.userInfo,
-                  // 通知の種類を取得
-                  let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-                  // 通知の種類をAVAudioSession.InterruptionTypeに変換
-                  let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
-            // 通知の種類に応じて処理を分岐
-            switch type {
-            case .began:
-                switch viewModel.timerState {
-                    // preStartの場合
-                case .preStart:
-                    viewModel.updateTimerState(to: .prePause)
-                    // startの場合
-                case .start:
-                    viewModel.updateTimerState(to: .pause)
-                default:
-                    break
-                }
-            case .ended:
-                // optionsValueを取得
-                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
-                // optionsValueをAVAudioSession.InterruptionOptionsに変換
-                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
-                // shouldResumeがtrueの場合
-                if options.contains(.shouldResume) {
-                    switch viewModel.timerState {
-                    case .prePause:
-                        viewModel.updateTimerState(to: .preStart)
-                    case .pause:
-                        viewModel.updateTimerState(to: .start)
-                    default:
-                        break
-                    }
-                }
-                // 未知の通知の場合
-            @unknown default:
-                break
-            }
+            viewModel.updateInterruption(notification: notification)
         }
         .onChange(of: viewModel.remainingSeconds) { _, newValue in
             // remainingSecondsが5秒になったらフェードアウト
@@ -238,11 +153,11 @@ struct MeditatingView: View {
                     }
                 }
             } else if newValue <= 0 {
-                viewModel.updateTimerState(to: .end)
+                viewModel.updateMeditationTimerState(to: .end)
             }
         }
         // 瞑想終了アラート
-        .alert("終了", isPresented: $isShowEndAlert) {
+        .alert("終了", isPresented: $viewModel.isShowEndAlert) {
             Button("OK") {
                 // 設定画面へ戻る
                 dismiss()

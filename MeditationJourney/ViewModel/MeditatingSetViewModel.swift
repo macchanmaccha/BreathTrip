@@ -15,6 +15,8 @@ class MeditatingSetViewModel: SetViewModel {
     @Published private(set) var timerState: TimerState = .idle
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: TimeInterval = 0
+    @Published var isShowStopAlert: Bool = false
+    @Published var isShowEndAlert: Bool = false
     /// 瞑想前のタイマー
     var preparationTimer: Timer?
     /// 瞑想開始日時を記録する変数
@@ -30,19 +32,51 @@ class MeditatingSetViewModel: SetViewModel {
     func setFirstTimer() {
         remainingSeconds = 5
     }
-    // 状態の更新
-    func updateTimerState(to newState: TimerState) {
+    // 準備前タイマーから瞑想タイマーへの状態の更新
+    func updateMeditationTimerState(to newState: TimerState) {
         if timerState == .preStart && newState == .start {
             // 瞑想タイマーをセット
             remainingSeconds = TimeInterval(meditationMinutes * 60)
             // 瞑想開始時刻を記録
             meditationStartDate = Date()
         }
+        timerState = newState
+    }
+    // バックグラウンドへの状態の更新
+    func updateBackground(to newState: TimerState) {
         if newState == .suspended {
+            // prePause,preStart,Pause,Startのいずれかが入る
             stateBeforeLeaving = timerState
         }
         timerState = newState
     }
+    // 割り込みの更新（通知を受け取り、種類に応じて適切なメソッドに振り分け）
+    func updateInterruption(notification: NotificationCenter.Publisher.Output) {
+        // 通知を受け取ったら、userInfoを取得 userInfoは通知の内容を含む辞書
+        guard let userInfo = notification.userInfo,
+              // 通知の種類を取得
+              let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+              // 通知の種類をAVAudioSession.InterruptionTypeに変換
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+        // 通知の種類に応じて処理を分岐
+        switch type {
+        case .began:
+             updateInterruptionBegan()
+        @unknown default:
+            break
+        }
+    }
+    // 音声割り込み開始時の状態更新（着信・緊急アラートなどで音が止まったとき）
+     private func updateInterruptionBegan() {
+         switch timerState {
+         case .preStart:
+             updateMeditationTimerState(to: .prePause)
+         case .start:
+             updateMeditationTimerState(to: .pause)
+         default:
+             break
+         }
+     }
     // 瞑想前タイマー
     func startPreparationTimer() {
         stopTimer(timer: &preparationTimer)
@@ -62,7 +96,7 @@ class MeditatingSetViewModel: SetViewModel {
                     // 小数点を切上げ（小数点第1位が1~9のとき、切上げした正数を表示するため）
                     remainingSeconds = ceil(remainingTimeInterval)
                     if remainingSeconds == 0 {
-                        updateTimerState(to: .start)
+                        updateMeditationTimerState(to: .start)
                         stopTimer(timer: &preparationTimer)
                     }
                 }  // if let endTime ここまで
@@ -111,7 +145,7 @@ class MeditatingSetViewModel: SetViewModel {
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
                         // end
-                        updateTimerState(to: .end)
+                        updateMeditationTimerState(to: .end)
                         // 音の停止
                         updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
@@ -328,7 +362,7 @@ class MeditatingSetViewModel: SetViewModel {
         // 瞑想中の場合に実行
         if timerState == .start {
             // end状態にする
-            updateTimerState(to: .end)
+            updateMeditationTimerState(to: .end)
         }
     }
 #endif
@@ -355,6 +389,62 @@ class MeditatingSetViewModel: SetViewModel {
         } catch {
             print("瞑想記録の保存に失敗: \(error)")
         }
+    }
+    // タイマーを更新するメソッド
+    func updateTimer() {
+        switch timerState {
+        case .idle:
+            // 何もしない
+            break
+        case .preStart:
+            // 瞑想前タイマーの呼出
+            startPreparationTimer()
+            // スリープを無効
+            UIApplication.shared.isIdleTimerDisabled = true
+        case .prePause:
+            // タイマー停止・無効
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            stopTimer(timer: &preparationTimer)
+            // isShowAlertをtrue
+            isShowStopAlert.toggle()
+            // スリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
+        case .start:
+            // 音の再生を開始
+            updatePlaybackState(to: SetViewModel.PlaybackState.playing)
+            // スリープを無効
+            UIApplication.shared.isIdleTimerDisabled = true
+        case .pause:
+            // タイマー停止・無効
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            // 音の再生を一時停止
+            updatePlaybackState(to: SetViewModel.PlaybackState.pause)
+            // isShowAlertをtrue
+            isShowStopAlert.toggle()
+            // スリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
+        case .end:
+            // タイマー停止・無効
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            stopTimer(timer: &preparationTimer)
+            // 音の再生を停止
+            updatePlaybackState(to: SetViewModel.PlaybackState.stop)
+            // 保存メソッドを呼び出し
+            saveMeditationRecord()
+            // 終了アラート表示
+            isShowEndAlert.toggle()
+            // スリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
+        case .suspended:
+            // タイマー停止・無効
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            // 音の再生を一時停止
+            updatePlaybackState(to: SetViewModel.PlaybackState.pause)
+            // isShowAlertをtrue
+            isShowStopAlert = true
+            // スリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
+        } // switch
     }
     /// 再生状態を更新するメソッド
     override func updatePlaybackState(to newState: PlaybackState) {
@@ -389,22 +479,6 @@ class MeditatingSetViewModel: SetViewModel {
     }
     deinit {
         stopTimer(timer: &selectedDurationMinutesTimer)
-    }
-    /// 画面復帰時に「再開する」を選んだとき
-    func resumeFromSuspended() {
-        // stateBeforeLeavingがnilの場合何もしない
-        guard let state = stateBeforeLeaving else { return }
-        // stateBeforeLeavingをnilにする
-        stateBeforeLeaving = nil
-        // stateBeforeLeavingの状態に更新
-        updateTimerState(to: state)
-    }
-    /// 画面復帰時に「中断する」を選んだとき
-    func abortFromSuspended() {
-        stateBeforeLeaving = nil
-        stopTimer(timer: &selectedDurationMinutesTimer)
-        stopTimer(timer: &preparationTimer)
-        updatePlaybackState(to: .stop)
     }
     // 他アプリの音を止めこのアプリの音を優先する(電話・緊急アラートは自動的に最優先)メソッド
     override func configureAudioSession() {
