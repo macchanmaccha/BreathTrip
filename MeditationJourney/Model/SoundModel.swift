@@ -31,7 +31,7 @@ enum SoundModel: String, CaseIterable {
     case africa3 = "ボツワナ"
     case africa4 = "タンザニア"
     case africa5 = "エチオピア"
-    case africa6 = "エリトリア"
+    case africa6 = "ケニア"
     case northAmerica1 = "アメリカ"
     case northAmerica2 = "カリブ海"
     case northAmerica3 = "カナダ"
@@ -47,77 +47,77 @@ enum SoundModel: String, CaseIterable {
     var fileName: String {
         switch self {
         case .europa1:
-            return "europeFile1"
+            return "939898359"
         case .europa2:
-            return "europeFile2"
+            return "848536284"
         case .europa3:
-            return "europeFile3"
+            return "1267896993"
         case .europa4:
-            return "europeFile4"
+            return "1656186853"
         case .europa5:
-            return "europeFile5"
+            return "1613642543"
         case .europa6:
-            return "europeFile6"
+            return "848153433"
         case .oceania1:
-            return "oceaniaFile1"
+            return "1449436957"
         case .oceania2:
-            return "oceaniaFile2"
+            return "1578090841"
         case .oceania3:
-            return "oceaniaFile3"
+            return "1436676828"
         case .oceania4:
-            return "oceaniaFile4"
+            return "1643660832"
         case .oceania5:
-            return "oceaniaFile5"
+            return "79156456"
         case .oceania6:
-            return "oceaniaFile6"
+            return "1459456814"
         case .asia1:
-            return "asiaFile1"
+            return "1450602373"
         case .asia2:
-            return "asiaFile2"
+            return "1640689188"
         case .asia3:
-            return "asiaFile3"
+            return "1562655504"
         case .asia4:
-            return "asiaFile4"
+            return "1212878303"
         case .asia5:
-            return "asiaFile5"
+            return "1612792722"
         case .asia6:
-            return "asiaFile6"
+            return "468231577"
         case .africa1:
-            return "africaFile1"
+            return "957218111"
         case .africa2:
-            return "africaFile2"
+            return "1462013003"
         case .africa3:
-            return "africaFile3"
+            return "1591131260"
         case .africa4:
-            return "africaFile4"
+            return "1591131273"
         case .africa5:
-            return "africaFile5"
+            return "1350823744"
         case .africa6:
-            return "africaFile6"
+            return "1563265249"
         case .northAmerica1:
-            return "northAmericaFile1"
+            return "1780877431"
         case .northAmerica2:
-            return "northAmericaFile2"
+            return "1096737554"
         case .northAmerica3:
-            return "northAmericaFile3"
+            return "1565768729"
         case .northAmerica4:
-            return "northAmericaFile4"
+            return "1437327789"
         case .northAmerica5:
-            return "northAmericaFile5"
+            return "1438587595"
         case .northAmerica6:
-            return "northAmericaFile6"
+            return "1440586504"
         case .southAmerica1:
-            return "southAmericaFile1"
+            return "1592085636"
         case .southAmerica2:
-            return "southAmericaFile2"
+            return "183070773"
         case .southAmerica3:
-            return "southAmericaFile3"
+            return "339105862"
         case .southAmerica4:
-            return "southAmericaFile4"
+            return "1465062611"
         case .southAmerica5:
-            return "southAmericaFile5"
+            return "1542412635"
         case .southAmerica6:
-            return "southAmericaFile6"
+            return "1542412646"
         }  // switch self
     }  // fileName
 }

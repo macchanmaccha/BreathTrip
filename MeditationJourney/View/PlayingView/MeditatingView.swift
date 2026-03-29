@@ -49,30 +49,11 @@ struct MeditatingView: View {
                         .frame(width: 300, height: 200)
                         .bold()
                 } // if
-                // endでないとき
-                if viewModel.timerState != .end {
+                // endでないとき、かつ終了状態で画面離脱した場合（suspended + stateBeforeLeaving == end）以外
+                if viewModel.timerState != .end && !(viewModel.timerState == .suspended && viewModel.stateBeforeLeaving == .end) {
                     // 中断ボタン
                     Button(action: {
-                        // preStartだったら
-                        if viewModel.timerState == .preStart {
-                            // prePauseにする
-                            viewModel.updateMeditationTimerState(to: .prePause)
-                            // startだったら
-                        } else if viewModel.timerState == .start {
-                            // pauseにする
-                            viewModel.updateMeditationTimerState(to: .pause)
-                            // 画面離脱状態の場合
-                        } else if viewModel.timerState == .suspended {
-                            // 画面離脱前の状態がpreStartなら
-                            if viewModel.stateBeforeLeaving == .preStart {
-                                // prePauseにする
-                                viewModel.updateMeditationTimerState(to: .prePause)
-                                // 画面離脱前の状態がstartなら
-                            } else if viewModel.stateBeforeLeaving == .start {
-                                // pauseにする
-                                viewModel.updateMeditationTimerState(to: .pause)
-                            }
-                        }
+                        viewModel.onInterruptButtonTapped()
                     }) {
                         Text("中断する")
                             .tint(.backgroundNavy)
@@ -84,30 +65,11 @@ struct MeditatingView: View {
                     .alert("", isPresented: $viewModel.isShowStopAlert) {
                         // NO
                         Button("NO") {
-                            // prePauseだったら
-                            if viewModel.timerState == .prePause {
-                                // preStartにする
-                                viewModel.updateMeditationTimerState(to: .preStart)
-                                // pauseだったら
-                            } else if viewModel.timerState == .pause {
-                                // startにする
-                                viewModel.updateMeditationTimerState(to: .start)
-                                // suspended状態の場合で、
-                            } else if viewModel.timerState == .suspended {
-                                if viewModel.stateBeforeLeaving == .preStart || viewModel.stateBeforeLeaving == .prePause {
-                                    viewModel.updateMeditationTimerState(to: .preStart)
-                                } else if viewModel.stateBeforeLeaving == .pause || viewModel.stateBeforeLeaving == .start {
-                                    viewModel.updateMeditationTimerState(to: .start)
-                                }
-                            }
+                            viewModel.onInterruptAlertNoTapped()
                         }
                         // YES
                         Button("YES") {
-                            // タイマー停止
-                            viewModel.stopTimer(timer: &viewModel.selectedDurationMinutesTimer)
-                            viewModel.stopTimer(timer: &viewModel.preparationTimer)
-                            // 音の再生を完全に停止
-                            viewModel.updatePlaybackState(to: SetViewModel.PlaybackState.stop)
+                            viewModel.onInterruptAlertYesTapped()
                             // 設定画面に戻る
                             dismiss()
                         }
@@ -124,10 +86,7 @@ struct MeditatingView: View {
         }
 #endif
         .onAppear {
-            // 画面起動時にprestart状態にする
-            viewModel.updateMeditationTimerState(to: .preStart)
-            // 画面起動時に瞑想前タイマー5秒をセットする
-            viewModel.setFirstTimer()
+            viewModel.onViewAppear()
         }
         // 画面離脱時の処理
         .onChange(of: scenePhase) { _, newPhase in
@@ -145,16 +104,7 @@ struct MeditatingView: View {
             viewModel.updateInterruption(notification: notification)
         }
         .onChange(of: viewModel.remainingSeconds) { _, newValue in
-            // remainingSecondsが5秒になったらフェードアウト
-            if newValue > 5 && newValue < 5.1 {
-                if let player = viewModel.audioPlayer {
-                    viewModel.fadeOut(player: player, duration: 5.0) {
-                        viewModel.fadeOutComplete()
-                    }
-                }
-            } else if newValue <= 0 {
-                viewModel.updateMeditationTimerState(to: .end)
-            }
+            viewModel.onRemainingSecondsChanged(newValue: newValue)
         }
         // 瞑想終了アラート
         .alert("終了", isPresented: $viewModel.isShowEndAlert) {

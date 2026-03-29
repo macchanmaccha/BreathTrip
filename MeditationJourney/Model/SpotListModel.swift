@@ -91,8 +91,8 @@ struct SpotListModel {
             spotName: "エチオピア",
             coordinate: CLLocationCoordinate2D(latitude: 9.1450, longitude: 40.4897)),
         SpotDataModel(
-            spotName: "エリトリア",
-            coordinate: CLLocationCoordinate2D(latitude: 15.1794, longitude: 39.7823)),
+            spotName: "ケニア",
+            coordinate: CLLocationCoordinate2D(latitude: -0.0236, longitude: 37.9062)),
 
         // 北アメリカ
         SpotDataModel(
