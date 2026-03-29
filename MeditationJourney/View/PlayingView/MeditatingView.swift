@@ -92,7 +92,6 @@ struct MeditatingView: View {
         .onChange(of: scenePhase) { _, newPhase in
             // 画面離脱時の処理
             if newPhase == .background {
-                // 画面離脱時は例外なくどの状態であってもsuspendedにする
                 viewModel.updateBackground(to: .suspended)
             }
         } // .onChange(of: scenePhase)ここまで

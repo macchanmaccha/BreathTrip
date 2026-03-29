@@ -44,10 +44,6 @@ class SetViewModel: ObservableObject {
     var fadeOutTime: TimeInterval = 30.0
     /// fadeOutを終了するタイマー
     var fadeOutEndTimer: Timer?
-    /// 曲のID
-    var trackID: String {
-        meditationSoundName.fileName
-    }
     /// 再生状態　初期は.stop
     var playbackState: PlaybackState = .stop
     /// プレビューURL

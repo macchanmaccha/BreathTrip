@@ -10,23 +10,111 @@ import AVFoundation
 import MusicKit
 
 class ListeningSetViewModel: SetViewModel {
-    /// 瞑想画面での状態　初期値はidle
+    /// 音を聴く画面での状態　初期値はidle
     @Published private(set) var timerState: TimerState = .idle
-    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    /// 音再生タイマーの分数・秒数を管理する変数
     @Published private(set) var remainingSeconds: TimeInterval = 0
+    @Published var isShowStopAlert: Bool = false
+    @Published var isShowEndAlert: Bool = false
+    /// 画面を離れる前の状態（復帰時に再開するため）
+    private(set) var stateBeforeLeaving: TimerState?
+    /// 曲のID
+    var trackID: String {
+        listeningSoundName.fileName
+    }
+    /// 画面起動時の初期化処理
+    func onViewAppear() {
+        updateTimerState(to: .start)
+        // 音再生タイマーをセット
+        remainingSeconds = TimeInterval(listeningMinutes * 60)
+    }
     /// 状態の更新
     func updateTimerState(to newState: TimerState) {
-        if timerState == .end && newState == .start {
-            // listeningMinutesが0でないとき
-            if listeningMinutes != 0 {
-                // 音再生タイマーをセット
-                remainingSeconds = TimeInterval(listeningMinutes * 60)
-                // listeningMinutesが0のとき
-            } else {
-                remainingSeconds = 0
+        //        if timerState == .idle && newState == .start {
+        //            // listeningMinutesが0でないとき
+        //            if listeningMinutes != 0 {
+        //                // 音再生タイマーをセット
+        //                remainingSeconds = TimeInterval(listeningMinutes * 60)
+        //                // listeningMinutesが0のとき
+        //            } else {
+        //                remainingSeconds = 0
+        //            }
+        //        }
+        timerState = newState
+    }
+    /// 中断ボタンタップ時の処理
+    func onInterruptButtonTapped() {
+        switch timerState {
+        case .start:
+            updateTimerState(to: .pause)
+        case .suspended:
+            if stateBeforeLeaving == .start || stateBeforeLeaving == .pause {
+                updateTimerState(to: .pause)
             }
+        default:
+            break
+        }
+    }
+    /// 中断アラートのNOボタンタップ時の処理（再開）
+    func onInterruptAlertNoTapped() {
+        switch timerState {
+        case .pause:
+            updateTimerState(to: .start)
+        case .suspended:
+            if stateBeforeLeaving == .start || stateBeforeLeaving == .pause {
+                updateTimerState(to: .start)
+            }
+        default:
+            break
+        }
+    }
+    /// 中断アラートのYESボタンタップ時の処理（終了）
+    func onInterruptAlertYesTapped() {
+        stopTimer(timer: &selectedDurationMinutesTimer)
+        // 音の再生を完全に停止
+        updatePlaybackState(to: SetViewModel.PlaybackState.stop)
+    }
+    // バックグラウンドへの状態の更新
+    func updateBackground(to newState: TimerState) {
+        if newState == .suspended {
+            stateBeforeLeaving = timerState
         }
         timerState = newState
+    }
+    // 割り込みの更新（通知を受け取り、種類に応じて適切なメソッドに振り分け）
+    func updateInterruption(notification: NotificationCenter.Publisher.Output) {
+        // 通知を受け取ったら、userInfoを取得 userInfoは通知の内容を含む辞書
+        guard let userInfo = notification.userInfo,
+              // 通知の種類を取得
+              let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+              // 通知の種類をAVAudioSession.InterruptionTypeに変換
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+        // 通知の種類に応じて処理を分岐
+        switch type {
+        case .began:
+            updateInterruptionBegan()
+        case .ended:
+            updateInterruptionEnded(userInfo: userInfo)
+        default:
+            break
+        }
+    }
+    // 音声割り込み開始時の状態更新（着信・緊急アラートなどで音が止まったとき）
+    private func updateInterruptionBegan() {
+        switch timerState {
+        case .start:
+            updateTimerState(to: .pause)
+        default:
+            break
+        }
+    }
+    // 音声割り込み終了時（再開可能なら再生を再開）
+    private func updateInterruptionEnded(userInfo: [AnyHashable: Any]) {
+        guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+        let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+        if options.contains(.shouldResume), timerState == .pause {
+            updateTimerState(to: .start)
+        }
     }
     func startPlayAndTimer() {
         // 多重でタイマーを開始しないようにする
@@ -317,6 +405,45 @@ class ListeningSetViewModel: SetViewModel {
         // タイマー無効
         timer = nil
     }
+    func updateTimer() {
+        switch timerState {
+        case .idle:
+            // 何もしない
+            break
+        case .start:
+            // 音の再生を開始
+            updatePlaybackState(to: SetViewModel.PlaybackState.playing)
+            // スリープ無効
+            UIApplication.shared.isIdleTimerDisabled = true
+        case .pause:
+            // タイマー停止・無効
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            // 音の再生を一時停止
+            updatePlaybackState(to: SetViewModel.PlaybackState.pause)
+            // isShowAlertをtrue
+            isShowStopAlert.toggle()
+            // スリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
+        case .end:
+            // タイマー停止・無効
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            // 音の再生を停止
+            updatePlaybackState(to: SetViewModel.PlaybackState.stop)
+            // 終了アラート表示
+            isShowEndAlert.toggle()
+            // スリープを有効
+            UIApplication.shared.isIdleTimerDisabled = false
+        case .suspended:
+            stopTimer(timer: &selectedDurationMinutesTimer)
+            if stateBeforeLeaving == .end {
+                isShowStopAlert = false
+            } else {
+                updatePlaybackState(to: SetViewModel.PlaybackState.pause)
+                isShowStopAlert = true
+            }
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+    }
     deinit {
         stopTimer(timer: &selectedDurationMinutesTimer)
     }
@@ -343,5 +470,6 @@ extension ListeningSetViewModel {
         case start  // 音再生タイマーカウントダウン
         case pause  // 音再生タイマー中断
         case end  // 音再生終了
+        case suspended  // 画面を離れたため一時停止
     }  // enumここまで
 }  // extension ListeningSetViewModelここまで

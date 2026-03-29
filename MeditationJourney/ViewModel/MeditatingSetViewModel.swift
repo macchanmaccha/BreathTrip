@@ -19,6 +19,10 @@ class MeditatingSetViewModel: SetViewModel {
     @Published var isShowEndAlert: Bool = false
     /// 瞑想前のタイマー
     var preparationTimer: Timer?
+    /// 曲のID
+    var trackID: String {
+        meditationSoundName.fileName
+    }
     /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
     /// 画面を離れる前の状態（復帰時に再開するため）
@@ -50,14 +54,23 @@ class MeditatingSetViewModel: SetViewModel {
     /// 中断ボタンタップ時の処理
     func onInterruptButtonTapped() {
         switch timerState {
+             // preStartのとき
         case .preStart:
+            // prePauseにする
             updateMeditationTimerState(to: .prePause)
+            // startのとき
         case .start:
+            // pauseにする
             updateMeditationTimerState(to: .pause)
+            // 離脱状態の場合
         case .suspended:
+            // 離脱前がpreStartだった時
             if stateBeforeLeaving == .preStart {
+                // prePauseにする
                 updateMeditationTimerState(to: .prePause)
+                // 離脱前がstartだった時
             } else if stateBeforeLeaving == .start {
+                // pauseにする
                 updateMeditationTimerState(to: .pause)
             }
         default:
@@ -83,10 +96,10 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 中断アラートのYESボタンタップ時の処理（終了）
     func onInterruptAlertYesTapped() {
-            stopTimer(timer: &selectedDurationMinutesTimer)
-            stopTimer(timer: &preparationTimer)
-            // 音の再生を完全に停止
-            updatePlaybackState(to: SetViewModel.PlaybackState.stop)
+        stopTimer(timer: &selectedDurationMinutesTimer)
+        stopTimer(timer: &preparationTimer)
+        // 音の再生を完全に停止
+        updatePlaybackState(to: SetViewModel.PlaybackState.stop)
     }
     /// remainingSecondsの変化時の処理（5秒でフェードアウト、0以下で終了）
     func onRemainingSecondsChanged(newValue: TimeInterval) {
@@ -119,22 +132,22 @@ class MeditatingSetViewModel: SetViewModel {
         // 通知の種類に応じて処理を分岐
         switch type {
         case .began:
-             updateInterruptionBegan()
+            updateInterruptionBegan()
         default:
             break
         }
     }
     // 音声割り込み開始時の状態更新（着信・緊急アラートなどで音が止まったとき）
-     private func updateInterruptionBegan() {
-         switch timerState {
-         case .preStart:
-             updateMeditationTimerState(to: .prePause)
-         case .start:
-             updateMeditationTimerState(to: .pause)
-         default:
-             break
-         }
-     }
+    private func updateInterruptionBegan() {
+        switch timerState {
+        case .preStart:
+            updateMeditationTimerState(to: .prePause)
+        case .start:
+            updateMeditationTimerState(to: .pause)
+        default:
+            break
+        }
+    }
     // 瞑想前タイマー
     func startPreparationTimer() {
         stopTimer(timer: &preparationTimer)
