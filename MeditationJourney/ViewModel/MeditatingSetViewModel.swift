@@ -25,6 +25,14 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
+    /// 音声ガイド（読み上げ）
+    private let speechSynthesizer = AVSpeechSynthesizer()
+    /// 中盤ガイドを既に再生したしきい値（秒）のキー
+    private var spokenMidCueKeys: Set<String> = []
+    /// 姿勢ガイドをこのセッションで再生済みか
+    private var hasSpokenPostureThisSession = false
+    /// 締めのガイドを再生済みか
+    private var hasSpokenClosingPhrase = false
     /// 画面を離れる前の状態（復帰時に再開するため）
     private(set) var stateBeforeLeaving: TimerState?
     private let context: NSManagedObjectContext
@@ -38,6 +46,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 画面起動時の初期化処理（preStart状態の設定と瞑想前タイマーのセット）
     func onViewAppear() {
+        resetAudioGuideSessionState()
         updateMeditationTimerState(to: .preStart)
         setFirstTimer()
     }
@@ -96,6 +105,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 中断アラートのYESボタンタップ時の処理（終了）
     func onInterruptAlertYesTapped() {
+        stopAudioGuideSpeech()
         stopTimer(timer: &selectedDurationMinutesTimer)
         stopTimer(timer: &preparationTimer)
         // 音の再生を完全に停止
@@ -215,13 +225,16 @@ class MeditatingSetViewModel: SetViewModel {
                     remainingSeconds = ceil(remainingTimeInterval)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
+                        speakClosingGuideIfStillNeeded()
                         // end
                         updateMeditationTimerState(to: .end)
                         // 音の停止
                         updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
                         stopTimer(timer: &selectedDurationMinutesTimer)
-                    } // if remainingSeconds <= 0
+                    } else {
+                        evaluateMeditationAudioGuide(remainingSeconds: remainingSeconds)
+                    }
                 }  // if let endTime
             }  // if state == .startここまで
         }  // selectedDurationTimerここまで
@@ -470,9 +483,11 @@ class MeditatingSetViewModel: SetViewModel {
         case .preStart:
             // 瞑想前タイマーの呼出
             startPreparationTimer()
+            speakPostureGuideIfNeeded()
             // スリープを無効
             UIApplication.shared.isIdleTimerDisabled = true
         case .prePause:
+            stopAudioGuideSpeech()
             // タイマー停止・無効
             stopTimer(timer: &selectedDurationMinutesTimer)
             stopTimer(timer: &preparationTimer)
@@ -533,7 +548,7 @@ class MeditatingSetViewModel: SetViewModel {
             // startPlayAndTimerを実行
             startPlayAndTimer()
         case .stop:
-            // 曲を停止
+            // 曲を停止（自然終了時は締めの読み上げを止めない）
             audioPlayer?.pause()
             // 30秒を入れ直す
             fadeOutTime = 30.0
@@ -544,6 +559,7 @@ class MeditatingSetViewModel: SetViewModel {
             // fadeOutEndTimerを無効、nilにする
             stopTimer(timer: &fadeOutEndTimer)
         case .pause:
+            stopAudioGuideSpeech()
             // 曲を一時停止
             audioPlayer?.pause()
             // selectedDurationMinutesTimerを無効、nil
@@ -555,7 +571,64 @@ class MeditatingSetViewModel: SetViewModel {
         }  // switch newState
         playbackState = newState
     }
+    // MARK: - 音声ガイド
+    private var isAudioGuideEnabled: Bool {
+        UserDefaults.standard.bool(forKey: UserDefaultsKey.audioGuide)
+    }
+    private func resetAudioGuideSessionState() {
+        spokenMidCueKeys.removeAll()
+        hasSpokenPostureThisSession = false
+        hasSpokenClosingPhrase = false
+    }
+    private func speakPostureGuideIfNeeded() {
+        guard isAudioGuideEnabled, !hasSpokenPostureThisSession else {
+            return
+        }
+        hasSpokenPostureThisSession = true
+        speak(MeditationAudioGuide.postureText)
+    }
+    private func evaluateMeditationAudioGuide(remainingSeconds: TimeInterval) {
+        guard isAudioGuideEnabled, timerState == .start else {
+            return
+        }
+        let remaining = remainingSeconds
+        if remaining <= 10 && remaining > 0 && !hasSpokenClosingPhrase {
+            hasSpokenClosingPhrase = true
+            speak(MeditationAudioGuide.closingText)
+            return
+        }
+        guard remaining > 10 else {
+            return
+        }
+        for (cue, text) in MeditationAudioGuide.midSessionCuesAndPhrases(forMinutes: meditationMinutes) {
+            let key = "mid_\(Int(cue))"
+            if remaining <= cue && !spokenMidCueKeys.contains(key) {
+                spokenMidCueKeys.insert(key)
+                speak(text)
+            }
+        }
+    }
+    private func speakClosingGuideIfStillNeeded() {
+        guard isAudioGuideEnabled, !hasSpokenClosingPhrase else {
+            return
+        }
+        hasSpokenClosingPhrase = true
+        speak(MeditationAudioGuide.closingText)
+    }
+    private func speak(_ text: String) {
+        guard isAudioGuideEnabled else {
+            return
+        }
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.95
+        speechSynthesizer.speak(utterance)
+    }
+    private func stopAudioGuideSpeech() {
+        speechSynthesizer.stopSpeaking(at: .immediate)
+    }
     deinit {
+        stopAudioGuideSpeech()
         stopTimer(timer: &selectedDurationMinutesTimer)
     }
     // 他アプリの音を止めこのアプリの音を優先する(電話・緊急アラートは自動的に最優先)メソッド

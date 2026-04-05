@@ -15,7 +15,7 @@ struct MeditationSetView: View {
     /// フルスクリーンを管理する変数
     @State private var isShowFullScreen: Bool = false
     /// 音声ガイドToggleを管理する変数
-    @AppStorage("audioGuide") private var isAudioGuideOn: Bool = false
+    @AppStorage(UserDefaultsKey.audioGuide) private var isAudioGuideOn: Bool = false
     /// 選択できる分数
     private let minutesOptions: [Int] = [1, 3, 5, 10, 20, 30, 40, 50, 60]
     var body: some View {
