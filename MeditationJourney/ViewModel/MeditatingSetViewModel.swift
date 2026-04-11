@@ -17,6 +17,27 @@ class MeditatingSetViewModel: SetViewModel {
     @Published private(set) var remainingSeconds: TimeInterval = 0
     @Published var isShowStopAlert: Bool = false
     @Published var isShowEndAlert: Bool = false
+    /// プレタイマー表示管理
+    var shouldShowPreTimer: Bool {
+        if timerState == .preStart || timerState == .prePause {
+            return true
+        } else if timerState == .suspended,
+                  let state = stateBeforeLeaving,
+                  state == .preStart || state == .prePause {
+            return true
+        } else {
+            return false
+        }
+    }
+    /// 瞑想中タイマーを表示する条件を管理する計算型プロパティ
+    var shouldShowTimer: Bool {
+        timerState == .start || timerState == .pause || timerState == .suspended &&
+        stateBeforeLeaving == .start
+    }
+    /// 中断ボタン管理
+    var shouldShowInterruptButton: Bool {
+        timerState != .end && !(timerState == .suspended && stateBeforeLeaving == .end)
+    }
     /// 瞑想前のタイマー
     var preparationTimer: Timer?
     /// 曲のID

@@ -32,11 +32,7 @@ struct ListeningView: View {
                         .frame(width: 300, height: 200)
                         .bold()
                     // 時間無制限以外の場合
-                } else if viewModel.timerState == .start ||
-                            viewModel.timerState == .pause ||
-                            (viewModel.timerState == .suspended &&
-                            (viewModel.stateBeforeLeaving == .start ||
-                                 viewModel.stateBeforeLeaving == .pause)) {
+                } else {
                     Text(Int(viewModel.remainingSeconds).formattedTime())
                         .foregroundStyle(.keyWhite)
                         .font(.system(size: 80))
@@ -44,8 +40,7 @@ struct ListeningView: View {
                         .bold()
                 }
                 // endでないとき、かつ終了状態で画面離脱した場合（suspended + stateBeforeLeaving == end）以外
-                if viewModel.timerState != .end
-                    && !(viewModel.timerState == .suspended && viewModel.stateBeforeLeaving == .end) {
+                if viewModel.shouldShowInterruptButton {
                     // 中断ボタン
                     Button(action: {
                         viewModel.onInterruptButtonTapped()

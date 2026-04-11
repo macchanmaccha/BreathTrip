@@ -22,6 +22,11 @@ class ListeningSetViewModel: SetViewModel {
     var trackID: String {
         listeningSoundName.fileName
     }
+    /// 中断ボタン管理
+    var shouldShowInterruptButton: Bool {
+        timerState != .end
+        && !(timerState == .suspended && stateBeforeLeaving == .end)
+    }
     /// 画面起動時の初期化処理
     func onViewAppear() {
         updateTimerState(to: .start)
@@ -30,16 +35,6 @@ class ListeningSetViewModel: SetViewModel {
     }
     /// 状態の更新
     func updateTimerState(to newState: TimerState) {
-        //        if timerState == .idle && newState == .start {
-        //            // listeningMinutesが0でないとき
-        //            if listeningMinutes != 0 {
-        //                // 音再生タイマーをセット
-        //                remainingSeconds = TimeInterval(listeningMinutes * 60)
-        //                // listeningMinutesが0のとき
-        //            } else {
-        //                remainingSeconds = 0
-        //            }
-        //        }
         timerState = newState
     }
     /// 中断ボタンタップ時の処理
@@ -123,14 +118,10 @@ class ListeningSetViewModel: SetViewModel {
         endTime = Date().addingTimeInterval(remainingSeconds)
         // fadeOutの終了時刻は、fadeOutTimeを考慮
         fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-        print("現在時刻は\(Date())")
-        print("終了時刻を計算すると\(String(describing: endTime))")
-        print("fadeOutEndTimeを計算すると\(String(describing: fadeOutEndTime))")
         // 再生を開始
         resumePlayback()
         // タイマーを開始
         startListeningTimer()
-        print("タイマーは\(endTime!)で終わり")
     }
     // 音をきくタイマー
     func startListeningTimer() {
