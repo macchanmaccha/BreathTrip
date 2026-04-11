@@ -202,14 +202,10 @@ class MeditatingSetViewModel: SetViewModel {
         endTime = Date().addingTimeInterval(remainingSeconds)
         // fadeOutの終了時刻は、fadeOutTimeを考慮
         fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-        print("現在時刻は\(Date())")
-        print("終了時刻を計算すると\(String(describing: endTime))")
-        print("fadeOutEndTimeを計算すると\(String(describing: fadeOutEndTime))")
         // 再生を開始
         resumePlayback()
         // タイマーを開始
         startMeditationTimer()
-        print("タイマーは\(endTime!)で終わり")
     }
     // 瞑想中タイマー
     func startMeditationTimer() {
@@ -420,7 +416,6 @@ class MeditatingSetViewModel: SetViewModel {
         if Date() < endTime {
             // remainingTimeが10以上の場合
             if remainingSeconds >= 10 {
-                print("再度再生します。")
                 // fadeOutEndTimerを無効、nilにする
                 stopTimer(timer: &fadeOutEndTimer)
                 // fadeOutTimeに30を格納（30秒後をフェードアウト終了時間とするため）

@@ -337,7 +337,6 @@ class ListeningSetViewModel: SetViewModel {
         if Date() < endTime {
             // remainingTimeが10以上の場合
             if remainingSeconds >= 10 {
-                print("再度再生します。")
                 // fadeOutEndTimerを無効、nilにする
                 stopTimer(timer: &fadeOutEndTimer)
                 // fadeOutTimeに30を格納（30秒後をフェードアウト終了時間とするため）
