@@ -10,14 +10,8 @@ import AVFoundation
 import MusicKit
 
 class ListeningSetViewModel: SetViewModel {
-    /// 音を聴く画面での状態　初期値はidle
-    @Published private(set) var timerState: TimerState = .idle
-    /// 音再生タイマーの分数・秒数を管理する変数
-    @Published private(set) var remainingSeconds: TimeInterval = 0
     @Published var isShowStopAlert: Bool = false
     @Published var isShowEndAlert: Bool = false
-    /// 画面を離れる前の状態（復帰時に再開するため）
-    private(set) var stateBeforeLeaving: TimerState?
     /// 曲のID
     var trackID: String {
         listeningSoundName.fileName
@@ -27,6 +21,12 @@ class ListeningSetViewModel: SetViewModel {
         timerState != .end
         && !(timerState == .suspended && stateBeforeLeaving == .end)
     }
+    /// 画面を離れる前の状態（復帰時に再開するため）
+    private(set) var stateBeforeLeaving: TimerState?
+    /// 音を聴く画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
+    /// 音再生タイマーの分数・秒数を管理する変数
+    @Published private(set) var remainingSeconds: TimeInterval = 0
     /// 画面起動時の初期化処理
     func onViewAppear() {
         updateTimerState(to: .start)

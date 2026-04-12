@@ -11,10 +11,6 @@ import AVFoundation
 import MusicKit
 
 class MeditatingSetViewModel: SetViewModel {
-    /// 瞑想画面での状態　初期値はidle
-    @Published private(set) var timerState: TimerState = .idle
-    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
-    @Published private(set) var remainingSeconds: TimeInterval = 0
     @Published var isShowStopAlert: Bool = false
     @Published var isShowEndAlert: Bool = false
     /// プレタイマー表示管理
@@ -44,10 +40,14 @@ class MeditatingSetViewModel: SetViewModel {
     var trackID: String {
         meditationSoundName.fileName
     }
-    /// 瞑想開始日時を記録する変数
-    private var meditationStartDate: Date?
     /// 画面を離れる前の状態（復帰時に再開するため）
     private(set) var stateBeforeLeaving: TimerState?
+    /// 瞑想画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
+    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    @Published private(set) var remainingSeconds: TimeInterval = 0
+    /// 瞑想開始日時を記録する変数
+    private var meditationStartDate: Date?
     private let context: NSManagedObjectContext
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.context = context
