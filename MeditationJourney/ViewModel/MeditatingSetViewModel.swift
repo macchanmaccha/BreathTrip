@@ -27,8 +27,10 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 瞑想中タイマーを表示する条件を管理する計算型プロパティ
     var shouldShowTimer: Bool {
-        timerState == .start || timerState == .pause || timerState == .suspended &&
-        stateBeforeLeaving == .start
+        // startのときまたは、pauseのときまたは、suspendedかつstateBeforeLeavingがstartのとき
+        timerState == .start
+        || timerState == .pause
+        || (timerState == .suspended && stateBeforeLeaving == .start)
     }
     /// 中断ボタン管理
     var shouldShowInterruptButton: Bool {
