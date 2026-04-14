@@ -25,8 +25,8 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 瞑想開始日時を記録する変数
     private var meditationStartDate: Date?
-    /// 音声ガイド（読み上げ）
-    private let speechSynthesizer = AVSpeechSynthesizer()
+    /// 音声ガイド（ローカル音源再生）
+    private var audioGuidePlayer: AVAudioPlayer?
     /// 中盤ガイドを既に再生したしきい値（秒）のキー
     private var spokenMidCueKeys: Set<String> = []
     /// 姿勢ガイドをこのセッションで再生済みか
@@ -46,9 +46,12 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 画面起動時の初期化処理（preStart状態の設定と瞑想前タイマーのセット）
     func onViewAppear() {
+        // 新しいセッション開始時に、音声ガイドの再生履歴を初期化する
         resetAudioGuideSessionState()
         updateMeditationTimerState(to: .preStart)
         setFirstTimer()
+        // 瞑想開始前に姿勢ガイド（001）を一度だけ流す
+        speakPostureGuideIfNeeded()
     }
     /// 準備前タイマーから瞑想タイマーへの状態の更新
     func updateMeditationTimerState(to newState: TimerState) {
@@ -105,7 +108,6 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// 中断アラートのYESボタンタップ時の処理（終了）
     func onInterruptAlertYesTapped() {
-        stopAudioGuideSpeech()
         stopTimer(timer: &selectedDurationMinutesTimer)
         stopTimer(timer: &preparationTimer)
         // 音の再生を完全に停止
@@ -223,18 +225,17 @@ class MeditatingSetViewModel: SetViewModel {
                     let remainingTimeInterval = max(0, endTime.timeIntervalSince(Date()))
                     // 小数点を切上げ（小数点第1位が1~9のとき、切上げした正数を表示するため）
                     remainingSeconds = ceil(remainingTimeInterval)
+                    // 残り時間に応じて中盤/締めガイドの再生判定を行う
+                    evaluateMeditationAudioGuide(remainingSeconds: remainingSeconds)
                     // remainingSecondsが0以下のとき
                     if remainingSeconds <= 0 {
-                        speakClosingGuideIfStillNeeded()
                         // end
                         updateMeditationTimerState(to: .end)
                         // 音の停止
                         updatePlaybackState(to: SetViewModel.PlaybackState.stop)
                         // タイマー停止
                         stopTimer(timer: &selectedDurationMinutesTimer)
-                    } else {
-                        evaluateMeditationAudioGuide(remainingSeconds: remainingSeconds)
-                    }
+                    } // if remainingSeconds <= 0
                 }  // if let endTime
             }  // if state == .startここまで
         }  // selectedDurationTimerここまで
@@ -483,11 +484,9 @@ class MeditatingSetViewModel: SetViewModel {
         case .preStart:
             // 瞑想前タイマーの呼出
             startPreparationTimer()
-            speakPostureGuideIfNeeded()
             // スリープを無効
             UIApplication.shared.isIdleTimerDisabled = true
         case .prePause:
-            stopAudioGuideSpeech()
             // タイマー停止・無効
             stopTimer(timer: &selectedDurationMinutesTimer)
             stopTimer(timer: &preparationTimer)
@@ -548,7 +547,8 @@ class MeditatingSetViewModel: SetViewModel {
             // startPlayAndTimerを実行
             startPlayAndTimer()
         case .stop:
-            // 曲を停止（自然終了時は締めの読み上げを止めない）
+            stopAudioGuideSpeech()
+            // 曲を停止
             audioPlayer?.pause()
             // 30秒を入れ直す
             fadeOutTime = 30.0
@@ -572,60 +572,89 @@ class MeditatingSetViewModel: SetViewModel {
         playbackState = newState
     }
     // MARK: - 音声ガイド
+    // UserDefaultsの設定値から音声ガイドのON/OFFを参照する
     private var isAudioGuideEnabled: Bool {
         UserDefaults.standard.bool(forKey: UserDefaultsKey.audioGuide)
     }
+    // 1セッション内での重複再生を防ぐためのフラグを初期化する
     private func resetAudioGuideSessionState() {
         spokenMidCueKeys.removeAll()
         hasSpokenPostureThisSession = false
         hasSpokenClosingPhrase = false
     }
+    // 姿勢ガイド（001）を1回だけ再生する
     private func speakPostureGuideIfNeeded() {
+        // isAudioGuideEnabledがtrueでhasSpokenPostureThisSessionがfalseのときは
         guard isAudioGuideEnabled, !hasSpokenPostureThisSession else {
+            // なにもしない
             return
         }
         hasSpokenPostureThisSession = true
-        speak(MeditationAudioGuide.postureText)
+        playAudioGuide(trackNumber: 1)
     }
+    /// 瞑想中の残り時間を監視し、未再生のガイド音源を必要なタイミングで1回だけ再生する。
+    /// - 残り10秒以内: 締めガイド（010）
+    /// - それ以前: 分数に応じた中盤キューで 002 以降を順番に再生
     private func evaluateMeditationAudioGuide(remainingSeconds: TimeInterval) {
+        // ガイドがONかつ瞑想中（start）でない場合は判定しない
         guard isAudioGuideEnabled, timerState == .start else {
             return
         }
-        let remaining = remainingSeconds
-        if remaining <= 10 && remaining > 0 && !hasSpokenClosingPhrase {
+        // 終了直前（10秒以内）に締めガイド（010）を1回だけ再生する
+        if remainingSeconds <= 10 && remainingSeconds > 0 && !hasSpokenClosingPhrase {
             hasSpokenClosingPhrase = true
-            speak(MeditationAudioGuide.closingText)
+            playAudioGuide(trackNumber: 10)
             return
         }
-        guard remaining > 10 else {
+        // 残り10秒以下では、中盤ガイドを鳴らさない
+        guard remainingSeconds > 10 else {
             return
         }
-        for (cue, text) in MeditationAudioGuide.midSessionCuesAndPhrases(forMinutes: meditationMinutes) {
+        // 分数ごとのしきい値を走査し、条件を満たした中盤ガイドを1回だけ再生する
+        for (index, cue) in MeditationAudioGuide.midCueSecondsRemaining(forMinutes: meditationMinutes).enumerated() {
+            // しきい値をキー化して多重再生を防止する
             let key = "mid_\(Int(cue))"
-            if remaining <= cue && !spokenMidCueKeys.contains(key) {
+            if remainingSeconds <= cue && !spokenMidCueKeys.contains(key) {
                 spokenMidCueKeys.insert(key)
-                speak(text)
+                // 中盤ガイドは002以降の連番音源を順番に再生する
+                playAudioGuide(trackNumber: index + 2)
             }
         }
     }
-    private func speakClosingGuideIfStillNeeded() {
-        guard isAudioGuideEnabled, !hasSpokenClosingPhrase else {
-            return
-        }
-        hasSpokenClosingPhrase = true
-        speak(MeditationAudioGuide.closingText)
-    }
-    private func speak(_ text: String) {
+    // 指定番号（例: 001, 002...）のローカル音源を再生する
+    private func playAudioGuide(trackNumber: Int) {
         guard isAudioGuideEnabled else {
             return
         }
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.95
-        speechSynthesizer.speak(utterance)
+        guard let url = audioGuideURL(trackNumber: trackNumber) else {
+            print("音声ガイドファイルが見つかりません: \(trackNumber)")
+            return
+        }
+        do {
+            audioGuidePlayer?.stop()
+            audioGuidePlayer = try AVAudioPlayer(contentsOf: url)
+            audioGuidePlayer?.prepareToPlay()
+            audioGuidePlayer?.play()
+        } catch {
+            print("音声ガイド再生エラー: \(error)")
+        }
     }
+    // ファイル名の先頭プレフィックス（001_ など）で音源URLを検索する
+    private func audioGuideURL(trackNumber: Int) -> URL? {
+        let prefix = String(format: "%03d_", trackNumber)
+        let extensions = ["wav", "m4a", "caf", "mp3"]
+        for ext in extensions {
+            let urls = Bundle.main.urls(forResourcesWithExtension: ext, subdirectory: nil) ?? []
+            if let matchedURL = urls.first(where: { $0.lastPathComponent.hasPrefix(prefix) }) {
+                return matchedURL
+            }
+        }
+        return nil
+    }
+    // ガイド音声の再生を停止し、プレイヤーを解放する
     private func stopAudioGuideSpeech() {
-        speechSynthesizer.stopSpeaking(at: .immediate)
+        audioGuidePlayer?.stop()
+        audioGuidePlayer = nil
     }
     deinit {
         stopAudioGuideSpeech()
