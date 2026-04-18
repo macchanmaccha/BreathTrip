@@ -10,18 +10,23 @@ import AVFoundation
 import MusicKit
 
 class ListeningSetViewModel: SetViewModel {
-    /// 音を聴く画面での状態　初期値はidle
-    @Published private(set) var timerState: TimerState = .idle
-    /// 音再生タイマーの分数・秒数を管理する変数
-    @Published private(set) var remainingSeconds: TimeInterval = 0
     @Published var isShowStopAlert: Bool = false
     @Published var isShowEndAlert: Bool = false
-    /// 画面を離れる前の状態（復帰時に再開するため）
-    private(set) var stateBeforeLeaving: TimerState?
     /// 曲のID
     var trackID: String {
         listeningSoundName.fileName
     }
+    /// 中断ボタン管理
+    var shouldShowInterruptButton: Bool {
+        timerState != .end
+        && !(timerState == .suspended && stateBeforeLeaving == .end)
+    }
+    /// 画面を離れる前の状態（復帰時に再開するため）
+    private(set) var stateBeforeLeaving: TimerState?
+    /// 音を聴く画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
+    /// 音再生タイマーの分数・秒数を管理する変数
+    @Published private(set) var remainingSeconds: TimeInterval = 0
     /// 画面起動時の初期化処理
     func onViewAppear() {
         updateTimerState(to: .start)
@@ -30,16 +35,6 @@ class ListeningSetViewModel: SetViewModel {
     }
     /// 状態の更新
     func updateTimerState(to newState: TimerState) {
-        //        if timerState == .idle && newState == .start {
-        //            // listeningMinutesが0でないとき
-        //            if listeningMinutes != 0 {
-        //                // 音再生タイマーをセット
-        //                remainingSeconds = TimeInterval(listeningMinutes * 60)
-        //                // listeningMinutesが0のとき
-        //            } else {
-        //                remainingSeconds = 0
-        //            }
-        //        }
         timerState = newState
     }
     /// 中断ボタンタップ時の処理
@@ -123,14 +118,10 @@ class ListeningSetViewModel: SetViewModel {
         endTime = Date().addingTimeInterval(remainingSeconds)
         // fadeOutの終了時刻は、fadeOutTimeを考慮
         fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-        print("現在時刻は\(Date())")
-        print("終了時刻を計算すると\(String(describing: endTime))")
-        print("fadeOutEndTimeを計算すると\(String(describing: fadeOutEndTime))")
         // 再生を開始
         resumePlayback()
         // タイマーを開始
         startListeningTimer()
-        print("タイマーは\(endTime!)で終わり")
     }
     // 音をきくタイマー
     func startListeningTimer() {
@@ -346,7 +337,6 @@ class ListeningSetViewModel: SetViewModel {
         if Date() < endTime {
             // remainingTimeが10以上の場合
             if remainingSeconds >= 10 {
-                print("再度再生します。")
                 // fadeOutEndTimerを無効、nilにする
                 stopTimer(timer: &fadeOutEndTimer)
                 // fadeOutTimeに30を格納（30秒後をフェードアウト終了時間とするため）

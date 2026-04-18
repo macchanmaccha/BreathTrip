@@ -24,16 +24,7 @@ struct MeditatingView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 // preStart、prePause、またはpreStart時に画面離脱した場合（suspendedかつstateBeforeLeavingがpreStart/prePause）のみ表示
-                if viewModel.timerState == .preStart || viewModel.timerState == .prePause {
-                    Text("開始まで\n\(Int(viewModel.remainingSeconds))")
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.keyWhite)
-                        .font(.system(size: 30))
-                        .frame(width: 200, height: 200)
-                        .bold()
-                } else if viewModel.timerState == .suspended,
-                          let state = viewModel.stateBeforeLeaving,
-                          state == .preStart || state == .prePause {
+                if viewModel.shouldShowPreTimer {
                     Text("開始まで\n\(Int(viewModel.remainingSeconds))")
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.keyWhite)
@@ -42,7 +33,7 @@ struct MeditatingView: View {
                         .bold()
                 }
                 // 瞑想中タイマーを表示
-                if viewModel.timerState == .start || viewModel.timerState == .pause || viewModel.timerState == .suspended && viewModel.stateBeforeLeaving == .start {
+                if viewModel.shouldShowTimer {
                     Text(Int(viewModel.remainingSeconds).formattedTime())
                         .foregroundStyle(.keyWhite)
                         .font(.system(size: 80))
@@ -50,7 +41,7 @@ struct MeditatingView: View {
                         .bold()
                 } // if
                 // endでないとき、かつ終了状態で画面離脱した場合（suspended + stateBeforeLeaving == end）以外
-                if viewModel.timerState != .end && !(viewModel.timerState == .suspended && viewModel.stateBeforeLeaving == .end) {
+                if viewModel.shouldShowInterruptButton {
                     // 中断ボタン
                     Button(action: {
                         viewModel.onInterruptButtonTapped()

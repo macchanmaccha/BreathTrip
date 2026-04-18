@@ -11,12 +11,31 @@ import AVFoundation
 import MusicKit
 
 class MeditatingSetViewModel: SetViewModel {
-    /// 瞑想画面での状態　初期値はidle
-    @Published private(set) var timerState: TimerState = .idle
-    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
-    @Published private(set) var remainingSeconds: TimeInterval = 0
     @Published var isShowStopAlert: Bool = false
     @Published var isShowEndAlert: Bool = false
+    /// プレタイマー表示管理
+    var shouldShowPreTimer: Bool {
+        if timerState == .preStart || timerState == .prePause {
+            return true
+        } else if timerState == .suspended,
+                  let state = stateBeforeLeaving,
+                  state == .preStart || state == .prePause {
+            return true
+        } else {
+            return false
+        }
+    }
+    /// 瞑想中タイマーを表示する条件を管理する計算型プロパティ
+    var shouldShowTimer: Bool {
+        // startのときまたは、pauseのときまたは、suspendedかつstateBeforeLeavingがstartのとき
+        timerState == .start
+        || timerState == .pause
+        || (timerState == .suspended && stateBeforeLeaving == .start)
+    }
+    /// 中断ボタン管理
+    var shouldShowInterruptButton: Bool {
+        timerState != .end && !(timerState == .suspended && stateBeforeLeaving == .end)
+    }
     /// 瞑想前のタイマー
     var preparationTimer: Timer?
     /// 曲のID
@@ -35,6 +54,10 @@ class MeditatingSetViewModel: SetViewModel {
     private var hasSpokenClosingPhrase = false
     /// 画面を離れる前の状態（復帰時に再開するため）
     private(set) var stateBeforeLeaving: TimerState?
+    /// 瞑想画面での状態　初期値はidle
+    @Published private(set) var timerState: TimerState = .idle
+    /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
+    @Published private(set) var remainingSeconds: TimeInterval = 0
     private let context: NSManagedObjectContext
     init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.context = context
@@ -193,14 +216,10 @@ class MeditatingSetViewModel: SetViewModel {
         endTime = Date().addingTimeInterval(remainingSeconds)
         // fadeOutの終了時刻は、fadeOutTimeを考慮
         fadeOutEndTime = Date().addingTimeInterval(fadeOutTime)
-        print("現在時刻は\(Date())")
-        print("終了時刻を計算すると\(String(describing: endTime))")
-        print("fadeOutEndTimeを計算すると\(String(describing: fadeOutEndTime))")
         // 再生を開始
         resumePlayback()
         // タイマーを開始
         startMeditationTimer()
-        print("タイマーは\(endTime!)で終わり")
     }
     // 瞑想中タイマー
     func startMeditationTimer() {
@@ -413,7 +432,6 @@ class MeditatingSetViewModel: SetViewModel {
         if Date() < endTime {
             // remainingTimeが10以上の場合
             if remainingSeconds >= 10 {
-                print("再度再生します。")
                 // fadeOutEndTimerを無効、nilにする
                 stopTimer(timer: &fadeOutEndTimer)
                 // fadeOutTimeに30を格納（30秒後をフェードアウト終了時間とするため）
