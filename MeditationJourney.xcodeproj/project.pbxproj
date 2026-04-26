@@ -35,16 +35,16 @@
 		18A3722D2C2C3F22002E3C5D /* EffectOfMeditationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */; };
 		18A3722F2C2C3F5D002E3C5D /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
-		18A7E3622F8DAB7E00B31E70 /* 001_離途（シリアス）_背筋を伸ばし、肩の….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3612F8DAB7E00B31E70 /* 001_離途（シリアス）_背筋を伸ばし、肩の….wav */; };
-		18A7E3642F8E550C00B31E70 /* 002_離途（シリアス）_鼻からゆっくり吸い….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3632F8E550C00B31E70 /* 002_離途（シリアス）_鼻からゆっくり吸い….wav */; };
-		18A7E36C2F8E551D00B31E70 /* 009_離途（シリアス）_今ここにある呼吸だ….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E36A2F8E551D00B31E70 /* 009_離途（シリアス）_今ここにある呼吸だ….wav */; };
-		18A7E36D2F8E551D00B31E70 /* 005_離途（シリアス）_楽に吸って、楽に吐….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3662F8E551D00B31E70 /* 005_離途（シリアス）_楽に吸って、楽に吐….wav */; };
-		18A7E36E2F8E551D00B31E70 /* 006_離途（シリアス）_お腹にそっと意識を….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3672F8E551D00B31E70 /* 006_離途（シリアス）_お腹にそっと意識を….wav */; };
-		18A7E36F2F8E551D00B31E70 /* 008_離途（シリアス）_体のどこかに力が入….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3692F8E551D00B31E70 /* 008_離途（シリアス）_体のどこかに力が入….wav */; };
-		18A7E3702F8E551D00B31E70 /* 010_離途（シリアス）_ゆっくりと呼吸を整….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E36B2F8E551D00B31E70 /* 010_離途（シリアス）_ゆっくりと呼吸を整….wav */; };
-		18A7E3712F8E551D00B31E70 /* 007_離途（シリアス）_吸うときは自然に、….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3682F8E551D00B31E70 /* 007_離途（シリアス）_吸うときは自然に、….wav */; };
-		18A7E3722F8E551D00B31E70 /* 004_離途（シリアス）_肩と顎の力を抜き、….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3652F8E551D00B31E70 /* 004_離途（シリアス）_肩と顎の力を抜き、….wav */; };
-		18A7E3742F8E552500B31E70 /* 003_離途（シリアス）_呼吸に意識を向けま….wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3732F8E552500B31E70 /* 003_離途（シリアス）_呼吸に意識を向けま….wav */; };
+		18A7E3642F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3632F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav */; };
+		18A7E36C2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E36A2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav */; };
+		18A7E36D2F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3662F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav */; };
+		18A7E36E2F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3672F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav */; };
+		18A7E36F2F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3692F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav */; };
+		18A7E3702F8E551D00B31E70 /* 010_finish_breath_open_eyes_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E36B2F8E551D00B31E70 /* 010_finish_breath_open_eyes_ja.wav */; };
+		18A7E3712F8E551D00B31E70 /* 007_longer_exhale_rhythm_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3682F8E551D00B31E70 /* 007_longer_exhale_rhythm_ja.wav */; };
+		18A7E3722F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3652F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav */; };
+		18A7E3742F8E552500B31E70 /* 003_focus_on_breath_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3732F8E552500B31E70 /* 003_focus_on_breath_ja.wav */; };
+		18A7E3782F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3772F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
@@ -81,16 +81,16 @@
 		18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectOfMeditationView.swift; sourceTree = "<group>"; };
 		18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
-		18A7E3612F8DAB7E00B31E70 /* 001_離途（シリアス）_背筋を伸ばし、肩の….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "001_離途（シリアス）_背筋を伸ばし、肩の….wav"; sourceTree = "<group>"; };
-		18A7E3632F8E550C00B31E70 /* 002_離途（シリアス）_鼻からゆっくり吸い….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "002_離途（シリアス）_鼻からゆっくり吸い….wav"; sourceTree = "<group>"; };
-		18A7E3652F8E551D00B31E70 /* 004_離途（シリアス）_肩と顎の力を抜き、….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "004_離途（シリアス）_肩と顎の力を抜き、….wav"; sourceTree = "<group>"; };
-		18A7E3662F8E551D00B31E70 /* 005_離途（シリアス）_楽に吸って、楽に吐….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "005_離途（シリアス）_楽に吸って、楽に吐….wav"; sourceTree = "<group>"; };
-		18A7E3672F8E551D00B31E70 /* 006_離途（シリアス）_お腹にそっと意識を….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "006_離途（シリアス）_お腹にそっと意識を….wav"; sourceTree = "<group>"; };
-		18A7E3682F8E551D00B31E70 /* 007_離途（シリアス）_吸うときは自然に、….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "007_離途（シリアス）_吸うときは自然に、….wav"; sourceTree = "<group>"; };
-		18A7E3692F8E551D00B31E70 /* 008_離途（シリアス）_体のどこかに力が入….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "008_離途（シリアス）_体のどこかに力が入….wav"; sourceTree = "<group>"; };
-		18A7E36A2F8E551D00B31E70 /* 009_離途（シリアス）_今ここにある呼吸だ….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "009_離途（シリアス）_今ここにある呼吸だ….wav"; sourceTree = "<group>"; };
-		18A7E36B2F8E551D00B31E70 /* 010_離途（シリアス）_ゆっくりと呼吸を整….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "010_離途（シリアス）_ゆっくりと呼吸を整….wav"; sourceTree = "<group>"; };
-		18A7E3732F8E552500B31E70 /* 003_離途（シリアス）_呼吸に意識を向けま….wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "003_離途（シリアス）_呼吸に意識を向けま….wav"; sourceTree = "<group>"; };
+		18A7E3632F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 002_inhale_nose_exhale_mouth_ja.wav; sourceTree = "<group>"; };
+		18A7E3652F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 004_relax_shoulder_jaw_ja.wav; sourceTree = "<group>"; };
+		18A7E3662F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 005_breathe_at_own_pace_ja.wav; sourceTree = "<group>"; };
+		18A7E3672F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 006_feel_breath_in_belly_ja.wav; sourceTree = "<group>"; };
+		18A7E3682F8E551D00B31E70 /* 007_longer_exhale_rhythm_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 007_longer_exhale_rhythm_ja.wav; sourceTree = "<group>"; };
+		18A7E3692F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 008_release_tension_with_exhale_ja.wav; sourceTree = "<group>"; };
+		18A7E36A2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 009_attention_to_present_breath_ja.wav; sourceTree = "<group>"; };
+		18A7E36B2F8E551D00B31E70 /* 010_finish_breath_open_eyes_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 010_finish_breath_open_eyes_ja.wav; sourceTree = "<group>"; };
+		18A7E3732F8E552500B31E70 /* 003_focus_on_breath_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 003_focus_on_breath_ja.wav; sourceTree = "<group>"; };
+		18A7E3772F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 001_posture_relax_shoulders_ja.wav; sourceTree = "<group>"; };
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18BCE6662EE99AD6005C9BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
@@ -231,16 +231,16 @@
 		18A7E3602F8DAAED00B31E70 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				18A7E3612F8DAB7E00B31E70 /* 001_離途（シリアス）_背筋を伸ばし、肩の….wav */,
-				18A7E3632F8E550C00B31E70 /* 002_離途（シリアス）_鼻からゆっくり吸い….wav */,
-				18A7E3732F8E552500B31E70 /* 003_離途（シリアス）_呼吸に意識を向けま….wav */,
-				18A7E3652F8E551D00B31E70 /* 004_離途（シリアス）_肩と顎の力を抜き、….wav */,
-				18A7E3662F8E551D00B31E70 /* 005_離途（シリアス）_楽に吸って、楽に吐….wav */,
-				18A7E3672F8E551D00B31E70 /* 006_離途（シリアス）_お腹にそっと意識を….wav */,
-				18A7E3682F8E551D00B31E70 /* 007_離途（シリアス）_吸うときは自然に、….wav */,
-				18A7E3692F8E551D00B31E70 /* 008_離途（シリアス）_体のどこかに力が入….wav */,
-				18A7E36A2F8E551D00B31E70 /* 009_離途（シリアス）_今ここにある呼吸だ….wav */,
-				18A7E36B2F8E551D00B31E70 /* 010_離途（シリアス）_ゆっくりと呼吸を整….wav */,
+				18A7E3772F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav */,
+				18A7E3632F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav */,
+				18A7E3732F8E552500B31E70 /* 003_focus_on_breath_ja.wav */,
+				18A7E3652F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav */,
+				18A7E3662F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav */,
+				18A7E3672F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav */,
+				18A7E3682F8E551D00B31E70 /* 007_longer_exhale_rhythm_ja.wav */,
+				18A7E3692F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav */,
+				18A7E36A2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav */,
+				18A7E36B2F8E551D00B31E70 /* 010_finish_breath_open_eyes_ja.wav */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -314,18 +314,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18A7E36C2F8E551D00B31E70 /* 009_離途（シリアス）_今ここにある呼吸だ….wav in Resources */,
-				18A7E36D2F8E551D00B31E70 /* 005_離途（シリアス）_楽に吸って、楽に吐….wav in Resources */,
-				18A7E36E2F8E551D00B31E70 /* 006_離途（シリアス）_お腹にそっと意識を….wav in Resources */,
-				18A7E36F2F8E551D00B31E70 /* 008_離途（シリアス）_体のどこかに力が入….wav in Resources */,
-				18A7E3702F8E551D00B31E70 /* 010_離途（シリアス）_ゆっくりと呼吸を整….wav in Resources */,
-				18A7E3712F8E551D00B31E70 /* 007_離途（シリアス）_吸うときは自然に、….wav in Resources */,
-				18A7E3722F8E551D00B31E70 /* 004_離途（シリアス）_肩と顎の力を抜き、….wav in Resources */,
+				18A7E36C2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav in Resources */,
+				18A7E36D2F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav in Resources */,
+				18A7E36E2F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav in Resources */,
+				18A7E36F2F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav in Resources */,
+				18A7E3702F8E551D00B31E70 /* 010_finish_breath_open_eyes_ja.wav in Resources */,
+				18A7E3712F8E551D00B31E70 /* 007_longer_exhale_rhythm_ja.wav in Resources */,
+				18A7E3722F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav in Resources */,
+				18A7E3782F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav in Resources */,
 				1863E1E92AAD81D800543D18 /* Preview Assets.xcassets in Resources */,
-				18A7E3642F8E550C00B31E70 /* 002_離途（シリアス）_鼻からゆっくり吸い….wav in Resources */,
-				18A7E3742F8E552500B31E70 /* 003_離途（シリアス）_呼吸に意識を向けま….wav in Resources */,
+				18A7E3642F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav in Resources */,
+				18A7E3742F8E552500B31E70 /* 003_focus_on_breath_ja.wav in Resources */,
 				1863E1E62AAD81D800543D18 /* Assets.xcassets in Resources */,
-				18A7E3622F8DAB7E00B31E70 /* 001_離途（シリアス）_背筋を伸ばし、肩の….wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

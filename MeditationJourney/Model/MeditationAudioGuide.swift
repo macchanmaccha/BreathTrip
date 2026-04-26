@@ -8,7 +8,7 @@
 import Foundation
 
 enum MeditationAudioGuide {
-    /// 瞑想中の中盤ガイド再生しきい値。`remainingSeconds` が各値になったタイミングで一度だけ再生。
+    /// 瞑想中の中盤ガイド再生しきい値。`remainingSeconds` が各値になったタイミングで一度だけ再生
     static func midCueSecondsRemaining(forMinutes minutes: Int) -> [TimeInterval] {
         switch minutes {
         case 1:
@@ -22,13 +22,13 @@ enum MeditationAudioGuide {
         case 20:
             return [1199, 1000, 700, 400, 100]
         case 30:
-            return [1499, 1300, 1100, 900, 600, 300]
+            return [1799, 1400, 1100, 900, 600, 300]
         case 40:
-            return [1999, 1800, 1600, 1300, 1000, 700, 400]
+            return [2399, 2000, 1600, 1300, 1000, 700, 400]
         case 50:
-            return [2499, 2300, 2000, 1700, 1400, 1100, 800, 500]
+            return [2999, 2600, 2000, 1700, 1400, 1100, 800, 500]
         case 60:
-            return [2999, 2900, 2500, 2100, 1700, 1300, 900, 500]
+            return [3599, 3300, 2500, 2100, 1700, 1300, 900, 500]
         default:
             return []
         }

@@ -602,7 +602,7 @@ class MeditatingSetViewModel: SetViewModel {
     }
     // 姿勢ガイド（001）を1回だけ再生する
     private func speakPostureGuideIfNeeded() {
-        // isAudioGuideEnabledがtrueでhasSpokenPostureThisSessionがfalseのときは
+        // isAudioGuideEnabledがtrueでhasSpokenPostureThisSessionがfalse以外のときは
         guard isAudioGuideEnabled, !hasSpokenPostureThisSession else {
             // なにもしない
             return
@@ -611,21 +611,21 @@ class MeditatingSetViewModel: SetViewModel {
         playAudioGuide(trackNumber: 1)
     }
     /// 瞑想中の残り時間を監視し、未再生のガイド音源を必要なタイミングで1回だけ再生する。
-    /// - 残り10秒以内: 締めガイド（010）
+    /// - 残り5秒以内: 締めガイド（010）
     /// - それ以前: 分数に応じた中盤キューで 002 以降を順番に再生
     private func evaluateMeditationAudioGuide(remainingSeconds: TimeInterval) {
         // ガイドがONかつ瞑想中（start）でない場合は判定しない
         guard isAudioGuideEnabled, timerState == .start else {
             return
         }
-        // 終了直前（10秒以内）に締めガイド（010）を1回だけ再生する
-        if remainingSeconds <= 10 && remainingSeconds > 0 && !hasSpokenClosingPhrase {
+        // 終了直前（5秒以内）に締めガイド（010）を1回だけ再生する
+        if remainingSeconds <= 5 && remainingSeconds > 0 && !hasSpokenClosingPhrase {
             hasSpokenClosingPhrase = true
             playAudioGuide(trackNumber: 10)
             return
         }
         // 残り10秒以下では、中盤ガイドを鳴らさない
-        guard remainingSeconds > 10 else {
+        guard remainingSeconds > 5 else {
             return
         }
         // 分数ごとのしきい値を走査し、条件を満たした中盤ガイドを1回だけ再生する
@@ -657,8 +657,9 @@ class MeditatingSetViewModel: SetViewModel {
             print("音声ガイド再生エラー: \(error)")
         }
     }
-    // ファイル名の先頭プレフィックス（001_ など）で音源URLを検索する
+    /// ファイル名の先頭プレフィックス（001_ など）で音源URLを検索する
     private func audioGuideURL(trackNumber: Int) -> URL? {
+        //
         let prefix = String(format: "%03d_", trackNumber)
         let extensions = ["wav", "m4a", "caf", "mp3"]
         for ext in extensions {
