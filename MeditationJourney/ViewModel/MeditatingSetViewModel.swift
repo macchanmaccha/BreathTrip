@@ -537,7 +537,7 @@ class MeditatingSetViewModel: SetViewModel {
             // 保存メソッドを呼び出し
             saveMeditationRecord()
             // 終了アラート表示
-            isShowEndAlert.toggle()
+            isShowEndAlert = true
             // スリープを有効
             UIApplication.shared.isIdleTimerDisabled = false
         case .suspended:
