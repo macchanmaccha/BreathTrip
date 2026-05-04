@@ -54,6 +54,8 @@ class MeditatingSetViewModel: SetViewModel {
     private var hasSpokenClosingPhrase = false
     /// 画面を離れる前の状態（復帰時に再開するため）
     private(set) var stateBeforeLeaving: TimerState?
+    /// 音声ガイドのON/OFFを管理 初期値はfalse
+    private var isAudioGuideEnabled: Bool = false
     /// 瞑想画面での状態　初期値はidle
     @Published private(set) var timerState: TimerState = .idle
     /// 瞑想中または音再生タイマーの分数・秒数を管理する変数
@@ -509,7 +511,7 @@ class MeditatingSetViewModel: SetViewModel {
             stopTimer(timer: &selectedDurationMinutesTimer)
             stopTimer(timer: &preparationTimer)
             // isShowAlertをtrue
-            isShowStopAlert.toggle()
+            isShowStopAlert = true
             // スリープを有効
             UIApplication.shared.isIdleTimerDisabled = false
         case .start:
@@ -523,7 +525,7 @@ class MeditatingSetViewModel: SetViewModel {
             // 音の再生を一時停止
             updatePlaybackState(to: SetViewModel.PlaybackState.pause)
             // isShowAlertをtrue
-            isShowStopAlert.toggle()
+            isShowStopAlert = true
             // スリープを有効
             UIApplication.shared.isIdleTimerDisabled = false
         case .end:
@@ -590,12 +592,9 @@ class MeditatingSetViewModel: SetViewModel {
         playbackState = newState
     }
     // MARK: - 音声ガイド
-    // UserDefaultsの設定値から音声ガイドのON/OFFを参照する
-    private var isAudioGuideEnabled: Bool {
-        UserDefaults.standard.bool(forKey: UserDefaultsKey.audioGuide)
-    }
     // 1セッション内での重複再生を防ぐためのフラグを初期化する
     private func resetAudioGuideSessionState() {
+        isAudioGuideEnabled = UserDefaults.standard.bool(forKey: UserDefaultsKey.audioGuide)
         spokenMidCueKeys.removeAll()
         hasSpokenPostureThisSession = false
         hasSpokenClosingPhrase = false
@@ -624,7 +623,7 @@ class MeditatingSetViewModel: SetViewModel {
             playAudioGuide(trackNumber: 10)
             return
         }
-        // 残り10秒以下では、中盤ガイドを鳴らさない
+        // 残り5秒以下では、中盤ガイドを鳴らさない
         guard remainingSeconds > 5 else {
             return
         }
@@ -632,10 +631,12 @@ class MeditatingSetViewModel: SetViewModel {
         for (index, cue) in MeditationAudioGuide.midCueSecondsRemaining(forMinutes: meditationMinutes).enumerated() {
             // しきい値をキー化して多重再生を防止する
             let key = "mid_\(Int(cue))"
+            print("残り時間は\(remainingSeconds),\(key)")
             if remainingSeconds <= cue && !spokenMidCueKeys.contains(key) {
                 spokenMidCueKeys.insert(key)
                 // 中盤ガイドは002以降の連番音源を順番に再生する
                 playAudioGuide(trackNumber: index + 2)
+                break
             }
         }
     }
@@ -659,7 +660,6 @@ class MeditatingSetViewModel: SetViewModel {
     }
     /// ファイル名の先頭プレフィックス（001_ など）で音源URLを検索する
     private func audioGuideURL(trackNumber: Int) -> URL? {
-        //
         let prefix = String(format: "%03d_", trackNumber)
         let extensions = ["wav", "m4a", "caf", "mp3"]
         for ext in extensions {
@@ -678,6 +678,10 @@ class MeditatingSetViewModel: SetViewModel {
     deinit {
         stopAudioGuideSpeech()
         stopTimer(timer: &selectedDurationMinutesTimer)
+        stopTimer(timer: &preparationTimer)
+        stopTimer(timer: &fadeInTimer)
+        stopTimer(timer: &fadeOutTimer)
+        stopTimer(timer: &fadeOutEndTimer)
     }
     // 他アプリの音を止めこのアプリの音を優先する(電話・緊急アラートは自動的に最優先)メソッド
     override func configureAudioSession() {

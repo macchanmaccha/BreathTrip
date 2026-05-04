@@ -35,7 +35,6 @@
 		18A3722D2C2C3F22002E3C5D /* EffectOfMeditationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */; };
 		18A3722F2C2C3F5D002E3C5D /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */; };
 		18A461932ABECA3F0034F393 /* MeditatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A461922ABECA3F0034F393 /* MeditatingView.swift */; };
-		18A7E3642F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3632F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav */; };
 		18A7E36C2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E36A2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav */; };
 		18A7E36D2F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3662F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav */; };
 		18A7E36E2F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3672F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav */; };
@@ -47,6 +46,7 @@
 		18A7E3782F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18A7E3772F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav */; };
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
+		18DE54302FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */; };
 		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
 		18F0E0112EE9AA01005C9BE5 /* MeditationAudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F0E0102EE9AA01005C9BE5 /* MeditationAudioGuide.swift */; };
 /* End PBXBuildFile section */
@@ -81,7 +81,6 @@
 		18A3722C2C2C3F22002E3C5D /* EffectOfMeditationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectOfMeditationView.swift; sourceTree = "<group>"; };
 		18A3722E2C2C3F5D002E3C5D /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		18A461922ABECA3F0034F393 /* MeditatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditatingView.swift; sourceTree = "<group>"; };
-		18A7E3632F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 002_inhale_nose_exhale_mouth_ja.wav; sourceTree = "<group>"; };
 		18A7E3652F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 004_relax_shoulder_jaw_ja.wav; sourceTree = "<group>"; };
 		18A7E3662F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 005_breathe_at_own_pace_ja.wav; sourceTree = "<group>"; };
 		18A7E3672F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 006_feel_breath_in_belly_ja.wav; sourceTree = "<group>"; };
@@ -94,6 +93,7 @@
 		18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundView.swift; sourceTree = "<group>"; };
 		18BCE6662EE99AD6005C9BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
+		18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 002_inhale_nose_exhale_nose_ja.wav; sourceTree = "<group>"; };
 		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		18F0E0102EE9AA01005C9BE5 /* MeditationAudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationAudioGuide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -232,7 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				18A7E3772F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav */,
-				18A7E3632F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav */,
+				18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */,
 				18A7E3732F8E552500B31E70 /* 003_focus_on_breath_ja.wav */,
 				18A7E3652F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav */,
 				18A7E3662F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav */,
@@ -315,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18A7E36C2F8E551D00B31E70 /* 009_attention_to_present_breath_ja.wav in Resources */,
+				18DE54302FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav in Resources */,
 				18A7E36D2F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav in Resources */,
 				18A7E36E2F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav in Resources */,
 				18A7E36F2F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav in Resources */,
@@ -323,7 +324,6 @@
 				18A7E3722F8E551D00B31E70 /* 004_relax_shoulder_jaw_ja.wav in Resources */,
 				18A7E3782F9DCE9900B31E70 /* 001_posture_relax_shoulders_ja.wav in Resources */,
 				1863E1E92AAD81D800543D18 /* Preview Assets.xcassets in Resources */,
-				18A7E3642F8E550C00B31E70 /* 002_inhale_nose_exhale_mouth_ja.wav in Resources */,
 				18A7E3742F8E552500B31E70 /* 003_focus_on_breath_ja.wav in Resources */,
 				1863E1E62AAD81D800543D18 /* Assets.xcassets in Resources */,
 			);
@@ -543,7 +543,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = JankenJanken.MeditationJourney;
+				PRODUCT_BUNDLE_IDENTIFIER = "rakuten.jp.tay.13-fearless.MeditationJourney";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -579,7 +579,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = JankenJanken.MeditationJourney;
+				PRODUCT_BUNDLE_IDENTIFIER = "rakuten.jp.tay.13-fearless.MeditationJourney";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

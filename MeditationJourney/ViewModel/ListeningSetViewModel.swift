@@ -436,6 +436,9 @@ class ListeningSetViewModel: SetViewModel {
     }
     deinit {
         stopTimer(timer: &selectedDurationMinutesTimer)
+        stopTimer(timer: &fadeInTimer)
+        stopTimer(timer: &fadeOutTimer)
+        stopTimer(timer: &fadeOutEndTimer)
     }
     // 他アプリの音を止めこのアプリの音を優先する(電話・緊急アラートは自動的に最優先)メソッド
     override func configureAudioSession() {
