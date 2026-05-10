@@ -49,8 +49,8 @@ struct MeditatingView: View {
                         Text("中断する")
                             .tint(.backgroundNavy)
                             .font(.title)
+                            .padding(25)
                     }
-                    .padding(25)
                     .background(.keyWhite)
                     .cornerRadius(10)
                     .alert("", isPresented: $viewModel.isShowStopAlert) {

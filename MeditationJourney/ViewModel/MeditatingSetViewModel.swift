@@ -631,7 +631,6 @@ class MeditatingSetViewModel: SetViewModel {
         for (index, cue) in MeditationAudioGuide.midCueSecondsRemaining(forMinutes: meditationMinutes).enumerated() {
             // しきい値をキー化して多重再生を防止する
             let key = "mid_\(Int(cue))"
-            print("残り時間は\(remainingSeconds),\(key)")
             if remainingSeconds <= cue && !spokenMidCueKeys.contains(key) {
                 spokenMidCueKeys.insert(key)
                 // 中盤ガイドは002以降の連番音源を順番に再生する

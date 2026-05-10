@@ -38,11 +38,11 @@ struct SelectSoundView: View {
                             viewModel.saveSoundAndMinutes(soundName: sound)
                         }) {
                             Text(sound.rawValue)
+                                .frame(width: 130, height: 100)
+                                .foregroundStyle(.backgroundNavy)
+                                .background(.keyWhite.opacity(0.6))
+                                .cornerRadius(8)
                         }  // Buttonここまで
-                        .frame(width: 130, height: 100)
-                        .background(.keyWhite.opacity(0.6))
-                        .foregroundStyle(.backgroundNavy)
-                        .cornerRadius(8)
                     }  // ForEachここまで
                 }  // LazyVGridここまで
                 // LazyVGridの幅を調整
