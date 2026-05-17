@@ -59,7 +59,8 @@ struct ListeningSetView: View {
                             Button(action: {
                                 isShowSheet.toggle()
                             }) {
-                                Text("\(viewModel.listeningSoundName.rawValue)>")
+                                Text(viewModel.listeningSoundName.rawValue)
+                                Image(systemName: "chevron.right")
                             }
                         } // HStackここまで
                         .frame(width: 300, height: 40)
