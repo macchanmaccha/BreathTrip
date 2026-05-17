@@ -23,85 +23,76 @@ struct MeditationSetView: View {
             Image(.settingsBackground)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea(.all)
             // RectangleとはじめるボタンのVStack
             VStack {
-                VStack {
-                    ZStack {
-                        // 背景枠
-                        Rectangle()
-                            .fill(.keyWhite)
-                            .cornerRadius(8)
-                            .opacity(0.6)
-                            .frame(width: 350, height: 180)
-                        VStack {
-                            HStack {
-                                Text("音声ガイド")
-                                    .font(.title2)
-                                    .foregroundStyle(.backgroundNavy)
-                                Spacer()
-                                VStack {
-                                    // 音声ガイドボタン
-                                    Button(action: {
-                                        isAudioGuideOn.toggle()
-                                    }) {
-                                        Image(systemName: isAudioGuideOn
-                                              ? "speaker.wave.3.fill"
-                                              : "speaker.slash.fill")
-                                        .frame(width: 30, height: 30)
-                                        .foregroundStyle(.backgroundNavy)
-                                        .font(.title)
-                                    }  // Buttonここまで
-                                    // ON、OFFのテキスト表示
-                                    Text( isAudioGuideOn ? "ON" : "OFF")
-                                        .frame(width: 30, height: 5)
-                                        .font(.caption2)
-                                        .foregroundStyle(.backgroundNavy)
-                                }  // VStackここまで
-                            }  // HStackここまで
-                            .frame(width: 300, height: 40)
-                            //                            .padding()
-                            // 線を入れる
-                            Divider()
-                            // 時間設定
-                            HStack {
-                                Text("時間")
-                                    .font(.title2)
-                                    .foregroundStyle(.backgroundNavy)
-                                Spacer()
-                                Picker("時間を選ぶ", selection: $viewModel.meditationMinutes) {
-                                    ForEach(minutesOptions, id: \.self) { minutes in
-                                        Text("\(minutes)分")
-                                    }  // ForEachここまで
-                                }  // Pickerここまで
-                                .accentColor(.backgroundNavy)
-                                .scaleEffect(CGSize(width: 1.25, height: 1.25))
-                                .pickerStyle(MenuPickerStyle())
-                                .onChange(of: viewModel.meditationMinutes) {
-                                    viewModel.saveMeditationMinutes()
-                                }
-                            }  // HStackここまで
-                            .foregroundStyle(.backgroundNavy)
-                            .frame(width: 300, height: 40)
-                            Divider()
-                            // 音設定
-                            HStack {
-                                Text("音")
-                                    .font(.title2)
-                                    .foregroundStyle(.backgroundNavy)
-                                Spacer()
+                ZStack {
+                    // 背景枠
+                    Rectangle()
+                        .fill(.keyWhite)
+                        .clipShape(.rect(cornerRadius: 8))
+                        .opacity(0.6)
+                        .frame(width: 350, height: 180)
+                    VStack {
+                        HStack {
+                            Text("音声ガイド")
+                                .font(.title2)
+                            Spacer()
+                            VStack {
+                                // 音声ガイドボタン
                                 Button(action: {
-                                    isShowSheet.toggle()
+                                    isAudioGuideOn.toggle()
                                 }) {
-                                    Text("\(viewModel.meditationSoundName.rawValue)>")
-                                        .font(.title2)
-                                        .foregroundStyle(.backgroundNavy)
-                                }
-                            }  // HStackここまで
-                            .frame(width: 300, height: 40)
-                        }  // VStackここまで
-                    }
+                                    Image(systemName: isAudioGuideOn
+                                          ? "speaker.wave.3.fill"
+                                          : "speaker.slash.fill")
+                                    .frame(width: 30, height: 30)
+                                    .font(.title)
+                                }  // Buttonここまで
+                                // ON、OFFのテキスト表示
+                                Text( isAudioGuideOn ? "ON" : "OFF")
+                                    .frame(width: 30, height: 5)
+                                    .font(.caption2)
+                            }  // VStackここまで
+                        }  // HStackここまで
+                        .frame(width: 300, height: 40)
+                        // 線を入れる
+                        Divider()
+                        // 時間設定
+                        HStack {
+                            Text("時間")
+                                .font(.title2)
+                            Spacer()
+                            Picker("時間を選ぶ", selection: $viewModel.meditationMinutes) {
+                                ForEach(minutesOptions, id: \.self) { minutes in
+                                    Text("\(minutes)分")
+                                }  // ForEachここまで
+                            }  // Pickerここまで
+                            .tint(.backgroundNavy)
+                            .scaleEffect(CGSize(width: 1.25, height: 1.25))
+                            .pickerStyle(MenuPickerStyle())
+                            .onChange(of: viewModel.meditationMinutes) {
+                                viewModel.saveMeditationMinutes()
+                            }
+                        }  // HStackここまで
+                        .frame(width: 300, height: 40)
+                        Divider()
+                        // 音設定
+                        HStack {
+                            Text("音")
+                            Spacer()
+                            Button(action: {
+                                isShowSheet.toggle()
+                            }) {
+                                Text(viewModel.listeningSoundName.rawValue)
+                                Image(systemName: "chevron.right")
+                            }
+                        }  // HStackここまで
+                        .font(.title2)
+                        .frame(width: 300, height: 40)
+                    }  // VStackここまで
                 }
+                .foregroundStyle(.backgroundNavy)
                 // はじめるボタン
                 Button(action: {
                     // プレビューURLを取得（認証チェックも含む）
@@ -118,7 +109,7 @@ struct MeditationSetView: View {
                         .foregroundStyle(.keyWhite)
                         .padding(25.0)
                         .background(.backgroundNavy)
-                        .cornerRadius(10)
+                        .clipShape(.rect(cornerRadius: 10))
                 }
                 .fullScreenCover(
                     isPresented: $isShowFullScreen,
@@ -129,20 +120,21 @@ struct MeditationSetView: View {
                 .padding()
             } // RectangleとはじめるボタンのVStack
         }  // ZStackここまで
-        .accentColor(.blue)
+        .tint(.blue)
         // AppleMusicへのアクセスが許可されなかった時に、設定画面への遷移を促すアラート
-        .alert(isPresented: $viewModel.isShowAlert) {
-            Alert(
-                title: Text("メディアとApple Musicへのアクセスがオフになっています"),
-                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。"),
-                primaryButton: .default(Text("設定を開く")) {
-                    // 設定アプリの自分のアプリの設定画面を開く
-                    if let url = URL(string: UIApplication.openSettingsURLString) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    }
-                },
-                secondaryButton: .cancel(Text("キャンセル"))
-            )  // Alert
+        .alert(
+            "メディアとApple Musicへのアクセスがオフになっています",
+            isPresented: $viewModel.isShowAlert
+        ) {
+            Button("設定を開く") {
+                // 設定アプリの自分のアプリの設定画面を開く
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            }
+            Button("キャンセル", role: .cancel) { }
+        } message: {
+            Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。")
         }  // .alertここまで
         // シート
         .sheet(

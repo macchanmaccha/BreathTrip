@@ -21,59 +21,52 @@ struct ListeningSetView: View {
             Image(.settingsBackground)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea(.all)
             // RectangleとはじめるボタンのVStack
             VStack {
-                VStack {
-                    ZStack {
-                        // 背景枠
-                        Rectangle()
-                            .fill(.keyWhite)
-                            .cornerRadius(8)
-                            .opacity(0.6)
-                            .frame(width: 350, height: 130)
-                        VStack {
-                            // 時間設定
-                            HStack {
-                                Text("時間")
-                                    .font(.title2)
-                                    .foregroundStyle(.backgroundNavy)
-                                Spacer()
-                                Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
-                                    ForEach(minutesOptions, id: \.self) { minute in
-                                        let minuteText = minute != 1440 ? "\(minute)分" : "時間制限なし"
-                                        Text(minuteText)
-                                            .tag(minute)
-                                    }
-                                }  // Pickerここまで
-                                .accentColor(.backgroundNavy)
-                                .scaleEffect(CGSize(width: 1.25, height: 1.25))
-                                .pickerStyle(MenuPickerStyle())
-                                .onChange(of: viewModel.listeningMinutes) {
-                                    viewModel.saveListeningMinutes()
+                ZStack {
+                    // 背景枠
+                    Rectangle()
+                        .fill(.keyWhite)
+                        .clipShape(.rect(cornerRadius: 8))
+                        .opacity(0.6)
+                        .frame(width: 350, height: 130)
+                    VStack {
+                        // 時間設定
+                        HStack {
+                            Text("時間")
+                            Spacer()
+                            Picker("時間を選ぶ", selection: $viewModel.listeningMinutes) {
+                                ForEach(minutesOptions, id: \.self) { minute in
+                                    let minuteText = minute != 1440 ? "\(minute)分" : "時間制限なし"
+                                    Text(minuteText)
+                                        .tag(minute)
                                 }
-                            }  // HStackここまで
-                            .foregroundStyle(.backgroundNavy)
-                            .frame(width: 300, height: 40)
-                            Divider()
-                            // 音設定
-                            HStack {
-                                Text("音")
-                                    .font(.title2)
-                                    .foregroundStyle(.backgroundNavy)
-                                Spacer()
-                                Button(action: {
-                                    isShowSheet.toggle()
-                                }) {
-                                    Text("\(viewModel.listeningSoundName.rawValue)>")
-                                        .font(.title2)
-                                        .foregroundStyle(.backgroundNavy)
-                                }
-                            }  // HStackここまで
-                            .frame(width: 300, height: 40)
-                        }
+                            }  // Pickerここまで
+                            .tint(.backgroundNavy)
+                            .scaleEffect(CGSize(width: 1.25, height: 1.25))
+                            .pickerStyle(MenuPickerStyle())
+                            .onChange(of: viewModel.listeningMinutes) {
+                                viewModel.saveListeningMinutes()
+                            }
+                        }  // HStackここまで
+                        .frame(width: 300, height: 40)
+                        Divider()
+                        // 音設定
+                        HStack {
+                            Text("音")
+                            Spacer()
+                            Button(action: {
+                                isShowSheet.toggle()
+                            }) {
+                                Text("\(viewModel.listeningSoundName.rawValue)>")
+                            }
+                        } // HStackここまで
+                        .frame(width: 300, height: 40)
                     }
                 }
+                .font(.title2)
+                .foregroundStyle(.backgroundNavy)
                 // はじめるボタン
                 Button(action: {
                     // プレビューURLを取得（認証チェックも含む）
@@ -90,7 +83,7 @@ struct ListeningSetView: View {
                         .foregroundStyle(.keyWhite)
                         .padding(25.0)
                         .background(.backgroundNavy)
-                        .cornerRadius(10)
+                        .clipShape(.rect(cornerRadius: 10))
                 }
                 .fullScreenCover(
                     isPresented: $isShowFullScreen,
@@ -101,20 +94,21 @@ struct ListeningSetView: View {
                 .padding()
             } // RectangleとはじめるボタンのVStack
         }  // ZStackここまで
-        .accentColor(.blue)
+        .tint(.blue)
         // AppleMusicへのアクセスが許可されなかった時に、設定画面への遷移を促すアラート
-        .alert(isPresented: $viewModel.isShowAlert) {
-            Alert(
-                title: Text("メディアとApple Musicへのアクセスがオフになっています"),
-                message: Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。\n\n設定画面で「アプリ」→「MeditationJourney」→「メディアとApple Music」の順にタップし、アクセスを許可してください。"),
-                primaryButton: .default(Text("設定を開く")) {
-                    // 設定アプリの自分のアプリの設定画面を開く
-                    if let url = URL(string: UIApplication.openSettingsURLString) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    }
-                },
-                secondaryButton: .cancel(Text("キャンセル"))
-            )  // Alert
+        .alert(
+            "メディアとApple Musicへのアクセスがオフになっています",
+            isPresented: $viewModel.isShowAlert
+        ) {
+            Button("設定を開く") {
+                // 設定アプリの自分のアプリの設定画面を開く
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            }
+            Button("キャンセル", role: .cancel) { }
+        } message: {
+            Text("この機能を使うにはメディアとApple Musicへのアクセスをオンにしてください。")
         }  // .alertここまで
         // シート
         .sheet(
@@ -123,7 +117,7 @@ struct ListeningSetView: View {
                 SelectContinentView(viewModel: viewModel, isShowSheet: $isShowSheet)
             })
     }  // bodyここまで
-}  // SoundSetViewここまで
+}  // ListeningSetViewここまで
 
 #Preview {
     ListeningSetView(viewModel: ListeningSetViewModel())
