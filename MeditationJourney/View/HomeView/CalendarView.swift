@@ -38,13 +38,13 @@ struct CalendarView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(String(viewModel.displayDate.year()))年")
+                    Text("\(String(viewModel.displayDate.year() ?? Calendar.current.component(.year, from: viewModel.displayDate)))年")
                         .foregroundStyle(.keyWhite)
                         .font(.title2)
                         .fontWeight(.semibold)
                     HStack {
                         // 年月の表示
-                        Text("\(viewModel.displayDate.month())月")
+                        Text("\(viewModel.displayDate.month() ?? Calendar.current.component(.month, from: viewModel.displayDate))月")
                             .foregroundStyle(.keyWhite)
                             .bold()
                         // フォントサイズは30、画面に合わせて縮小可能

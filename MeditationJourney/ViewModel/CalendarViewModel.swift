@@ -58,7 +58,10 @@ class CalendarViewModel: ObservableObject {
         // MeditationInfoエンティティのフェッチリクエストを作成
         let request: NSFetchRequest<MeditationInfo> = MeditationInfo.fetchRequest()
         // 指定月の開始日を計算
-        let startOfMonth = month.startOfMonth()
+        guard let startOfMonth = month.startOfMonth() else {
+            meditationRecords = []
+            return
+        }
         // 翌月の開始日を計算
         guard let nextMonthStart = calendar.date(byAdding: .month, value: 1, to: startOfMonth)
         else {
@@ -138,9 +141,13 @@ class CalendarViewModel: ObservableObject {
         // 日付ごとの合計瞑想時間を事前に計算
         let dailyMeditationTotals = calculateDailyMeditationTotals(for: meditationRecords)
         // 指定された日付の月の開始日を取得
-        let startOfMonth = date.startOfMonth()
-        // 指定された月の日数を取得
-        let daysInMonth = date.daysInMonth()
+        guard let startOfMonth = date.startOfMonth(),
+              // 指定された日付の月の日数を取得
+              let daysInMonth = date.daysInMonth(),
+              // 指定された日付の月の最初の曜日を取得
+              let startWeekday = startOfMonth.weekday() else {
+            return []
+        }
         // 指定月のカレンダー日付を格納する配列
         var days = [(date: Date, meditationTime: Int)]()
         // 今月の全ての日付をループして処理
@@ -161,9 +168,9 @@ class CalendarViewModel: ObservableObject {
         }  // for day in（今月の日付ループ）終了
         // 最初と最後の日付を取得して週のオフセットを計算
         // 初週のオフセット日数を計算（月の開始日が何曜日かによって前月の日付を何日分表示するか）
-        let firstWeekEmptyDays = startOfMonth.weekday() - 1
+        let firstWeekEmptyDays = startWeekday - 1
         // 最終週のオフセット日数を計算（月の開始日が何曜日かによって翌月の日付を何日分表示するか）
-        let lastWeekEmptyDays = 7 - startOfMonth.weekday()
+        let lastWeekEmptyDays = 7 - startWeekday
         // 初週のオフセットを配列の先頭に追加（前月の日付）
         if firstWeekEmptyDays > 0 {
             for i in 1...firstWeekEmptyDays {
@@ -189,7 +196,7 @@ class CalendarViewModel: ObservableObject {
                 // 翌月の日付を配列の末尾に追加
                 days.append((date: offsetDate, meditationTime: 0))
             }
-    }
+        }
         // 生成したカレンダー日付配列を返す
         return days
     }  // createCalendarDatesメソッド終了

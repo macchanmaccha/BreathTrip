@@ -84,7 +84,7 @@ struct MeditationSetView: View {
                             Button(action: {
                                 isShowSheet.toggle()
                             }) {
-                                Text(viewModel.listeningSoundName.rawValue)
+                                Text(viewModel.meditationSoundName.rawValue)
                                 Image(systemName: "chevron.right")
                             }
                         }  // HStackここまで
