@@ -39,6 +39,14 @@ class CalendarViewModel: ObservableObject {
     private(set) var meditationRecords: [MeditationInfo] = []
     /// カレンダー表示用の日付セル情報を格納する配列
     @Published private(set) var dayCells: [DayCell] = []
+    /// ヘッダー表示用の年
+    var displayYear: Int {
+        calendar.component(.year, from: displayDate)
+    }
+    /// ヘッダー表示用の月
+    var displayMonth: Int {
+        calendar.component(.month, from: displayDate)
+    }
     // MARK: - Private Properties
     /// CoreDataの操作に必要なコンテキストを保持
     private let context: NSManagedObjectContext
