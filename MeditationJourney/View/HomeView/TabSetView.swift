@@ -48,12 +48,12 @@ struct TabSetView: View {
                         Label("地図", systemImage: "map")
                     }
                     .tag(4)
-                // 説明画面へ遷移
-                ExplanationView()
+                // テスト用
+                TestView()
                     .tabItem {
-                        Label("瞑想とは", systemImage: "questionmark.circle")
+                        Label("テスト", systemImage: "star")
                     }
-                    .tag(5)
+                    .tag(6)
             }
             .toolbarBackground(.backgroundNavy, for: .tabBar)
             .toolbarBackground(.visible, for: .tabBar)

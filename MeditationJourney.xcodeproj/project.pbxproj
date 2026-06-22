@@ -47,6 +47,7 @@
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 		18DE54302FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */; };
+		18DEB0AE2FE9F17200CA0B02 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DEB0AD2FE9F16B00CA0B02 /* TestView.swift */; };
 		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
 		18F0E0112EE9AA01005C9BE5 /* MeditationAudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F0E0102EE9AA01005C9BE5 /* MeditationAudioGuide.swift */; };
 /* End PBXBuildFile section */
@@ -94,6 +95,7 @@
 		18BCE6662EE99AD6005C9BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 		18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 002_inhale_nose_exhale_nose_ja.wav; sourceTree = "<group>"; };
+		18DEB0AD2FE9F16B00CA0B02 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		18F0E0102EE9AA01005C9BE5 /* MeditationAudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationAudioGuide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,6 +208,7 @@
 				180644622AB694670080EEFF /* CalendarView.swift */,
 				180644642AB694790080EEFF /* MapView.swift */,
 				180644662AB694D30080EEFF /* ExplanationView.swift */,
+				18DEB0AD2FE9F16B00CA0B02 /* TestView.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18DEB0AE2FE9F17200CA0B02 /* TestView.swift in Sources */,
 				1806445F2AB694080080EEFF /* MeditationSetView.swift in Sources */,
 				1856660C2C3A3830009A1AD7 /* ListeningSetView.swift in Sources */,
 				18A3722D2C2C3F22002E3C5D /* EffectOfMeditationView.swift in Sources */,
