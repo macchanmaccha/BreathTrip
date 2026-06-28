@@ -93,18 +93,6 @@ struct EffectOfMeditationView: View {
                 .padding(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
             } // ScrollView
         } // ZStackここまで
-        .navigationBarBackButtonHidden(true)
-        // 前画面へ戻る
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "chevron.backward")
-                        .tint(.keyWhite)
-                } // Buttonここまで
-            } // ToolbarItemここまで
-        }
     } // bodyここまで
 } // Viewここまで
 

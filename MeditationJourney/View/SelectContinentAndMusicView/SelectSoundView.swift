@@ -50,17 +50,8 @@ struct SelectSoundView: View {
                 .padding(10)
             }  // VStackここまで
         }  // ZStackここまで
-        .navigationBarBackButtonHidden(true)
         // 前画面へ戻る
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "chevron.backward")
-                        .tint(.keyWhite)
-                }  // Buttonここまで
-            }  // ToolbarItemここまで
             // シートを閉じる
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {

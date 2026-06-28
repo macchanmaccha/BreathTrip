@@ -38,7 +38,7 @@ struct CalendarView: View {
                     .edgesIgnoringSafeArea(.all)
                 // 縦方向に要素を配置するVStack、左寄せで10ポイントの間隔
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(viewModel.displayYear)年")
+                    Text("\(String(viewModel.displayYear))年")
                         .foregroundStyle(.keyWhite)
                         .font(.title2)
                         .fontWeight(.semibold)
