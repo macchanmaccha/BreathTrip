@@ -648,6 +648,7 @@ class MeditatingSetViewModel: SetViewModel {
             print("音声ガイドファイルが見つかりません: \(trackNumber)")
             return
         }
+        configureAudioSession()
         do {
             audioGuidePlayer?.stop()
             audioGuidePlayer = try AVAudioPlayer(contentsOf: url)
@@ -688,9 +689,9 @@ class MeditatingSetViewModel: SetViewModel {
         let session = AVAudioSession.sharedInstance()
         do {
             // setCategoryでアプリの音の用途を宣言
-            // .soloAmbient = ソロアンビエントモード。他アプリの音を止めて、このアプリの音を優先する
+            // .playbackは音声再生を行うためのカテゴリ
             // mode: .default = デフォルトモード
-            try session.setCategory(.soloAmbient, mode: .default)
+            try session.setCategory(.playback, mode: .default)
             // 成功した場合は音声セッションをアクティブにする（true）
             try session.setActive(true)
         } catch {

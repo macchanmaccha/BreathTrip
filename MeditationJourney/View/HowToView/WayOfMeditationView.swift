@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct WayOfMeditationView: View {
-    /// 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack {
             // 背景色を紺色に設定

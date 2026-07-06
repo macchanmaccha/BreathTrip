@@ -446,9 +446,9 @@ class ListeningSetViewModel: SetViewModel {
         let session = AVAudioSession.sharedInstance()
         do {
             // setCategoryでアプリの音の用途を宣言
-            // .soloAmbientは他アプリの音を止めてこのアプリの音を優先
+            // .playbackは音声再生を行うためのカテゴリ
             // mode: .default = デフォルトモード
-            try session.setCategory(.soloAmbient, mode: .default)
+            try session.setCategory(.playback, mode: .default)
             // 成功した場合は音声セッションをアクティブにする（true）
             try session.setActive(true)
         } catch {
