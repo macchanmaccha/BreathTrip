@@ -47,6 +47,7 @@
 		18B9A21B2AD6706D00F70700 /* SelectSoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9A21A2AD6706D00F70700 /* SelectSoundView.swift */; };
 		18D657A42AD3CC8400F78D50 /* SelectContinentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */; };
 		18DE54302FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */; };
+		18DEB0B22FFD174D00CA0B02 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 18DEB0B12FFD174D00CA0B02 /* README.md */; };
 		18E079B92BCA606800544DDD /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E079B82BCA606800544DDD /* Int+Extension.swift */; };
 		18F0E0112EE9AA01005C9BE5 /* MeditationAudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F0E0102EE9AA01005C9BE5 /* MeditationAudioGuide.swift */; };
 /* End PBXBuildFile section */
@@ -94,6 +95,7 @@
 		18BCE6662EE99AD6005C9BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		18D657A32AD3CC8400F78D50 /* SelectContinentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContinentView.swift; sourceTree = "<group>"; };
 		18DE542F2FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 002_inhale_nose_exhale_nose_ja.wav; sourceTree = "<group>"; };
+		18DEB0B12FFD174D00CA0B02 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		18E079B82BCA606800544DDD /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		18F0E0102EE9AA01005C9BE5 /* MeditationAudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationAudioGuide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +150,7 @@
 		1863E1D52AAD81BE00543D18 = {
 			isa = PBXGroup;
 			children = (
+				18DEB0B12FFD174D00CA0B02 /* README.md */,
 				1863E1E02AAD81BE00543D18 /* MeditationJourney */,
 				1863E1DF2AAD81BE00543D18 /* Products */,
 			);
@@ -318,6 +321,7 @@
 				18DE54302FA8E00000711B84 /* 002_inhale_nose_exhale_nose_ja.wav in Resources */,
 				18A7E36D2F8E551D00B31E70 /* 005_breathe_at_own_pace_ja.wav in Resources */,
 				18A7E36E2F8E551D00B31E70 /* 006_feel_breath_in_belly_ja.wav in Resources */,
+				18DEB0B22FFD174D00CA0B02 /* README.md in Resources */,
 				18A7E36F2F8E551D00B31E70 /* 008_release_tension_with_exhale_ja.wav in Resources */,
 				18A7E3702F8E551D00B31E70 /* 010_finish_breath_open_eyes_ja.wav in Resources */,
 				18A7E3712F8E551D00B31E70 /* 007_longer_exhale_rhythm_ja.wav in Resources */,
