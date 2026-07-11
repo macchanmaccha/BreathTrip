@@ -14,8 +14,6 @@ struct SelectSoundView: View {
     @Binding var isShowSheet: Bool
     /// 選択した大陸
     let selectedContinent: ContinentModel
-    /// 画面を閉じるプロパティラッパー
-    @Environment(\.dismiss) private var dismiss
     /// 音Grid
     private let columns: [GridItem] = Array(repeating: .init(.fixed(150)), count: 2)
     var body: some View {
@@ -50,7 +48,6 @@ struct SelectSoundView: View {
                 .padding(10)
             }  // VStackここまで
         }  // ZStackここまで
-        // 前画面へ戻る
         .toolbar {
             // シートを閉じる
             ToolbarItem(placement: .topBarTrailing) {
