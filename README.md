@@ -242,6 +242,7 @@ Apple Music のプレビューを `AVPlayer` で再生します。
 - **タイミング**: 再生フロー開始時に `configureAudioSession()` を呼び、`setActive(true)` する
 
 これにより「他アプリの曲と本アプリのプレビューが重なる」状態を避けつつ、電話などの割り込みは通常どおり受けられます。
+https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L685-L701
 
 #### 2. 割り込み・バックグラウンドとの連携
 
