@@ -5,11 +5,12 @@
 6 大陸・36 か所の環境音（Apple Music 経由）とタイマー、瞑想記録、地図表示、日本語の音声ガイドを組み合わせて「息のたび」を楽しめます。
 
 ## 2. ダウンロードリンク
-[![App_Store_Badge_JP](https://user-images.githubusercontent.com/68992872/204145956-f5cc0fa8-d4c9-4f2c-b1d4-3c3b1d2e2aba.png)](https://github.com/user-attachments/files/30543586/BreathTrip_Concept1.3.pdf)
+[![App_Store_Badge_JP](https://user-images.githubusercontent.com/68992872/204145956-f5cc0fa8-d4c9-4f2c-b1d4-3c3b1d2e2aba.png)](https://apps.apple.com/jp/app/breath-trip/id6764456199)
+
 
 ## 3. アプリのコンセプト
 
- <a href="https://speakerdeck.com/macchanmaccha/breathtrip-concept1-dot-2"><img alt="コンセプトスライド" src="https://github.com/user-attachments/files/30541402/BreathTrip_Concept1.2.pdf"></a>
+ <a href="https://speakerdeck.com/macchanmaccha/breathtrip-concept1-dot-2"><img alt="コンセプトスライド" src="https://github.com/user-attachments/files/30543586/BreathTrip_Concept1.3.pdf"></a>
  
 
 ## 4. 実行画面
