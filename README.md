@@ -14,8 +14,8 @@
 
 ## 4. 実行画面
 
-<img width="320" height="672" alt="マイムービー" src="https://github.com/user-attachments/assets/f14c4363-5a7e-4a42-a2a5-435660ce2684" />
-<img width="320" height="672" alt="マイムービー2" src="https://github.com/user-attachments/assets/ab6eb265-d591-48e3-9b17-e0ad1b4c8df6" />
+<img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー.gif" />
+<img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー2.gif" />
 
 ## 5. アプリの機能
 ### 瞑想
@@ -65,7 +65,7 @@
 各音源は `SoundModel` の `fileName`（Apple Music のトラック ID）と紐づいています。
 
 ## 7. 内部設計
-<img width="1512" height="802" alt="flowchart" src="https://github.com/user-attachments/assets/e2bb4f0e-2cfe-4ab7-8138-6f7b782ac7d5" />
+<img width="1512" height="802" alt="flowchart" src="docs/screenshots/flowchart.png" />
 
 ## 8. MVVMの構成
 瞑想タブ
@@ -225,7 +225,7 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
 - **状態管理との連携**  
   フェードアウト完了後に `fadeOutComplete` → `updateState(.stopped)` へつなぎ、再生状態を明確にしています。
 
-<img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="https://github.com/user-attachments/assets/a80dd533-9f7d-4119-9066-214755b04089" />
+<img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/タイマーに関わる全体の流れ.png" />
 <img width="1354" height="751" alt="refすべて" src="https://github.com/user-attachments/assets/2999534d-b222-4009-b589-e877f2edb734" />
 
 ### 2. 音の競合やバックグラウンドへの対策
