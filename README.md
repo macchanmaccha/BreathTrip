@@ -225,8 +225,8 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
   フェードアウト完了後に `fadeOutComplete` → `updateState(.stopped)` へつなぎ、再生状態を明確にしています。
 
 <img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/タイマーに関わる全体の流れ.png" />
-<img width="1354" height="751" alt="refすべて" src="docs/screenshots/refすべて.png" />
 
+<img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/ref.png" />
 ### 2. 音の競合やバックグラウンドへの対策
 瞑想・音をきくの各フローで、ユーザーが選んだ Apple Music のプレビューを安定して再生し、他アプリの音との干渉、ホーム移行などによる中断、割り込みに対して挙動を揃え、意図しない再生の続行や二重再生を防ぐようにしました。
 
