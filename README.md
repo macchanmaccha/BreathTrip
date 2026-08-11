@@ -14,8 +14,7 @@
 
 ## 4. 実行画面
 
-<img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー.gif" />
-<img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー2.gif" />
+<img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー.gif" /><img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー2.gif" />
 
 ## 5. アプリの機能
 ### 瞑想
@@ -226,7 +225,7 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
   フェードアウト完了後に `fadeOutComplete` → `updateState(.stopped)` へつなぎ、再生状態を明確にしています。
 
 <img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/タイマーに関わる全体の流れ.png" />
-<img width="1354" height="751" alt="refすべて" src="https://github.com/user-attachments/assets/2999534d-b222-4009-b589-e877f2edb734" />
+<img width="1354" height="751" alt="refすべて" src="docs/screenshots/refすべて.png" />
 
 ### 2. 音の競合やバックグラウンドへの対策
 瞑想・音をきくの各フローで、ユーザーが選んだ Apple Music のプレビューを安定して再生し、他アプリの音との干渉、ホーム移行などによる中断、割り込みに対して挙動を揃え、意図しない再生の続行や二重再生を防ぐようにしました。
@@ -252,7 +251,7 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
 
 https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L153-L187
 https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/View/PlayingView/MeditatingView.swift#L82-L88
-<img width="320" height="672" alt="中断時のアラート" src="https://github.com/user-attachments/assets/4b912557-7f28-4420-9754-97639e69787b" />
+<img width="320" height="672" alt="中断時のアラート" src="docs/screenshots/中断時のアラート.gif" />
 
 ## 10.　テストアプリ
 テストアプリでは、配信音楽サービスでの音源の取得及び連続再生や、タイマー処理のテストをしました。
