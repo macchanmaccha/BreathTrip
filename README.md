@@ -14,7 +14,7 @@
 
 ## 4. 実行画面
 
-<img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー.gif" /><img width="320" height="672" alt="マイムービー" src="docs/screenshots/マイムービー2.gif" />
+<img width="320" height="672" alt="実行画面1" src="docs/screenshots/executionscreen1.gif" /><img width="320" height="672" alt="実行画面2" src="docs/screenshots/executionscreen2.gif" />
 
 ## 5. アプリの機能
 ### 瞑想
@@ -223,10 +223,13 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
   残り時間が短い場合はフェードインを抑制するなど、エッジケースを考慮しています。
 - **状態管理との連携**  
   フェードアウト完了後に `fadeOutComplete` → `updateState(.stopped)` へつなぎ、再生状態を明確にしています。
+  
+<img width="1354" height="623" alt="全タイマー" src="docs/screenshots/alltimer.png" />
 
-<img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/タイマーに関わる全体の流れ.png" />
+<img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/timerflow.png" />
 
-<img width="1354" height="623" alt="タイマーに関わる全体の流れ" src="docs/screenshots/ref.png" />
+<img width="1354" height="623" alt="ref" src="docs/screenshots/ref.png" />
+
 ### 2. 音の競合やバックグラウンドへの対策
 瞑想・音をきくの各フローで、ユーザーが選んだ Apple Music のプレビューを安定して再生し、他アプリの音との干渉、ホーム移行などによる中断、割り込みに対して挙動を揃え、意図しない再生の続行や二重再生を防ぐようにしました。
 
@@ -241,6 +244,7 @@ Apple Music のプレビューを `AVPlayer` で再生します。
 - **タイミング**: 再生フロー開始時に `configureAudioSession()` を呼び、`setActive(true)` する
 
 これにより「他アプリの曲と本アプリのプレビューが重なる」状態を避けつつ、電話などの割り込みは通常どおり受けられます。
+
 https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L685-L701
 
 #### 2. 割り込み・バックグラウンドとの連携
@@ -251,7 +255,7 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
 
 https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L153-L187
 https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/View/PlayingView/MeditatingView.swift#L82-L88
-<img width="320" height="672" alt="中断時のアラート" src="docs/screenshots/中断時のアラート.gif" />
+<img width="320" height="672" alt="中断時のアラート" src="docs/screenshots/interruptionalert.gif" />
 
 ## 10.　テストアプリ
 テストアプリでは、配信音楽サービスでの音源の取得及び連続再生や、タイマー処理のテストをしました。
