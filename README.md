@@ -13,8 +13,9 @@
 <a href="https://speakerdeck.com/macchanmaccha/breathtrip-concept1-dot-3"><img alt="コンセプトスライド" src="https://files.speakerdeck.com/presentations/9b7f598dbb664f5fadf91bafe73e889c/slide_0.jpg"></a>
 
 ## 4. 実行画面
-
-<img width="320" height="672" alt="実行画面1" src="docs/screenshots/executionscreenone.gif" /><img width="320" height="672" alt="実行画面2" src="docs/screenshots/executionscreentwo.gif" />
+<img width="320" height="672" alt="中断時のアラート" src="docs/screenshots/interruptionalert.gif" />
+<img width="320" height="672" alt="実行画面1" src="docs/screenshots/executionscreenone.gif" />
+<img width="320" height="672" alt="実行画面2" src="docs/screenshots/executionscreentwo.gif" />
 
 ## 5. アプリの機能
 ### 瞑想
