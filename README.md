@@ -14,7 +14,7 @@
 
 ## 4. 実行画面
 
-<img width="320" height="672" alt="実行画面1" src="docs/screenshots/executionscreen1.gif" /><img width="320" height="672" alt="実行画面2" src="docs/screenshots/executionscreen2.gif" />
+<img width="320" height="672" alt="実行画面1" src="docs/screenshots/executionscreenone.gif" /><img width="320" height="672" alt="実行画面2" src="docs/screenshots/executionscreentwo.gif" />
 
 ## 5. アプリの機能
 ### 瞑想
