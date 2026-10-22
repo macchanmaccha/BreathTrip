@@ -299,9 +299,8 @@
 			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
-				Base,
 				ja,
+				Base,
 			);
 			mainGroup = 1863E1D52AAD81BE00543D18;
 			productRefGroup = 1863E1DF2AAD81BE00543D18 /* Products */;
@@ -529,7 +528,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"MeditationJourney/Preview Content\"";
 				DEVELOPMENT_TEAM = JL9HPDPZL7;
 				ENABLE_PREVIEWS = YES;
@@ -570,7 +569,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"MeditationJourney/Preview Content\"";
 				DEVELOPMENT_TEAM = JL9HPDPZL7;
 				ENABLE_PREVIEWS = YES;

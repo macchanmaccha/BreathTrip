@@ -16,7 +16,7 @@ enum UserDefaultsKey {
     static let meditationRecords = "meditationRecords"
     /// 瞑想の音声ガイドON/OFF（MeditationSetViewのAppStorageと一致）
     static let audioGuide = "audioGuide"
-    static func register () {
+    static func register() {
         UserDefaults.standard.register(defaults: [
             // SoundModel.europa1で保存するとアプリが落ちるので、rawValueで保存
             UserDefaultsKey.meditationSoundName: SoundModel.europa1.rawValue,
