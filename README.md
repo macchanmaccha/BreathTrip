@@ -196,9 +196,9 @@ SpotListViewModel -->|音ごとの合計時間を集計| MeditationInfo
 
 また、セッション時間が 10 秒以下の場合や、すでにフェード処理が走っている場合はフェードをスキップし、短時間設定でも破綻しないようガードしています。<br>
 フェードイン
-https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L351-L382
+https://github.com/macchanmaccha/BreathTrip/blob/4c3917794885c2fff2305091de036caf4eb71a41/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L351-L382
 フェードアウト
-https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L383-L426
+https://github.com/macchanmaccha/BreathTrip/blob/4c3917794885c2fff2305091de036caf4eb71a41/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L383-L426
 
 #### 3. タイマーとそれらに係るメソッドの設計
 
@@ -244,8 +244,7 @@ Apple Music のプレビューを `AVPlayer` で再生します。
 - **タイミング**: 再生フロー開始時に `configureAudioSession()` を呼び、`setActive(true)` する
 
 これにより「他アプリの曲と本アプリのプレビューが重なる」状態を避けつつ、電話などの割り込みは通常どおり受けられます。
-
-https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L685-L701
+https://github.com/macchanmaccha/BreathTrip/blob/4c3917794885c2fff2305091de036caf4eb71a41/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L686-L701
 
 #### 2. 割り込み・バックグラウンドとの連携
 
@@ -253,8 +252,9 @@ https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19
 - **音声割り込み**: `AVAudioSession.interruptionNotification` で開始時に一時停止（Listening は終了時に再開可能な場合のみ再開）
 - **再生ライフサイクル**: 開始・中断・再開・終了を `updatePlaybackState` 経由でプレビュー再生と連動させ、二重再生や意図しない継続を防ぐ
 
-https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L153-L187
-https://github.com/CodeCandySchool/MeditationJourney_may/blob/b3595fe4e4fd0b5d19080d705e193ecc076c7187/MeditationJourney/View/PlayingView/MeditatingView.swift#L82-L88
+https://github.com/macchanmaccha/BreathTrip/blob/4c3917794885c2fff2305091de036caf4eb71a41/MeditationJourney/ViewModel/MeditatingSetViewModel.swift#L153-L187
+https://github.com/macchanmaccha/BreathTrip/blob/4c3917794885c2fff2305091de036caf4eb71a41/MeditationJourney/View/PlayingView/MeditatingView.swift#L82-L88
+
 <img width="320" height="672" alt="中断時のアラート" src="docs/screenshots/interruptionalert.gif" />
 
 ## 10.　テストアプリ
